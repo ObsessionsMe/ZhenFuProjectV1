@@ -29,51 +29,96 @@
       <van-cell title="运费" value="+ 0.00" />
       <!-- <van-cell title="折扣" value="- 5.00" /> -->
       <van-cell title="实付金额" :value="goodsTotal" style="font-weight: 700;" />
-    </van-cell-group> 
+    </van-cell-group>
+    <div style="height:15px;"></div>
+    <van-radio-group v-model="payMethod">
+      <van-cell-group>
+        <van-cell title="积分余额" clickable @click="payMethod = '1'">
+          <template #right-icon>
+            <van-radio name="1" />
+          </template>
+        </van-cell>
+        <van-cell title="团队积分余额" clickable @click="payMethod = '2'">
+          <template #right-icon>
+            <van-radio name="2" />
+          </template>
+        </van-cell>
+      </van-cell-group>
+    </van-radio-group>
 
-    <div style="height:50px;"></div>
-    <van-submit-bar :price="goodsTotal_r" button-text="提交订单" label="实付金额：" @submit="onSubmit" />
+    <van-submit-bar
+      :price="goodsTotal_r"
+      button-text="提交订单"
+      label="实付金额："
+      @submit="onSubmit"
+      :disabled="isCanPay"
+    />
   </div>
 </template>
 
 <script>
-import { ReadyPlaceOrder } from "../../api/order.js";
+import { ReadyPlaceOrder,SubmitOrder} from "../../api/order.js";
 export default {
   data() {
     return {
       type: "add1",
-      goodsTotal:0,
-      goodsTotal_r:0,
-      products: [{
-        imageURL: "http://47.115.57.178/resource/images/shopone1.png",
-        title: "",
-        desc: "",
-        price: "",
-        quantity: 2
-      }]
+      isCanPay: false,
+      payMethod: "1",
+      goodsTotal: 0,
+      goodsTotal_r: 0,
+      products: [
+        {
+          imageURL: "http://47.115.57.178/resource/images/shopone1.png",
+          title: "",
+          desc: "",
+          price: "",
+          quantity: 2
+        }
+      ],
+      goodsId:"",
+      AddressId:'123001',
+      GoodsUnitPrice:0,
+      BuyGoodsNums:0,
+      PayCount:0,
+
     };
   },
   methods: {
     onSubmit() {
-      this.$toast("点击提交订单,拉起微信支付!");
+      this.$toast("点击提交订单");
+      var params = {
+        GoodsId:this.goodsId,
+        AddressId:this.AddressId,
+        BuyGoodsNums:this.BuyGoodsNums,
+        PayCount:this.goodsTotal,
+        UsePorintsType:parseInt(this.payMethod),
+        GoodsUnitPrice:this.GoodsUnitPrice
+      };
+      console.log(params);
+      SubmitOrder(params).then(response => {
+        console.log("response",response);
+      });
     }
   },
   created() {
     console.log(this.$store.state.orderInfo);
-    var goodsId = this.$store.state.orderInfo.goodsId;
-    if(goodsId==null){
+    this.goodsId = this.$store.state.orderInfo.goodsId;
+    if (this.goodsId == null) {
       return;
     }
-    ReadyPlaceOrder(goodsId).then(response => {
+    ReadyPlaceOrder(this.goodsId).then(response => {
       console.log(response);
       this.products[0].title = response.data.goodsData.goodsName;
       this.products[0].desc = response.data.goodsData.goodsDescribe;
       this.products[0].price = response.data.goodsData.unitPrice;
       this.products[0].quantity = this.$store.state.orderInfo.goodsNum;
-      this.goodsTotal = parseInt(response.data.goodsData.unitPrice)*parseInt(this.$store.state.orderInfo.goodsNum);
-      this.goodsTotal_r = parseInt(this.goodsTotal)*100;
+      this.goodsTotal =
+        parseInt(response.data.goodsData.unitPrice) *
+        parseInt(this.$store.state.orderInfo.goodsNum);
+      this.goodsTotal_r = parseInt(this.goodsTotal) * 100;
+      this.BuyGoodsNums = this.$store.state.orderInfo.goodsNum;
+      this.GoodsUnitPrice = response.data.goodsData.unitPrice;
     });
-
   },
   activated() {
     //根据key名获取传递回来的参数，data就是map

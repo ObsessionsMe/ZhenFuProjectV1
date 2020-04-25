@@ -7,3 +7,11 @@ export function ReadyPlaceOrder(params) {
     params: { goodsId:params }
   })
 }
+
+export function SubmitOrder(params) {
+  return request({
+    url: '/api/order/SubmitOrder',
+    method: 'post',
+    params: {jsonString: JSON.stringify(params)}
+  })
+}

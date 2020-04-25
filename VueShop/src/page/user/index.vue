@@ -9,9 +9,11 @@
       </div>
 
       <div class="user-profile-username" style="font-size:14px">
+        <span>积分余额:{{userInfo.producePorints}}</span>
+        <span style="margin-left:1%">旅游积分{{userInfo.treamPorints}}</span>
+        <br />
         <span>产品积分:{{userInfo.producePorints}}</span>
         <span style="margin-left:1%">团队积分{{userInfo.treamPorints}}</span>
-        <span style="margin-left:1%">旅游积分{{userInfo.treamPorints}}</span>
       </div>
     </div>
 
@@ -102,9 +104,9 @@ export default {
     return{
       userInfo:{
         name:"小木子",
-        producePorints:1500000,
-        treamPorints:2500000,
-        tourismPorints:2500000
+        producePorints:15000,
+        treamPorints:25000,
+        tourismPorints:5000
       },
         vipSys: [
           {
