@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\UtilitieEntity\\UtilitieEntity.csproj": {}
+    "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\UtilitieEntity\\UtilitieEntity.csproj": {}
   },
   "projects": {
-    "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\UtilitieEntity\\UtilitieEntity.csproj": {
+    "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\UtilitieEntity\\UtilitieEntity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\UtilitieEntity\\UtilitieEntity.csproj",
+        "projectUniqueName": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\UtilitieEntity\\UtilitieEntity.csproj",
         "projectName": "UtilitieEntity",
-        "projectPath": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\UtilitieEntity\\UtilitieEntity.csproj",
+        "projectPath": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\UtilitieEntity\\UtilitieEntity.csproj",
         "packagesPath": "C:\\Users\\86159\\.nuget\\packages\\",
-        "outputPath": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\UtilitieEntity\\obj\\",
+        "outputPath": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\UtilitieEntity\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

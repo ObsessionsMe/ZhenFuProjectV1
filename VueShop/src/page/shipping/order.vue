@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$toast("点击提交订单");
+      this.$toast("正在点击提交订单...");
       var params = {
         GoodsId:this.goodsId,
         AddressId:this.AddressId,
@@ -95,8 +95,21 @@ export default {
         GoodsUnitPrice:this.GoodsUnitPrice
       };
       console.log(params);
-      SubmitOrder(params).then(response => {
-        console.log("response",response);
+      this.isCanPay = true;
+      SubmitOrder(params).then(response => {     
+         console.log(response);
+         if(response.state == "success"){    
+            this.$toast("恭喜你,提交订单成功..");
+            console.log("response",response);
+            // setInterval(() => {
+            //   this.$router.push({ path: this.redirect || "/user/index" });             
+            // }, 2000);   
+            this.isCanPay = false;    
+         }
+         else{
+           this.$toast(response.message);
+            this.isCanPay = false;
+         }
       });
     }
   },
@@ -107,6 +120,7 @@ export default {
       return;
     }
     ReadyPlaceOrder(this.goodsId).then(response => {
+       if(response.state == "success"){    
       console.log(response);
       this.products[0].title = response.data.goodsData.goodsName;
       this.products[0].desc = response.data.goodsData.goodsDescribe;
@@ -118,6 +132,7 @@ export default {
       this.goodsTotal_r = parseInt(this.goodsTotal) * 100;
       this.BuyGoodsNums = this.$store.state.orderInfo.goodsNum;
       this.GoodsUnitPrice = response.data.goodsData.unitPrice;
+       }
     });
   },
   activated() {

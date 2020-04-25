@@ -27,18 +27,18 @@ namespace WebUI.Controllers.Client
     public class LoginController : Controller
     {
         private readonly IUserRepository userRepository;
-        public static IHttpContextAccessor Context;
-        public LoginController(IUserRepository _userRepository, IHttpContextAccessor _Context)
+        private IUserPrintsSumRepository sumRepository;
+        public LoginController(IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository)
         {
             userRepository = _userRepository;
-            Context = _Context;
+            sumRepository = _sumRepository;
         }
         // GET: api/User/LoginOn
         [Route("LoginOn")]
         public ActionResult LoginOn(string telephone, string password)
         {
             //校验用户Telephone合法性
-            UserService servers = new UserService(userRepository);
+            UserService servers = new UserService(userRepository, sumRepository);
             var data = servers.GetUserNameByPhone(telephone);
             if (data == null)
             {
@@ -84,7 +84,7 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "两次密码输入不一致", data = "" });
             }
-            UserService servers = new UserService(userRepository);
+            UserService servers = new UserService(userRepository, sumRepository);
             //校验手机号
             if (!string.IsNullOrEmpty(telephone))
             {
@@ -106,7 +106,7 @@ namespace WebUI.Controllers.Client
         public ActionResult UserRegister(string jsonString)
         {
             UserInfoEntity userInfo = JsonConvert.DeserializeObject<UserInfoEntity>(jsonString);
-            UserService servers = new UserService(userRepository);
+            UserService servers = new UserService(userRepository, sumRepository);
             if (userInfo == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取数据失败", data = "" });
@@ -145,7 +145,7 @@ namespace WebUI.Controllers.Client
         [Route("GetUserNameByPhone")]
         public ActionResult GetUserNameByPhone(string telephone)
         {
-            UserService servers = new UserService(userRepository);
+            UserService servers = new UserService(userRepository, sumRepository);
             var data = servers.GetUserNameByPhone(telephone);
             if (data == null)
             {

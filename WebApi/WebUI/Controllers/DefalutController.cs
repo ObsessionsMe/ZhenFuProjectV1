@@ -16,10 +16,12 @@ namespace WebUI.Controllers
     {
         private readonly ILogger<DefalutController> _logger;
         private readonly IUserRepository userRepository;
-        public DefalutController(ILogger<DefalutController> logger, IUserRepository _userRepository)
+        private readonly IUserPrintsSumRepository sumRepository;
+        public DefalutController(ILogger<DefalutController> logger, IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository)
         {
             _logger = logger;
             userRepository = _userRepository;
+            sumRepository = _sumRepository;
         }
 
         [HttpGet]
@@ -31,7 +33,7 @@ namespace WebUI.Controllers
         [Route("GetUserInfo")]
         public ActionResult GetUserInfo()
         {
-            UserService servers = new UserService(userRepository);
+            UserService servers = new UserService(userRepository, sumRepository);
             var data = servers.FindUserList();
             if (data == null)
             {

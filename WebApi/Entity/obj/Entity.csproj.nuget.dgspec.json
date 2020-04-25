@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\Entity\\Entity.csproj": {}
+    "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\Entity\\Entity.csproj": {}
   },
   "projects": {
-    "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\Entity\\Entity.csproj": {
+    "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\Entity\\Entity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\Entity\\Entity.csproj",
+        "projectUniqueName": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\Entity\\Entity.csproj",
         "projectName": "Entity",
-        "projectPath": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\Entity\\Entity.csproj",
+        "projectPath": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\Entity\\Entity.csproj",
         "packagesPath": "C:\\Users\\86159\\.nuget\\packages\\",
-        "outputPath": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\Entity\\obj\\",
+        "outputPath": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\Entity\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

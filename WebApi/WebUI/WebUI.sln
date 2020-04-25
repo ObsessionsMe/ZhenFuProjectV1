@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUI", "WebUI.csproj", "{3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RepositoryFactory", "RepositoryFactory", "{FF1B2855-3528-4998-83D9-8DDB9EF8E2B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "..\Repository\Repository.csproj", "{1178CC85-A5BB-4B40-BE89-16876B18213C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "..\Repository\Repository.csproj", "{1178CC85-A5BB-4B40-BE89-16876B18213C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilitieEntity", "..\UtilitieEntity\UtilitieEntity.csproj", "{B69FE733-0636-4B86-A1D1-14CCED1D5C80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilitieEntity", "..\UtilitieEntity\UtilitieEntity.csproj", "{B69FE733-0636-4B86-A1D1-14CCED1D5C80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

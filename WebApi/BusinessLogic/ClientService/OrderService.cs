@@ -1,5 +1,6 @@
 ﻿using Entity;
 using Infrastructure;
+using Repository.RepositoryService;
 using RepositoryFactory.ServiceInterface;
 using System;
 using System.Collections.Generic;
@@ -94,8 +95,9 @@ namespace BusinessLogic.ClientService
                 orderEntity.UsePorintsType = order.UsePorintsType;
                 orderEntity.AddressId = order.AddressId;
                 orderEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss");
-                i =  orderRepository.Insert(orderEntity);
-                if (i < 1) {
+                i = orderRepository.Insert(orderEntity);
+                if (i < 1)
+                {
                     return null;
                 }
                 //5:减少对应的商品表库存(支付失败不入库)--暂时放一放
@@ -111,10 +113,18 @@ namespace BusinessLogic.ClientService
                 {
                     return null;
                 }
-                //4:购买成功后立即赠送对应的商品积分，添加到用户积分汇总表中
+                //4:赠送完预购积分后，需要再更新到积分汇总表中的预购积分中去
+                userPorintsEntity = new UserPrintsSumEntity();
+                userPorintsEntity = sumRepository.FindEntity(x => x.UserId == userId);
+                userPorintsEntity.ProductPorints = userPorintsEntity.ProductPorints + sumItemPoints;
+                sumRepository.Update(userPorintsEntity);
+                if (i < 1)
+                {
+                    return null;
+                }
                 return new AjaxResult { state = ResultType.success.ToString(), message = "下单成功！", data = "" };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

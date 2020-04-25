@@ -1,16 +1,16 @@
 <template>
   <div>
-    <div class="user-profile" style="height:120px;line-height:20px;">
+    <div class="user-profile" style="height:135px;line-height:20px;">
       <div class="user-profile-avatar">
         <a href="/#/user/info">
           <img src="http://haitao.nos.netease.com/ZnB0PM5xDzXZ2FeVlmT170102401021_150_150.png" style="width:50px;height:50px;vertical-align:bottom" alt="用户头像">
-          <span class="m-nick" style="font-size:14px;left:10px">{{userInfo.name}}(13576477512)</span>
+          <span class="m-nick" style="font-size:14px;left:10px">{{userInfo.name}}{{userInfo.userTelephone}}</span>
         </a>
       </div>
 
       <div class="user-profile-username" style="font-size:14px">
-        <span>积分余额:{{userInfo.producePorints}}</span>
-        <span style="margin-left:1%">旅游积分{{userInfo.treamPorints}}</span>
+        <span>积分余额:{{userInfo.porintsSurplus}}</span>
+        <span style="margin-left:1%">旅游积分{{userInfo.tourismPorints}}</span>
         <br />
         <span>产品积分:{{userInfo.producePorints}}</span>
         <span style="margin-left:1%">团队积分{{userInfo.treamPorints}}</span>
@@ -77,7 +77,7 @@
       <van-cell title="推广二维码" is-link to="" />
     </van-cell-group> -->
     <van-cell-group>
-      <van-cell title="积分充值" is-link to="" />
+      <van-cell title="积分充值" is-link to="/user/buypoints" />
     </van-cell-group>
     <van-cell-group>
       <van-cell title="我的团队" is-link to="/user/myteam"/>
@@ -99,14 +99,17 @@
 </template>
 
 <script>
+import {GetUserPorints} from "../../api/user.js";
 export default {
   data(){
     return{
       userInfo:{
-        name:"小木子",
-        producePorints:15000,
-        treamPorints:25000,
-        tourismPorints:5000
+        name:"",
+        producePorints:0,
+        treamPorints:0,
+        tourismPorints:0,
+        porintsSurplus:0,
+        userTelephone:""
       },
         vipSys: [
           {
@@ -128,13 +131,18 @@ export default {
         ]
     }
   },
-  created:function(){
-    console.log(this.$store.state.Token)
-    console.log(this.$store.state.userInfo)
-      //发起请求
-      // GetUserIndex().then(response=>{
-      //     this.data=response;
-      // });     
+  created(){
+    //发起请求
+    var userId = this.$store.state.userInfo.userId;
+    this.userInfo.tourismPorints = this.$store.state.userInfo.tourismPorints;
+    this.userInfo.name =  this.$store.state.userInfo.name;
+    this.userInfo.userTelephone =  this.$store.state.userInfo.userTelephone;
+    GetUserPorints(userId).then(response=>{
+        console.log(response);
+        this.userInfo.porintsSurplus = response.data.porintsSurplus;
+        this.userInfo.producePorints = response.data.productPorints;
+        this.userInfo.treamPorints = response.data.treamPorints;
+    });     
   },
 };
 </script>

@@ -33,3 +33,12 @@ D:\PersonProject\ZhenFuProjectGit\WebApi\ViewEntity\obj\Debug\netcoreapp3.1\View
 D:\PersonProject\ZhenFuProjectGit\WebApi\ViewEntity\obj\Debug\netcoreapp3.1\ViewEntity.dll
 D:\PersonProject\ZhenFuProjectGit\WebApi\ViewEntity\obj\Debug\netcoreapp3.1\ViewEntity.pdb
 D:\PersonProject\ZhenFuProjectGit\WebApi\ViewEntity\obj\Debug\netcoreapp3.1\ViewEntity.csprojAssemblyReference.cache
+D:\PersonProject\ZhenFuProjectV1\WebApi\ViewEntity\bin\Debug\netcoreapp3.1\ViewEntity.deps.json
+D:\PersonProject\ZhenFuProjectV1\WebApi\ViewEntity\bin\Debug\netcoreapp3.1\ViewEntity.dll
+D:\PersonProject\ZhenFuProjectV1\WebApi\ViewEntity\bin\Debug\netcoreapp3.1\ViewEntity.pdb
+D:\PersonProject\ZhenFuProjectV1\WebApi\ViewEntity\obj\Debug\netcoreapp3.1\ViewEntity.csproj.CoreCompileInputs.cache
+D:\PersonProject\ZhenFuProjectV1\WebApi\ViewEntity\obj\Debug\netcoreapp3.1\ViewEntity.AssemblyInfoInputs.cache
+D:\PersonProject\ZhenFuProjectV1\WebApi\ViewEntity\obj\Debug\netcoreapp3.1\ViewEntity.AssemblyInfo.cs
+D:\PersonProject\ZhenFuProjectV1\WebApi\ViewEntity\obj\Debug\netcoreapp3.1\ViewEntity.dll
+D:\PersonProject\ZhenFuProjectV1\WebApi\ViewEntity\obj\Debug\netcoreapp3.1\ViewEntity.pdb
+D:\PersonProject\ZhenFuProjectV1\WebApi\ViewEntity\obj\Debug\netcoreapp3.1\ViewEntity.csprojAssemblyReference.cache

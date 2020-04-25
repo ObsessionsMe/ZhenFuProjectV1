@@ -25,9 +25,11 @@ namespace WebUI.Controllers.Client
     public class UserController : BaseControllers
     {
         private readonly IUserRepository userRepository;
-        public UserController(IUserRepository _userRepository)
+        private IUserPrintsSumRepository sumRepository;
+        public UserController(IUserRepository _userRepository,IUserPrintsSumRepository _sumRepository)
         {
             userRepository = _userRepository;
+            sumRepository = _sumRepository;
         }
         /// <summary>
         /// 获取用户积分(商品积分，团队积分)，进入个人首页时调用该方法
@@ -41,7 +43,7 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "用户或推荐人不存在", data = "" });
             }
-            UserService servers = new UserService(userRepository);
+            UserService servers = new UserService(userRepository, sumRepository);
             UserBaiseModel data = servers.GetUserPorints(userTelephone, referrer, referrerTelephone);
             if (data == null)
             {
@@ -64,7 +66,7 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "用户不存在", data = "" });
             }
-            UserService servers = new UserService(userRepository);
+            UserService servers = new UserService(userRepository, sumRepository);
             var data = servers.GetMyTream(userTelephone, userId);
             if (data == null)
             {
@@ -72,5 +74,21 @@ namespace WebUI.Controllers.Client
             }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
         }
+
+        [Route("GetUserPorints")]
+        public ActionResult GetUserPorints(string userId)
+        {
+            if (userModel == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败", data = "" });
+            }
+            UserService servers = new UserService(userRepository, sumRepository);
+            var data = servers.GetUserPorints(userId);
+            if (data == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "找不到用户相关的积分数据", data = "" });
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
+        }    
     }
 }

@@ -15,12 +15,14 @@ namespace BusinessLogic.ClientService
     public class UserService
     {
         /// <summary>
-        /// 商城: 用户模块业务逻辑
+        /// 商城: 用户/用户登录等模块业务逻辑
         /// </summary>
         private IUserRepository userRepository;
-        public UserService(IUserRepository _userRepository)
+        private IUserPrintsSumRepository sumRepository;
+        public UserService(IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository)
         {
             userRepository = _userRepository;
+            sumRepository = _sumRepository;
         }
         public List<UserInfoEntity> FindUserList()
         {
@@ -124,6 +126,12 @@ namespace BusinessLogic.ClientService
             var model = new UserBaiseModel();
 
             return model;
-        }   
+        }
+
+        public UserPrintsSumEntity GetUserPorints(string userId)
+        {
+            return sumRepository.FindEntity(x => x.UserId == userId);
+        }
+        
     }
 }

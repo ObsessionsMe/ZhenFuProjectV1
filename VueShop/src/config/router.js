@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import store from "./store"
 
 Vue.use(Router);
 
@@ -90,6 +89,7 @@ const routes = [
   },
   {
     path: '/user/buypoints',
+    name: 'buypoints',
     component: () => import('../page/user/buypoints/info'),
     meta: {
       title: '积分充值'
@@ -232,9 +232,7 @@ routes.forEach(route => {
   route.path = route.path || '/' + (route.name || '');
 });
 
-const router = new Router({ 
-  mode: 'history',
-  routes });
+const router = new Router({ routes });
 
 router.beforeEach((to, from, next) => {
   const title = to.meta && to.meta.title;

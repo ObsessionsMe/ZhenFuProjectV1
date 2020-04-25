@@ -9950,11 +9950,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\Repository\\Repository.csproj",
+      "projectUniqueName": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\Repository\\Repository.csproj",
       "projectName": "Repository",
-      "projectPath": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\Repository\\Repository.csproj",
+      "projectPath": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\Repository\\Repository.csproj",
       "packagesPath": "C:\\Users\\86159\\.nuget\\packages\\",
-      "outputPath": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\Repository\\obj\\",
+      "outputPath": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\Repository\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -9973,17 +9973,17 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\Entity\\Entity.csproj": {
-              "projectPath": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\Entity\\Entity.csproj"
+            "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\Entity\\Entity.csproj": {
+              "projectPath": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\Entity\\Entity.csproj"
             },
-            "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\Infrastructure\\Infrastructure.csproj": {
-              "projectPath": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\Infrastructure\\Infrastructure.csproj"
+            "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\Infrastructure\\Infrastructure.csproj": {
+              "projectPath": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\Infrastructure\\Infrastructure.csproj"
             },
-            "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\UtilitieEntity\\UtilitieEntity.csproj": {
-              "projectPath": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\UtilitieEntity\\UtilitieEntity.csproj"
+            "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\UtilitieEntity\\UtilitieEntity.csproj": {
+              "projectPath": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\UtilitieEntity\\UtilitieEntity.csproj"
             },
-            "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\ViewEntity\\ViewEntity.csproj": {
-              "projectPath": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\ViewEntity\\ViewEntity.csproj"
+            "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\ViewEntity\\ViewEntity.csproj": {
+              "projectPath": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\ViewEntity\\ViewEntity.csproj"
             }
           }
         }

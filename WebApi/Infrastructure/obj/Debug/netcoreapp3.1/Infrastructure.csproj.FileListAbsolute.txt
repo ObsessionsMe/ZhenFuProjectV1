@@ -46,3 +46,15 @@ D:\PersonProject\ZhenFuProjectGit\WebApi\Infrastructure\obj\Debug\netcoreapp3.1\
 D:\PersonProject\ZhenFuProjectGit\WebApi\Infrastructure\obj\Debug\netcoreapp3.1\Infrastructure.csproj.CopyComplete
 D:\PersonProject\ZhenFuProjectGit\WebApi\Infrastructure\obj\Debug\netcoreapp3.1\Infrastructure.dll
 D:\PersonProject\ZhenFuProjectGit\WebApi\Infrastructure\obj\Debug\netcoreapp3.1\Infrastructure.pdb
+D:\PersonProject\ZhenFuProjectV1\WebApi\Infrastructure\bin\Debug\netcoreapp3.1\Infrastructure.deps.json
+D:\PersonProject\ZhenFuProjectV1\WebApi\Infrastructure\bin\Debug\netcoreapp3.1\Infrastructure.dll
+D:\PersonProject\ZhenFuProjectV1\WebApi\Infrastructure\bin\Debug\netcoreapp3.1\Infrastructure.pdb
+D:\PersonProject\ZhenFuProjectV1\WebApi\Infrastructure\bin\Debug\netcoreapp3.1\Entity.dll
+D:\PersonProject\ZhenFuProjectV1\WebApi\Infrastructure\bin\Debug\netcoreapp3.1\Entity.pdb
+D:\PersonProject\ZhenFuProjectV1\WebApi\Infrastructure\obj\Debug\netcoreapp3.1\Infrastructure.csprojAssemblyReference.cache
+D:\PersonProject\ZhenFuProjectV1\WebApi\Infrastructure\obj\Debug\netcoreapp3.1\Infrastructure.csproj.CoreCompileInputs.cache
+D:\PersonProject\ZhenFuProjectV1\WebApi\Infrastructure\obj\Debug\netcoreapp3.1\Infrastructure.AssemblyInfoInputs.cache
+D:\PersonProject\ZhenFuProjectV1\WebApi\Infrastructure\obj\Debug\netcoreapp3.1\Infrastructure.AssemblyInfo.cs
+D:\PersonProject\ZhenFuProjectV1\WebApi\Infrastructure\obj\Debug\netcoreapp3.1\Infrastructure.csproj.CopyComplete
+D:\PersonProject\ZhenFuProjectV1\WebApi\Infrastructure\obj\Debug\netcoreapp3.1\Infrastructure.dll
+D:\PersonProject\ZhenFuProjectV1\WebApi\Infrastructure\obj\Debug\netcoreapp3.1\Infrastructure.pdb

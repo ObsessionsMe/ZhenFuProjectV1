@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\ViewEntity\\ViewEntity.csproj",
+      "projectUniqueName": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\ViewEntity\\ViewEntity.csproj",
       "projectName": "ViewEntity",
-      "projectPath": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\ViewEntity\\ViewEntity.csproj",
+      "projectPath": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\ViewEntity\\ViewEntity.csproj",
       "packagesPath": "C:\\Users\\86159\\.nuget\\packages\\",
-      "outputPath": "D:\\PersonProject\\ZhenFuProjectGit\\WebApi\\ViewEntity\\obj\\",
+      "outputPath": "D:\\PersonProject\\ZhenFuProjectV1\\WebApi\\ViewEntity\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

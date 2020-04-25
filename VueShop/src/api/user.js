@@ -25,6 +25,14 @@ export function UserRegister(params) {
   })
 }
 
+export function GetUserPorints(params) {
+  return request({
+    url: '/api/user/GetUserPorints',
+    method: 'get',
+    params: { userId:params}
+  })
+}
+
 export function LoginOut() {
   return request({
     url: '/api/login/LoginOut',
@@ -33,7 +41,7 @@ export function LoginOut() {
 }
 
 
-
+//原始文件-范文本地json====================
 export function GetMyTream() {
   return request({
     url: '/api/User/GetMyTream',

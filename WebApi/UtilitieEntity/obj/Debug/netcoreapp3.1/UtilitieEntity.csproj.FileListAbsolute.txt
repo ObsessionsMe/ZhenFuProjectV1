@@ -32,3 +32,12 @@ D:\PersonProject\ZhenFuProjectGit\WebApi\UtilitieEntity\obj\Debug\netcoreapp3.1\
 D:\PersonProject\ZhenFuProjectGit\WebApi\UtilitieEntity\obj\Debug\netcoreapp3.1\UtilitieEntity.AssemblyInfo.cs
 D:\PersonProject\ZhenFuProjectGit\WebApi\UtilitieEntity\obj\Debug\netcoreapp3.1\UtilitieEntity.dll
 D:\PersonProject\ZhenFuProjectGit\WebApi\UtilitieEntity\obj\Debug\netcoreapp3.1\UtilitieEntity.pdb
+D:\PersonProject\ZhenFuProjectV1\WebApi\UtilitieEntity\bin\Debug\netcoreapp3.1\UtilitieEntity.deps.json
+D:\PersonProject\ZhenFuProjectV1\WebApi\UtilitieEntity\bin\Debug\netcoreapp3.1\UtilitieEntity.dll
+D:\PersonProject\ZhenFuProjectV1\WebApi\UtilitieEntity\bin\Debug\netcoreapp3.1\UtilitieEntity.pdb
+D:\PersonProject\ZhenFuProjectV1\WebApi\UtilitieEntity\obj\Debug\netcoreapp3.1\UtilitieEntity.csproj.CoreCompileInputs.cache
+D:\PersonProject\ZhenFuProjectV1\WebApi\UtilitieEntity\obj\Debug\netcoreapp3.1\UtilitieEntity.AssemblyInfoInputs.cache
+D:\PersonProject\ZhenFuProjectV1\WebApi\UtilitieEntity\obj\Debug\netcoreapp3.1\UtilitieEntity.AssemblyInfo.cs
+D:\PersonProject\ZhenFuProjectV1\WebApi\UtilitieEntity\obj\Debug\netcoreapp3.1\UtilitieEntity.dll
+D:\PersonProject\ZhenFuProjectV1\WebApi\UtilitieEntity\obj\Debug\netcoreapp3.1\UtilitieEntity.pdb
+D:\PersonProject\ZhenFuProjectV1\WebApi\UtilitieEntity\obj\Debug\netcoreapp3.1\UtilitieEntity.csprojAssemblyReference.cache

@@ -25,19 +25,19 @@
                 "shownumber": "4",
                 "imagelist": [
                     {
-                        "link": "/#/search?categoryid=12",
+                        "link": "",
                         "src": "https://haitao.nos.netease.com/6BXWTT4KF3v2CCD1KVT1809182052_960_480.jpg"
                     },
                     {
-                        "link": "/#/product/4",
+                        "link": "",
                         "src": "https://haitao.nosdn2.127.net/ThUbIr9WnE7TbTwTapp-kvAiT1809190053_960_480.jpg"
                     },
                     {
-                        "link": "/#/product/4",
+                        "link": "",
                         "src": "https://haitao.nos.netease.com/f3kJUUtkrDbsiU1LtopkHcBGgT1809182243_960_480.jpg"
                     },
                     {
-                        "link": "/#/product/4",
+                        "link": "",
                         "src": "https://haitao.nosdn2.127.net/EWQ1UI83HQ03U2TLaeShRtEhK19n7175ceTT1809191639_960_480.jpg"
                     }
                 ]
@@ -54,22 +54,22 @@
                 "backgroundcolor": "",
                 "imagelist": [
                     {
-                        "link": "/#/product/4",
+                        "link": "/#/product/202004241435002",
                         "src": "http://47.115.57.178/resource/images/1.jpg",
                         "title": ""
                     },
                     {
-                        "link": "/#/product/4",
+                        "link": "/#/product/202004241435002",
                         "src": "http://47.115.57.178/resource/images/2.jpg",
                         "title": ""
                     },
                     {
-                        "link": "/#/product/4",
+                        "link": "/#/product/202004241435002",
                         "src": "http://47.115.57.178/resource/images/3.jpg",
                         "title": ""
                     },
                     {
-                        "link": "/#/product/4",
+                        "link": "/#/product/202004241435002",
                         "src": "http://47.115.57.178/resource/images/4.jpg",
                         "title": ""
                     }
@@ -87,22 +87,22 @@
                 "backgroundcolor": "",
                 "imagelist": [
                     {
-                        "link": "/#/product/4",
+                        "link": "/#/product/202004241435002",
                         "src": "http://47.115.57.178/resource/images/5.jpg",
                         "title": ""
                     },
                     {
-                        "link": "/#/product/4",
+                        "link": "/#/product/202004241435002",
                         "src": "http://47.115.57.178/resource/images/6.jpg",
                         "title": ""
                     },
                     {
-                        "link": "/#/product/4",
+                        "link": "/#/product/202004241435002",
                         "src": "http://47.115.57.178/resource/images/7.jpg",
                         "title": ""
                     },
                     {
-                        "link": "/#/product/4",
+                        "link": "/#/product/202004241435002",
                         "src": "http://47.115.57.178/resource/images/8.jpg",
                         "title": ""
                     }
