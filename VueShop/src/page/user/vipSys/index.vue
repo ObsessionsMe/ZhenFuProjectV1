@@ -4,7 +4,7 @@
         <van-tabs v-model="active">
             <van-tab title="个人收益">
                 <van-cell-group>
-                    <van-cell :title="'截止今日商品收益:'+productEarn.summary" />
+                    <van-cell icon="volume-o" :title="'截止今日商品收益:'+productEarn.summary" />
                 </van-cell-group>
                 <el-table :data="productEarn.datas" stripe style="width: 100%">
                     <el-table-column align='center' prop="date" label="日期" width="180">
@@ -15,7 +15,7 @@
             </van-tab>
             <van-tab title="团队收益">
                 <van-cell-group>
-                    <van-cell :title="'截止今日团队收益:'+teamEarn.summary" />
+                    <van-cell icon="volume-o" :title="'截止今日团队收益:'+teamEarn.summary" />
                 </van-cell-group>
                 <el-table :data="teamEarn.datas" stripe style="width: 100%">
                     <el-table-column align='center' prop="date" label="日期" width="180">
