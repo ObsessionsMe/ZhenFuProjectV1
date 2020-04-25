@@ -1,0 +1,160 @@
+<template>
+  <div class="order">
+    <headerNav title="确认订单" />
+    <van-cell center :border="false" class="contact-card" is-link to="/user/address?id=2">
+      <template v-if="type === 'add'">
+        <strong>选择地址</strong>
+      </template>
+      <template v-else>
+        <strong>张三 138****6520</strong>
+        <div>广东省深圳市南山区科技园</div>
+      </template>
+    </van-cell>
+    <div style="height:15px;"></div>
+    <div class="card" v-for="(product,i) in products" :key="i">
+      <product-card :product="product" />
+    </div>
+    <!-- <div style="height:15px;"></div>
+    <van-cell-group>
+      <van-field label="留言" type="textarea" placeholder="请输入留言" rows="1" autosize />
+    </van-cell-group>
+    <div style="height:15px;"></div>
+    <van-cell-group class="total">
+      <van-cell title="优惠券" is-link value="抵扣¥5.00" />
+    </van-cell-group>
+    -->
+    <div style="height:15px;"></div>
+    <van-cell-group class="total">
+      <van-cell title="商品总额" :value="goodsTotal" />
+      <van-cell title="运费" value="+ 0.00" />
+      <!-- <van-cell title="折扣" value="- 5.00" /> -->
+      <van-cell title="实付金额" :value="goodsTotal" style="font-weight: 700;" />
+    </van-cell-group> 
+
+    <div style="height:50px;"></div>
+    <van-submit-bar :price="goodsTotal_r" button-text="提交订单" label="实付金额：" @submit="onSubmit" />
+  </div>
+</template>
+
+<script>
+import { ReadyPlaceOrder } from "../../api/order.js";
+export default {
+  data() {
+    return {
+      type: "add1",
+      goodsTotal:0,
+      goodsTotal_r:0,
+      products: [{
+        imageURL: "http://47.115.57.178/resource/images/shopone1.png",
+        title: "",
+        desc: "",
+        price: "",
+        quantity: 2
+      }]
+    };
+  },
+  methods: {
+    onSubmit() {
+      this.$toast("点击提交订单,拉起微信支付!");
+    }
+  },
+  created() {
+    console.log(this.$store.state.orderInfo);
+    var goodsId = this.$store.state.orderInfo.goodsId;
+    if(goodsId==null){
+      return;
+    }
+    ReadyPlaceOrder(goodsId).then(response => {
+      console.log(response);
+      this.products[0].title = response.data.goodsData.goodsName;
+      this.products[0].desc = response.data.goodsData.goodsDescribe;
+      this.products[0].price = response.data.goodsData.unitPrice;
+      this.products[0].quantity = this.$store.state.orderInfo.goodsNum;
+      this.goodsTotal = parseInt(response.data.goodsData.unitPrice)*parseInt(this.$store.state.orderInfo.goodsNum);
+      this.goodsTotal_r = parseInt(this.goodsTotal)*100;
+    });
+
+  },
+  activated() {
+    //根据key名获取传递回来的参数，data就是map
+    // eslint-disable-next-line no-unused-vars
+    this.$on(
+      "selectAddress",
+      function(data) {
+        //赋值给首页的附近医院数据模型
+      }.bind(this)
+    );
+  }
+};
+</script>
+
+<style lang="less">
+.order {
+  font-size: 14px;
+  background: #f7f7f7;
+  .contact-card::before {
+    content: "";
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    position: absolute;
+    background: -webkit-repeating-linear-gradient(
+      135deg,
+      #ff6c6c 0,
+      #ff6c6c 20%,
+      transparent 0,
+      transparent 25%,
+      #3283fa 0,
+      #3283fa 45%,
+      transparent 0,
+      transparent 50%
+    );
+    background: repeating-linear-gradient(
+      -45deg,
+      #ff6c6c 0,
+      #ff6c6c 20%,
+      transparent 0,
+      transparent 25%,
+      #3283fa 0,
+      #3283fa 45%,
+      transparent 0,
+      transparent 50%
+    );
+    background-size: 80px;
+  }
+  .total {
+    .van-cell__value {
+      color: red;
+    }
+  }
+
+  .van-submit-bar__bar {
+    border-top: 1px solid #f7f7f7;
+  }
+  .additional {
+    .van-cell {
+      padding: 0 15px;
+      font-size: 12px;
+    }
+    .van-cell__title {
+      flex: 11;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .van-tag {
+      line-height: 12px;
+      margin-right: 5px;
+    }
+
+    .price {
+      color: #e93b3d;
+      font-size: 10px;
+      span {
+        font-size: 16px;
+      }
+    }
+  }
+}
+</style>

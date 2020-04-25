@@ -1,0 +1,16 @@
+
+[============================应用程序日志开始============================ ]
+
+
+记录时间：2020-04-24 17:16:19,602 线程ID:[13] 日志级别：ERROR 类名或程序集名：WebUI  
+   property:[(null)] - 描述：System.ArgumentNullException: Value cannot be null. (Parameter 'key')
+   at WebUI.Tool.CacheHelper.GetCache[T](String key) in D:\PersonProject\ZhenFuProjectGit\WebApi\WebUI\Tool\CacheHelper.cs:line 37
+   at WebUI.App_Start.TokenAuthAttribute.OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next) in D:\PersonProject\ZhenFuProjectGit\WebApi\WebUI\App_Start\TokenAuth.cs:line 25
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+
+[ ===========================应用程序日志结束=============================]
