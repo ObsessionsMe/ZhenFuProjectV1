@@ -53,6 +53,8 @@ namespace WebUI
             services.AddTransient<IGoodsRepository, GoodsRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IReceiveAddressRepository, ReceiveAddressRepository>();
+            services.AddTransient<IUserPorintsRecordRepository, UserPorintsRecordRepository>();
+            services.AddTransient<IUserPrintsSumRepository, UserPrintsSumRepository>();
             //注册文件访问权限
             services.AddDirectoryBrowser();
 

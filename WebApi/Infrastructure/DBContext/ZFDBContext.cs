@@ -15,5 +15,7 @@ namespace Infrastructure.DBContext
         public DbSet<OrderInfoEntity> OrderInfoEntity { get; set; }
         public DbSet<GoodsEntity> GoodsEntity { get; set; }
         public DbSet<ReceiveAddressEntity> ReceiveAddressEntity { get; set; }
+        public DbSet<UserPorintsRecordEntity> UserPorintsRecordEntity { get; set; }
+        public DbSet<UserPrintsSumEntity> UserPrintsSumEntity { get; set; }
     }
  }

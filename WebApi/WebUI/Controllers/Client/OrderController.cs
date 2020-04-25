@@ -23,11 +23,17 @@ namespace WebUI.Controllers.Client
         private readonly IGoodsRepository goodsRepository;
         private readonly IReceiveAddressRepository receiveAddressRepository;
         private readonly IOrderRepository orderRepository;
-        public OrderController(IGoodsRepository _goodsRepository, IReceiveAddressRepository _receiveAddressRepository, IOrderRepository _orderRepository)
+        private readonly IUserPrintsSumRepository sumRepository;
+        private readonly IUserPorintsRecordRepository recordRepository;
+        public OrderController(IGoodsRepository _goodsRepository, IReceiveAddressRepository _receiveAddressRepository, IOrderRepository _orderRepository,
+            IUserPrintsSumRepository _sumRepository, IUserPorintsRecordRepository _recordRepository
+            )
         {
             goodsRepository = _goodsRepository;
             receiveAddressRepository = _receiveAddressRepository;
             orderRepository = _orderRepository;
+            sumRepository = _sumRepository;
+            recordRepository = _recordRepository;
         }
         /// <summary>
         ///  准备下单-获选获取收货地址和商品详情
@@ -68,15 +74,29 @@ namespace WebUI.Controllers.Client
         /// </summary>
         /// <param name="jsonString"></param>
         /// <returns></returns>
+         [Route("SubmitOrder")]
         public ActionResult SubmitOrder(string jsonString)
         {
+            if (userModel == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败，请重新登录", data = "" });
+            }
+            //是否校验用户
             if (string.IsNullOrEmpty(jsonString))
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "订单传入的参数为空", data = "" });
             }
             OrderInfoEntity orderInfo = JsonConvert.DeserializeObject<OrderInfoEntity>(jsonString);
-            OrderService server = new OrderService(orderRepository);
-            var data = server.SubmitOrder(orderInfo);
+            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository);
+            var data = server.SubmitOrder(orderInfo, userModel.UserId);
+            if (data == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "下单失败", data = data });
+            }
+            if (data.state.ToString() == "error")
+            {
+                return Json(data);
+            }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
         }
     }

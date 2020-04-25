@@ -36,25 +36,41 @@ namespace Entity
         public string GoodsId { get; set; }
 
         /// <summary>
+        /// 用户收货地址Id
+        /// </summary>
+        public string AddressId { get; set; }
+        
+
+        /// <summary>
         /// 商品单价
         /// </summary>
-        public string GoodsUnitPrice { get; set; }
+        public int GoodsUnitPrice { get; set; }
 
         /// <summary>
         /// 购买商品数量
         /// </summary>
-        public string BuyGoodsNums { get; set; }
+        public int BuyGoodsNums { get; set; }
 
         /// <summary>
         ///  订单总金额(所有商品的单价乘以商品价格所得)
         /// </summary>
-        public string PayCount { get; set; }
+        public int PayCount { get; set; }
 
         /// <summary>
         ///  订单状态【0-待付款，1-待发货，3-待收货，2-已完成】
         /// </summary>
         public int OrderStatus { get; set; }
 
+        /// <summary>
+        ///  使用的积分类型【1-余额积分，2-团队积分】
+        /// </summary>
+        public int UsePorintsType { get; set; }
+
+        /// <summary>
+        ///  支付方式【1-微信支付，2-支付宝】
+        /// </summary>
+        public int PayMethod { get; set; }
+        
         /// <summary>
         /// 下单时间
         /// </summary>

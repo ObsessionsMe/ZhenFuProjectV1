@@ -14,6 +14,11 @@ namespace Entity
         public int Id { get; set; }
 
         /// <summary>
+        /// 收货地址Id
+        /// </summary>
+        public string AddressId { get; set; }
+        
+        /// <summary>
         /// 用户Id
         /// </summary>
         public string  UserId { get; set; }
