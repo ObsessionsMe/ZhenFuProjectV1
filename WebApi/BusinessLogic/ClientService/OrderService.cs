@@ -101,7 +101,7 @@ namespace BusinessLogic.ClientService
                 //5:减少对应的商品表库存(支付失败不入库)--暂时放一放
                 //3:购买成功后立即赠送对应的商品积分，添加到用户积分记录表中
                 int ItemPoints = goodsRepository.FindEntity(x => x.GoodsId == order.GoodsId).ItemPoints;
-                int sumItemPoints = ItemPoints * payCount;
+                int sumItemPoints = ItemPoints * order.BuyGoodsNums;
                 var userPorintsRecord = new UserPorintsRecordEntity();
                 userPorintsRecord.UserId = userId;
                 userPorintsRecord.ProductPorints = sumItemPoints;
