@@ -51,32 +51,17 @@
         </router-link>
       </van-row>
 
-      <van-cell title="会员系统" />
+       <van-cell title="会员系统" />
       <van-row class="user-links">
-        <router-link  to="/user/member" >
-          <van-col span="6">
-            <van-icon name="after-sale" />
-            <div>巫山古韵茶1</div>
-          </van-col>
-        </router-link>
-        <router-link  to="/user/member">
-          <van-col span="6">
-            <van-icon name="after-sale" />
-            <div>步步高升普洱2</div>
-          </van-col>
-        </router-link>
-        <router-link  to="/user/member">
-          <van-col span="6">
-            <van-icon name="after-sale" />
-            <div>巫山古韵茶3</div>
-          </van-col>
-        </router-link>
-        <router-link  to="/user/member">
-          <van-col span="6">
-            <van-icon name="after-sale" />
-            <div>步步高升普洱4</div>
-          </van-col>
-        </router-link>
+        <template v-for="item in vipSys">
+          <router-link :key="item.value" :to="{path:'/user/vipSys',query:item}">
+            <van-col span="6">
+              <van-icon name="after-sale" />
+              <div>{{item.name}}</div>
+            </van-col>
+          </router-link>
+        </template>
+
       </van-row>
     </van-cell-group>
 
@@ -96,10 +81,10 @@
       <van-cell title="我的团队" is-link to="/user/myteam"/>
     </van-cell-group>
     <van-cell-group>
-      <van-cell title="产品积分兑现" is-link to="" />
+      <van-cell title="产品积分兑现" is-link :to="{path:'/user/cash',query:{id:1,name:'产品积分兑现'}}" />
     </van-cell-group>
     <van-cell-group>
-      <van-cell title="团队积分兑现" is-link to="" />
+      <van-cell title="团队积分兑现" is-link :to="{path:'/user/cash',query:{id:2,name:'团队积分兑现'}}" />
     </van-cell-group>
     <van-cell-group>
       <van-cell title="收货地址" is-link to="/user/address" />
@@ -120,7 +105,25 @@ export default {
         producePorints:1500000,
         treamPorints:2500000,
         tourismPorints:2500000
-      }
+      },
+        vipSys: [
+          {
+            name: "会员商品1",
+            value: "1"
+          },
+          {
+            name: "会员商品2",
+            value: "2"
+          },
+          {
+            name: "会员商品3",
+            value: "3"
+          },
+          {
+            name: "会员商品4",
+            value: "4"
+          }
+        ]
     }
   },
   created:function(){

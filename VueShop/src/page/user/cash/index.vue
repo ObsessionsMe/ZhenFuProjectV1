@@ -6,7 +6,7 @@
       <van-popup v-model="showPayPicker" position="bottom">
         <van-picker show-toolbar :columns="pays" @confirm="onPayConfirm" @cancel="showPayPicker = false" />
       </van-popup>
-      <template v-show="entity.pay=='银行卡'">
+      <template v-if="entity.pay=='银行卡'">
         <van-field readonly clickable name="picker" v-model="entity.bank" label="所属银行" placeholder="请选择" @click="showBankPicker = true" />
         <van-field label="开户人姓名" placeholder="请输入开户人姓名" v-model="entity.bankUserName" />
         <van-popup v-model="showBankPicker" position="bottom">
@@ -23,11 +23,7 @@
       </van-cell>
     </el-main>
     <el-footer>
-      <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit">
-          提交
-        </van-button>
-      </div>
+         <el-button style="width:100%;" type="success" round>提交</el-button>
     </el-footer>
   </div>
 </template>
