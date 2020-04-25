@@ -127,6 +127,14 @@ const routes = [
   }
   ,
   {
+    path: '/user/cash',
+    component: () => import('../page/user/cash/index'),
+    meta: {
+      title: '兑现系统'
+    }
+  }
+  ,
+  {
     path: '/user/order',
     component: () => import('../page/user/order/list'),
     meta: {
