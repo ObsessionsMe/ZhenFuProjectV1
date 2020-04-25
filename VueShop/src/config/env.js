@@ -6,19 +6,12 @@
  * dataSources：数据源
  */
 
-let baseUrl = ''; 
+let baseUrl = process.env.NODE_ENV === 'production'
+? '/shop.api/'
+: '/shop.api/' 
 let routerMode = 'hash';
 let dataSources='local_dev';//local=读取本地JSON，其他值代表非本地(开发环境请更改此值)
 
-//开发环境
-if (process.env.NODE_ENV == 'development') {
-	baseUrl='https://localhost:44380/';
-	//baseUrl = '';
-
-//生产环境	
-}else if(process.env.NODE_ENV == 'production'){
-	baseUrl = '/';
-}
 
 export {
 	baseUrl,
