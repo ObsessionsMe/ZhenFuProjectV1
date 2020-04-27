@@ -2,18 +2,18 @@
   <div>
     <headerNav :title="name" />
     <el-main>
-      <van-field readonly clickable name="picker" v-model="entity.pay" label="兑现方式" placeholder="请选择" @click="showPayPicker = true" />
+      <van-field readonly clickable name="picker" v-model="entity.payTypeName" label="兑现方式" placeholder="请选择" @click="showPayPicker = true" />
       <van-popup v-model="showPayPicker" position="bottom">
-        <van-picker show-toolbar :columns="pays" @confirm="onPayConfirm" @cancel="showPayPicker = false" />
+        <van-picker value-key="name" show-toolbar :columns="pays" @confirm="onPayConfirm" @cancel="showPayPicker = false" />
       </van-popup>
-      <template v-if="entity.pay=='银行卡'">
-        <van-field readonly clickable name="picker" v-model="entity.bank" label="所属银行" placeholder="请选择" @click="showBankPicker = true" />
+      <template v-if="entity.payTypeName=='银行卡'">
+        <van-field readonly clickable name="picker" v-model="entity.bankTypeName" label="所属银行" placeholder="请选择" @click="showBankPicker = true" />
         <van-field label="开户人姓名" placeholder="请输入开户人姓名" v-model="entity.bankUserName" />
         <van-popup v-model="showBankPicker" position="bottom">
-          <van-picker show-toolbar :columns="banks" @confirm="onBankConfirm" @cancel="showBankPicker = false" />
+          <van-picker value-key="name" show-toolbar :columns="banks" @confirm="onBankConfirm" @cancel="showBankPicker = false" />
         </van-popup>
       </template>
-      <van-field :placeholder="'请输入'+entity.pay+'账号'" v-model="entity.account" label="账号" />
+      <van-field :placeholder="'请输入'+entity.payTypeName+'账号'" v-model="entity.account" label="账号" />
       <van-field label="可用积分" v-model="entity.integral" disabled />
       <van-field label="可兑现比例" class="red" :value="(entity.deductRate*100)+'%'" disabled />
       <van-cell title="兑现积分">
@@ -41,15 +41,20 @@ import {
 
 export default {
   data() {
-    var pays = ["支付宝", "微信", "银行卡"];
+    // var pays = ["支付宝", "微信", "银行卡"];
+    var pays = [
+      { id:10001, name: "支付宝"},
+      { id:10002, name: "微信"},
+      { id:10003, name: "银行卡"},
+      ];
     var banks = [
-      "工商银行",
-      "交通银行卡",
-      "农业银行卡",
-      "建设银行卡",
-      "中国银行卡",
-      "招商银行卡",
-      "邮政储蓄银行卡"
+      { id:10001, name: "工商银行"},
+      { id:10002, name: "交通银行卡"},
+      { id:10003, name: "农业银行卡"},
+      { id:10004, name: "建设银行卡"},
+      { id:10005, name: "中国银行卡"},
+      { id:10006, name: "招商银行卡"},
+      { id:10007, name: "邮政储蓄银行卡"}
     ];
     return {
       id: 0,
@@ -60,8 +65,10 @@ export default {
       banks: banks,
       min: 0,
       entity: {
-        pay: "",
-        bank: "",
+        payType: '',
+        payTypeName:'',
+        bankType: '',
+        bankTypeName:'',
         bankUserName: "",
         account: "",
         integral: 950,
@@ -76,11 +83,13 @@ export default {
   },
   methods: {
     onPayConfirm(data) {
-      this.entity.pay = data;
+      this.entity.payType = data.id;
+      this.entity.payTypeName = data.name;
       this.showPayPicker = false;
     },
     onBankConfirm(data) {
-      this.entity.bank = data;
+      this.entity.bankType = data.id;
+      this.entity.bankTypeName = data.name;
       this.showBankPicker = false;
     },
     onSubmit(values) {
