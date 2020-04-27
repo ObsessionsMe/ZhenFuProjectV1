@@ -116,7 +116,7 @@ namespace BusinessLogic.ClientService
                 //4:赠送完预购积分后，需要再更新到积分汇总表中的预购积分中去
                 userPorintsEntity = new UserPrintsSumEntity();
                 userPorintsEntity = sumRepository.FindEntity(x => x.UserId == userId);
-                userPorintsEntity.ProductPorints = userPorintsEntity.ProductPorints + sumItemPoints;
+                userPorintsEntity.ProductPorints = (userPorintsEntity.ProductPorints) + (sumItemPoints);
                 sumRepository.Update(userPorintsEntity);
                 if (i < 1)
                 {
@@ -128,6 +128,19 @@ namespace BusinessLogic.ClientService
             {
                 throw ex;
             }
+        }
+
+        public AjaxResult PayPorints(int payNum, string userId)
+        {
+            var userPorintsEntity = new UserPrintsSumEntity();
+            userPorintsEntity = sumRepository.FindEntity(x => x.UserId == userId);
+            userPorintsEntity.PorintsSurplus = (userPorintsEntity.PorintsSurplus) + (payNum);
+            int i = sumRepository.Update(userPorintsEntity);
+            if (i < 1)
+            {
+                return null;
+            }
+            return new AjaxResult { state = ResultType.success.ToString(), message = "充值成功！", data = "" };
         }
     }
 }

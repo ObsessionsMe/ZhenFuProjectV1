@@ -1,6 +1,7 @@
 ﻿
 using Entity;
 using Infrastructure;
+using Infrastructure.LogConfig;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -23,21 +24,20 @@ namespace WebUI.App_Start
                 state = "error",
                 message = "Token无效，请重新登录"
             };
-            if (!Request.Headers.Keys.Contains("token"))
+            object token = null;
+            if (Request.Headers.Keys.Contains("Token"))
+            {
+                token = Request.Headers["Token"];
+            }
+            else if (Request.Headers.Keys.Contains("token"))
+            {
+                token = Request.Headers["token"];
+            }
+            if (token == null)
             {
                 await context.HttpContext.Response.WriteAsync("Token无效，请重新登录");
             }
-            var token = Request.Headers["token"];
-            //var user = CacheHelper._cache.Get<UserInfoEntity>(token);
-            var user = new CacheHelper().GetCache<UserInfoEntity>(token);
-            if (user != null)
-            {
-                await next();
-            }
-            else
-            {
-                await context.HttpContext.Response.WriteAsync("Token无效，请重新登录");
-            }
+            await next();
         }
     }
 }

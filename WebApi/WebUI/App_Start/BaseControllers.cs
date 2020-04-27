@@ -16,12 +16,20 @@ namespace WebUI.App_Start
         {
             get
             {
-                if (!Request.Headers.Keys.Contains("token"))
+                object token = null;
+                if (Request.Headers.Keys.Contains("Token"))
+                {
+                    token = Request.Headers["Token"];
+                }
+                else if (Request.Headers.Keys.Contains("token"))
+                {
+                    token = Request.Headers["token"];
+                }
+                if (token == null)
                 {
                     return null;
                 }
-                var token = Request.Headers["token"];
-                return new CacheHelper().GetCache<UserInfoEntity>(token);
+                return new CacheHelper().GetCache<UserInfoEntity>(token.ToString());
             }
         }
     }

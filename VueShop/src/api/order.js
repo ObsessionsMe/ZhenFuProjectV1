@@ -15,3 +15,11 @@ export function SubmitOrder(params) {
     params: {jsonString: JSON.stringify(params)}
   })
 }
+
+export function PayPorints(params) {
+  return request({
+    url: '/api/order/PayPorints',
+    method: 'post',
+    params: { payNum:params}
+  })
+}

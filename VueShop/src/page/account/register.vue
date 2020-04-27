@@ -112,10 +112,10 @@ export default {
       };
       UserRegister(params).then(response => {
         if (response.state == "success") {
-          this.$toast("注册成功,请直接登录");
-          var goLogin = setInterval(() => {
-            this.$router.push({ path: "/login" });
-          }, 1000);
+          this.$toast("注册成功,请直接去登录");
+          //   setInterval(() => {
+          //   this.$router.push({ path: "/login" });
+          // }, 1000);
         } else {
           this.$toast(response.message);
           return;

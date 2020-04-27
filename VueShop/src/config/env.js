@@ -17,7 +17,7 @@ if (process.env.NODE_ENV == 'development') {
 
 //生产环境	
 }else if(process.env.NODE_ENV == 'production'){
-	baseUrl = '/';
+	baseUrl = '/shop.api';
 }
 
 export {

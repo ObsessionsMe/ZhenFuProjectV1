@@ -99,5 +99,25 @@ namespace WebUI.Controllers.Client
             }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
         }
+
+        [Route("PayPorints")]
+        public ActionResult PayPorints(int payNum)
+        {
+            if (userModel == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败，请重新登录", data = "" });
+            }
+            if (payNum <= 0)
+            {
+                return null;
+            }
+            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository);
+            var data = server.PayPorints(payNum, userModel.UserId);
+            if (data == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "下单失败", data = data });
+            }
+            return Json(data);
+        }
     }
 }
