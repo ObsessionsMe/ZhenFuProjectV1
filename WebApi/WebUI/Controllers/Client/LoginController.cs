@@ -24,11 +24,11 @@ namespace WebUI.Controllers.Client
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginManageController : Controller
+    public class LoginController : Controller
     {
         private readonly IUserRepository userRepository;
         private IUserPrintsSumRepository sumRepository;
-        public LoginManageController(IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository)
+        public LoginController(IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository)
         {
             userRepository = _userRepository;
             sumRepository = _sumRepository;
