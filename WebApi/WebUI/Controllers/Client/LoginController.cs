@@ -116,7 +116,7 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = rtnMessage.message, data = "" });
             }
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = userInfo});
+            return Json(rtnMessage);
         }
 
         /// <summary>

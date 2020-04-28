@@ -20,9 +20,11 @@ namespace WebUI.Controllers.Client
     public class GoodsController : BaseControllers
     {
         private readonly IGoodsRepository goodsRepository;
-        public GoodsController(IGoodsRepository _goodsRepository)
+        private readonly IOrderRepository orderRepository;
+        public GoodsController(IGoodsRepository _goodsRepository, IOrderRepository _orderRepository)
         {
             goodsRepository = _goodsRepository;
+            orderRepository = _orderRepository;
         }
         /// <summary>
         ///  获取所有商品列表-首页-轮播图，以及商品列表
@@ -32,7 +34,7 @@ namespace WebUI.Controllers.Client
         public ActionResult GetGoodsList()
         {
             //2获取商品，按照轮播图和商品分为两个集合
-            GoodsService servers = new GoodsService(goodsRepository);
+            GoodsService servers = new GoodsService(goodsRepository, orderRepository);
             var data = servers.FindGoodsList();
             if (data == null)
             {
@@ -71,7 +73,7 @@ namespace WebUI.Controllers.Client
         public ActionResult GetGoodsDetails(string goodsId)
         {
             //2取商品
-            GoodsService servers = new GoodsService(goodsRepository);
+            GoodsService servers = new GoodsService(goodsRepository, orderRepository);
             var data = servers.GetGoodsDetails(goodsId);
             if (data == null)
             {
@@ -80,6 +82,16 @@ namespace WebUI.Controllers.Client
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
         }
 
-
+        [Route("checkGoodLevel")]
+        public ActionResult checkGoodLevel(string goodsId)
+        {
+            if (userModel == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败，请重新登录", data = "" });
+            }
+            GoodsService servers = new GoodsService(goodsRepository, orderRepository);
+            var data = servers.checkGoodLevel(userModel.UserId, goodsId);
+            return Json(data);
+        }
     }
 }

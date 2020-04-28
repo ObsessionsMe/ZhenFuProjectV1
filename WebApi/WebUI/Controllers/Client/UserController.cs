@@ -31,26 +31,6 @@ namespace WebUI.Controllers.Client
             userRepository = _userRepository;
             sumRepository = _sumRepository;
         }
-        /// <summary>
-        /// 获取用户积分(商品积分，团队积分)，进入个人首页时调用该方法
-        /// </summary>
-        /// <param name="telephone"></param>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public ActionResult GetUserPorints(string userTelephone, string referrer, string referrerTelephone)
-        {
-            if (string.IsNullOrEmpty(userTelephone) || string.IsNullOrEmpty(referrer) || string.IsNullOrEmpty(referrerTelephone))
-            {
-                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "用户或推荐人不存在", data = "" });
-            }
-            UserService servers = new UserService(userRepository, sumRepository);
-            UserBaiseModel data = servers.GetUserPorints(userTelephone, referrer, referrerTelephone);
-            if (data == null)
-            {
-                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "用户不存在", data = "" });
-            }
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
-        }
 
         [Route("GetMyTream")]
         public ActionResult GetMyTream()
@@ -59,22 +39,27 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败", data = "" });
             }
-            string userTelephone = "1";
-            string userId = "1";
-            //返回层级结构(包含自己总共三层)
-            if (string.IsNullOrEmpty(userTelephone) || string.IsNullOrEmpty(userId))
-            {
-                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "用户不存在", data = "" });
-            }
+            //返回用户层级结构(包含自己总共三层)
             UserService servers = new UserService(userRepository, sumRepository);
-            var data = servers.GetMyTream(userTelephone, userId);
+            var data = userRepository.FindEntity(x => x.UserId == userModel.UserId && x.UserTelephone == userModel.UserTelephone && x.Enable == "Y");
             if (data == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "用户不存在", data = "" });
             }
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
+            var result = servers.GetMyTream(userModel.UserTelephone);
+            var results = new
+            {
+                parentName = data.Referrer + data.ReferrerTelephone,
+                name = data.Name,
+                treeData = result,
+            };
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = results });
         }
 
+        /// <summary>
+        /// 获取用户积分(商品积分，团队积分)，进入个人首页时调用该方法
+        /// </summary>
+        /// <param name="userId"></param>
         [Route("GetUserPorints")]
         public ActionResult GetUserPorints(string userId)
         {

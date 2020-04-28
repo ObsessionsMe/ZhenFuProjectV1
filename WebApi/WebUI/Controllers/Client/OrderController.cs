@@ -47,7 +47,7 @@ namespace WebUI.Controllers.Client
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败，请重新登录", data = "" });
             }
             //获取商品详细
-            GoodsService servers = new GoodsService(goodsRepository);
+            GoodsService servers = new GoodsService(goodsRepository,orderRepository);
             var goodsData = servers.GetGoodsDetails(goodsId);
             if (goodsData == null)
             {

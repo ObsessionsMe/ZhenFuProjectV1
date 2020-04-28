@@ -69,7 +69,7 @@ namespace BusinessLogic.ClientService
                 userEntity.UserId = Common.CreateNo();
                 userEntity.Name = user.Name;
                 userEntity.UserTelephone = user.UserTelephone;
-                userEntity.Referrer = GetUserNameByPhone(user.ReferrerTelephone).Referrer;
+                userEntity.Referrer = GetUserNameByPhone(user.ReferrerTelephone).Name;
                 userEntity.ReferrerTelephone = user.ReferrerTelephone;
                 userEntity.IsAdmin = "N";
                 userEntity.Password = DESEncrypt.Encrypt(user.Password);
@@ -79,7 +79,7 @@ namespace BusinessLogic.ClientService
                 userEntity.TourismPorints = 5000;
                 userEntity.isHold = "N";
                 userRepository.Insert(userEntity);
-                return new AjaxResult { state = ResultType.success.ToString(), message = "注册成功！", data = "" };
+                return new AjaxResult { state = ResultType.success.ToString(), message = "注册成功！", data = userEntity };
             }
             catch (Exception ex)
             {
@@ -87,14 +87,14 @@ namespace BusinessLogic.ClientService
             }
         }
 
-        public UserInfoEntity CheckLogin(string telephone,string password_r)
+        public UserInfoEntity CheckLogin(string telephone, string password_r)
         {
             return userRepository.FindEntity(x => x.UserTelephone == telephone && x.Enable == "Y" && x.Password == password_r);
         }
 
         public UserInfoEntity EditPassWord(string telephone, string password)
         {
-            UserInfoEntity user = userRepository.FindEntity(x => x.UserTelephone == telephone &&  x.Enable == "Y");
+            UserInfoEntity user = userRepository.FindEntity(x => x.UserTelephone == telephone && x.Enable == "Y");
             if (user != null)
             {
                 user.Password = DESEncrypt.Encrypt(user.Password);
@@ -107,12 +107,6 @@ namespace BusinessLogic.ClientService
         /// 根据用户Id和手机号，获取该用户的积分信息：商品积分
         /// </summary>
         /// <returns></returns>
-        public UserBaiseModel GetUserPorints(string userTelephone, string referrer, string referrerTelephone)
-        {
-            var model = new UserBaiseModel();
-            //统计产品收益积分和团队收益积分
-            return model;
-        }
 
         /// <summary>
         /// 获取我的团队
@@ -120,12 +114,43 @@ namespace BusinessLogic.ClientService
         /// <param name="userTelephone"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public object GetMyTream(string userTelephone, string userId)
+        public object GetMyTream(string userTelephone)
         {
-            //通过递归实现树形数据，找出推荐人为我的直属下级和间接下级用户
-            var model = new UserBaiseModel();
-
-            return model;
+            try
+            {
+                //通过递归实现树形数据，找出推荐人为我的直属下级和间接下级用户
+                List<UserTreeData> results = new List<UserTreeData>();
+                //2获取当前用户下的所有分支用户
+                List<UserInfoEntity> firstUsers = userRepository.FindList(x => userTelephone == x.ReferrerTelephone && x.Enable == "Y");
+                List<UserInfoEntity> allUsers = userRepository.FindList(x => x.Enable == "Y");
+                foreach (var firstItem in firstUsers)
+                {
+                    //一级用户
+                    var treeData = new UserTreeData();
+                    treeData.id = firstItem.UserId;
+                    treeData.label = firstItem.Name + "(" + firstItem.UserTelephone + ")";
+                    foreach (var item in allUsers)
+                    {
+                        if (firstItem.UserTelephone == item.ReferrerTelephone)
+                        {
+                            //二级用户
+                            var chirds = new List<UserTreeData>();
+                            chirds.Add(new UserTreeData { id = item.UserId, label = item.Name + "(" + item.UserTelephone + ")" });
+                            treeData.children = chirds;
+                            results.Add(treeData);
+                        }
+                    }
+                    if (!results.Contains(treeData))
+                    {
+                        results.Add(treeData);
+                    }
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public UserPrintsSumEntity GetUserPorints(string userId)

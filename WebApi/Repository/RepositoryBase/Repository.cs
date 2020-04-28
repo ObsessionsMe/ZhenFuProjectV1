@@ -124,6 +124,7 @@ namespace RepositoryFactory.RepositorysBase
                 throw ex;
             }
         }
+    
         public List<TEntity> FindList(Expression<Func<TEntity, bool>> predicate, Pagination pagination)
         {
             try
@@ -163,7 +164,24 @@ namespace RepositoryFactory.RepositorysBase
                    throw ex;
             }
         }
-       
+
+        public List<TEntity> FindList(Expression<Func<TEntity, bool>> predicate)
+        {
+            try
+            {
+                var tempData = dbcontext.Set<TEntity>().Where(predicate);
+                if (tempData != null)
+                {
+                    return tempData.ToList();
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         /// <summary>
         /// 执行存储过程/sql返回受影响函数
         /// </summary>

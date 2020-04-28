@@ -21,6 +21,7 @@ namespace RepositoryFactory.RepositorysBase
         IQueryable<TEntity> IQueryable(Expression<Func<TEntity, bool>> predicate);
         List<TEntity> FindList(Pagination pagination);
         List<TEntity> FindList(Expression<Func<TEntity, bool>> predicate, Pagination pagination);
-        int ExecuteProc(string strSql, object[] dbParameter);
+        List<TEntity> FindList(Expression<Func<TEntity, bool>> predicate);
+       int ExecuteProc(string strSql, object[] dbParameter);
     }
 }

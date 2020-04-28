@@ -72,6 +72,11 @@ namespace Entity
         public int StockCount { get; set; }
 
         /// <summary>
+        /// 商品级别
+        /// </summary>
+        public int GoodsLevel { get; set; }
+
+        /// <summary>
         ///  Enable(N-无效，Y-有效)
         /// </summary>
         public string Enable { get; set; }

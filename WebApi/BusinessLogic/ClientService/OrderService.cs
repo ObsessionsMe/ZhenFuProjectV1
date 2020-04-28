@@ -1,6 +1,7 @@
 ﻿using Entity;
 using Infrastructure;
 using Repository.RepositoryService;
+using RepositoryFactory.RepositoryBase;
 using RepositoryFactory.ServiceInterface;
 using System;
 using System.Collections.Generic;
