@@ -17,5 +17,7 @@ namespace Infrastructure.DBContext
         public DbSet<ReceiveAddressEntity> ReceiveAddressEntity { get; set; }
         public DbSet<UserPorintsRecordEntity> UserPorintsRecordEntity { get; set; }
         public DbSet<UserPrintsSumEntity> UserPrintsSumEntity { get; set; }
+
+        public DbSet<CashInfoEntity> CashInfoEntity { get; set; }
     }
  }

@@ -55,14 +55,18 @@ namespace WebUI
             services.AddTransient<IReceiveAddressRepository, ReceiveAddressRepository>();
             services.AddTransient<IUserPorintsRecordRepository, UserPorintsRecordRepository>();
             services.AddTransient<IUserPrintsSumRepository, UserPrintsSumRepository>();
+            services.AddTransient<ICashRepository, CashRepository>();
+
             //注册文件访问权限
             services.AddDirectoryBrowser();
 
             //注册全局日志
-            services.AddLogging(logConfig => {
+            services.AddLogging(logConfig =>
+            {
                 LogHelper.LoadLogger();
             });
-            services.AddMvc(option => {
+            services.AddMvc(option =>
+            {
                 option.Filters.Add<GlobleExceptionAttribute>();
             });
         }
