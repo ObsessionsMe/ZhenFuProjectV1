@@ -48,7 +48,7 @@ namespace Entity
         public string Password { get; set; }
 
         /// <summary>
-        ///  用户类别（0:总部,1-经销商(默认),2-代理商,3-市级代理,4-省级代理,5-分公司,6-合伙人）
+        ///  用户类别（-1管理员,0:总部,1-经销商(默认),2-代理商,3-市级代理,4-省级代理,5-分公司,6-合伙人）
         /// </summary>
         public int UserType { get; set; }
 

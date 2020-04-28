@@ -25,6 +25,7 @@ namespace WebUI.App_Start
             if (context.Request.Headers.ContainsKey("Referer"))
             {
                 string Url = context.Request.Headers["Referer"];
+                string[] arr = Url.Split('/');
                 if (Url.Substring(Url.Length - 1, 1) == "/")
                 {
                     Url = Url.Substring(0, Url.Length - 1);//如果最后一个字符为/,就移除掉
