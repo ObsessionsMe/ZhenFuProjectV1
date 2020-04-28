@@ -29,6 +29,7 @@
       <van-cell title="运费" value="+ 0.00" />
       <!-- <van-cell title="折扣" value="- 5.00" /> -->
       <van-cell title="实付金额" :value="goodsTotal" style="font-weight: 700;" />
+      <van-cell title="实付金额" :value="goodsTotal" style="font-weight: 700;" />
     </van-cell-group>
     <div style="height:15px;"></div>
     <van-radio-group v-model="payMethod">
@@ -43,6 +44,14 @@
             <van-radio name="2" />
           </template>
         </van-cell>
+        <van-cell>
+         <van-checkbox
+          v-model="isSure"
+          checked-color="#07c160"
+          style="height:30px;margin-left:5px;margin-top:5px"
+          ><span style="font-size:12px">我同意<span style="color:#38f;margin-left:0.5em" @click="isShowRule()">珍福商城购买协议</span></span>
+        </van-checkbox>
+        </van-cell>
       </van-cell-group>
     </van-radio-group>
 
@@ -53,9 +62,40 @@
       @submit="onSubmit"
       :disabled="isCanPay"
     />
+    <!-- <van-dialog v-model="isRule" title="关于珍福商城购买须知" show-cancel-button>
+      <van-cell-group>
+        <van-cell style="color:red" value="产品购买须知" />
+        <van-cell value="1.	本产品由湖北真福医药有限公司提供，所售商品均为品牌正品，假一赔十" />
+        <van-cell value="2.	本产品为预售品，预售期为90个自然日，由购买当日起计算。" />
+        <van-cell value="3.	客服在线时间为：工作日8：30—12：00，13：30—18：00。" />
+        <van-cell value="4.	本产品自动确认收货时间为7个自然日（以快递官网签收时间为准），如过时未收到产品请及时与客服联系。" />
+        <van-cell
+          value="5.	每笔订单完成后的5个工作日（含5个工作日）未发起下一笔订单的用户，视为无效户，其账户积分将做清零处理，且所建立的团队架构将直接对接此无效户的推荐人。"
+        />
+        <van-cell value="6.	产品发货后一般三天左右到达，西藏、青海、甘肃、内蒙、新疆等偏远地区7天左右到达，具体视情况而定，不同快递速度稍有区别。" />
+        <van-cell
+          value="7.	签收时需本人签收或者委托第三方签收，签收时请查看产品外包装是否完整，检查所购买商品数量和外观问题，如破损、明显挤压变形等问题请及时联系客服或者拒绝签收，一旦签收变为默认收到的东西是完整无缺的，如有损失自行承担。"
+        />
+
+        <van-cell style="color:red" value="退货须知" />
+        <van-cell
+          value="1.由于运输过程造成产品的破损，须及时拍照与客服联系；如有退货需求，在预售期第90个自然日在公众号内发出退货申请，并在7个自然日内填写退货物流信息；"
+        />
+        <van-cell value="2.退货产品必须保持包装完整，勿直接在产品原厂外盒粘贴或书写；" />
+        <van-cell value="3.对于产品原厂外盒有损坏的退货产品，退款金额只为产品最终购买价格的40%；退货产品内部商品及包装、资料缺失损坏的，将不予以退货；" />
+        <van-cell value="4.由于产品的质量问题或生产商失误造成的退换货，本公司将承担来回运费，由于买家自己的问题导致退换货，将自行承担全部运费；" />
+        <van-cell
+          value="5.退换货产品，须以书面形式清晰地写明本人账户名称、联系方式、订单编号以及退换货原因，由于买家退换货时无任何书面信息或字迹模糊无法识别，导致客服无法及时查询到买家交易信息，而造成的换货退款延误，本公司不承担责任。"
+        />
+
+        <van-cell style="color:red" value="商城须知" />
+        <van-cell value="1.由于产品的质量问题或生产商失误造成的退换货，本公司将承担来回运费，由于买家自己的问题导致退换货，将自行承担全部运费；" />
+        <van-cell value="2.商城积分兑换的产品将不予以开取发票（特殊产品除外）。" />
+        <van-cell style="color:red" value="敬请顾客朋友在购买之前仔细阅读以上条款，一旦购买本公司产品即视为接受并履行以上条款。最终解释权归本公司所有。" />
+      </van-cell-group>
+    </van-dialog> -->
     <van-actionsheet v-model="isRule" title="关于珍福商城购买须知">
       <div class="content">
-          <van-checkbox v-model="isSure" checked-color="#07c160" style="height:30px;margin-left:5px;margin-top:5px">我同意以下说明</van-checkbox>
           <van-cell-group>
               <van-cell style="color:red" value="产品购买须知" />
               <van-cell value="1.	本产品由湖北真福医药有限公司提供，所售商品均为品牌正品，假一赔十" />
@@ -88,8 +128,8 @@ import { ReadyPlaceOrder, SubmitOrder } from "../../api/order.js";
 export default {
   data() {
     return {
-      isRule:false,
-      isSure:false,
+      isRule: false,
+      isSure: false,
       type: "add1",
       isCanPay: false,
       payMethod: "1",
@@ -112,6 +152,9 @@ export default {
     };
   },
   methods: {
+    isShowRule(){
+      this.isRule = true;
+    },
     onSubmit() {
       var params = {
         GoodsId: this.goodsId,
@@ -121,8 +164,8 @@ export default {
         UsePorintsType: parseInt(this.payMethod),
         GoodsUnitPrice: this.GoodsUnitPrice
       };
-      if(!this.isSure){
-        this.isRule = true;
+      if (!this.isSure) {
+        this.$toast("前先勾选同意珍福商城购买协议");
         return;
       }
       this.$toast("正在点击提交订单...");

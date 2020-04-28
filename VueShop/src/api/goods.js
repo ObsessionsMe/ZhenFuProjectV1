@@ -14,3 +14,12 @@ export function GetGoodsDetails(params) {
     params: { goodsId:params }
   })
 }
+
+export function checkGoodLevel(params) {
+  return request({
+    url: '/api/goods/checkGoodLevel',
+    method: 'get',
+    params: { goodsId:params }
+  })
+}
+

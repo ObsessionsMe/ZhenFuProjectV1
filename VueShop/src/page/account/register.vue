@@ -1,13 +1,11 @@
 <template>
   <div>
     <headerNav title="注册" />
-    <div
-      style="background:url(https://haitao.nos.netease.com/f866dd18-12f0-4bb2-be6d-5cac85cf2627.png) center 18px no-repeat;background-size:161px;"
-    >
+    <div style="background:url() center 18px no-repeat;background-size:161px;">
       <div style="background:url() center 18px no-repeat;background-size:161px;">
         <div style="padding-top: 70px;">
           <van-cell-group>
-            <van-field placeholder="请输入手机号" v-model="userTelephone" />
+            <van-field placeholder="请输入手机号" v-model="userTelephone" label="中国 +86" />
             <!-- <van-field center clearable placeholder="短信验证码" v-model="phoneCode">
               <van-button
                 slot="button"
@@ -44,6 +42,8 @@
 
 <script>
 import { UserRegister, GetPhoneCode } from "../../api/user.js";
+// import { Toast } from "vant";
+
 import {
   isNullOrEmpty,
   checkTelephone,
@@ -111,8 +111,14 @@ export default {
         Password: this.password
       };
       UserRegister(params).then(response => {
-        if (response.state == "success") {
-          this.$toast("注册成功,请直接去登录");
+        console.log("response",response);
+        if (response.state == "success") {       
+          this.$notify({
+            title: "成功",
+            message: "注册成功！你的推荐人是:"+ response.data.referrer,
+            type: "success",
+            duration: "5000"
+          });
           //   setInterval(() => {
           //   this.$router.push({ path: "/login" });
           // }, 1000);

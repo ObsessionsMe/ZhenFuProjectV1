@@ -70,12 +70,13 @@
 
 <script>
 import skuData from "../../data/sku";
-import { GetGoodsDetails } from "../../api/goods.js";
+import { GetGoodsDetails, checkGoodLevel } from "../../api/goods.js";
 export default {
   components: {},
   data() {
     this.skuData = skuData;
     return {
+      goodsId: "",
       show: false,
       showTag: false,
       goodsImg: [
@@ -87,15 +88,15 @@ export default {
       goods_sku: {
         list: [
           {
-            price: 0,//商品价格
-            stock_num: 0,//库存数量
+            price: 0, //商品价格
+            stock_num: 0 //库存数量
           }
         ],
         tree: [],
         goods_id: "",
         goods_info: {
-          title: "",//商品名称
-          picture:"http://47.115.57.178/resource/images/shopone1.png",//商品图片(单张)
+          title: "", //商品名称
+          picture: "http://47.115.57.178/resource/images/shopone1.png" //商品图片(单张)
         }
       },
       showBase: false,
@@ -133,7 +134,7 @@ export default {
   },
   methods: {
     formatPrice(data) {
-      return '¥' + (data / 100).toFixed(2);
+      return "¥" + (data / 100).toFixed(2);
     },
     // onClickCart() {
     //   this.$router.push('/cart');
@@ -142,28 +143,31 @@ export default {
       this.show = true;
     },
     showSku() {
-      this.showBase = true;
+      checkGoodLevel(this.goodsId).then(response => {
+        console.log(response);
+        if (response.state == "success") {
+          this.showBase = true;
+        } else {
+          this.$toast(response.message);
+        }
+      });
     },
-    onClickShowTag() {
-      this.showTag = true;
-      //详情-点击立即购买
-
-    },
+    // onClickShowTag() {
+    //   this.showTag = true;
+    //   //详情-点击立即购买,检验前面几件产品是否买过
+    // },
     onBuyClicked(data) {
       //var goodsNum = data.selectedNum;
       //提交购买,进入到下订单页面
-      // GetGoodsDetails(goodsId).then(response => {
-        
-      // });
       console.log(JSON.stringify(data));
-      //提交购买     
-     //this.goods_sku.goods_info
+      //提交购买
+      //this.goods_sku.goods_info
       var orderInfo = {
-        goodsNum:data.selectedNum,
-        goodsId:data.goodsId
-      }
-      this.$store.commit("saveOrderInfo",orderInfo);
-      this.$router.push({ path: this.redirect || "/order"}); //进入订单页面
+        goodsNum: data.selectedNum,
+        goodsId: data.goodsId
+      };
+      this.$store.commit("saveOrderInfo", orderInfo);
+      this.$router.push({ path: this.redirect || "/order" }); //进入订单页面
     },
     onAddCartClicked(data) {
       console.log(JSON.stringify(data));
@@ -177,17 +181,20 @@ export default {
     var href = window.location.href;
     var goodsId = href.split("/");
     goodsId = goodsId[goodsId.length - 1];
-    if(goodsId==null){
+    if (goodsId == null) {
       return;
     }
     GetGoodsDetails(goodsId).then(response => {
-      var goodsData = response.data;
-      this.goods = goodsData;
-      this.goods.unitPrice = parseInt(goodsData.unitPrice)*100;
-      this.goods_sku.list[0].stock_num = goodsData.stockCount;
-      this.goods_sku.list[0].price = goodsData.unitPrice;
-      this.goods_sku.goods_id = goodsData.goodsId;
-      this.goods_sku.goods_info.title = goodsData.goodsName;
+      if (response.state == "success") {
+        var goodsData = response.data;
+        this.goods = goodsData;
+        this.goods.unitPrice = parseInt(goodsData.unitPrice) * 100;
+        this.goods_sku.list[0].stock_num = goodsData.stockCount;
+        this.goods_sku.list[0].price = goodsData.unitPrice;
+        this.goods_sku.goods_id = goodsData.goodsId;
+        this.goods_sku.goods_info.title = goodsData.goodsName;
+        this.goodsId = goodsData.goodsId;
+      }
     });
   }
 };

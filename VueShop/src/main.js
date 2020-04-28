@@ -8,13 +8,12 @@ import VueLazyload from 'vue-lazyload'
 import components from './config/components.js';
 import ElementUI from "element-ui"
 import "element-ui/lib/theme-chalk/index.css"
+
 Vue.use(components);
 
 Vue.use(ElementUI);
 
 Vue.use(VueLazyload);
-
-//Vue.headers.headers['token'] = "123";
 
 new Vue({
   router,

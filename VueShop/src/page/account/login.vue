@@ -4,7 +4,7 @@
     <div style="background:url('') center 18px no-repeat;background-size:161px;">   
         <div style="padding-top: 70px;">
           <van-cell-group>
-            <van-field placeholder="请输入手机号" type="number" v-model="telephone" />
+            <van-field placeholder="请输入手机号" type="number" v-model="telephone" label="中国 +86"/>
             <van-field type="password" placeholder="请输入密码" v-model="password" />
           </van-cell-group>
           <van-col span="8" style="height:30px;line-height:30px;margin-left:4%">
@@ -36,8 +36,8 @@ export default {
   name: "Login",
     data() {
     return {
-      telephone:"",
-      password:""
+      telephone:"15914071422",
+      password:"xiapeng-2020"
     }
   },
    methods: {
