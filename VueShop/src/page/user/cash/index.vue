@@ -23,11 +23,13 @@
       </van-cell>
     </el-main>
     <el-footer>
-         <el-button style="width:100%;" type="success" round>提交</el-button>
+      <el-button style="width:100%;" type="success" @click="onSubmit" round>提交</el-button>
     </el-footer>
   </div>
 </template>
 <script>
+import { submitCash } from "@/api/cash.js";
+
 import {
   Form,
   Field,
@@ -36,28 +38,30 @@ import {
   Button,
   Slider,
   CellGroup,
-  Cell
+  Cell,
+  Toast
 } from "vant";
 
 export default {
   data() {
     // var pays = ["支付宝", "微信", "银行卡"];
     var pays = [
-      { id:10001, name: "支付宝"},
-      { id:10002, name: "微信"},
-      { id:10003, name: "银行卡"},
-      ];
+      { id: 10001, name: "支付宝" },
+      { id: 10002, name: "微信" },
+      { id: 10003, name: "银行卡" }
+    ];
     var banks = [
-      { id:10001, name: "工商银行"},
-      { id:10002, name: "交通银行卡"},
-      { id:10003, name: "农业银行卡"},
-      { id:10004, name: "建设银行卡"},
-      { id:10005, name: "中国银行卡"},
-      { id:10006, name: "招商银行卡"},
-      { id:10007, name: "邮政储蓄银行卡"}
+      { id: 10001, name: "工商银行" },
+      { id: 10002, name: "交通银行卡" },
+      { id: 10003, name: "农业银行卡" },
+      { id: 10004, name: "建设银行卡" },
+      { id: 10005, name: "中国银行卡" },
+      { id: 10006, name: "招商银行卡" },
+      { id: 10007, name: "邮政储蓄银行卡" }
     ];
     return {
       id: 0,
+
       name: "",
       showPayPicker: false,
       showBankPicker: false,
@@ -65,10 +69,11 @@ export default {
       banks: banks,
       min: 0,
       entity: {
-        payType: '',
-        payTypeName:'',
-        bankType: '',
-        bankTypeName:'',
+        Type: 0,
+        payType: 0,
+        payTypeName: "",
+        bankType:0,
+        bankTypeName: "",
         bankUserName: "",
         account: "",
         integral: 950,
@@ -78,7 +83,7 @@ export default {
     };
   },
   created() {
-    this.id = this.$route.query.id;
+    this.entity.Type=parseInt(this.$route.query.type);
     this.name = this.$route.query.name;
   },
   methods: {
@@ -92,8 +97,15 @@ export default {
       this.entity.bankTypeName = data.name;
       this.showBankPicker = false;
     },
-    onSubmit(values) {
-      console.log("submit", values);
+    onSubmit() {
+      console.log("submit", this.entity);
+      submitCash(this.entity).then(res => {
+        console.log(res)
+        if(res.state=="success"){
+          Toast.success(res.message);
+           this.$router.push({path:'/user/index'})
+        }
+      });
     }
   }
 };

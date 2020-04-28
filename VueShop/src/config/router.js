@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from '@/config/store.js'
 
 Vue.use(Router);
 
@@ -16,35 +17,35 @@ const routes = [
     }
   },
   {
-		path: '/login',
+    path: '/login',
     component: () => import('../page/account/login'),
     meta: {
       title: '登录'
     }
   },
   {
-		path: '/login/password',
+    path: '/login/password',
     component: () => import('../page/account/password'),
     meta: {
       title: '登录'
     }
   },
   {
-		path: '/login/phone',
+    path: '/login/phone',
     component: () => import('../page/account/phonelogin'),
     meta: {
       title: '手机号登录'
     }
   },
   {
-		path: '/login/register',
+    path: '/login/register',
     component: () => import('../page/account/register'),
     meta: {
       title: '注册'
     }
   },
   {
-		path: '/user/index',
+    path: '/user/index',
     component: () => import('../page/user/index'),
     name: 'user',
     meta: {
@@ -52,7 +53,7 @@ const routes = [
     }
   },
   {
-		path: '/user/info',
+    path: '/user/info',
     component: () => import('../page/user/info/detail'),
     name: 'user',
     meta: {
@@ -235,7 +236,18 @@ routes.forEach(route => {
 const router = new Router({ routes });
 
 router.beforeEach((to, from, next) => {
+
   const title = to.meta && to.meta.title;
+
+
+  if (to.path == '/login') { //如果是登录页面路径，就直接next()
+    next();
+  } else 
+  { //不然就跳转到登录；
+    if (!router.app.$store.state.Token) {
+      next('/login')
+    }
+  }
   if (title) {
     document.title = title;
   }

@@ -19,12 +19,30 @@ namespace WebUI.Controllers.Client
     [ApiController]
     public class CashController : BaseControllers
     {
-        public CashService cashService; 
+        public CashService cashService;
 
         public CashController(ICashRepository _CashRepository)
         {
             cashService = new CashService(_CashRepository);
         }
+
+        [Route("getCashDetail")]
+        public ActionResult GetCashDetail(int type)
+        {
+            var result = new AjaxResult();
+            try
+            {
+                //获取
+            }
+            catch (Exception ex)
+            {
+                result.message = "提交失败!";
+                result.state = ResultType.success.ToString();
+                LogHelper.Log.Error(ex);
+            }
+            return Json(result);
+        }
+
 
         /// <summary>
         ///  提交兑现
@@ -36,7 +54,9 @@ namespace WebUI.Controllers.Client
             var result = new AjaxResult();
             try
             {
-                result=cashService.InsertCashInfo(entity);
+                //entity.UserId = userModel.UserId;
+                entity.Date = DateTime.Now;
+                result = cashService.InsertCashInfo(entity);
             }
             catch (Exception ex)
             {

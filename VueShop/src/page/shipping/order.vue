@@ -176,9 +176,10 @@ export default {
         if (response.state == "success") {
           this.$toast("恭喜你,提交订单成功..");
           console.log("response", response);
-          // setInterval(() => {
-          //   this.$router.push({ path: this.redirect || "/user/index" });
-          // }, 2000);
+          var Interval=setInterval(() => {
+            clearInterval(Interval)
+            this.$router.push({ path: "/home" });
+          }, 2000);
           this.isCanPay = false;
         } else {
           this.$toast(response.message);

@@ -83,10 +83,10 @@
       <van-cell title="我的团队" is-link to="/user/myteam"/>
     </van-cell-group>
     <van-cell-group>
-      <van-cell title="产品积分兑现" is-link :to="{path:'/user/cash',query:{id:1,name:'产品积分兑现'}}" />
+      <van-cell title="产品积分兑现" is-link :to="{path:'/user/cash',query:{type:1,name:'产品积分兑现'}}" />
     </van-cell-group>
     <van-cell-group>
-      <van-cell title="团队积分兑现" is-link :to="{path:'/user/cash',query:{id:2,name:'团队积分兑现'}}" />
+      <van-cell title="团队积分兑现" is-link :to="{path:'/user/cash',query:{type:2,name:'团队积分兑现'}}" />
     </van-cell-group>
     <van-cell-group>
       <van-cell title="收货地址" is-link to="/user/address" />

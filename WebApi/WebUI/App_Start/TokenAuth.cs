@@ -32,10 +32,15 @@ namespace WebUI.App_Start
             else if (Request.Headers.Keys.Contains("token"))
             {
                 token = Request.Headers["token"];
+                if (token == null || new CacheHelper().GetCache<UserInfoEntity>(token.ToString()) == null)
+                {
+                    token = null;
+                }
             }
             if (token == null)
             {
-                await context.HttpContext.Response.WriteAsync("Token无效，请重新登录");
+                await context.HttpContext.Response.WriteAsync(new AjaxResult { state = ResultType.error.ToString(), message = "Token无效，请重新登录", data = "" }.ToJson());
+                return;
             }
             await next();
         }

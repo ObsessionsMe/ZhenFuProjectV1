@@ -26,7 +26,7 @@ namespace Entity
         /// <summary>
         /// 兑现提交时间
         /// </summary>
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
 
         
         /// <summary>
@@ -37,7 +37,7 @@ namespace Entity
         /// <summary>
         /// 支付方式名称
         /// </summary>
-        public string PayName { get; set; }
+        public string PayTypeName { get; set; }
 
         /// <summary>
         /// 银行卡类型
@@ -87,6 +87,6 @@ namespace Entity
         /// <summary>
         /// 操作时间
         /// </summary>
-        public DateTime OperatorDate { get; set; }
+        public DateTime? OperatorDate { get; set; }
     }
 }
