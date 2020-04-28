@@ -5,7 +5,9 @@ console.log("process.env.NODE_ENV ",process.env.NODE_ENV);
 //设置请求路径
 let url = {
     host:"files/",
-    //login: "api/Login/CheckLogin",
+    login: "api/UserManage/LoginOn",
+    GetUserList: "api/UserManage/GetUserList",
+    GetGoodsList: "api/GoodsManage/GetGoodsList",  
     //logout: "api/Login/OutLogin",
     //getGridJson: "api/User/GetGridJson",
     //getPersonalFileList:"/File/GetFileList",    

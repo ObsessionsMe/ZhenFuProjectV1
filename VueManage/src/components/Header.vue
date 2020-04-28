@@ -1,17 +1,8 @@
 <template>
   <div class="container">
     <div class="title">
-      <h1>云文档管理系统</h1>
-    </div>
-    <div class="search-wrapper">
-      <el-input placeholder="搜索当前目录下的文件" v-model="input1"></el-input>
-      <div class="search-button-wrapper">
-        <div class="search-all" @click="onSearch">全文搜索</div>
-        <div class="search-line"></div>
-        <div class="search-button" @click="searchInput">
-          <i class="el-icon-search"></i>
-        </div>
-      </div>
+      <!-- <h1>云文档管理系统</h1> -->
+      <h1>珍福商城后台管理系统</h1>
     </div>
     <div class="menu">
       <el-dropdown @command="handleCommand">
@@ -21,8 +12,6 @@
           <i class="el-icon-arrow-down"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <!-- <el-dropdown-item command="systemSetting" v-if="isAdmin">系统设置</el-dropdown-item> -->
-          <hr />
           <el-dropdown-item @click.native="outLogin()">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

@@ -11,7 +11,7 @@
         <Main />
       </el-main>
       <el-footer height="40px">
-        <p>Copyright © 2020 EdenSoft All Rights Reserved</p>
+        <p>Copyright © 2020 hubeizhenfu All Rights Reserved</p>
       </el-footer>
     </el-container>
   </el-container>
@@ -21,8 +21,6 @@
 import Aside from "../components/Aside";
 import Header from "../components/Header";
 import Main from "../components/Main";
-//import {http, url} from "../lib"
-
 export default {
   name: "Container",
   data() {
@@ -31,13 +29,6 @@ export default {
       }
     },
   components: { Aside, Header, Main }
-  // mounted() {
-  //   http.get(url.getUserInfo, {keyValue: 2}).then((res) => {
-  //     console.log(res)
-  //     this.$store.commit("saveUserInfo", res.data.data)
-  //     console.log("UserInfo",this.$store.state.userInfo)
-  //   })
-  // },
 };
 </script>
 

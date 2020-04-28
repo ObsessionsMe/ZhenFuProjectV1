@@ -4,7 +4,11 @@ import Dashboard from "../pages/DashboardPage"
 import Login from "../pages/LoginPage"
 import Home from "../pages/HomePage"
 import Page404 from "../pages/404Page"
-import Recycle from "../pages/RecyclePage"
+
+import cashApply from "../pages/CashApply"
+import member from "../pages/MemberList"
+import goods from "../pages/GoodsList"
+
 import VueCookies from 'vue-cookies'
 Vue.use(VueCookies)
 Vue.use(Router)
@@ -30,8 +34,14 @@ const router = new Router({
                 path: "home",
                 component: Home,
             },{
-                path: "recycle",
-                component: Recycle,
+                path: "cashApply",
+                component: cashApply,
+            },{
+                path: "goods",
+                component: goods,
+            },{
+                path: "member",
+                component: member,
             }]
         },
         {
@@ -40,14 +50,14 @@ const router = new Router({
         },
     ],
 })
-// router.beforeEach((to,from,next)=>{
-//     let isLogin = VueCookies.get('userLogin');
-//     if(to.path!='/login' && isLogin == null){
-//         next('/login');
-//     }
-//     else
-//     {
-//         next();
-//     }
-// })
+router.beforeEach((to,from,next)=>{
+    let isLogin = VueCookies.get('userLogin');
+    if(to.path!='/login' && isLogin == null){
+        next('/login');
+    }
+    else
+    {
+        next();
+    }
+})
 export default router

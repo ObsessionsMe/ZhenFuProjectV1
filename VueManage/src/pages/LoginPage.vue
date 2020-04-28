@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-header height="60px">
-            <h1>文档管理系统</h1>
+            <h1>珍福商城后台管理系统</h1>
         </el-header>
         <el-main>
             <el-form ref="loginForm" class="login-form" autocomplete="on" :model="loginForm"  label-position="left">
@@ -34,9 +34,6 @@
                             prefix-icon="el-icon-lock"
                     />       
                 </el-form-item>
-                <el-form-item style="height:10px;">
-                 <el-checkbox v-model="isRemberPassword" style="color:white;top:-1em">记住密码</el-checkbox>
-                </el-form-item>
                 <el-button :loading="loading" type="primary"
                            style="width:100%;margin-bottom:30px;"
                            @click="handleLogin()">
@@ -45,13 +42,13 @@
             </el-form>
         </el-main>
         <el-footer height="40px">
-            <p>Copyright © 2020 Edensoft All Rights Reserved</p>
+            <p>Copyright © 2020 hubeizhenfu All Rights Reserved</p>
         </el-footer>
     </el-container>
 </template>
 
 <script>
-  //import {http,url} from "../lib"
+  import {http,url} from "../lib"
   export default {
     name: "Login",
     data() {
@@ -60,13 +57,11 @@
           username: "",
           password: ""
         },
-        passwordType: "password",
         capsTooltip: false,
         loading: false,
         showDialog: false,
         redirect: undefined,
-        otherQuery: {},
-        isRemberPassword:false
+        otherQuery: {}
       }
     },
     mounted(){
@@ -80,34 +75,31 @@
           if (!valid) {
             return false;
           }
-          // let data = {
-          //   username: this.loginForm.username,
-          //   password: this.loginForm.password,
-          //   isRember: this.loginForm.isRemberPassword,
-          //   isAD: false
-          // }
-          this.$router.push({path: this.redirect || "/dashboard"})
-          // http.get(url.login,data).then((res) => {
-          //     console.log(res);
-          //     if(res.data.state==1){
-          //       console.log("loginData",res.data.data);
-          //       this.$cookies.set('userLogin',"1","0")  
-          //       //this.otherQuery = res.data.data;
-          //       //存储用户基础信息
-          //       this.$store.commit("saveUserInfo",res.data.data);
-          //       this.$router.push({path: this.redirect || "/dashboard"})
-          //     }
-          //     else {
-          //       //保证只提醒一次
-          //       if(document.getElementsByClassName('el-message').length > 0){
-          //         return;
-          //       }
-          //       this.$message({
-          //         message: res.data.message,
-          //         type: 'error'
-          //     });
-          //   }
-          // })
+          let data = {
+            userId: this.loginForm.username,
+            password: this.loginForm.password,
+          }
+          //this.$router.push({path: this.redirect || "/dashboard"})
+          http.get(url.login,data).then((res) => {
+              console.log(res);
+              if(res.data.state=="success"){
+                console.log("loginData",res.data);
+                this.$cookies.set('userLogin',"1","0")  
+                //存储用户基础信息
+                this.$store.commit("saveUserInfo",res.data.data);
+                this.$router.push({path: this.redirect || "/dashboard"})
+              }
+              else {
+                //保证只提醒一次错误
+                if(document.getElementsByClassName('el-message').length > 0){
+                  return;
+                }
+                this.$message({
+                  message: res.data.message,
+                  type: 'error'
+              });
+            }
+          })
         });
       },
       keyDown(e){

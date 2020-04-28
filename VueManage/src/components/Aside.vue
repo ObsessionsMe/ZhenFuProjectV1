@@ -1,9 +1,12 @@
 <template>
     <div class="container">
         <div class="logo">
-            <img src="../assets/logo.png" alt="">
+            <!-- <img src="../assets/zhenfu.png" alt=""> -->
         </div>
         <el-button class="back-button" @click="backHome">返回首页</el-button>
+        <!-- <div class="back-button" @click="backHome"  style="background:#3273B;height:50px; line-height:50px">
+             返回首页
+        </div> -->
         <SideMenu/>
     </div>
 </template>

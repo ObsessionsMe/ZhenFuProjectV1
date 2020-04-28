@@ -1,17 +1,7 @@
 <template>
   <div class="container">
     <ul class="module-container" id="container">
-      <li
-        v-for="(item ,index) in moduleArray"
-        :key="index.toString()"
-        @click="goToModule(item.route)"
-      >
-        <div :data-route="index.route">
-          <div class="module-button">
-            <img :src="require('../assets/' + item.icon+'.png')" width="100px" height="100px" />
-          </div>
-          <p>{{item.name}}</p>
-        </div>
+      <li>
       </li>
     </ul>
   </div>
@@ -22,66 +12,6 @@ import {http,url} from "../lib"
 export default {
   data() {
     return {
-      moduleArray: [
-        {
-          name: "部门文档",
-          icon: "depdoc",
-          route: "groupFile",
-          color: "blue",
-          isAdmin: "N"
-        },
-        {
-          name: "我的文档",
-          icon: "mydoc",
-          route: "myFile",
-          color: "blue",
-          isAdmin: "N"
-        },
-        {
-          name: "统计报表",
-          icon: "reports",
-          route: "userReport",
-          color: "blue",
-          isAdmin: "N"
-        },
-        {
-          name: "日志审计",
-          icon: "audits",
-          route: "logList",
-          color: "pink",
-          isAdmin: "N"
-        },
-        {
-          name: "部门管理",
-          icon: "deps",
-          route: "userGroup",
-          color: "yellow",
-          isAdmin: "Y"
-        },
-        {
-          name: "用户管理",
-          icon: "users",
-          route: "users",
-          color: "blue",
-          isAdmin: "Y"
-        },
-        {
-          name: "我的报表",
-          icon: "myreport",
-          route: "customize",
-          color: "blue",
-          isAdmin: "Y"
-        },
-        {
-          name: "系统设置",
-          icon: "setting",
-          route: "systemSetting",
-          color: "blue",
-          isAdmin: "Y"
-        }
-      ],
-      isShow: false,
-      approveSum:0
     };
   },
   created() {
@@ -90,11 +20,6 @@ export default {
     // if (this.$store.state.userInfo == null) {
     //   this.$router.push({ path: "/login" });
     //   return;
-    // }
-    // var isAdmin = this.$store.state.userInfo.IsSystem;
-    // if (isAdmin == "N") {
-    //   this.moduleArray = this.moduleArray.filter(x => x.isAdmin == "N");
-    //   //let obj = document.getElementById("container");
     // }
   },
   methods: {
