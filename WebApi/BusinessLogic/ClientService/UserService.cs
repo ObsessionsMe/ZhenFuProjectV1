@@ -121,8 +121,8 @@ namespace BusinessLogic.ClientService
                 //通过递归实现树形数据，找出推荐人为我的直属下级和间接下级用户
                 List<UserTreeData> results = new List<UserTreeData>();
                 //2获取当前用户下的所有分支用户
-                List<UserInfoEntity> firstUsers = userRepository.FindList(x => userTelephone == x.ReferrerTelephone && x.Enable == "Y");
-                List<UserInfoEntity> allUsers = userRepository.FindList(x => x.Enable == "Y");
+                List<UserInfoEntity> firstUsers = userRepository.FindList(x => userTelephone == x.ReferrerTelephone && x.Enable == "Y" && x.IsAdmin == "N");
+                List<UserInfoEntity> allUsers = userRepository.FindList(x => x.Enable == "Y" && x.IsAdmin == "N");
                 foreach (var firstItem in firstUsers)
                 {
                     //一级用户
