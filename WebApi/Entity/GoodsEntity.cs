@@ -32,7 +32,7 @@ namespace Entity
         public string isProduct { get; set; }
 
         /// <summary>
-        /// 商品种类(0-个人清洁,1-美妆护肤,2-厨房用品,3-家用电器,4-家具家纺,5-手机数码,6-配饰背包,7-配饰/背包,8-汽车用品)
+        /// 商品种类--(0-个人清洁,1-美妆护肤,2-厨房用品,3-家用电器,4-家具家纺,5-手机数码,6-配饰背包,7-配饰/背包,8-汽车用品)
         /// </summary>
         public int GoodsType { get; set; }
 
@@ -85,6 +85,11 @@ namespace Entity
         ///  Enable(N-无效，Y-有效)
         /// </summary>
         public string Enable { get; set; }
+
+        /// <summary>
+        /// 上架时间
+        /// </summary>
+        public string Addtime { get; set; }
 
         /// <summary>
         /// 扩展字段

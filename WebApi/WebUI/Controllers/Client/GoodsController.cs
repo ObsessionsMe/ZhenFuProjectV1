@@ -93,5 +93,8 @@ namespace WebUI.Controllers.Client
             var data = servers.checkGoodLevel(userModel.UserId, goodsId);
             return Json(data);
         }
+
+        //上传图片
+
     }
 }

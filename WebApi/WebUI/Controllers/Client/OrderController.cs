@@ -70,7 +70,7 @@ namespace WebUI.Controllers.Client
         }
 
         /// <summary>
-        /// 提交订单，跳过支付(暂时)，默认算作支付成功
+        /// 提交订单
         /// </summary>
         /// <param name="jsonString"></param>
         /// <returns></returns>

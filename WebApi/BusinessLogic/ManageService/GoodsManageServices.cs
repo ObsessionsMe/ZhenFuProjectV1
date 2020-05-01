@@ -26,5 +26,9 @@ namespace BusinessLogic.ManageService
             }
             return goodsRepository.FindList(expression, pagination);
         }
+        public int SubmitGoodsGoodsEntity(GoodsEntity goodsEntity)
+        {
+            return goodsRepository.Insert(goodsEntity);
+        }
     }
 }
