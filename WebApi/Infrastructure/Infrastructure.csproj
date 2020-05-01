@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DbBase\**" />
+    <EmbeddedResource Remove="DbBase\**" />
+    <None Remove="DbBase\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.2" />
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
@@ -17,10 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Entity\Entity.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DbBase\" />
   </ItemGroup>
 
 </Project>
