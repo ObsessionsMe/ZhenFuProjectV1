@@ -4,9 +4,9 @@
     <div :style="'height:'+topheight+'px'" ></div>
     <div v-for="(item,index) in page.Sections" :key="index">
         <!-- <search v-if="item.Code=='Search'" :data="item.ParameterDictionary" v-on:settopheight="settopheight($event)" ></search>  -->
-        <imageAd v-if="item.Code=='ImageAd'" :data="item.ParameterDictionary"></imageAd> 
-        <imageText v-if="item.Code=='ImageText'" :data="item.ParameterDictionary"></imageText>
-        <pageLine v-if="item.Code=='Line'"  :data="item.ParameterDictionary" ></pageLine>
+        <!-- <imageAd v-if="item.Code=='ImageAd'" :data="item.ParameterDictionary"></imageAd>  -->
+        <!-- <imageText v-if="item.Code=='ImageText'" :data="item.ParameterDictionary"></imageText> -->
+        <!-- <pageLine v-if="item.Code=='Line'"  :data="item.ParameterDictionary" ></pageLine> -->
         <!-- <pageLine v-if="item.Code=='Line'"  :data="item.ParameterDictionary" ></pageLine> 
         <pageText v-if="item.Code=='Text'" :data="item.ParameterDictionary" ></pageText>
         <notice v-if="item.Code=='Notice'" :data="item.ParameterDictionary" ></notice> -->
