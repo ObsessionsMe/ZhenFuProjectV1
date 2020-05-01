@@ -6,13 +6,9 @@
 
   <ItemGroup>
     <Compile Remove="UploadFiles\**" />
-    <Compile Remove="Upload\**" />
     <Content Remove="UploadFiles\**" />
-    <Content Remove="Upload\**" />
     <EmbeddedResource Remove="UploadFiles\**" />
-    <EmbeddedResource Remove="Upload\**" />
     <None Remove="UploadFiles\**" />
-    <None Remove="Upload\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,10 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Uplaod\MainImg\shopone1.png">
+    <None Update="Upload\GoodsImg\shopone1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Uplaod\MainImg\shopone2.png">
+    <None Update="Upload\GoodsImg\shopone2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

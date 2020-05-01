@@ -95,7 +95,7 @@ namespace WebUI
             });
             app.UseFileServer(new FileServerOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Uplaod")),
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Upload")),
                 RequestPath = "/Uplaod",
                 EnableDirectoryBrowsing = true
             });
