@@ -114,19 +114,19 @@ export default {
         vipSys: [
           {
             name: "会员商品1",
-            value: "1"
+            id: "1"
           },
           {
             name: "会员商品2",
-            value: "2"
+            id: "2"
           },
           {
             name: "会员商品3",
-            value: "3"
+            id: "3"
           },
           {
             name: "会员商品4",
-            value: "4"
+            id: "4"
           }
         ]
     }
@@ -142,7 +142,8 @@ export default {
         this.userInfo.porintsSurplus = response.data.porintsSurplus;
         this.userInfo.producePorints = response.data.productPorints;
         this.userInfo.treamPorints = response.data.treamPorints;
-    });     
+    });  
+       
   },
 };
 </script>

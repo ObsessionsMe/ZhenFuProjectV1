@@ -1,4 +1,5 @@
 ﻿using Entity;
+using Entity.Params;
 using Infrastructure;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using NPOI.SS.Formula.Functions;
 using RepositoryFactory.ServiceInterface;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using UtilitieEntity;
@@ -24,6 +26,13 @@ namespace BusinessLogic.ClientService
             userRepository = _userRepository;
             sumRepository = _sumRepository;
         }
+
+
+        public DataSet GetProductEarn(GoodsParam goodsParam)
+        {
+            return sumRepository.GetProductEarn(goodsParam);
+        }
+
         public List<UserInfoEntity> FindUserList()
         {
             return userRepository.IQueryable(ExtLinq.True<UserInfoEntity>()).ToList();

@@ -40,6 +40,15 @@ export function GetMyTream() {
   })
 }
 
+export function GetProductEarn(data) {
+  return request({
+    url: '/api/user/getProductEarn',
+    method: 'post',
+    data:data
+  })
+}
+
+
 export function LoginOut() {
   return request({
     url: '/api/login/LoginOut',

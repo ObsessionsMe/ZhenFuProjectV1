@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic.ClientService;
 using Entity;
+using Entity.Params;
 using Infrastructure;
+using Infrastructure.LogConfig;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,11 +29,40 @@ namespace WebUI.Controllers.Client
     {
         private readonly IUserRepository userRepository;
         private IUserPrintsSumRepository sumRepository;
-        public UserController(IUserRepository _userRepository,IUserPrintsSumRepository _sumRepository)
+        public UserController(IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository)
         {
             userRepository = _userRepository;
             sumRepository = _sumRepository;
         }
+
+
+        [Route("getProductEarn")]
+        public ActionResult GetProductEarn(GoodsParam param)
+        {
+            var result = new AjaxResult<dynamic>();
+            try
+            {
+                param.UserId = userModel.UserId;
+                //获取用户的兑现详情
+                var ds = sumRepository.GetProductEarn(param);
+                var list = ds.Tables[0].ToDynamicList();
+                var total = ds.Tables[1].ToDynamic();
+                result.data = new { 
+                    list = list, 
+                    total = total
+                };
+                result.state = ResultType.success.ToString();
+            }
+            catch (Exception ex)
+            {
+                result.message = "获取个人收益失败!";
+                result.state = ResultType.success.ToString();
+                LogHelper.Log.Error(ex);
+            }
+            return Json(result);
+
+        }
+
 
         [Route("GetMyTream")]
         public ActionResult GetMyTream()
@@ -74,6 +106,6 @@ namespace WebUI.Controllers.Client
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "找不到用户相关的积分数据", data = "" });
             }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
-        }    
+        }
     }
 }

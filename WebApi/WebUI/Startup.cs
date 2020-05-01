@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,6 +70,7 @@ namespace WebUI
             {
                 option.Filters.Add<GlobleExceptionAttribute>();
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

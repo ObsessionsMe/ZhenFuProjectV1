@@ -3,6 +3,7 @@ using Infrastructure;
 using RepositoryFactory.ServiceInterface;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
@@ -27,6 +28,11 @@ namespace BusinessLogic.ClientService
             result.state = ResultType.success.ToString();
             result.message = "提交成功！";
             return result;
+        }
+
+        public DataTable GetCashDetail(string userId, int type)
+        {
+            return CashRepository.GetCashDetail(userId,type);
         }
     }
 }

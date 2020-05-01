@@ -20,6 +20,20 @@ namespace Infrastructure
         /// 当前页
         /// </summary>
         public int page { get; set; }
+
+        public int pageBegin
+        {
+            get
+            {
+                return ((page - 1) * rows) + 1;
+            }
+        }
+
+        public int pageEnd
+        {
+            get { return page * rows; }
+        }
+
         /// <summary>
         /// </summary>
         public string sidx { get; set; }
