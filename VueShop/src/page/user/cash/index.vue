@@ -28,7 +28,7 @@
   </div>
 </template>
 <script>
-import { submitCash } from "@/api/cash.js";
+import { submitCash,getCashDetail } from "@/api/cash.js";
 
 import {
   Form,
@@ -76,17 +76,27 @@ export default {
         bankTypeName: "",
         bankUserName: "",
         account: "",
-        integral: 950,
-        deductRate: 0.5,
-        deduct: 100
+        integral: 0,
+        deductRate: 0,
+        deduct: 0
       }
     };
   },
   created() {
     this.entity.Type=parseInt(this.$route.query.type);
     this.name = this.$route.query.name;
+    this.init();
   },
+  
   methods: {
+    init(){
+      getCashDetail(this.entity.Type).then(res=>{
+          if(res.state=="success"){
+             this.entity.integral=res.data.integral
+             this.entity.deductRate=res.data.deductRate
+          }
+      })
+    },
     onPayConfirm(data) {
       this.entity.payType = data.id;
       this.entity.payTypeName = data.name;
@@ -98,9 +108,7 @@ export default {
       this.showBankPicker = false;
     },
     onSubmit() {
-      console.log("submit", this.entity);
       submitCash(this.entity).then(res => {
-        console.log(res)
         if(res.state=="success"){
           Toast.success(res.message);
            this.$router.push({path:'/user/index'})

@@ -16,7 +16,7 @@ namespace Entity
         /// <summary>
         /// 用户ID
         /// </summary>
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         /// <summary>
         /// 兑现类型 1:个人 2:团队

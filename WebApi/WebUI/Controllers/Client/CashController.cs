@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic.ClientService;
@@ -7,6 +8,7 @@ using Entity;
 using Infrastructure;
 using Infrastructure.LogConfig;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RepositoryFactory.ServiceInterface;
 using WebUI.App_Start;
 
@@ -32,7 +34,9 @@ namespace WebUI.Controllers.Client
             var result = new AjaxResult();
             try
             {
-                //获取
+                //获取用户的兑现详情
+                result.data = cashService.GetCashDetail(userModel.UserId, type).ToDynamicList().First();
+                result.state = ResultType.success.ToString();
             }
             catch (Exception ex)
             {
@@ -41,6 +45,7 @@ namespace WebUI.Controllers.Client
                 LogHelper.Log.Error(ex);
             }
             return Json(result);
+
         }
 
 
@@ -48,13 +53,13 @@ namespace WebUI.Controllers.Client
         ///  提交兑现
         /// </summary>
         /// <returns></returns>
-        [Route("Submit")]
+        [Route("submitCash")]
         public ActionResult InsertCash(CashInfoEntity entity)
         {
             var result = new AjaxResult();
             try
             {
-                //entity.UserId = userModel.UserId;
+                entity.UserId = userModel.UserId;
                 entity.Date = DateTime.Now;
                 result = cashService.InsertCashInfo(entity);
             }
