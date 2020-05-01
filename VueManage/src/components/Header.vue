@@ -8,7 +8,7 @@
       <el-dropdown @command="handleCommand">
         <el-button type="primary">
           <i class="el-icon-user"></i>
-          <!-- <span class="userName">{{getUserName()}}</span> -->
+          <span class="userName">{{getUserName()}}</span>
           <i class="el-icon-arrow-down"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
@@ -23,7 +23,6 @@
 export default {
   data: () => {
     return {
-      input1: "",
       isAdmin: false
     };
   },
@@ -50,18 +49,13 @@ export default {
       }
       command && this.$router.push({ path: command });
     },
-    searchInput() {
-      //this.eventBus.$emit("searchlist", this.input1);
-    },
     outLogin() {
       this.$cookies.remove("userLogin");
       this.$router.push({ path: "/login" });
     },
-    onSearch() {
-      this.$router.push({ path: "search" });
-    },
     getUserName() {
       var userName = "空";
+      console.log(this.$store.state.userInfo);
       if (this.$store.state.userInfo != null) {
         userName = this.$store.state.userInfo.UserName;
       } else {

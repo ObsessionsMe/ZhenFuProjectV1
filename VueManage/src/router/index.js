@@ -8,6 +8,7 @@ import Page404 from "../pages/404Page"
 import cashApply from "../pages/CashApply"
 import member from "../pages/MemberList"
 import goods from "../pages/GoodsList"
+import order from "../pages/OrderManage"
 
 import VueCookies from 'vue-cookies'
 Vue.use(VueCookies)
@@ -42,7 +43,11 @@ const router = new Router({
             },{
                 path: "member",
                 component: member,
-            }]
+            },{
+                path: "order",
+                component: order,
+            }
+        ]
         },
         {
             path: "*",

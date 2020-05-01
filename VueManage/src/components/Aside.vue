@@ -3,7 +3,7 @@
         <div class="logo">
             <!-- <img src="../assets/zhenfu.png" alt=""> -->
         </div>
-        <el-button class="back-button" @click="backHome">返回首页</el-button>
+        <el-button class="back-button" @click="backHome">商城相关设置</el-button>
         <!-- <div class="back-button" @click="backHome"  style="background:#3273B;height:50px; line-height:50px">
              返回首页
         </div> -->

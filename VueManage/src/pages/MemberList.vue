@@ -1,14 +1,23 @@
 <template>
   <div class="container">
-    <section class="toolBar">
-      <el-button-group>
-        <!-- <el-input v-model="keyword"  placeholder="请输入会员的姓名" type="text"/> -->
+    <el-form :inline="true" class="demo-form-inline" style="text-align:left">
+      <el-form-item label="关键字">
+        <el-input placeholder="请输入会员姓名或手机号"></el-input>
+      </el-form-item>
+      <el-form-item label="会员类型">
+        <el-select placeholder="请选择会员类型" v-model="defalutMemBerType" >
+          <el-option
+            v-for="item in allMemberType"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchUser">查询</el-button>
-        <!-- <el-button type="primary" icon="el-icon-edit" @click="editUserGroup">编辑</el-button>
-        <el-button type="primary" icon="el-icon-delete" @click="deleteUserGroup">删除</el-button>-->
-        <!-- <el-button type="primary" icon="el-icon-search" @click="checkGoods">导出</el-button> -->
-      </el-button-group>
-    </section>
+      </el-form-item>
+    </el-form>
     <section class="content">
       <h5>会员列表</h5>
       <br />
@@ -20,14 +29,13 @@
           highlight-current-row
           height="650"
         >
-          <el-table-column prop="userId" label="用户编号" sortable width="200"></el-table-column>
-          <el-table-column prop="name" label="姓名" width="200" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="userTelephone" label="用户手机号" width="170"></el-table-column>
-          <el-table-column prop="referrer" label="推荐人" sortable width="120"></el-table-column>
+          <el-table-column prop="name" label="会员姓名" width="120" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="userTelephone" label="会员手机号" width="200"></el-table-column>
+          <el-table-column prop="referrer" label="推荐人姓名" sortable width="120"></el-table-column>
           <el-table-column prop="referrerTelephone" label="推荐人手机号" sortable width="200"></el-table-column>
-          <el-table-column prop="tourismPorints" label="旅游积分" sortable width="200"></el-table-column>
-          <el-table-column prop="indirectPoints" label="是否持仓" sortable width="200"></el-table-column>
-          <el-table-column prop="enable" label="是否有效" sortable width="200"></el-table-column>
+          <el-table-column prop="referrerTelephone" label="会员类型" sortable width="170"></el-table-column>
+          <el-table-column prop="indirectPoints" label="是否持仓" sortable width="100"></el-table-column>
+          <el-table-column prop="enable" label="是否有效" sortable width="100"></el-table-column>
           <el-table-column prop="addtime" label="注册时间" sortable width="200"></el-table-column>
         </el-table>
       </el-row>
@@ -57,12 +65,23 @@ export default {
       total: 0,
       pageSize: 10,
       pageIndex: 1,
-      keyword: ""
+      keyword: "",
+      defalutMemBerType:100,   
+      allMemberType: [
+        { id: 100,name: "全部" },
+        { id: 0, name: "总部" },
+        { id: 1, name: "经销商" },
+        { id: 2, name: "代理商" },
+        { id: 3, name: "市级代理" },
+        { id: 4, name: "省级代理" },
+        { id: 5, name: "分公司" },
+        { id: 6, name: "合伙人" }
+      ],
     };
   },
   created() {
     //页面初始化
-    this.searchUser();
+    //this.searchUser();
   },
   methods: {
     //获取日志列表
@@ -92,7 +111,7 @@ export default {
     handleCurrentChange(currentindex) {
       this.pageIndex = currentindex;
       this.searchUser();
-    },
+    }
   }
 };
 </script>

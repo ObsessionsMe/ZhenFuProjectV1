@@ -8,6 +8,7 @@ let url = {
     login: "api/UserManage/LoginOn",
     GetUserList: "api/UserManage/GetUserList",
     GetGoodsList: "api/GoodsManage/GetGoodsList",  
+    SubmitGoods: "api/GoodsManage/SubmitGoods", 
     //logout: "api/Login/OutLogin",
     //getGridJson: "api/User/GetGridJson",
     //getPersonalFileList:"/File/GetFileList",    
