@@ -19,5 +19,7 @@ namespace Infrastructure.DBContext
         public DbSet<UserPrintsSumEntity> UserPrintsSumEntity { get; set; }
 
         public DbSet<CashInfoEntity> CashInfoEntity { get; set; }
+
+        public DbSet<AttachMentInfoEntity> AttachMentInfoEntity { get; set; }
     }
  }

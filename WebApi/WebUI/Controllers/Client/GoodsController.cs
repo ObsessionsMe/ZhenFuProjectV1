@@ -33,7 +33,7 @@ namespace WebUI.Controllers.Client
         [Route("GetGoodsList")]
         public ActionResult GetGoodsList()
         {
-            //2获取商品，按照轮播图和商品分为两个集合
+            //获取轮播图和产品列表
             GoodsService servers = new GoodsService(goodsRepository, orderRepository);
             var data = servers.FindGoodsList();
             if (data == null)

@@ -57,7 +57,7 @@ namespace WebUI
             services.AddTransient<IUserPorintsRecordRepository, UserPorintsRecordRepository>();
             services.AddTransient<IUserPrintsSumRepository, UserPrintsSumRepository>();
             services.AddTransient<ICashRepository, CashRepository>();
-
+            services.AddTransient<IAttachMentRepository, AttachMentRepository>();
             //注册文件访问权限
             services.AddDirectoryBrowser();
 
@@ -96,7 +96,7 @@ namespace WebUI
             app.UseFileServer(new FileServerOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Upload")),
-                RequestPath = "/Uplaod",
+                RequestPath = "/Upload",
                 EnableDirectoryBrowsing = true
             });
             //==============================================
