@@ -26,8 +26,18 @@ function isNullOrEmpty(params) {
     ); 
 }
 
+function getFilesUrl() {
+    return "https://localhost:44380/Upload/GoodsImg/"; 
+}
+
+function getFilesUrl_pro() {
+    return "/Upload/GoodsImg"; 
+}
+
 export {
     checkTelephone,
     isNullOrEmpty,
-    checkName
+    checkName,
+    getFilesUrl,
+    getFilesUrl_pro
 }

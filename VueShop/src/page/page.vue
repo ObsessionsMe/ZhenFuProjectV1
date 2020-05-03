@@ -11,7 +11,7 @@
         <pageText v-if="item.Code=='Text'" :data="item.ParameterDictionary" ></pageText>
         <notice v-if="item.Code=='Notice'" :data="item.ParameterDictionary" ></notice> -->
         <!-- <imageAd v-if="item.Code=='ImageAd'" :data="item.ParameterDictionary"></imageAd> -->
-        <product v-if="item.Code=='Product'" :data="item" ></product>
+        <!-- <product v-if="item.Code=='Product'" :data="item" ></product> -->
     </div>
 
 </div>

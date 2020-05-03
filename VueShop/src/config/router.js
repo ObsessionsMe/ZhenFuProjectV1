@@ -199,7 +199,7 @@ const routes = [
     }
   },
   {
-    path: '/search',
+    path: '/list/:type',
     component: () => import('../page/product/list'),
     meta: {
       title: '商品列表'

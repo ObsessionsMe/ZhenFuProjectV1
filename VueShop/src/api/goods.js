@@ -23,3 +23,11 @@ export function checkGoodLevel(params) {
   })
 }
 
+export function GetAttachmentListByType(params) {
+  return request({
+    url: '/api/Attachment/GetAttachmentListByType',
+    method: 'get',
+    params: { type:params }
+  })
+}
+
