@@ -27,7 +27,7 @@ namespace BusinessLogic.ClientService
         /// <returns></returns>
         public List<GoodsEntity> FindGoodsList()
         {
-            return goodsRepository.IQueryable(x => x.Enable == "Y").ToList();
+            return goodsRepository.IQueryable(x => x.Enable == "Y" && x.isProduct == "Y").ToList();
         }
 
         public GoodsEntity GetGoodsDetails(string goodsId)
@@ -38,7 +38,7 @@ namespace BusinessLogic.ClientService
         //获取用户已经购买过得商品
         public AjaxResult checkGoodLevel(string userId, string goodsId)
         {
-            int beforLevel = goodsRepository.FindEntity(x => x.GoodsId == goodsId && x.Enable == "Y").GoodsLevel;  //当前要购买的商品级别
+            int beforLevel = goodsRepository.FindEntity(x => x.GoodsId == goodsId && x.Enable == "Y" ).GoodsLevel;  //当前要购买的商品级别
             if (beforLevel == 1)
             {
                 return new AjaxResult { state = ResultType.success.ToString(), message = "允许购买！", data = "" };
