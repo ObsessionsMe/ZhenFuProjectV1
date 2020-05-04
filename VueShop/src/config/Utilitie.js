@@ -1,6 +1,6 @@
 
 //==========================================公共方法=============================
-
+import {baseFileUrl} from '@/config/env.js'
 function checkName(params)
 { 
     var nameReg = /^[\u4E00-\u9FA5]{2,4}$/;
@@ -10,6 +10,7 @@ function checkName(params)
     }
     return true;
 }
+import { Form } from "element-ui";
 
 function checkTelephone(params) {
     var phoneReg = /(^1[3|4|5|7|8|9]\d{9}$)|(^09\d{8}$)/;
@@ -27,7 +28,7 @@ function isNullOrEmpty(params) {
 }
 
 function getFilesUrl() {
-    return "https://localhost:44380/Upload/GoodsImg/"; 
+    return baseFileUrl; 
 }
 
 function getFilesUrl_pro() {

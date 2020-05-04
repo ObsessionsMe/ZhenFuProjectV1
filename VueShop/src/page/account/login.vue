@@ -36,8 +36,10 @@ export default {
   name: "Login",
     data() {
     return {
-      telephone:"15914071422",
-      password:"xiapeng-2020"
+      // telephone:"15914071422",
+      // password:"xiapeng-2020"
+      telephone:"",
+      password:""
     }
   },
    methods: {

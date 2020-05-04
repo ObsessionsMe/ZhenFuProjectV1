@@ -17,11 +17,12 @@
         </van-badge-group>
         <div class="content" :style="'width:'+fullWidth+'px;height:'+(fullHeight-7)+'px'" >
             <div  v-if="this.activeKey==0" class="category-div">
-               <h4>生产商信息简介</h4>
-
+              <img  width="150" :src="require('@/assets/images/scs1.png')" />
+              <img  width="150" :src="require('@/assets/images/scs2.png')" />
+              <img  width="150" :src="require('@/assets/images/scs3.png')" />
             </div>
             <div v-if="this.activeKey==1"  class="category-div">
-                <h4>王业富相关信息介绍</h4>
+              <img  width="150" :src="require('@/assets/images/yfz1.png')" />
             </div>
             <div v-if="this.activeKey==2"  class="category-div">
                 <div class="block">

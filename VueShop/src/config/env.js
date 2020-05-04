@@ -7,21 +7,25 @@
  */
 
 let baseUrl = ''; 
+let baseFileUrl = ''; 
 let routerMode = 'hash';
 let dataSources='local_dev';//local=读取本地JSON，其他值代表非本地(开发环境请更改此值)
 
 //开发环境
 if (process.env.NODE_ENV == 'development') {
 	baseUrl='https://localhost:44380/';
+	baseFileUrl = "https://localhost:44380/shop.api/Upload/GoodsImg/";
 	//baseUrl = '';
 
 //生产环境	
 }else if(process.env.NODE_ENV == 'production'){
 	baseUrl = '/shop.api';
+	baseFileUrl = "/shop.api/Upload/GoodsImg/";
 }
 
 export {
 	baseUrl,
 	routerMode,
-	dataSources
+	dataSources,
+	baseFileUrl
 }
