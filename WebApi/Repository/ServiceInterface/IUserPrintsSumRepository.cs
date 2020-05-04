@@ -13,5 +13,6 @@ namespace RepositoryFactory.ServiceInterface
    public  interface IUserPrintsSumRepository : IRepository<UserPrintsSumEntity>
     {
         public DataSet GetProductEarn(GoodsParam goodsParam);
+        public DataSet GetTeamEarn(GoodsParam param);
     }
 }

@@ -20,6 +20,11 @@ namespace Infrastructure
             return JsonConvert.DeserializeObject<ExpandoObject>(JsonConvert.SerializeObject(dataTable)) as dynamic;
         }
 
+        public static ExpandoObject[] ToDynamics(this DataTable dataTable)
+        {
+            return JsonConvert.DeserializeObject<ExpandoObject []>(JsonConvert.SerializeObject(dataTable));
+        }
+
         public static List<dynamic> ToDynamicList(this DataTable dataTable)
         {
 

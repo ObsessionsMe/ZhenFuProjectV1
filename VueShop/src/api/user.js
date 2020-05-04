@@ -48,6 +48,13 @@ export function GetProductEarn(data) {
   })
 }
 
+export function GetTeamEarn(data) {
+  return request({
+    url: '/api/user/getTeamEarn',
+    method: 'post',
+    data:data
+  })
+}
 
 export function LoginOut() {
   return request({
