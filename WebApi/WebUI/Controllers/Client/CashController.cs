@@ -35,7 +35,7 @@ namespace WebUI.Controllers.Client
             try
             {
                 //获取用户的兑现详情
-                result.data = cashService.GetCashDetail(userModel.UserId, type).ToDynamicList().First();
+                result.data =  cashService.GetCashDetail(userModel.UserId, type).ToDynamics().First();
                 result.state = ResultType.success.ToString();
             }
             catch (Exception ex)
