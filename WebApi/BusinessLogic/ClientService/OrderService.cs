@@ -95,7 +95,7 @@ namespace BusinessLogic.ClientService
                 orderEntity.PayCount = payCount;
                 orderEntity.UsePorintsType = order.UsePorintsType;
                 orderEntity.AddressId = order.AddressId;
-                orderEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss");
+                orderEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                 i = orderRepository.Insert(orderEntity);
                 if (i < 1)
                 {
@@ -108,7 +108,7 @@ namespace BusinessLogic.ClientService
                 var userPorintsRecord = new UserPorintsRecordEntity();
                 userPorintsRecord.UserId = userId;
                 userPorintsRecord.ProductPorints = sumItemPoints;
-                userPorintsRecord.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss");
+                userPorintsRecord.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                 recordRepository.Insert(userPorintsRecord);
                 if (i < 1)
                 {

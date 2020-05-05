@@ -31,7 +31,7 @@
 
 <script>
 import {LoginOn} from "../../api/user.js";
-import {isNullOrEmpty,checkTelephone} from "../../config/Utilitie.js";
+import {isNullOrEmpty,checkTelephone,CheckPassWord} from "../../config/Utilitie.js";
 export default {
   name: "Login",
     data() {
@@ -57,6 +57,11 @@ export default {
           this.$toast("手机号码格式错误，请重新输入");
           return;
       } 
+      if(!CheckPassWord(this.password)){
+          this.$toast("必须为字母加数字且长度不小于6位");
+          return;
+      }
+      
       var params = {
          telephone : this.telephone,
          password : this.password

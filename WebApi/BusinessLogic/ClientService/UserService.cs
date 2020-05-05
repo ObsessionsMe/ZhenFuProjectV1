@@ -84,7 +84,7 @@ namespace BusinessLogic.ClientService
                 userEntity.Password = DESEncrypt.Encrypt(user.Password);
                 userEntity.UserType = 1;//新用户注册默认都是经销商
                 userEntity.Enable = "Y";
-                userEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss");
+                userEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                 userEntity.TourismPorints = 5000;
                 userEntity.isHold = "N";
                 userRepository.Insert(userEntity);

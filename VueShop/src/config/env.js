@@ -14,7 +14,7 @@ let dataSources='local_dev';//local=读取本地JSON，其他值代表非本地(
 //开发环境
 if (process.env.NODE_ENV == 'development') {
 	baseUrl='https://localhost:44380/';
-	baseFileUrl = "https://localhost:44380/shop.api/Upload/GoodsImg/";
+	baseFileUrl = "https://localhost:44380/Upload/GoodsImg/";
 	//baseUrl = '';
 
 //生产环境	

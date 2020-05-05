@@ -41,13 +41,13 @@
 </template>
 
 <script>
-import { UserRegister, GetPhoneCode } from "../../api/user.js";
+import { UserRegister, GetPhoneCode} from "../../api/user.js";
 // import { Toast } from "vant";
-
 import {
   isNullOrEmpty,
   checkTelephone,
-  checkName
+  checkName,
+  CheckPassWord
 } from "../../config/Utilitie.js";
 export default {
   name: "Login",
@@ -103,7 +103,10 @@ export default {
         this.$toast("你的姓名输入格式有误，请重新输入");
         return;
       }
-
+      if(!CheckPassWord(this.password)){
+          this.$toast("密码必须为字母加数字且长度不小于6位");
+          return;
+      }
       var params = {
         UserTelephone: this.userTelephone,
         Name: this.name,
@@ -115,13 +118,14 @@ export default {
         if (response.state == "success") {       
           this.$notify({
             title: "成功",
-            message: "注册成功！你的推荐人是:"+ response.data.referrer,
+            message: "注册成功！你的推荐人是:"+ response.data.referrer+" 请直接登录",
             type: "success",
             duration: "5000"
           });
-          //   setInterval(() => {
-          //   this.$router.push({ path: "/login" });
-          // }, 1000);
+          var Interval=setInterval(() => {
+            clearInterval(Interval)
+            this.$router.push({ path: "/login" });
+          }, 1000);
         } else {
           this.$toast(response.message);
           return;

@@ -67,7 +67,7 @@ namespace WebUI.Controllers.Manage
                 //新增
                 goodsEntity.GoodsId = "GD" + Common.CreateNo() + Common.RndNum(5);
                 goodsEntity.Enable = "Y";
-                goodsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss");
+                goodsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
 
             }
             else
