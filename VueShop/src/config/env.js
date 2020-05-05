@@ -10,13 +10,13 @@ let baseUrl = '';
 let baseFileUrl = ''; 
 let routerMode = 'hash';
 let dataSources='local_dev';//local=读取本地JSON，其他值代表非本地(开发环境请更改此值)
-
+let autoLoginUserInfo=undefined
 //开发环境
 if (process.env.NODE_ENV == 'development') {
 	baseUrl='https://localhost:44380/';
 	baseFileUrl = "https://localhost:44380/Upload/GoodsImg/";
 	//baseUrl = '';
-
+	autoLoginUserInfo={ name:'18371501913',value:'tp123' }
 //生产环境	
 }else if(process.env.NODE_ENV == 'production'){
 	baseUrl = '/shop.api';
@@ -27,5 +27,6 @@ export {
 	baseUrl,
 	routerMode,
 	dataSources,
-	baseFileUrl
+	baseFileUrl,
+	autoLoginUserInfo
 }
