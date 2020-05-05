@@ -15,11 +15,17 @@
       </van-cell>
     </van-cell-group>
 
-    <!-- <div class="goods-info">
-        <p class="goods-info-title" >图文详情</p>
-        <div v-html="goods.info"></div>
+    <div class="goods-info">
+      <p class="goods-info-title">图文详情</p>
+      <div style="text-align:center;">
+        <img
+          src="https://haitao.nosdn2.127.net/ac19460151ee4d95a6657202bcfc653c1531470912089jjjq8ml410763.jpg"
+        />
+        <img
+          src="https://haitao.nosdn2.127.net/ac19460151ee4d95a6657202bcfc653c1531470912089jjjq8ml410763.jpg"
+        />
+      </div>
     </div>
-    <van-goods-action>-->
 
     <!-- <van-goods-action-mini-btn icon="like-o">
         收藏
@@ -30,8 +36,9 @@
       <van-goods-action-big-btn @click="showSku">
         加入购物车
     </van-goods-action-big-btn>-->
-    <van-goods-action-big-btn primary @click="showSku">立即购买</van-goods-action-big-btn>
-    <!-- </van-goods-action> -->
+    <van-goods-action>
+      <van-goods-action-big-btn primary @click="showSku">立即购买</van-goods-action-big-btn>
+    </van-goods-action>
 
     <!-- <van-sku
           v-model="showBase"

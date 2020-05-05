@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div class="user-profile" style="height:135px;line-height:20px;">
+    <!--商品个人图-->
+    <div class="user-profile" style="height:155px;line-height:20px;">
       <div class="user-profile-avatar">
-        <a href="/#/user/info">
+        <a>
           <img
             src="http://haitao.nos.netease.com/ZnB0PM5xDzXZ2FeVlmT170102401021_150_150.png"
             style="width:50px;height:50px;vertical-align:bottom"
@@ -16,11 +17,22 @@
       </div>
 
       <div class="user-profile-username" style="font-size:14px">
-        <span>积分余额:{{userInfo.porintsSurplus}}</span>
-        <span style="margin-left:1%">旅游积分{{userInfo.tourismPorints}}</span>
-        <br />
-        <span>产品积分:{{userInfo.producePorints}}</span>
-        <span style="margin-left:1%">团队积分{{userInfo.treamPorints}}</span>
+        <van-row type="flex" justify="center">
+          <van-col span="6">积分余额</van-col>
+          <van-col span="6">{{userInfo.porintsSurplus}}</van-col>
+        </van-row>
+        <van-row type="flex" justify="center">
+          <van-col span="6">旅游积分</van-col>
+          <van-col span="6">{{userInfo.tourismPorints}}</van-col>
+        </van-row>
+        <van-row type="flex" justify="center">
+          <van-col span="6">产品积分</van-col>
+          <van-col span="6">{{userInfo.producePorints}}</van-col>
+        </van-row>
+        <van-row type="flex" justify="center">
+          <van-col span="6">团队积分</van-col>
+          <van-col span="6">{{userInfo.treamPorints}}</van-col>
+        </van-row>
       </div>
     </div>
 
@@ -62,10 +74,10 @@
       <van-cell title="会员系统" />
       <van-row class="user-links">
         <template v-for="item in vipSys">
-          <router-link :key="item.value" :to="{path:'/user/vipSys',query:item}">
+          <router-link :key="item.goodsId" :to="{path:'/user/vipSys',query:item}">
             <van-col span="6">
               <van-icon name="after-sale" />
-              <div>{{item.name}}</div>
+              <div>{{item.goodsName}}</div>
             </van-col>
           </router-link>
         </template>
@@ -77,16 +89,13 @@
     </van-cell-group>
     <van-cell-group>
       <van-cell title="收支明细(现金/积分)" is-link to="/user/coupon"/>
-    </van-cell-group>
-    <van-cell-group>
-      <van-cell title="推广二维码" is-link to="" />
     </van-cell-group>-->
     <van-cell-group>
       <van-cell title="积分充值" is-link to="/user/buypoints" />
     </van-cell-group>
-    <van-cell-group>
+    <!-- <van-cell-group>
       <van-cell title="我的团队" is-link to="/user/myteam" />
-    </van-cell-group>
+    </van-cell-group>-->
     <van-cell-group>
       <van-cell title="产品积分兑现" is-link :to="{path:'/user/cash',query:{type:1,name:'产品积分兑现'}}" />
     </van-cell-group>
@@ -96,15 +105,20 @@
     <van-cell-group>
       <van-cell title="收货地址" is-link to="/user/address" />
     </van-cell-group>
-    <!-- <van-cell-group>
-      <van-cell title="切换账号" is-link to="/login" />
-    </van-cell-group>-->
+    <van-cell-group>
+    <van-cell title="修改密码" is-link to="/login/password" />
+    </van-cell-group>
+    <van-cell-group>
+      <van-cell title="退出登录" is-link to="/login" />
+    </van-cell-group>
     <navigate />
   </div>
 </template>
 
 <script>
 import { GetUserPorints } from "../../api/user.js";
+import { GetGoodsList } from "../../api/goods.js";
+
 export default {
   data() {
     return {
@@ -117,22 +131,6 @@ export default {
         userTelephone: ""
       },
       vipSys: [
-        {
-          name: "会员商品1",
-          id: "1"
-        },
-        {
-          name: "会员商品2",
-          id: "2"
-        },
-        {
-          name: "会员商品3",
-          id: "3"
-        },
-        {
-          name: "会员商品4",
-          id: "4"
-        }
       ]
     };
   },
@@ -142,16 +140,31 @@ export default {
     this.userInfo.tourismPorints = this.$store.state.userInfo.tourismPorints;
     this.userInfo.name = this.$store.state.userInfo.name;
     this.userInfo.userTelephone = this.$store.state.userInfo.userTelephone;
-    GetUserPorints(userId).then(response => {
-      console.log(response);
-      if (response.state == "success") {
-        this.userInfo.porintsSurplus = response.data.porintsSurplus;
-        this.userInfo.producePorints = response.data.productPorints;
-        this.userInfo.treamPorints = response.data.treamPorints;
-      } else {
-        this.userInfo.porintsSurplus = this.userInfo.producePorints = this.userInfo.treamPorints = 0;
-      }
-    });
+    //获取用户积分
+    this.GetUserPorintsOn(userId);
+    //获取商品
+    this.GetGoodsOn();
+  },
+  methods: {
+    GetUserPorintsOn(userId) {
+      GetUserPorints(userId).then(response => {
+        console.log(response);
+        if (response.state == "success") {
+          this.userInfo.porintsSurplus = response.data.porintsSurplus;
+          this.userInfo.producePorints = response.data.productPorints;
+          this.userInfo.treamPorints = response.data.treamPorints;
+        } else {
+          this.userInfo.porintsSurplus = this.userInfo.producePorints = this.userInfo.treamPorints = 0;
+        }
+      });
+    },
+    GetGoodsOn() {
+      GetGoodsList().then(response => {
+        console.log("response.data.shopDataList",response.data.shopDataList);
+        this.vipSys = response.data.shopDataList;
+        
+      });
+    }
   }
 };
 </script>

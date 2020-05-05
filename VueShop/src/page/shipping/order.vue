@@ -38,7 +38,7 @@
             <van-radio name="1" />
           </template>
         </van-cell>
-        <van-cell title="团队积分余额" clickable @click="payMethod = '2'">
+        <van-cell title="团队积分余额" clickable @click="payMethod = '2'" v-if="isProduct">
           <template #right-icon>
             <van-radio name="2" />
           </template>
@@ -95,6 +95,7 @@ import { ReadyPlaceOrder, SubmitOrder } from "../../api/order.js";
 export default {
   data() {
     return {
+      isProduct:false,
       isRule: false,
       isSure: false,
       type: "add1",
@@ -116,7 +117,6 @@ export default {
       GoodsUnitPrice: 0,
       BuyGoodsNums: 0,
       PayCount: 0,
-      isProduct:false
     };
   },
   methods: {
@@ -162,7 +162,6 @@ export default {
     if (this.goodsId == null) {
       return;
     }
-  
     ReadyPlaceOrder(this.goodsId).then(response => {
       if (response.state == "success") {
         console.log(response);

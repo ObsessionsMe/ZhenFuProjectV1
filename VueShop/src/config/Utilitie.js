@@ -35,7 +35,7 @@ function getFilesUrl_pro() {
     return "/Upload/GoodsImg"; 
 }
 
-function CheckPassWord(password) {//必须为字母加数字且长度不小于6位
+function CheckPassWord(password) {//密码必须为字母加数字且长度不小于6位
     var str = password;
      if (str == null || str.length <6) {
          return false;

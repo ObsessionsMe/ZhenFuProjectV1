@@ -67,7 +67,7 @@ export default {
           return;
       } 
       if(!CheckPassWord(this.password)){
-          this.$toast("必须为字母加数字且长度不小于6位");
+          this.$toast("密码必须为字母加数字且长度不小于6位");
           return;
       }
       

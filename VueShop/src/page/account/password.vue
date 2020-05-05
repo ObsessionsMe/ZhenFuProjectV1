@@ -1,7 +1,7 @@
 <template>
     <div>
-      <headerNav title="登录"/>
-      <div style="background:url(https://haitao.nos.netease.com/f866dd18-12f0-4bb2-be6d-5cac85cf2627.png) center 18px no-repeat;background-size:161px;">
+      <headerNav title="修改密码"/>
+      <div style="background:url() center 18px no-repeat;background-size:161px;">
        <div style="background:url() center 18px no-repeat;background-size:161px;">
           <div style="padding-top: 70px;">
             <van-cell-group>
@@ -10,14 +10,16 @@
                     type="number"
                 />
                 <van-field
+                    placeholder="请输入新密码"
                     type="password"
-                    placeholder="请输入密码"
+                />
+                <van-field
+                    type="password"
+                    placeholder="请再次输入新密码"
                 />
             </van-cell-group>
-            <van-col span="8"  style="height:30px;line-height:30px;margin-left:4%"><el-link type="primary">忘记密码</el-link></van-col>
             <div style="margin: 10px;">
-                <van-button size="large" type="primary" style="height: 45px;line-height:45px;">登录</van-button>
-                <van-button size="large" type="primary" style="height: 45px;line-height:45px;">注册新账号</van-button>
+                <van-button size="large" type="primary" style="height: 45px;line-height:45px;">保存</van-button>
             </div>
           </div>
       </div>

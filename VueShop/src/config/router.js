@@ -27,7 +27,7 @@ const routes = [
     path: '/login/password',
     component: () => import('../page/account/password'),
     meta: {
-      title: '登录'
+      title: '修改密码'
     }
   },
   {

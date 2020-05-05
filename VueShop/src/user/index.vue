@@ -104,22 +104,22 @@ export default {
         producePorints: 15000,
         treamPorints: 2500,
         vipSysvipSys: [
-          {
-            name: "会员商品1",
-            value: "1"
-          },
-          {
-            name: "会员商品2",
-            value: "2"
-          },
-          {
-            name: "会员商品3",
-            value: "3"
-          },
-          {
-            name: "会员商品4",
-            value: "4"
-          }
+          // {
+          //   name: "会员商品1",
+          //   value: "1"
+          // },
+          // {
+          //   name: "会员商品2",
+          //   value: "2"
+          // },
+          // {
+          //   name: "会员商品3",
+          //   value: "3"
+          // },
+          // {
+          //   name: "会员商品4",
+          //   value: "4"
+          // }
         ]
       }
     };
