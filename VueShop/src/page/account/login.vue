@@ -31,6 +31,7 @@
 
 <script>
 import {LoginOn} from "../../api/user.js";
+import { autoLoginUserInfo } from "@/config/env.js"
 import {isNullOrEmpty,checkTelephone} from "../../config/Utilitie.js";
 export default {
   name: "Login",
@@ -42,6 +43,14 @@ export default {
       password:""
     }
   },
+  created(){
+    if(autoLoginUserInfo!=undefined){
+      this.telephone=autoLoginUserInfo.name;
+      this.password=autoLoginUserInfo.value;
+      this.handleLogin();
+    }
+  }
+  ,
    methods: {
     //登录
     handleLogin() {
