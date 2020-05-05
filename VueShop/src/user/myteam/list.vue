@@ -112,11 +112,11 @@ export default {
   },
   methods: {
     getMyTream() {
-      console.log("发起请求");
+      //console.log("发起请求");
       GetMyTream().then(response => {
         //存储用户基础信息和token
         if (response.state == "success") {
-          console.log(response);
+          //console.log(response);
         } else {
           this.$toast(response.message);
         }

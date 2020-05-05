@@ -1,62 +1,33 @@
 <template>
-    <!-- 商品列表-->
-    <div>
-        <van-badge-group :active-key="activeKey" class="tab" :style="'height:'+fullHeight+'px'" style="width:95px">
-            <van-badge title="个人清洁"  @click="onClick" />
-            <van-badge title="美妆护肤"  @click="onClick" />
-            <van-badge title="厨房用品"  @click="onClick" />
-            <van-badge title="家用电器"  @click="onClick" />
-            <van-badge title="家具家纺"  @click="onClick" />
-            <van-badge title="手机数码"  @click="onClick" />
-            <van-badge title="配饰背包"  @click="onClick" />
-            <van-badge title="汽车用品"  @click="onClick" />
-        </van-badge-group>
-        <div class="content" :style="'width:'+fullWidth+'px;height:'+(fullHeight-7)+'px'" >
-            <div  v-if="this.activeKey==0" class="category-div">
-               <h4>个人清洁</h4>
-            </div>
-            <div v-if="this.activeKey==1"  class="category-div">
-                <h4>美妆护肤</h4>
-            </div>
-            <div v-if="this.activeKey==2"  class="category-div">
-                <div class="block">
-                <!-- <span class="demonstration">产品介绍</span> -->
-                <h4>厨房用品</h4>
-                </div>
-            </div>
-            <div v-if="this.activeKey==3"  class="category-div">
-                  <div class="block">
-                  <!-- <span class="demonstration">公司团建</span> -->
-                  <h4>家用电器</h4>
-                  </div>
-            </div>
-            <div v-if="this.activeKey==4"  class="category-div">
-                  <div class="block">
-                  <!-- <span class="demonstration">公司团建</span> -->
-                  <h4>家具家纺</h4>
-                  </div>
-            </div>
-            <div v-if="this.activeKey==5"  class="category-div">
-                  <div class="block">
-                  <!-- <span class="demonstration">公司团建</span> -->
-                  <h4>手机数码</h4>
-                  </div>
-            </div>
-            <div v-if="this.activeKey==6"  class="category-div">
-                  <div class="block">
-                  <!-- <span class="demonstration">公司团建</span> -->
-                  <h4>配饰背包</h4>
-                  </div>
-            </div>
-            <div v-if="this.activeKey==7"  class="category-div">
-                  <div class="block">
-                  <!-- <span class="demonstration">公司团建</span> -->
-                  <h4>汽车用品</h4>
-                  </div>
-            </div>
-        </div>
-        <navigate />
-    </div>
+  <!-- 商品列表-->
+  <div>
+    <van-badge-group  :active-key="activeKey" class="tab" :style="'height:'+fullHeight+'px'" style="width:95px">
+      <template  v-for="item in productTypes" >
+        <van-badge v-bind:key="item.id"  :title="item.name"  @click="onClick" />
+      </template>
+    </van-badge-group>
+    <!--首页-商品列表-->
+    <ul class="cap-goods-list__container cap-goods-list__container--small cap-goods-list__container--simple">
+      <li v-if="productlist.length==0" style="width:100%;height:150px;border:0px;">
+        <div style="width:100%;height:150px;"></div>
+      </li>
+      <li v-for="(item,index) in productlist" :key="index" class="cap-goods-list__wrapper">
+        <router-link class="cap-goods-list__item cap-goods-list__item--small simple cap-goods-list__item--btn1 cap-goods-list__item--padding" :to="'/product/'+item.goodsId">
+          <div class="cap-goods-list__photo">
+            <img class="cap-goods-list__img lazy lazyload" :src="item.goodsMainImg" />
+          </div>
+          <div :class="'cap-goods-list__info has-title has-price '">
+            <h3 class="title" style="text-align:center;height:20px">{{item.goodsName}}</h3>
+            <p class="sale-info">
+              <span class="sale-price">¥ {{item.unitPrice}}</span>
+            </p>
+          </div>
+        </router-link>
+      </li>
+    </ul>
+    <div style="clear:both;"></div> 
+    <navigate/>
+  </div>
 </template>
 
 <script>
@@ -70,42 +41,55 @@ export default {
   data() {
     return {
       value: "",
+      productTypes:[
+        { id:'0',name:'个人清洁' },
+        { id:'1',name:'美妆护肤' },
+        { id:'2',name:'厨房用品' },
+        { id:'3',name:'家用电器' },
+        { id:'4',name:'家具家纺' },
+        { id:'5',name:'手机数码' },
+        { id:'6',name:'配饰背包' },
+        { id:'7',name:'汽车用品' },
+      ],
       activeKey: 0,
       fullHeight: document.documentElement.clientHeight - 93,
-      fullWidth: document.documentElement.clientWidth - 110
+      fullWidth: document.documentElement.clientWidth - 110,
+      productlist:[]
     };
   },
-  created(){
-    localStorage.clear();
+  created() {
+    localStorage.setItem("activeName",null)
+    //localStorage.clear();
   },
+  
   methods: {
     //onSearch() {
-      //console.log(this.value);
+    //console.log(this.value);
     //},
     onClick(key) {
-      console.log("key",key);
+      // console.log("key",key);
       this.activeKey = key;
     }
   }
 };
 </script>
 <style>
-  .text {
-    font-size: 14px;
-  }
+.text {
+  font-size: 14px;
+}
 
-  .item {
-    margin-bottom: 12px;
-  }
+.item {
+  margin-bottom: 12px;
+}
 
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
-  }
-  .clearfix:after {
-    clear: both
-  }
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
 </style>
 
 <style lang="less">
@@ -137,8 +121,8 @@ export default {
       font-size: 14px;
       color: #333;
     }
-    ul{
-        margin-top: 10px;
+    ul {
+      margin-top: 10px;
     }
     li {
       width: 32.8%;
@@ -148,40 +132,40 @@ export default {
         width: 60px;
         height: 60px;
       }
-      span{
-          font-size: 12px;
-    height: 36px;
-    color: #686868;
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: box;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-box;
-    display: -o-box;
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
-    -moz-line-clamp: 2;
-    -ms-line-clamp: 2;
-    -o-line-clamp: 2;
-    box-orient: vertical;
-    -webkit-box-orient: vertical;
-    -ms-box-orient: vertical;
-    -o-box-orient: vertical;
-    word-break: break-all;
-    box-align: center;
-    -webkit-box-align: center;
-    -moz-box-align: center;
-    -ms-box-align: center;
-    -o-box-align: center;
-    box-pack: center;
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
-    -ms-box-pack: center;
-    -o-box-pack: center;
-    z-index: 2;
-    position: relative;
+      span {
+        font-size: 12px;
+        height: 36px;
+        color: #686868;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: box;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-box;
+        display: -o-box;
+        line-clamp: 2;
+        -webkit-line-clamp: 2;
+        -moz-line-clamp: 2;
+        -ms-line-clamp: 2;
+        -o-line-clamp: 2;
+        box-orient: vertical;
+        -webkit-box-orient: vertical;
+        -ms-box-orient: vertical;
+        -o-box-orient: vertical;
+        word-break: break-all;
+        box-align: center;
+        -webkit-box-align: center;
+        -moz-box-align: center;
+        -ms-box-align: center;
+        -o-box-align: center;
+        box-pack: center;
+        -webkit-box-pack: center;
+        -moz-box-pack: center;
+        -ms-box-pack: center;
+        -o-box-pack: center;
+        z-index: 2;
+        position: relative;
       }
     }
   }

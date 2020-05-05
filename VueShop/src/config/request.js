@@ -62,9 +62,9 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data;
-    console.log(res)
+    //console.log(res)
     if(res.message=="Token无效，请重新登录"){
-      console.log(router)
+      //console.log(router)
       router.push({path:'/login'})
     }
     return res;

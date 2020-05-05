@@ -103,7 +103,7 @@ export default {
             this.showPicker=false;
         },
         onRead(file) {
-            console.log(file.length);
+            //console.log(file.length);
             if(file.length==undefined){
                 this.images.push(file.content);
             }else{
@@ -111,7 +111,7 @@ export default {
                     this.images.push(item.content);
                 });
             }
-            console.log(file)
+            //console.log(file)
         },
         removeImage(index,image){
             this.images.splice(index,1);

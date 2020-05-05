@@ -3,15 +3,8 @@
     <div class="user-profile" style="height:135px;line-height:20px;">
       <div class="user-profile-avatar">
         <a href="/#/user/info">
-          <img
-            src="http://haitao.nos.netease.com/ZnB0PM5xDzXZ2FeVlmT170102401021_150_150.png"
-            style="width:50px;height:50px;vertical-align:bottom"
-            alt="用户头像"
-          />
-          <span
-            class="m-nick"
-            style="font-size:14px;left:10px"
-          >{{userInfo.name}}{{userInfo.userTelephone}}</span>
+          <img src="http://haitao.nos.netease.com/ZnB0PM5xDzXZ2FeVlmT170102401021_150_150.png" style="width:50px;height:50px;vertical-align:bottom" alt="用户头像" />
+          <span class="m-nick" style="font-size:14px;left:10px">{{userInfo.name}}{{userInfo.userTelephone}}</span>
         </a>
       </div>
 
@@ -105,6 +98,7 @@
 
 <script>
 import { GetUserPorints } from "../../api/user.js";
+import { GetProductList } from "@/api/goods.js";
 export default {
   data() {
     return {
@@ -117,22 +111,22 @@ export default {
         userTelephone: ""
       },
       vipSys: [
-        {
-          name: "会员商品1",
-          id: "1"
-        },
-        {
-          name: "会员商品2",
-          id: "2"
-        },
-        {
-          name: "会员商品3",
-          id: "3"
-        },
-        {
-          name: "会员商品4",
-          id: "4"
-        }
+        // {
+        //   name: "会员商品1",
+        //   id: "1"
+        // },
+        // {
+        //   name: "会员商品2",
+        //   id: "2"
+        // },
+        // {
+        //   name: "会员商品3",
+        //   id: "3"
+        // },
+        // {
+        //   name: "会员商品4",
+        //   id: "4"
+        // }
       ]
     };
   },
@@ -143,13 +137,22 @@ export default {
     this.userInfo.name = this.$store.state.userInfo.name;
     this.userInfo.userTelephone = this.$store.state.userInfo.userTelephone;
     GetUserPorints(userId).then(response => {
-      console.log(response);
+      //console.log(response);
       if (response.state == "success") {
         this.userInfo.porintsSurplus = response.data.porintsSurplus;
         this.userInfo.producePorints = response.data.productPorints;
         this.userInfo.treamPorints = response.data.treamPorints;
       } else {
         this.userInfo.porintsSurplus = this.userInfo.producePorints = this.userInfo.treamPorints = 0;
+      }
+    });
+    GetProductList().then(res => {
+      var _products=[]
+      if (res.state == "success") {
+         res.data.forEach(d => {
+           _products.push({ id:d.goodsId,name:d.goodsName })
+         });
+         this.vipSys=_products
       }
     });
   }

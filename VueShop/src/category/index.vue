@@ -126,7 +126,7 @@ export default {
       //console.log(this.value);
     //},
     onClick(key) {
-      console.log("key",key);
+      //console.log("key",key);
       this.activeKey = key;
     }
   }

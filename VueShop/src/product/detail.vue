@@ -255,11 +255,11 @@ export default {
         this.showTag=true;
     },
     onBuyClicked(data) {
-      console.log(JSON.stringify(data));
+      //console.log(JSON.stringify(data));
       this.$router.push({ path: this.redirect || "/order" }); //进入订单页面
     },
     onAddCartClicked(data) {
-      console.log(JSON.stringify(data));
+      //console.log(JSON.stringify(data));
       this.$toast("加入购物车成功!");
       //this.$toast(JSON.stringify(data));
     },

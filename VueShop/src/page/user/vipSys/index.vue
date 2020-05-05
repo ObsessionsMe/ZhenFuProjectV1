@@ -119,7 +119,7 @@ export default {
       this.getEarnData(index);
     },
     getEarnData(tabIndex) {
-      console.log(this.productEarn);
+      //console.log(this.productEarn);
       switch (tabIndex) {
         case 0:
           GetProductEarn(this.productEarn.param).then(res => {

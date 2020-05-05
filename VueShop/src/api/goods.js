@@ -7,6 +7,13 @@ export function GetGoodsList() {
   })
 }
 
+export function GetProductList() {
+  return request({
+    url: '/api/goods/GetProductList',
+    method: 'get'
+  })
+}
+
 export function GetGoodsDetails(params) {
   return request({
     url: '/api/goods/GetGoodsDetails',
