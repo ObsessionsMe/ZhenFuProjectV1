@@ -107,6 +107,7 @@ namespace BusinessLogic.ClientService
                 int sumItemPoints = ItemPoints * order.BuyGoodsNums;
                 var userPorintsRecord = new UserPorintsRecordEntity();
                 userPorintsRecord.UserId = userId;
+                userPorintsRecord.GoodsId = order.GoodsId;
                 userPorintsRecord.ProductPorints = sumItemPoints;
                 userPorintsRecord.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                 recordRepository.Insert(userPorintsRecord);

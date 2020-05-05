@@ -21,6 +21,11 @@ namespace Entity
         public string UserId { get; set; }
 
         /// <summary>
+        /// 商品Id
+        /// </summary>
+        public string GoodsId { get; set; }  
+
+        /// <summary>
         /// 产品赠送积分
         /// </summary>
         public int ProductPorints { get; set; }
