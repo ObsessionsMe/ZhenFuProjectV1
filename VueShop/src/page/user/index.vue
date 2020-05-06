@@ -4,8 +4,15 @@
     <div class="user-profile" style="height:155px;line-height:20px;">
       <div class="user-profile-avatar">
         <a>
-          <img src="http://haitao.nos.netease.com/ZnB0PM5xDzXZ2FeVlmT170102401021_150_150.png" style="width:50px;height:50px;vertical-align:bottom" alt="用户头像" />
-          <span class="m-nick" style="font-size:14px;left:10px">{{userInfo.name}}{{userInfo.userTelephone}}</span>
+          <img
+            src="http://haitao.nos.netease.com/ZnB0PM5xDzXZ2FeVlmT170102401021_150_150.png"
+            style="width:50px;height:50px;vertical-align:bottom"
+            alt="用户头像"
+          />
+          <span
+            class="m-nick"
+            style="font-size:14px;left:10px"
+          >{{userInfo.name}}{{userInfo.userTelephone}}</span>
         </a>
       </div>
 
@@ -67,7 +74,7 @@
       <van-cell title="会员系统" />
       <van-row class="user-links">
         <template v-for="item in vipSys">
-          <router-link :key="item.goodsId" :to="{path:'/user/vipSys',query:item}">
+          <router-link :key="item.goodsId" :to="{path:'/user/vipSys',query:item.goodsId}">
             <van-col span="6">
               <van-icon name="after-sale" />
               <div>{{item.goodsName}}</div>
@@ -99,7 +106,7 @@
       <van-cell title="收货地址" is-link to="/user/address" />
     </van-cell-group>
     <van-cell-group>
-    <van-cell title="修改密码" is-link to="/login/password" />
+      <van-cell title="修改密码" is-link to="/login/password" />
     </van-cell-group>
     <van-cell-group>
       <van-cell title="退出登录" is-link to="/login" />
@@ -110,7 +117,7 @@
 
 <script>
 import { GetUserPorints } from "../../api/user.js";
-import { GetGoodsList,GetProductList } from "../../api/goods.js";
+import { GetProductList } from "../../api/goods.js";
 
 export default {
   data() {
@@ -123,8 +130,7 @@ export default {
         porintsSurplus: 0,
         userTelephone: ""
       },
-      vipSys: [
-      ]
+      vipSys: []
     };
   },
   created() {
@@ -152,21 +158,13 @@ export default {
       });
     },
     GetGoodsOn() {
-      GetGoodsList().then(response => {
-        console.log("response.data.shopDataList",response.data.shopDataList);
-        this.vipSys = response.data.shopDataList;
-        
+      GetProductList().then(response => {
+        if (response.state == "success") {
+          console.log("response.data.shopDataList", response.data);
+          this.vipSys = response.data;
+        }
       });
     }
-    GetProductList().then(res => {
-      var _products=[]
-      if (res.state == "success") {
-         res.data.forEach(d => {
-           _products.push({ id:d.goodsId,name:d.goodsName })
-         });
-         this.vipSys=_products
-      }
-    });
   }
 };
 </script>
