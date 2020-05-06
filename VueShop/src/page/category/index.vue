@@ -22,34 +22,16 @@
     </van-badge-group>
     <div class="content" :style="'width:'+fullWidth+'px;height:'+(fullHeight-7)+'px'">
       <div v-if="this.activeKey==0" class="category-div">
-        <img width="150" :src="require('@/assets/images/scs1.png')" />
-        <img width="150" :src="require('@/assets/images/scs2.png')" />
-        <img width="150" :src="require('@/assets/images/scs3.png')" />
-        <img width="150" :src="require('@/assets/images/scs4.png')" />
-        <img width="150" :src="require('@/assets/images/scs5.png')" />
-        <img width="150" :src="require('@/assets/images/scs6.png')" />
-        <img width="150" :src="require('@/assets/images/scs7.png')" />
-        <img width="150" :src="require('@/assets/images/scs8.png')" />
-        <img width="150" :src="require('@/assets/images/scs9.png')" />
+        <img v-for="img in scsImageList"  :key="img" v-lazy="img" />
       </div>
       <div v-if="this.activeKey==1" class="category-div">
-        <img width="150" :src="require('@/assets/images/scs10.png')" />
-        <img width="150" :src="require('@/assets/images/scs11.png')" />
-        <img width="150" :src="require('@/assets/images/scs12.png')" />
-        <img width="150" :src="require('@/assets/images/scs13.png')" />
-        <img width="150" :src="require('@/assets/images/scs14.png')" />
-        <img width="150" :src="require('@/assets/images/scs15.png')" />
+         <img v-for="img in yfzImageList"  :key="img" v-lazy="img" />
       </div>
       <div v-if="this.activeKey==2" class="category-div">
-        <div class="block">
-          <!-- <span class="demonstration">产品介绍</span> -->
-          <h4>产品介绍</h4>
-        </div>
+         <img v-for="img in cpjsImageList"  :key="img" v-lazy="img" />
       </div>
       <div v-if="this.activeKey==3" class="category-div">
-        <div class="block">
-          <h4>真福时刻</h4>
-        </div>
+        
       </div>
     </div>
     <navigate />
@@ -65,7 +47,31 @@ export default {
       value: "",
       activeKey: 0,
       fullHeight: document.documentElement.clientHeight - 93,
-      fullWidth: document.documentElement.clientWidth - 110
+      fullWidth: document.documentElement.clientWidth - 110,
+      scsImageList:[
+        require('@/assets/images/scs001.png'),
+        require('@/assets/images/scs002.png'),
+        require('@/assets/images/scs004.png'),
+        require('@/assets/images/scs004.png'),
+      ],
+      yfzImageList:[
+        require('@/assets/images/yfz001.png'),
+        require('@/assets/images/yfz002.png'),
+        require('@/assets/images/yfz003.png'),
+        require('@/assets/images/yfz004.png'),
+        require('@/assets/images/yfz005.png'),
+        require('@/assets/images/yfz006.png'),
+      ],
+      cpjsImageList:[
+        require('@/assets/images/cpjs001.png'),
+        require('@/assets/images/cpjs002.png'),
+        require('@/assets/images/cpjs003.png'),
+        require('@/assets/images/cpjs004.png'),
+        require('@/assets/images/cpjs005.png'),
+        require('@/assets/images/cpjs006.png'),
+        require('@/assets/images/cpjs007.png'),
+        require('@/assets/images/cpjs008.png')
+      ]
     };
   },
   created() {
@@ -78,11 +84,6 @@ export default {
     onClick(key) {
       console.log("key", key);
       this.activeKey = key;
-      GetMyTream().then(response => {
-        //存储用户基础信息和token
-        console.log(response);
-        //this.data=response;
-      });
     }
   }
 };

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--商品个人图-->
-    <div class="user-profile" style="height:155px;line-height:20px;">
+    <div class="user-profile" style="height:170px;line-height:18px;">
       <div class="user-profile-avatar">
         <a>
           <img
