@@ -117,7 +117,7 @@
 
 <script>
 import { GetUserPorints } from "../../api/user.js";
-import { GetProductList } from "../../api/goods.js";
+import { GetGoodsList } from "../../api/goods.js";
 
 export default {
   data() {
@@ -143,21 +143,8 @@ export default {
     this.GetUserPorintsOn(userId);
     //获取商品
     this.GetGoodsOn();
-    //获取会员产品列表
-    this.GetProductListOn();
   },
   methods: {
-    GetProductListOn(){
-      GetProductList().then(res => {
-      var _products=[]
-      if (res.state == "success") {
-         res.data.forEach(d => {
-           _products.push({ id:d.goodsId,name:d.goodsName })
-         });
-         this.vipSys=_products
-      }
-    });
-    },
     GetUserPorintsOn(userId) {
       GetUserPorints(userId).then(response => {
         console.log(response);
@@ -172,10 +159,10 @@ export default {
 
     },
     GetGoodsOn() {
-      GetProductList().then(response => {
+      GetGoodsList().then(response => {
         if (response.state == "success") {
-          console.log("response.data.shopDataList", response.data);
-          this.vipSys = response.data;
+          console.log("response.data.shopDataList", response.data.shopDataList);
+          this.vipSys = response.data.shopDataList;
         }
       });
     }
