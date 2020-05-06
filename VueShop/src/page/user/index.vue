@@ -137,8 +137,21 @@ export default {
     this.GetUserPorintsOn(userId);
     //获取商品
     this.GetGoodsOn();
+    //获取会员产品列表
+    this.GetProductListOn();
   },
   methods: {
+    GetProductListOn(){
+      GetProductList().then(res => {
+      var _products=[]
+      if (res.state == "success") {
+         res.data.forEach(d => {
+           _products.push({ id:d.goodsId,name:d.goodsName })
+         });
+         this.vipSys=_products
+      }
+    });
+    },
     GetUserPorintsOn(userId) {
       GetUserPorints(userId).then(response => {
         console.log(response);
@@ -150,6 +163,7 @@ export default {
           this.userInfo.porintsSurplus = this.userInfo.producePorints = this.userInfo.treamPorints = 0;
         }
       });
+
     },
     GetGoodsOn() {
       GetGoodsList().then(response => {
@@ -158,15 +172,6 @@ export default {
         
       });
     }
-    GetProductList().then(res => {
-      var _products=[]
-      if (res.state == "success") {
-         res.data.forEach(d => {
-           _products.push({ id:d.goodsId,name:d.goodsName })
-         });
-         this.vipSys=_products
-      }
-    });
   }
 };
 </script>
