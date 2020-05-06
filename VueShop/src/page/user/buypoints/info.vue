@@ -45,10 +45,10 @@ export default {
         return;
       }
       PayPorints(parseInt(this.PayNum) ).then(response => {
-        console.log(response);
+        //console.log(response);
         if (response.state == "success") {
           this.$toast("恭喜你,充值成功..");
-          console.log("response", response);
+          //console.log("response", response);
           // setInterval(() => {
           //   this.$router.push({ path: this.redirect || "/user/index" });
           // }, 2000);

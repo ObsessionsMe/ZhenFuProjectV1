@@ -137,13 +137,13 @@ export default {
         return;
       }
       this.$toast("正在点击提交订单...");
-      console.log(params);
+      //console.log(params);
       this.isCanPay = true;
       SubmitOrder(params).then(response => {
-        console.log(response);
+        //console.log(response);
         if (response.state == "success") {
           this.$toast("恭喜你,提交订单成功..");
-          console.log("response", response);
+          //console.log("response", response);
           var Interval=setInterval(() => {
             clearInterval(Interval)
             this.$router.push({ path: "/home" });
@@ -157,14 +157,14 @@ export default {
     }
   },
   created() {
-    console.log(this.$store.state.orderInfo);
+    //console.log(this.$store.state.orderInfo);
     this.goodsId = this.$store.state.orderInfo.goodsId;
     if (this.goodsId == null) {
       return;
     }
     ReadyPlaceOrder(this.goodsId).then(response => {
       if (response.state == "success") {
-        console.log(response);
+        //console.log(response);
         this.products[0].title = response.data.goodsData.goodsName;
         this.products[0].desc = response.data.goodsData.goodsDescribe;
         this.products[0].price = response.data.goodsData.unitPrice;

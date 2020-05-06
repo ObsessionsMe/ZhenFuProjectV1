@@ -151,7 +151,7 @@ export default {
     },
     showSku() {
       checkGoodLevel(this.goodsId).then(response => {
-        console.log(response);
+        //console.log(response);
         if (response.state == "success") {
           this.showBase = true;
         } else {
@@ -166,7 +166,7 @@ export default {
     onBuyClicked(data) {
       //var goodsNum = data.selectedNum;
       //提交购买,进入到下订单页面
-      console.log(JSON.stringify(data));
+      //console.log(JSON.stringify(data));
       //提交购买
       //this.goods_sku.goods_info
       var orderInfo = {
@@ -177,7 +177,7 @@ export default {
       this.$router.push({ path: this.redirect || "/order" }); //进入订单页面
     },
     onAddCartClicked(data) {
-      console.log(JSON.stringify(data));
+      //console.log(JSON.stringify(data));
       this.$toast("加入购物车成功!");
       //this.$toast(JSON.stringify(data));
     }

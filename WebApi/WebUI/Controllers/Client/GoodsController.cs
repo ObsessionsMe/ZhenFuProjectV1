@@ -21,11 +21,24 @@ namespace WebUI.Controllers.Client
     {
         private readonly IGoodsRepository goodsRepository;
         private readonly IOrderRepository orderRepository;
+        GoodsService servers = null;
         public GoodsController(IGoodsRepository _goodsRepository, IOrderRepository _orderRepository)
         {
             goodsRepository = _goodsRepository;
             orderRepository = _orderRepository;
+            servers=new GoodsService(_goodsRepository, _orderRepository);
         }
+
+        /// <summary>
+        /// 获取产品列表
+        /// </summary>
+        /// <returns></returns>
+        [Route("GetProductList")]
+        public ActionResult GetGoodsListByProduct()
+        {
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = servers.GetGoodsListByProduct() }) ;
+        }
+
         /// <summary>
         ///  获取所有商品列表-首页-轮播图，以及商品列表
         /// </summary>
@@ -33,8 +46,7 @@ namespace WebUI.Controllers.Client
         [Route("GetGoodsList")]
         public ActionResult GetGoodsList()
         {
-            //获取轮播图和产品列表
-            GoodsService servers = new GoodsService(goodsRepository, orderRepository);
+            //获取轮播图和产品列表           
             var data = servers.FindGoodsList();
             if (data == null)
             {
@@ -73,7 +85,6 @@ namespace WebUI.Controllers.Client
         public ActionResult GetGoodsDetails(string goodsId)
         {
             //2取商品
-            GoodsService servers = new GoodsService(goodsRepository, orderRepository);
             var data = servers.GetGoodsDetails(goodsId);
             if (data == null)
             {
@@ -89,7 +100,6 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败，请重新登录", data = "" });
             }
-            GoodsService servers = new GoodsService(goodsRepository, orderRepository);
             var data = servers.checkGoodLevel(userModel.UserId, goodsId);
             return Json(data);
         }

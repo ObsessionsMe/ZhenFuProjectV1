@@ -33,10 +33,10 @@ export default {
   methods: {
     getMyTream() {
       GetMyTream().then(response => {
-        console.log(response);
+        //console.log(response);
         this.treeData[0].label = response.data.parentName +"(推荐人)";
         this.treeData[0].children[0].label = response.data.name +"(我)";
-        console.log("treeData",response.data.treeData)
+        //console.log("treeData",response.data.treeData)
         this.treeData[0].children[0].children =  response.data.treeData;
         //this.treeData[0].children[0].children = response.data.treeData;
         //firsts.push(response.data.treeData)

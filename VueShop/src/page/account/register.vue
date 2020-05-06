@@ -114,7 +114,7 @@ export default {
         Password: this.password
       };
       UserRegister(params).then(response => {
-        console.log("response",response);
+        //console.log("response",response);
         if (response.state == "success") {       
           this.$notify({
             title: "成功",
@@ -155,7 +155,7 @@ export default {
         mobile: this.userTelephone
       };
       GetPhoneCode(params).then(response => {
-        console.log(response);
+        //console.log(response);
         if (response.data.state == "sucess") {
           this.phoneCode_r = response.data.data;
         }

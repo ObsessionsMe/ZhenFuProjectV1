@@ -4,15 +4,8 @@
     <div class="user-profile" style="height:155px;line-height:20px;">
       <div class="user-profile-avatar">
         <a>
-          <img
-            src="http://haitao.nos.netease.com/ZnB0PM5xDzXZ2FeVlmT170102401021_150_150.png"
-            style="width:50px;height:50px;vertical-align:bottom"
-            alt="用户头像"
-          />
-          <span
-            class="m-nick"
-            style="font-size:14px;left:10px"
-          >{{userInfo.name}}{{userInfo.userTelephone}}</span>
+          <img src="http://haitao.nos.netease.com/ZnB0PM5xDzXZ2FeVlmT170102401021_150_150.png" style="width:50px;height:50px;vertical-align:bottom" alt="用户头像" />
+          <span class="m-nick" style="font-size:14px;left:10px">{{userInfo.name}}{{userInfo.userTelephone}}</span>
         </a>
       </div>
 
@@ -117,7 +110,7 @@
 
 <script>
 import { GetUserPorints } from "../../api/user.js";
-import { GetGoodsList } from "../../api/goods.js";
+import { GetGoodsList,GetProductList } from "../../api/goods.js";
 
 export default {
   data() {
@@ -165,6 +158,15 @@ export default {
         
       });
     }
+    GetProductList().then(res => {
+      var _products=[]
+      if (res.state == "success") {
+         res.data.forEach(d => {
+           _products.push({ id:d.goodsId,name:d.goodsName })
+         });
+         this.vipSys=_products
+      }
+    });
   }
 };
 </script>
