@@ -44,7 +44,12 @@ namespace Entity
         /// 团队积分
         /// </summary>
         public int TreamPorints { get; set; }
-        
+
+        /// <summary>
+        /// 积分类型(1:赠送积分,2兑现积分)
+        /// </summary>
+        public int PorintsType { get; set; }
+
         /// <summary>
         /// 新增时间
         /// </summary>

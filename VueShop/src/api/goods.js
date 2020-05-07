@@ -38,3 +38,11 @@ export function GetAttachmentListByType(params) {
   })
 }
 
+export function GetAttachmentList(goodsId) {
+  return request({
+    url: '/api/Attachment/GetAttachmentList',
+    method: 'get',
+    params: { goodsId:goodsId,type:'1,2'}
+  })
+}
+

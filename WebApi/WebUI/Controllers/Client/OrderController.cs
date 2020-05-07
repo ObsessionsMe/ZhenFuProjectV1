@@ -55,7 +55,7 @@ namespace WebUI.Controllers.Client
             }
             //获取收货地址
             ReceiveAddressService rserver = new ReceiveAddressService(receiveAddressRepository);
-            var receiveAddressData = rserver.GetUserReveiveAddressList(userModel.UserId);
+            var receiveAddressData = rserver.GetDefalutReveiveAddress(userModel.UserId);
             //if (receiveAddressData == null)
             //{
             //    //前端判断，如果数量为0，提醒用户添加收货地址

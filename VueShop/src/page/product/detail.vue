@@ -2,8 +2,8 @@
   <div class="goods">
     <headerNav title="商品详情" />
     <van-swipe class="goods-swipe" :autoplay="3000">
-      <van-swipe-item v-for="thumb in goodsImg" :key="thumb">
-        <img :src="thumb" />
+      <van-swipe-item v-for="thumb in scorllgoodsImg" :key="thumb">
+        <img :src="thumb" style="height:250px" />
       </van-swipe-item>
     </van-swipe>
 
@@ -18,12 +18,7 @@
     <div class="goods-info">
       <p class="goods-info-title">图文详情</p>
       <div style="text-align:center;">
-        <img
-          src="https://haitao.nosdn2.127.net/ac19460151ee4d95a6657202bcfc653c1531470912089jjjq8ml410763.jpg"
-        />
-        <img
-          src="https://haitao.nosdn2.127.net/ac19460151ee4d95a6657202bcfc653c1531470912089jjjq8ml410763.jpg"
-        />
+        <img v-for="img in detailsImageList" :key="img" v-lazy="img" />
       </div>
     </div>
 
@@ -77,18 +72,26 @@
 
 <script>
 import skuData from "../../data/sku";
-import { GetGoodsDetails, checkGoodLevel } from "../../api/goods.js";
+import { GetGoodsDetails, checkGoodLevel,GetAttachmentList } from "../../api/goods.js";
+import { getFilesUrl } from "../../config/Utilitie.js";
 export default {
   components: {},
   data() {
     this.skuData = skuData;
     return {
+      detailsImageList: [
+        // require("@/assets/images/zffm001.png"),
+        // require("@/assets/images/zffm002.png"),
+        // require("@/assets/images/zffm003.png"),
+        // require("@/assets/images/zffm004.png"),
+        // require("@/assets/images/zffm005.png")
+      ],
       goodsId: "",
       show: false,
       showTag: false,
-      goodsImg: [
-        "http://47.115.57.178/resource/images/shopone1.png",
-        "http://47.115.57.178/resource/images/shopone2.png"
+      scorllgoodsImg: [
+        // require("@/assets/images/zffm_s001.png"),
+        // require("@/assets/images/zffm_s002.png")
       ],
       goods: {},
       goods_alert: {},
@@ -103,7 +106,7 @@ export default {
         goods_id: "",
         goods_info: {
           title: "", //商品名称
-          picture: "http://47.115.57.178/resource/images/shopone1.png" //商品图片(单张)
+          picture: require("@/assets/images/zffm_s001.png") //商品图片(单张)
         }
       },
       showBase: false,
@@ -194,6 +197,7 @@ export default {
     GetGoodsDetails(goodsId).then(response => {
       if (response.state == "success") {
         var goodsData = response.data;
+        console.log("goodsData",goodsData);
         this.goods = goodsData;
         this.goods.unitPrice = parseInt(goodsData.unitPrice) * 100;
         this.goods_sku.list[0].stock_num = goodsData.stockCount;
@@ -201,6 +205,22 @@ export default {
         this.goods_sku.goods_id = goodsData.goodsId;
         this.goods_sku.goods_info.title = goodsData.goodsName;
         this.goodsId = goodsData.goodsId;
+      }
+    });
+
+    //获取商品详情轮播和详情图
+    GetAttachmentList(goodsId).then(response => {
+      if (response.state == "success") {
+        var goodsDatas = response.data;
+          console.log("goodsData",goodsDatas);
+        for(var i=0; i < goodsDatas.length;i++){
+          if(goodsDatas[i].attachmentType == 1){
+            this.scorllgoodsImg.push(getFilesUrl() + goodsDatas[i].attachmentName);
+          }
+          if(goodsDatas[i].attachmentType == 2){
+            this.detailsImageList.push(getFilesUrl() + goodsDatas[i].attachmentName);
+          }
+        }     
       }
     });
   }

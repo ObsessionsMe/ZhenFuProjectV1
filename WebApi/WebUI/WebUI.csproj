@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Upload\" />
+    <Folder Include="Upload\新文件夹\" />
   </ItemGroup>
 
 

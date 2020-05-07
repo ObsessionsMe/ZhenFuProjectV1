@@ -31,7 +31,8 @@ export default {
   data() {
     return {
       payMethod: "1",
-      PayNum: ""
+      PayNum: "",
+      //商户号
     };
   },
   methods: {

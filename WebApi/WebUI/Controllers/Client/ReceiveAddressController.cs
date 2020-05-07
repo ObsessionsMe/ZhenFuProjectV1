@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessLogic.ClientService;
+using Entity;
 using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using NPOI.HPSF;
+using Repository.RepositoryService;
 using WebUI.App_Start;
 
 namespace WebUI.Controllers.Client
@@ -15,6 +19,14 @@ namespace WebUI.Controllers.Client
     [ApiController]
     public class ReceiveAddressController : BaseControllers
     {
+        private readonly IReceiveAddressRepository receiveRepository;
+        ReceiveAddressService servers = null;
+        public ReceiveAddressController(IReceiveAddressRepository _receiveRepository)
+        {
+            receiveRepository = _receiveRepository;
+            servers = new ReceiveAddressService(_receiveRepository);
+        }
+
         /// <summary>
         ///  获取用户默认收货地址
         /// </summary>
@@ -22,7 +34,12 @@ namespace WebUI.Controllers.Client
         [Route("GetDefalutAddress")]
         public ActionResult GetUserDefalutAddress()
         {
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "" });
+            var entity = servers.GetDefalutReveiveAddress(userModel.UserId);
+            if (entity == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取数据失败", data = null });
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = entity });
         }
 
         /// <summary>
@@ -32,7 +49,12 @@ namespace WebUI.Controllers.Client
         [Route("GetUserAllAddress")]
         public ActionResult GetUserAllAddress()
         {
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "" });
+            var receiveEntityList = servers.GetUserAllAddress(userModel.UserId);
+            if (receiveEntityList.Count == 0)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取数据失败", data = null });
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = receiveEntityList });
         }
 
 
@@ -41,9 +63,32 @@ namespace WebUI.Controllers.Client
         /// </summary>
         /// <returns></returns>
         [Route("SubmitAddress")]
-        public ActionResult SubmitAddress()
+        public ActionResult SubmitAddress(ReceiveAddressEntity receiveEntity)
         {
+            if (receiveEntity == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取数据失败", data = null });
+            }
+            if (receiveEntity.Id == 0 || receiveEntity.AddressId == null)
+            {
+                receiveEntity.AddressId = "Ad" + Common.GuId();
+                receiveRepository.Insert(receiveEntity);
+            }
+            else {
+                receiveRepository.Update(receiveEntity);
+            }        
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "" });
+        }
+
+        [Route("GetAddressById")]
+        public ActionResult GetAddressById(int Id)
+        {
+            var receiveEntity = receiveRepository.FindEntity(x => x.Id == Id);
+            if (receiveEntity == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取数据失败", data = null });
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = receiveEntity });
         }
 
         /// <summary>

@@ -12,7 +12,7 @@ namespace BusinessLogic.ClientService
     public class ReceiveAddressService
     {
         /// <summary>
-        ///  商品模块业务逻辑
+        ///  收货地址模块业务逻辑
         /// </summary>
         private IReceiveAddressRepository receiveAddressRepository;
         public ReceiveAddressService(IReceiveAddressRepository _receiveAddressRepository)
@@ -21,12 +21,27 @@ namespace BusinessLogic.ClientService
         }
 
         /// <summary>
-        /// 获取所有有效商品
+        /// 获取默认收货地址,没有就返回第一个
         /// </summary>
         /// <returns></returns>
-        public ReceiveAddressEntity GetUserReveiveAddressList(string userId)
+        public ReceiveAddressEntity GetDefalutReveiveAddress(string userId)
         {
-            return receiveAddressRepository.FindEntity(x => x.UserId == userId && x.isDefalut == "Y");
+            var entity = receiveAddressRepository.FindEntity(x => x.UserId == userId && x.isDefalut == "Y");
+            if (entity != null)
+            {
+                return entity;
+            }
+            var list = receiveAddressRepository.FindList(x => x.UserId == userId);
+            if (list.Count == 0)
+            {
+                return null;
+            }
+            return list.SingleOrDefault();
+        }
+
+        public List<ReceiveAddressEntity> GetUserAllAddress(string userId)
+        {
+            return receiveAddressRepository.FindList(x => x.UserId == userId);
         }
     }
 }

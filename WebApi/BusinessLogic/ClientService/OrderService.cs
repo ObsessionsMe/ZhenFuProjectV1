@@ -136,6 +136,10 @@ namespace BusinessLogic.ClientService
         {
             var userPorintsEntity = new UserPrintsSumEntity();
             userPorintsEntity = sumRepository.FindEntity(x => x.UserId == userId);
+            if (userPorintsEntity == null)
+            {
+                return null;
+            }
             userPorintsEntity.PorintsSurplus = (userPorintsEntity.PorintsSurplus) + (payNum);
             int i = sumRepository.Update(userPorintsEntity);
             if (i < 1)

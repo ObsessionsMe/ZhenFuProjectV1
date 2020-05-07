@@ -2,6 +2,7 @@
 using RepositoryFactory.ServiceInterface;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BusinessLogic.ClientService
@@ -20,6 +21,10 @@ namespace BusinessLogic.ClientService
         public List<AttachMentInfoEntity> FindAttachMentList(int type)
         {
             return attachMentRepository.FindList(x => x.AttachmentType == type);
+        }
+        public List<AttachMentInfoEntity> FindAttachMentList(string goodsId, string[] type)
+        {
+            return attachMentRepository.FindList(x => type.Contains(x.AttachmentType.ToString()) && x.MainId == goodsId);
         }
     }
 }

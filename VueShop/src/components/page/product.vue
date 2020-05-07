@@ -44,10 +44,10 @@ export default {
             var shopDataList = response.data.shopDataList;     
             for(var i = 0;i < shopDataList.length; i++){
                 if(i==0){
-                    shopDataList[i].goodsMainImg = 'http://47.115.57.178/resource/images/shopone1.png';
+                    shopDataList[i].goodsMainImg = require('@/assets/images/zffm_s001.png');
                 }
                 else{
-                    shopDataList[i].goodsMainImg = 'http://47.115.57.178/resource/images/shopone2.png';
+                    shopDataList[i].goodsMainImg = require('@/assets/images/zffm_s002.png')
                 }              
             }
             this.productlist=shopDataList;

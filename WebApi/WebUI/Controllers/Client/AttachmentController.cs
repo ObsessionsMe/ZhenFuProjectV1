@@ -36,5 +36,19 @@ namespace WebUI.Controllers.Client
             }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
         }
+
+        [Route("GetAttachmentList")]
+        public ActionResult GetAttachmentList(string goodsId, string type)
+        {
+            string[] types = type.Split(',');
+            //获取轮播图和产品列表
+            AttachmentService servers = new AttachmentService(attachMentRepository);
+            var data = servers.FindAttachMentList(goodsId, types);
+            if (data == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "附件数据为空", data = "" });
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
+        }
     }
 }
