@@ -68,7 +68,8 @@ namespace RepositoryFactory.RepositoryBase
         private static DbCommand ProcQueryBase(this DatabaseFacade facade, out DbConnection conn, string procName, SqlParams sqlParams)
         {
             var param = sqlParams.GetSqlParameters();
-            string procSql = string.Format("exec {0} {1}", procName, string.Join(',', sqlParams.Params.Keys));
+            //string procSql = string.Format("exec {0} {1}", procName, string.Join(',', sqlParams.Params.Keys));
+            string procSql = string.Format("{0}", procName);
 
             return CreateCommand(facade, procSql, out conn, param);
         }
@@ -80,7 +81,7 @@ namespace RepositoryFactory.RepositoryBase
 
                 var ds = new DataSet();
                 var cmd = ProcQueryBase(facade, out DbConnection conn, procName, sqlParams);
-
+                cmd.CommandType = CommandType.StoredProcedure;
                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd as SqlCommand);
                 sqlDataAdapter.Fill(ds);
                 conn.Close();
