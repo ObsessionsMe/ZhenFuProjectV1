@@ -74,7 +74,7 @@
       <van-cell title="会员系统" />
       <van-row class="user-links">
         <template v-for="item in vipSys">
-          <router-link :key="item.goodsId" :to="{path:'/user/vipSys',query:item.goodsId}">
+          <router-link :key="item.goodsId" :to="{path:'/user/vipSys',query:{ id:item.goodsId,name:item.goodsName }}">
             <van-col span="6">
               <van-icon name="after-sale" />
               <div>{{item.goodsName}}</div>
