@@ -14,6 +14,15 @@ export function GetProductList() {
   })
 }
 
+export function GetGoodsListByType(type) {
+  return request({
+    url: '/api/goods/GetGoodsListByType?type='+type,
+    method: 'get',
+  })
+}
+
+
+
 export function GetGoodsDetails(params) {
   return request({
     url: '/api/goods/GetGoodsDetails',

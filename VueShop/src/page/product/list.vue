@@ -32,7 +32,7 @@
 
 <script>
 import { Search } from "vant";
-
+import { GetGoodsListByType} from '@/api/goods.js'
 export default {
   name: "userindex",
   components: {
@@ -69,6 +69,13 @@ export default {
     onClick(key) {
       // console.log("key",key);
       this.activeKey = key;
+      GetGoodsListByType(key).then(res=>{
+        if (res.state == "success") {
+          this.productlist=res.data
+        } else {
+          this.$toast(res.message);
+        }
+      })
     }
   }
 };

@@ -26,7 +26,7 @@ namespace WebUI.Controllers.Client
         {
             goodsRepository = _goodsRepository;
             orderRepository = _orderRepository;
-            servers=new GoodsService(_goodsRepository, _orderRepository);
+            servers = new GoodsService(_goodsRepository, _orderRepository);
         }
 
         /// <summary>
@@ -36,7 +36,17 @@ namespace WebUI.Controllers.Client
         [Route("GetProductList")]
         public ActionResult GetGoodsListByProduct()
         {
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = servers.GetGoodsListByProduct() }) ;
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = servers.GetGoodsListByProduct() });
+        }
+
+        /// <summary>
+        /// 获取商品列表
+        /// </summary>
+        /// <returns></returns>
+        [Route("GetGoodsListByType")]
+        public ActionResult GetGoodsListByType(int type)
+        {
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = servers.GetGoodsListByType(type) });
         }
 
         /// <summary>
