@@ -58,8 +58,8 @@ export default {
       receiveEntity.isDefalut = data.isDefault == true ? "Y" : "N";
       console.log("receiveEntity", receiveEntity);
       SubmitAddress(receiveEntity).then(response => {
-        //this.$toast('保存成功');
-        //this.$router.go(-1);
+        this.$toast('收货地址保存成功');
+        this.$router.go(-1);
       });
     },
     onDelete(data) {
