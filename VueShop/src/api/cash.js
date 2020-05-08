@@ -8,9 +8,9 @@ export function submitCash(data) {
   })
 }
 
-export function getCashDetail(type) {
+export function getCashDetail(type,goodsId) {
   return request({
-    url: '/api/cash/getCashDetail?type='+type,
+    url: '/api/cash/getCashDetail?type='+type+'&goodsId='+goodsId,
     method: 'get'
   })
 }

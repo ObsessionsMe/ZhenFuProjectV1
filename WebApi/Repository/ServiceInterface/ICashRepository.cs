@@ -10,6 +10,6 @@ namespace RepositoryFactory.ServiceInterface
 {
     public interface ICashRepository : IRepository<CashInfoEntity>
     {
-        DataTable GetCashDetail(string userId, int type);
+        DataTable GetCashDetail(string userId, int type, string GoodsId);
     }
 }

@@ -28,7 +28,7 @@ namespace BusinessLogic.ClientService
 
         public List<GoodsEntity> GetGoodsListByType(int type)
         {
-            return goodsRepository.FindList(f => f.Enable == "Y" & f.isProduct == "N" & f.GoodsType==type );
+            return goodsRepository.GetGoodsListByType(type);
         }
 
         /// <summary>

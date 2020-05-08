@@ -14,7 +14,7 @@
       <li v-for="(item,index) in productlist" :key="index" class="cap-goods-list__wrapper">
         <router-link class="cap-goods-list__item cap-goods-list__item--small simple cap-goods-list__item--btn1 cap-goods-list__item--padding" :to="'/product/'+item.goodsId">
           <div class="cap-goods-list__photo">
-            <img class="cap-goods-list__img lazy lazyload" :src="item.goodsMainImg" />
+            <img class="cap-goods-list__img lazy lazyload" :src="getUrl(item.goodsMainImg)" />
           </div>
           <div :class="'cap-goods-list__info has-title has-price '">
             <h3 class="title" style="text-align:center;height:20px">{{item.goodsName}}</h3>
@@ -33,6 +33,7 @@
 <script>
 import { Search } from "vant";
 import { GetGoodsListByType} from '@/api/goods.js'
+import { getFilesUrl } from '@/config/Utilitie.js'
 export default {
   name: "userindex",
   components: {
@@ -63,6 +64,9 @@ export default {
   },
   
   methods: {
+    getUrl(name){
+      return getFilesUrl()+'/'+name
+    },
     //onSearch() {
     //console.log(this.value);
     //},
