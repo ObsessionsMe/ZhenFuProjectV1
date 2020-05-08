@@ -15,7 +15,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchApplyList">查询</el-button>
+        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchCashApplyList">查询</el-button>
         <!-- <el-button type="primary" icon="el-icon-edit" @click="editUserGroup">编辑</el-button>
         <el-button type="primary" icon="el-icon-delete" @click="deleteUserGroup">删除</el-button> -->
         <el-button type="primary" icon="el-icon-search" @click="exportApplyList">导出excel</el-button>
@@ -80,13 +80,13 @@ export default {
   },
   created() {
     //页面初始化
-    //this.searchApplyList();
+    this.searchApplyList();
   },
   methods: {
     //获取用户兑换申请列表
-    searchApplyList() {
+    searchCashApplyList() {
       http
-        .post(url.GetGoodsList, {
+        .post(url.searchCashApplyList, {
           pagination: {
             rows: this.pageSize,
             page: this.pageIndex,
@@ -105,11 +105,11 @@ export default {
     handleSizeChange(currentsize) {
       this.pageSize = currentsize;
       this.pageIndex = 1;
-      this.searchApplyList();
+      this.searchCashApplyList();
     },
     handleCurrentChange(currentindex) {
       this.pageIndex = currentindex;
-      this.searchApplyList();
+      this.searchCashApplyList();
     },
     //查看商品
     exportApplyList(){

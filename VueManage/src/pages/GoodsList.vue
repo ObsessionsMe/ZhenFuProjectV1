@@ -37,9 +37,11 @@
           <el-table-column prop="goodsLevel" label="商品级别" width="100"></el-table-column>
           <el-table-column prop="unitPrice" label="商品主图" sortable width="150"></el-table-column>
           <el-table-column prop="itemPoints" label="库存数量" sortable width="100"></el-table-column>
-          <el-table-column prop="itemPoints" label="商品描述" sortable width="400"></el-table-column>
-          <el-table-column prop="enable" label="是否有效" sortable width="100"></el-table-column>
-          <el-table-column prop="enable" label="上架时间" sortable width="200"></el-table-column>
+          <el-table-column prop="enable" label="商品状态" sortable width="100">
+            <template slot-scope="scope">{{scope.row.enable=="Y"?"已上架":"已下架"}}</template>
+          </el-table-column>
+          <el-table-column prop="addtime" label="上架时间" sortable width="300"></el-table-column>
+           <el-table-column prop="goodsDescribe" label="商品描述" sortable width="300"></el-table-column>
         </el-table>
       </el-row>
       <el-pagination

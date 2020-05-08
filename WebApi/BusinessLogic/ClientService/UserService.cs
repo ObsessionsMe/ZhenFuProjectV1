@@ -85,7 +85,7 @@ namespace BusinessLogic.ClientService
                 userEntity.UserType = 1;//新用户注册默认都是经销商
                 userEntity.Enable = "Y";
                 userEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                userEntity.TourismPorints = 5000;
+                userEntity.TourismPorints = 1000;
                 userEntity.isHold = "N";
                 userRepository.Insert(userEntity);
                 //用户汇总初始化数据

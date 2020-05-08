@@ -2,7 +2,7 @@
   <div class="container">
     <el-form :inline="true" class="demo-form-inline" style="text-align:left">
       <el-form-item label="关键字">
-        <el-input placeholder="请输入会员姓名或手机号"></el-input>
+        <el-input placeholder="请输入会员姓名或手机号" v-model="kw"></el-input>
       </el-form-item>
       <el-form-item label="会员类型">
         <el-select placeholder="请选择会员类型" v-model="defalutMemBerType" >
@@ -25,7 +25,7 @@
         <el-table
           :data="tableData"
           tooltip-effect="dark"
-          style="width: 100%"
+          style="width:100%"
           highlight-current-row
           height="650"
         >
@@ -34,8 +34,10 @@
           <el-table-column prop="referrer" label="推荐人姓名" sortable width="120"></el-table-column>
           <el-table-column prop="referrerTelephone" label="推荐人手机号" sortable width="200"></el-table-column>
           <el-table-column prop="referrerTelephone" label="会员类型" sortable width="170"></el-table-column>
-          <el-table-column prop="indirectPoints" label="是否持仓" sortable width="100"></el-table-column>
-          <el-table-column prop="enable" label="是否有效" sortable width="100"></el-table-column>
+          <!-- <el-table-column prop="indirectPoints" label="是否持仓" sortable width="100"></el-table-column> -->
+          <el-table-column prop="enable" label="是否有效" sortable width="100">
+              <template slot-scope="scope">{{scope.row.enable=="Y"?"有效":"无效"}}</template>
+          </el-table-column>
           <el-table-column prop="addtime" label="注册时间" sortable width="200"></el-table-column>
         </el-table>
       </el-row>
@@ -81,13 +83,13 @@ export default {
   },
   created() {
     //页面初始化
-    //this.searchUser();
+    this.searchUser();
   },
   methods: {
     //获取日志列表
     searchUser() {
       http
-        .post(url.GetUserList, {
+        .post(url.GetMemberList, {
           pagination: {
             rows: this.pageSize,
             page: this.pageIndex,

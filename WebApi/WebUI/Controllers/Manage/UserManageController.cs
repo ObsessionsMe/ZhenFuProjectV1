@@ -100,8 +100,8 @@ namespace WebUI.Controllers.Manage
         /// <param name="pagination"></param>
         /// <param name="keyword"></param>
         /// <returns></returns>
-        [Route("GetUserList")]
-        public ActionResult GetUserList(PaginationParam param)
+        [Route("GetMemberList")]
+        public ActionResult GetMemberList(PaginationParam param)
         {
             UserManageService service = new UserManageService(userRepository);
             var pagination = param.pagination;

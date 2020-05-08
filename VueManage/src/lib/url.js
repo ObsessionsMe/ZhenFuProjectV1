@@ -6,8 +6,9 @@ console.log("process.env.NODE_ENV ",process.env.NODE_ENV);
 let url = {
     host:"files/",
     login: "api/UserManage/LoginOn",
-    GetUserList: "api/UserManage/GetUserList",
+    GetMemberList: "api/UserManage/GetMemberList",
     GetGoodsList: "api/GoodsManage/GetGoodsList",  
+    searchCashApplyList: "api/GoodsManage/searchCashApplyList",  
     SubmitGoods: "api/GoodsManage/SubmitGoods", 
     //logout: "api/Login/OutLogin",
     //getGridJson: "api/User/GetGridJson",
