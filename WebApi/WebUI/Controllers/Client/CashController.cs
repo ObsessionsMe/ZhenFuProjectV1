@@ -29,13 +29,13 @@ namespace WebUI.Controllers.Client
         }
 
         [Route("getCashDetail")]
-        public ActionResult GetCashDetail(int type)
+        public ActionResult GetCashDetail(int type,string GoodsId)
         {
             var result = new AjaxResult();
             try
             {
                 //获取用户的兑现详情
-                result.data =  cashService.GetCashDetail(userModel.UserId, type).ToDynamics().First();
+                result.data =  cashService.GetCashDetail(userModel.UserId, type, GoodsId).ToDynamics().First();
                 result.state = ResultType.success.ToString();
             }
             catch (Exception ex)

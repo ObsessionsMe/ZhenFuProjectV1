@@ -2,10 +2,15 @@
   <div>
     <headerNav :title="name" />
     <el-main>
-      <van-field readonly clickable name="picker" v-model="entity.payTypeName" label="兑现方式" placeholder="请选择" @click="showPayPicker = true" />
+      <van-field readonly clickable name="picker" v-model="entity.GoodsName" label="产品" placeholder="请选择" @click="showGoodsPicker = true" />
+      <van-popup v-model="showGoodsPicker" position="bottom">
+        <van-picker value-key="goodsName" show-toolbar :columns="productList" @confirm="onGoodsConfirm" @cancel="showGoodsPicker = false" />
+      </van-popup>
+
+      <!-- <van-field  readonly clickable name="picker" v-model="entity.payTypeName" label="兑现方式" placeholder="请选择" @click="showPayPicker = true" />
       <van-popup v-model="showPayPicker" position="bottom">
         <van-picker value-key="name" show-toolbar :columns="pays" @confirm="onPayConfirm" @cancel="showPayPicker = false" />
-      </van-popup>
+      </van-popup> -->
       <template v-if="entity.payTypeName=='银行卡'">
         <van-field readonly clickable name="picker" v-model="entity.bankTypeName" label="所属银行" placeholder="请选择" @click="showBankPicker = true" />
         <van-field label="开户人姓名" placeholder="请输入开户人姓名" v-model="entity.bankUserName" />
@@ -23,13 +28,15 @@
       </van-cell>
     </el-main>
     <el-footer>
+      <!-- <el-button v-if="IsDisabled" style="width:100%;" type="success" @click="onSubmit" round>提交</el-button>
+      <el-button v-if="IsDisabled==false" style="width:100%;" type="info" disabled round>提现时间为{{beginHour}}:00-{{endHour}}:00</el-button> -->
       <el-button style="width:100%;" type="success" @click="onSubmit" round>提交</el-button>
     </el-footer>
   </div>
 </template>
 <script>
-import { submitCash,getCashDetail } from "@/api/cash.js";
-
+import { submitCash, getCashDetail } from "@/api/cash.js";
+import { GetGoodsList } from "@/api/goods.js";
 import {
   Form,
   Field,
@@ -61,18 +68,24 @@ export default {
     ];
     return {
       id: 0,
-
       name: "",
+      IsDisabled:false,
+      beginHour:8,
+      endHour:21,
       showPayPicker: false,
       showBankPicker: false,
+      showGoodsPicker: false,
+      productList: [],
       pays: pays,
       banks: banks,
       min: 0,
       entity: {
         Type: 0,
-        payType: 0,
-        payTypeName: "",
-        bankType:0,
+        GoodsId: "",
+        GoodsName: "",
+        payType: 10003,
+        payTypeName: "银行卡",
+        bankType: 0,
         bankTypeName: "",
         bankUserName: "",
         account: "",
@@ -83,19 +96,40 @@ export default {
     };
   },
   created() {
-    this.entity.Type=parseInt(this.$route.query.type);
+    const that=this;
+    this.entity.Type = parseInt(this.$route.query.type);
     this.name = this.$route.query.name;
     this.init();
+    this.$nextTick(function() {
+      setInterval(function() {
+         const hour=new Date().getHours()
+         that.IsDisabled=(hour>this.beginHour&&hour<this.endHour)
+      },1000);
+    });
   },
-  
+
   methods: {
-    init(){
-      getCashDetail(this.entity.Type).then(res=>{
-          if(res.state=="success"){
-             this.entity.integral=res.data.integral
-             this.entity.deductRate=res.data.deductRate
+    init() {
+      GetGoodsList().then(response => {
+        if (response.state == "success") {
+          console.log("response.data.shopDataList", response.data.shopDataList);
+          this.productList = response.data.shopDataList;
+          if (this.productList.length > 0) {
+            this.onGoodsConfirm(this.productList[0]);
           }
-      })
+        }
+      });
+    },
+    onGoodsConfirm(data) {
+      this.entity.GoodsId = data.goodsId;
+      this.entity.GoodsName = data.goodsName;
+      this.showGoodsPicker = false;
+      getCashDetail(this.entity.Type, data.goodsId).then(res => {
+        if (res.state == "success") {
+          this.entity.integral = res.data.integral;
+          this.entity.deductRate = res.data.deductRate;
+        }
+      });
     },
     onPayConfirm(data) {
       this.entity.payType = data.id;
@@ -109,9 +143,9 @@ export default {
     },
     onSubmit() {
       submitCash(this.entity).then(res => {
-        if(res.state=="success"){
+        if (res.state == "success") {
           Toast.success(res.message);
-           this.$router.push({path:'/user/index'})
+          this.$router.push({ path: "/user/index" });
         }
       });
     }
@@ -119,6 +153,14 @@ export default {
 };
 </script>
 <style>
+.van-picker__cancel {
+  font-size: 24px;
+}
+
+.van-picker__confirm {
+  font-size: 24px;
+}
+
 .red .van-van-field__control {
   color: red !important;
 }

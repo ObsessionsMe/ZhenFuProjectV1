@@ -21,12 +21,12 @@ namespace RepositoryFactory.RepositoryService
 
         }
 
-        public DataTable GetCashDetail(string userId, int type)
+        public DataTable GetCashDetail(string userId, int type,string GoodsId)
         {
             var sqlParams = new SqlParams();
             sqlParams.Params.Add("@userId", userId);
             sqlParams.Params.Add("@type", type);
-
+            sqlParams.Params.Add("@goodsId", GoodsId);
             return ExecuteSql.ProcQuery(new DatabaseFacade(dbcontext), "p_get_cash_detail", sqlParams).Tables[0];
         }
     }

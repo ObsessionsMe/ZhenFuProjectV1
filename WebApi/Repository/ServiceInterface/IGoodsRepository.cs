@@ -7,8 +7,8 @@ using System.Text;
 
 namespace RepositoryFactory.ServiceInterface
 {
-   public  interface IGoodsRepository : IRepository<GoodsEntity>
+    public interface IGoodsRepository : IRepository<GoodsEntity>
     {
-
+        List<GoodsEntity> GetGoodsListByType(int type);
     }
 }

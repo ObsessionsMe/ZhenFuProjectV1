@@ -19,6 +19,16 @@ namespace Entity
         public string UserId { get; set; }
 
         /// <summary>
+        /// 产品ID
+        /// </summary>
+        public string GoodsId { get; set; }
+
+        /// <summary>
+        /// 产品名称
+        /// </summary>
+        public string GoodsName { get; set; }
+
+        /// <summary>
         /// 兑现类型 1:个人 2:团队
         /// </summary>
         public int Type { get; set; }

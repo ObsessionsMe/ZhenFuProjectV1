@@ -30,9 +30,9 @@ namespace BusinessLogic.ClientService
             return result;
         }
 
-        public DataTable GetCashDetail(string userId, int type)
+        public DataTable GetCashDetail(string userId, int type, string GoodsId)
         {
-            return CashRepository.GetCashDetail(userId,type);
+            return CashRepository.GetCashDetail(userId,type,GoodsId);
         }
     }
 }
