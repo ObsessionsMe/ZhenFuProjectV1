@@ -6,7 +6,7 @@ console.log("process.env.NODE_ENV ",process.env.NODE_ENV);
 let url = {
     host:"files/",
     login: "api/UserManage/LoginOn",
-    GetUserList: "api/UserManage/GetUserList",
+    GetUserList: "api/UserManage/GetUserList1",
     GetGoodsList: "api/GoodsManage/GetGoodsList",  
     SubmitGoods: "api/GoodsManage/SubmitGoods", 
     //logout: "api/Login/OutLogin",
