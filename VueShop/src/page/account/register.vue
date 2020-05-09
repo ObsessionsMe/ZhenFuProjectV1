@@ -32,6 +32,7 @@
               type="primary"
               style="height: 45px;line-height:45px;"
               @click="submitRegister()"
+              :disabled="isRegister"
             >注册</van-button>
           </div>
         </div>
@@ -60,7 +61,8 @@ export default {
       refTelephone: "",
       password: "",
       auth_time: 0,
-      sendAuthCode: true
+      sendAuthCode: true,
+      isRegister:false
     };
   },
   methods: {
@@ -113,6 +115,7 @@ export default {
         ReferrerTelephone: this.refTelephone,
         Password: this.password
       };
+      this.isRegister = true;
       UserRegister(params).then(response => {
         //console.log("response",response);
         if (response.state == "success") {       
@@ -130,6 +133,7 @@ export default {
           this.$toast(response.message);
           return;
         }
+        this.isRegister = false;
       });
     },
     //获取手机号验证码
