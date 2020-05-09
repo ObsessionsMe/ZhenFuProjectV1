@@ -35,7 +35,7 @@ namespace BusinessLogic.ManageService
             var expression = ExtLinq.True<UserInfoEntity>();
             if (!string.IsNullOrEmpty(keyword))
             {
-                expression = expression.And(t => t.Name.Contains(keyword));
+                expression = expression.And(t => t.Name == keyword);
             }
             return userRepository.FindList(expression, pagination);
         }

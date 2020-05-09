@@ -10,6 +10,7 @@ let url = {
     GetGoodsList: "api/GoodsManage/GetGoodsList",  
     searchCashApplyList: "api/GoodsManage/searchCashApplyList",  
     SubmitGoods: "api/GoodsManage/SubmitGoods", 
+    ManagePayPorints: "api/UserManage/ManagePayPorints", 
     //logout: "api/Login/OutLogin",
     //getGridJson: "api/User/GetGridJson",
     //getPersonalFileList:"/File/GetFileList",    

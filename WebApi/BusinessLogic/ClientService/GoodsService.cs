@@ -26,6 +26,11 @@ namespace BusinessLogic.ClientService
             return goodsRepository.FindList(f => f.Enable == "Y" & f.isProduct == "Y");
         }
 
+        public List<GoodsEntity> GetGoodsListByType(int type)
+        {
+            return goodsRepository.FindList(f => f.Enable == "Y" & f.isProduct == "N" & f.GoodsType==type );
+        }
+
         /// <summary>
         /// 获取所有有效商品
         /// </summary>

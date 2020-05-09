@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessLogic.ClientService;
 using BusinessLogic.ManageService;
 using Entity;
 using Infrastructure;
@@ -21,9 +22,20 @@ namespace WebUI.Controllers.Manage
     public class UserManageController : Controller
     {
         private readonly IUserRepository userRepository;
-        public UserManageController(IUserRepository _userRepository)
+        private readonly IGoodsRepository goodsRepository;
+        private readonly IOrderRepository orderRepository;
+        private readonly IUserPrintsSumRepository sumRepository;
+        private readonly IUserPorintsRecordRepository recordRepository;
+
+        public UserManageController(IUserRepository _userRepository,IGoodsRepository _goodsRepository, IOrderRepository _orderRepository,
+            IUserPrintsSumRepository _sumRepository, IUserPorintsRecordRepository _recordRepository
+            )
         {
             userRepository = _userRepository;
+            goodsRepository = _goodsRepository;
+            orderRepository = _orderRepository;
+            sumRepository = _sumRepository;
+            recordRepository = _recordRepository;
         }
         /// <summary>
         /// 获取用户列表(会员)
@@ -114,6 +126,22 @@ namespace WebUI.Controllers.Manage
                 records = pagination.records
             };
             return Json(new AjaxResult { state = ResultType.success, message = "获取数据成功", data = data });
+        }
+
+        [Route("ManagePayPorints")]
+        public ActionResult ManagePayPorints(int payNum, string UserId)
+        {
+            if (payNum <= 0 || string.IsNullOrEmpty(UserId))
+            {
+                return null;
+            }
+            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository);
+            var data = server.PayPorints(payNum, UserId);
+            if (data == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "充值失败", data = data });
+            }
+            return Json(data);
         }
     }
 }

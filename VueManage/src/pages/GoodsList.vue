@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-        <el-form :inline="true" class="demo-form-inline" style="text-align:left">
-      <el-form-item label="关键字">
+    <el-form :inline="true" class="demo-form-inline" style="text-align:left">
+      <!-- <el-form-item label="关键字">
         <el-input placeholder="请输入商品名称"></el-input>
       </el-form-item>
       <el-form-item label="商品类型">
-        <el-select placeholder="请选择商品类型" v-model="defalutShopType" >
+        <el-select placeholder="请选择商品类型" v-model="defalutShopType_c">
           <el-option
             v-for="item in allShopType_c"
             :key="item.id"
@@ -13,10 +13,10 @@
             :value="item.id"
           ></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
-        <el-button type="primary" icon="el-icon-circle-plus-outline">查询</el-button>
-         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addGoods">添加商品</el-button>
+        <!-- <el-button type="primary" icon="el-icon-circle-plus-outline">查询</el-button> -->
+        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addGoods">添加商品</el-button>
       </el-form-item>
     </el-form>
     <section class="content">
@@ -41,7 +41,7 @@
             <template slot-scope="scope">{{scope.row.enable=="Y"?"已上架":"已下架"}}</template>
           </el-table-column>
           <el-table-column prop="addtime" label="上架时间" sortable width="300"></el-table-column>
-           <el-table-column prop="goodsDescribe" label="商品描述" sortable width="300"></el-table-column>
+          <el-table-column prop="goodsDescribe" label="商品描述" sortable width="300"></el-table-column>
         </el-table>
       </el-row>
       <el-pagination
@@ -67,9 +67,9 @@
             label-width="220px"
           >
             <el-form-item label="类别">
-              <el-select placeholder="请选择" v-model="defalutGoodsType" label-width="200px">
+              <el-select placeholder="选择商品类型(必填)" v-model="defalutShopType" label-width="200px">
                 <el-option
-                  v-for="item in allGoodsType"
+                  v-for="item in allShopType"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
@@ -77,16 +77,8 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="商品单价">
-              <el-input
-                v-model="goodsEntity.goodsName"
-                type="number"
-                placeholder="商品单价"
-                label-width="20px"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="产品级别">
-              <el-select placeholder="请选择产品级别" v-model="defalutGoodsType" label-width="200px">
+            <el-form-item label="商品种类" v-if="defalutShopType==1">
+              <el-select placeholder="选择商品种类(必填)"  v-model="defalutGoodsType" label-width="200px">
                 <el-option
                   v-for="item in allGoodsType"
                   :key="item.id"
@@ -95,15 +87,25 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="商品简称">
+            <el-form-item label="商品名称">
               <el-input
                 v-model="goodsEntity.goodsName"
                 type="text"
-                placeholder="商品名称"
+                placeholder="商品名称(必填)"
                 label-width="200px"
               ></el-input>
             </el-form-item>
-            <el-form-item label="每日产生积分">
+
+            <el-form-item label="商品单价">
+              <el-input
+                v-model="goodsEntity.goodsName"
+                type="number"
+                placeholder="商品单价(必填)"
+                label-width="20px"
+              ></el-input>
+            </el-form-item>
+
+            <el-form-item label="每日产生积分" v-if="this.defalutShopType==0">
               <el-input
                 v-model="goodsEntity.goodsName"
                 type="number"
@@ -112,18 +114,7 @@
               ></el-input>
             </el-form-item>
 
-            <el-form-item label="商品种类">
-              <el-select placeholder="请选择商品的种类" v-model="defalutGoodsType" label-width="200px">
-                <el-option
-                  v-for="item in allGoodsType"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-
-            <el-form-item label="直接分享产生积分">
+            <el-form-item label="直接分享产生积分" v-if="this.defalutShopType==0">
               <el-input
                 v-model="goodsEntity.goodsName"
                 type="number"
@@ -132,7 +123,7 @@
               ></el-input>
             </el-form-item>
 
-            <el-form-item label="间接分享产生积分">
+            <el-form-item label="间接分享产生积分" v-if="this.defalutShopType==0">
               <el-input
                 v-model="goodsEntity.goodsName"
                 type="number"
@@ -140,7 +131,7 @@
                 label-width="200px"
               ></el-input>
             </el-form-item>
-            <el-form-item label="商品运输费用">
+            <!-- <el-form-item label="商品运输费用">
               <el-input
                 v-model="goodsEntity.goodsName"
                 type="number"
@@ -155,14 +146,14 @@
                 placeholder="该商品的总库存数"
                 label-width="200px"
               ></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="商品详情介绍">
               <el-input
                 v-model="goodsEntity.goodsName"
                 type="textarea"
                 rows="3"
                 style="width:640px"
-                placeholder="请输入该商品相关的商品详情介绍信息..."
+                placeholder="请输入该商品相关的商品详情介绍信息...(可不填)"
               ></el-input>
             </el-form-item>
             <el-form-item label="物流发货备注">
@@ -171,7 +162,7 @@
                 type="textarea"
                 rows="3"
                 style="width:640px"
-                placeholder="请输入该商品相关的物流发货备注信息..."
+                placeholder="请输入该商品相关的物流发货备注信息...(可不填)"
               ></el-input>
             </el-form-item>
           </el-form>
@@ -188,32 +179,32 @@
               <el-upload
                 class="upload-demo"
                 action="https://localhost:44380/api/GoodsManage/UploadGoodsFile"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :before-remove="beforeRemove"
+                :on-preview="handlePreview1"
+                :on-remove="handleRemove1"
+                :before-remove="beforeRemove1"
+                :on-success="handleSuccessImg1"
                 multiple
                 :limit="1"
                 :on-exceed="handleExceed"
-                :file-list="fileList"
-                :on-success="handleSuccessImg"
+                :file-list="fileList_main" 
               >
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
               </el-upload>
             </el-form-item>
 
-            <el-form-item label="商品详情图(单张)">
+            <el-form-item label="商品详情图(可多张)">
               <el-upload
                 class="upload-demo"
                 action="https://localhost:44380/api/GoodsManage/UploadGoodsFile"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :before-remove="beforeRemove"
+                :on-preview="handlePreview2"
+                :on-remove="handleRemove2"
+                :before-remove="beforeRemove2"
+                :on-success="handleSuccessImg2"
                 multiple
-                :limit="5"
+                :limit="10"
                 :on-exceed="handleExceed"
-                :file-list="fileList"
-                :on-success="handleSuccessImg"
+                :file-list="fileList_details"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -223,14 +214,14 @@
               <el-upload
                 class="upload-demo"
                 action="https://localhost:44380/api/GoodsManage/UploadGoodsFile"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :before-remove="beforeRemove"
+                :on-preview="handlePreview3"
+                :on-remove="handleRemove3"
+                :before-remove="beforeRemove3"
+                :on-success="handleSuccessImg3"
                 multiple
                 :limit="5"
                 :on-exceed="handleExceed"
-                :file-list="fileList"
-                :on-success="handleSuccessImg"
+                :file-list="fileList_scorll" 
               >
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -254,7 +245,9 @@ import { http, url } from "@/lib";
 export default {
   data() {
     return {
-      fileList: [],
+      fileList_main: [],
+      fileList_details: [],
+      fileList_scorll: [],
       activeName: "first",
       kw: "",
       tableData: [],
@@ -262,18 +255,32 @@ export default {
       pageSize: 10,
       pageIndex: 1,
       keyword: "",
-      isShowAddDialog: false,
-      defalutGoodsType: 0,
-      allGoodsType: [
-        { id: 0, name: "全部" },
-        { id: 1, name: "产品" },
-        { id: 2, name: "商品" }
+      isShowAddDialog: false,   
+      //查询条件 
+      defalutShopType_c: -1,
+      allShopType_c: [
+        { id: -1, name: "选择商品类型" },
+        { id: 0, name: "产品" },
+        { id: 1, name: "商品" }
       ],
-      defalutShopType:0,
-      allShopType_c:[
-        { id: 0, name: "全部" },
-        { id: 1, name: "产品" },
-        { id: 2, name: "商品" }
+      //新增
+      defalutShopType: -1,
+      allShopType: [
+        { id: -1, name: "选择商品类型(必填)"},
+        { id: 0, name: "产品" },
+        { id: 1, name: "商品" }
+      ],
+      defalutGoodsType: -1,
+      allGoodsType: [
+        { id: -1, name: "选择商品种类(必填)" },
+        { id: 0, name: "个人清洁" },
+        { id: 1, name: "美妆护肤" },
+        { id: 2, name: "厨房用品" },
+        { id: 3, name: "家用电器" },
+        { id: 4, name: "家具家纺" },
+        { id: 5, name: "手机数码" },
+        { id: 6, name: "配饰背包" },
+        { id: 7, name: "汽车用品" },  
       ],
       goodsEntity: {}
     };
@@ -311,11 +318,6 @@ export default {
       this.pageIndex = currentindex;
       this.GetGoodsList();
     },
-    handleSuccessImg(response, file, fileList) {
-      console.log("response", response);
-      console.log(file);
-      console.log(fileList);
-    },
     //新增商品
     addGoods() {
       //显示弹框
@@ -324,11 +326,10 @@ export default {
     //查看商品详情
     checkGoods() {},
 
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
+    handleSuccessImg(response, file, fileList) {
+      console.log("response", response);
       console.log(file);
+      console.log(fileList);
     },
     handleExceed(files, fileList) {
       this.$message.warning(

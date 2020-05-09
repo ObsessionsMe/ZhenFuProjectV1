@@ -1,7 +1,7 @@
 <template>
   <div class="container">
         <el-form :inline="true" class="demo-form-inline" style="text-align:left">
-      <el-form-item label="关键字">
+      <!-- <el-form-item label="关键字">
         <el-input placeholder="请输入申请人姓名或手机号"></el-input>
       </el-form-item>
       <el-form-item label="订单状态">
@@ -13,12 +13,12 @@
             :value="item.id"
           ></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
-        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchCashApplyList">查询</el-button>
+        <!-- <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchCashApplyList">查询</el-button> -->
         <!-- <el-button type="primary" icon="el-icon-edit" @click="editUserGroup">编辑</el-button>
         <el-button type="primary" icon="el-icon-delete" @click="deleteUserGroup">删除</el-button> -->
-        <el-button type="primary" icon="el-icon-search" @click="exportApplyList">导出excel</el-button>
+        <!-- <el-button type="primary" icon="el-icon-search" @click="exportApplyList">导出excel</el-button> -->
       </el-form-item>
     </el-form>
     <section class="content">

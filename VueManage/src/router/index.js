@@ -43,7 +43,8 @@ const router = new Router({
             },{
                 path: "member",
                 component: member,
-            },{
+            }
+            ,{
                 path: "order",
                 component: order,
             }

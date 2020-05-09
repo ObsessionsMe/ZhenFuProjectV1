@@ -12,10 +12,10 @@
       <i class="el-icon-menu"></i>
       <span slot="title">兑现申请管理</span>
     </el-menu-item>
-        <el-menu-item index="order" key="order">
+        <!-- <el-menu-item index="order" key="order">
       <i class="el-icon-menu"></i>
       <span slot="title">订单管理</span>
-    </el-menu-item>
+    </el-menu-item> -->
   </el-menu>
 </template>
 <script>

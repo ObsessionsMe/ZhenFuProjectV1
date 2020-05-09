@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <el-form :inline="true" class="demo-form-inline" style="text-align:left">
-      <el-form-item label="关键字">
+      <!-- <el-form-item label="关键字">
         <el-input placeholder="请输入会员姓名或手机号" v-model="kw"></el-input>
       </el-form-item>
       <el-form-item label="会员类型">
-        <el-select placeholder="请选择会员类型" v-model="defalutMemBerType" >
+        <el-select placeholder="请选择会员类型" v-model="defalutMemBerType">
           <el-option
             v-for="item in allMemberType"
             :key="item.id"
@@ -16,7 +16,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchUser">查询</el-button>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <section class="content">
       <h5>会员列表</h5>
@@ -33,12 +33,25 @@
           <el-table-column prop="userTelephone" label="会员手机号" width="200"></el-table-column>
           <el-table-column prop="referrer" label="推荐人姓名" sortable width="120"></el-table-column>
           <el-table-column prop="referrerTelephone" label="推荐人手机号" sortable width="200"></el-table-column>
-          <el-table-column prop="referrerTelephone" label="会员类型" sortable width="170"></el-table-column>
+          <el-table-column prop="userType" label="会员类型" sortable width="170">
+            <template slot-scope="scope">{{getUserType(scope.row.userType)}}</template>
+          </el-table-column>
           <!-- <el-table-column prop="indirectPoints" label="是否持仓" sortable width="100"></el-table-column> -->
           <el-table-column prop="enable" label="是否有效" sortable width="100">
-              <template slot-scope="scope">{{scope.row.enable=="Y"?"有效":"无效"}}</template>
+            <template slot-scope="scope">{{scope.row.enable=="Y"?"有效":"无效"}}</template>
           </el-table-column>
           <el-table-column prop="addtime" label="注册时间" sortable width="200"></el-table-column>
+          <el-table-column prop="userId" label="操作" sortable width="200">
+            <template slot-scope="scope">
+              <el-button
+                v-if="scope.row.isAdmin=='N'"
+                type="primary"
+                icon="el-icon-circle-plus-outline"
+                size="small"
+                @click="payPorints(scope.row.userId)"
+              >充值</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </el-row>
       <el-pagination
@@ -68,9 +81,10 @@ export default {
       pageSize: 10,
       pageIndex: 1,
       keyword: "",
-      defalutMemBerType:100,   
+      defalutMemBerType: 100,
       allMemberType: [
-        { id: 100,name: "全部" },
+        { id: 100, name: "全部" },
+        { id: -1, name: "管理员" },
         { id: 0, name: "总部" },
         { id: 1, name: "经销商" },
         { id: 2, name: "代理商" },
@@ -78,7 +92,7 @@ export default {
         { id: 4, name: "省级代理" },
         { id: 5, name: "分公司" },
         { id: 6, name: "合伙人" }
-      ],
+      ]
     };
   },
   created() {
@@ -113,6 +127,53 @@ export default {
     handleCurrentChange(currentindex) {
       this.pageIndex = currentindex;
       this.searchUser();
+    },
+    getUserType(userType) {
+      console.log(userType);
+      var arr = this.allMemberType.find(x => x.id == userType);
+      return arr.name;
+    },
+    payPorints(userId) {
+      if (userId == null || userId == "") {
+        return;
+      }
+      //弹框显示充值金额
+      this.$prompt("请输入要充值的积分数", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^(\+?[1-9][0-9]*)$/,
+        inputErrorMessage: "请输入正整数,且必须大于0"
+      })
+        .then(({ value }) => {
+          this.payPorintsOn(userId, value);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入"
+          });
+        });
+      console.log(userId);
+    },
+    payPorintsOn(userId, value) {
+      http
+        .get(url.ManagePayPorints, {
+          payNum: value,
+          UserId: userId
+        })
+        .then(res => {
+          if (res.data.state == "success") {
+            this.$message({
+              type: "success",
+              message: "充值成功"
+            });
+          } else {
+            this.$message({
+              type: "info",
+              message: "充值失败"
+            });
+          }
+        });
     }
   }
 };
