@@ -16,8 +16,7 @@ if (process.env.NODE_ENV == 'development') {
 	baseUrl='https://localhost:44380/';
 	baseFileUrl = "https://localhost:44380/Upload/GoodsImg/";
 	//baseUrl = '';
-	// autoLoginUserInfo={ name:'15914071422',value:'bc123456' }
-	autoLoginUserInfo={ name:'18371501913',value:'tp123456' }
+	autoLoginUserInfo={ name:'15914071422',value:'bc123456' }
 //生产环境	
 }else if(process.env.NODE_ENV == 'production'){
 	baseUrl = '/shop.api';
