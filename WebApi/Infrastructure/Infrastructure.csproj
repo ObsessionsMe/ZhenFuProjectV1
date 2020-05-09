@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Entity\Entity.csproj" />
+    <ProjectReference Include="..\ViewEntity\ViewEntity.csproj" />
   </ItemGroup>
 
 </Project>

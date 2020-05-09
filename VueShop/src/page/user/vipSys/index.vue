@@ -46,7 +46,7 @@
 <script>
 import { Tab, Tabs, Col, Row } from "vant";
 import { GetProductEarn, GetTeamEarn } from "@/api/user.js";
-import {GetMyTream} from "@/api/user.js";
+import { GetMyTream } from "@/api/user.js";
 export default {
   data() {
     return {
@@ -132,8 +132,10 @@ export default {
     },
     getMyTream() {
       GetMyTream().then(response => {
-        console.log(response);
-        this.treeData[0].label = response.data.parentName + "(推荐人)";
+        console.log(response.data.parentName);
+        if (response.data.parentName != "管理员888888") {
+          this.treeData[0].label = response.data.parentName + "(推荐人)";
+        }
         this.treeData[0].children[0].label = response.data.name + "(我)";
         console.log("treeData", response.data.treeData);
         this.treeData[0].children[0].children = response.data.treeData;

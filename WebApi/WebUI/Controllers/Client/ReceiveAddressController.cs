@@ -71,12 +71,24 @@ namespace WebUI.Controllers.Client
             }
             if (receiveEntity.Id == 0 || receiveEntity.AddressId == null)
             {
+                //如果设为默认收货地址,则修改其他收货地址的状态为N
+                if (receiveEntity.isDefalut == "Y")
+                {
+                    var list = receiveRepository.FindList(x => x.UserId == receiveEntity.UserId && x.isDefalut == "Y");
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        var obj = list[i];
+                        obj.isDefalut = "N";
+                        receiveRepository.Update(obj);
+                    }
+                }
                 receiveEntity.AddressId = "Ad" + Common.GuId();
                 receiveRepository.Insert(receiveEntity);
             }
-            else {
+            else
+            {
                 receiveRepository.Update(receiveEntity);
-            }        
+            }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "" });
         }
 

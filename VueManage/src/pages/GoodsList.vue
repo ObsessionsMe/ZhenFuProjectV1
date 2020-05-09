@@ -36,7 +36,7 @@
           <el-table-column prop="unitPrice" label="商品单价" sortable width="100"></el-table-column>
           <el-table-column prop="goodsLevel" label="商品级别" width="100"></el-table-column>
           <el-table-column prop="unitPrice" label="商品主图" sortable width="150"></el-table-column>
-          <el-table-column prop="itemPoints" label="库存数量" sortable width="100"></el-table-column>
+          <!-- <el-table-column prop="itemPoints" label="库存数量" sortable width="100"></el-table-column> -->
           <el-table-column prop="enable" label="商品状态" sortable width="100">
             <template slot-scope="scope">{{scope.row.enable=="Y"?"已上架":"已下架"}}</template>
           </el-table-column>
@@ -193,7 +193,7 @@
               </el-upload>
             </el-form-item>
 
-            <el-form-item label="商品详情图(可多张)">
+            <el-form-item label="商品详情图(最多20张)">
               <el-upload
                 class="upload-demo"
                 action="https://localhost:44380/api/GoodsManage/UploadGoodsFile"
@@ -202,7 +202,7 @@
                 :before-remove="beforeRemove2"
                 :on-success="handleSuccessImg2"
                 multiple
-                :limit="10"
+                :limit="20"
                 :on-exceed="handleExceed"
                 :file-list="fileList_details"
               >
@@ -210,7 +210,7 @@
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
               </el-upload>
             </el-form-item>
-            <el-form-item label="商品详情轮播图(可多张)">
+            <el-form-item label="商品详情轮播图(最多5张)">
               <el-upload
                 class="upload-demo"
                 action="https://localhost:44380/api/GoodsManage/UploadGoodsFile"
@@ -241,6 +241,7 @@
 <script>
 //此处引入
 import { http, url } from "@/lib";
+//import { fileHost } from "@/lib/common";
 //我的存储
 export default {
   data() {

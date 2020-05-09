@@ -7,9 +7,9 @@
             <van-field placeholder="请输入手机号" type="number" v-model="telephone" label="中国 +86"/>
             <van-field type="password" placeholder="请输入密码" v-model="password" />
           </van-cell-group>
-          <van-col span="8" style="height:30px;line-height:30px;margin-left:4%">
+          <!-- <van-col span="8" style="height:30px;line-height:30px;margin-left:4%">
             <el-link type="primary" to="/login/password">忘记密码</el-link>
-          </van-col>
+          </van-col> -->
           <div style="margin: 10px;">
             <van-button
               size="large"

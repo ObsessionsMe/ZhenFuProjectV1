@@ -26,5 +26,7 @@ namespace RepositoryFactory.RepositoryService
             }
             return list[0].GoodsLevel;
         }
+
+
     }
 }

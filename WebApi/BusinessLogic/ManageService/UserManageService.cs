@@ -2,6 +2,7 @@
 using Infrastructure;
 using RepositoryFactory.ServiceInterface;
 using System.Collections.Generic;
+using ViewEntity;
 
 namespace BusinessLogic.ManageService
 {
@@ -30,14 +31,15 @@ namespace BusinessLogic.ManageService
             return userRepository.FindEntity(x => x.UserId == userId && x.Enable == "Y" && x.IsAdmin == "Y");
         }
 
-        public List<UserInfoEntity> GetUserList(Pagination pagination, string keyword)
+        public List<UserPorintListEntity> GetUserList(Pagination pagination, string keyword)
         {
-            var expression = ExtLinq.True<UserInfoEntity>();
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                expression = expression.And(t => t.Name == keyword);
-            }
-            return userRepository.FindList(expression, pagination);
+            return userRepository.GetUser_PorintList();
+            //var expression = ExtLinq.True<UserInfoEntity>();
+            // if (!string.IsNullOrEmpty(keyword))
+            // {
+            //     expression = expression.And(t => t.Name == keyword);
+            // }
+            //return userRepository.FindList(expression, pagination);
         }
     }
 }

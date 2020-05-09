@@ -4,13 +4,13 @@ const  host = process.env.NODE_ENV === "development" ?  "https://localhost:44380
 console.log("process.env.NODE_ENV ",process.env.NODE_ENV); 
 //设置请求路径
 let url = {
-    host:"files/",
     login: "api/UserManage/LoginOn",
     GetMemberList: "api/UserManage/GetMemberList",
     GetGoodsList: "api/GoodsManage/GetGoodsList",  
     searchCashApplyList: "api/GoodsManage/searchCashApplyList",  
     SubmitGoods: "api/GoodsManage/SubmitGoods", 
-    ManagePayPorints: "api/UserManage/ManagePayPorints", 
+    ManagePayPorints: "api/UserManage/ManagePayPorints",  
+    UploadGoodsFile:"api/GoodsManage/UploadGoodsFile",//上传文件
     //logout: "api/Login/OutLogin",
     //getGridJson: "api/User/GetGridJson",
     //getPersonalFileList:"/File/GetFileList",    

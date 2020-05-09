@@ -36,6 +36,9 @@
           <el-table-column prop="userType" label="会员类型" sortable width="170">
             <template slot-scope="scope">{{getUserType(scope.row.userType)}}</template>
           </el-table-column>
+          <el-table-column prop="porintsSurplus" label="积分余额" sortable width="100"></el-table-column>
+          <el-table-column prop="productPorints" label="产品积分" sortable width="100"></el-table-column>
+          <el-table-column prop="treamPorints" label="团队积分" sortable width="100"></el-table-column>
           <!-- <el-table-column prop="indirectPoints" label="是否持仓" sortable width="100"></el-table-column> -->
           <el-table-column prop="enable" label="是否有效" sortable width="100">
             <template slot-scope="scope">{{scope.row.enable=="Y"?"有效":"无效"}}</template>
@@ -162,6 +165,7 @@ export default {
           UserId: userId
         })
         .then(res => {
+          this.searchUser();
           if (res.data.state == "success") {
             this.$message({
               type: "success",

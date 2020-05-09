@@ -31,7 +31,7 @@
          <img v-for="img in cpjsImageList"  :key="img" v-lazy="img" />
       </div>
       <div v-if="this.activeKey==3" class="category-div">
-        
+         <img v-for="img in cfskImageList"  :key="img" v-lazy="img" />
       </div>
     </div>
     <navigate />
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { GetMyTream } from "../../api/user.js";
+//import { GetMyTream } from "../../api/user.js";
 export default {
   name: "userindex",
   data() {
@@ -51,7 +51,7 @@ export default {
       scsImageList:[
         require('@/assets/images/scs001.png'),
         require('@/assets/images/scs002.png'),
-        require('@/assets/images/scs004.png'),
+        require('@/assets/images/scs003.png'),
         require('@/assets/images/scs004.png'),
       ],
       yfzImageList:[
@@ -71,7 +71,15 @@ export default {
         require('@/assets/images/cpjs006.png'),
         require('@/assets/images/cpjs007.png'),
         require('@/assets/images/cpjs008.png')
-      ]
+      ],
+      cfskImageList:[
+        require('@/assets/images/cfsk001.jpg'),
+        require('@/assets/images/cfsk002.jpg'),
+        require('@/assets/images/cfsk003.jpg'),
+        require('@/assets/images/cfsk004.jpg'),
+        require('@/assets/images/cfsk005.jpg'),
+        require('@/assets/images/cfsk006.jpg')
+      ],
     };
   },
   created() {

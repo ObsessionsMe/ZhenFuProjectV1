@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ViewEntity;
 
 namespace Infrastructure.DBContext
 {
@@ -21,5 +22,8 @@ namespace Infrastructure.DBContext
         public DbSet<CashInfoEntity> CashInfoEntity { get; set; }
 
         public DbSet<AttachMentInfoEntity> AttachMentInfoEntity { get; set; }
+
+        public DbSet<UserPorintListEntity> UserPorintListEntity { get; set; }
+        
     }
  }

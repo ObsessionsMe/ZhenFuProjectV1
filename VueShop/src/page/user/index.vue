@@ -105,9 +105,9 @@
     <van-cell-group>
       <van-cell title="收货地址" is-link to="/user/address" />
     </van-cell-group>
-    <van-cell-group>
+    <!-- <van-cell-group>
       <van-cell title="修改密码" is-link to="/login/password" />
-    </van-cell-group>
+    </van-cell-group> -->
     <van-cell-group>
       <van-cell title="退出登录" is-link to="/login" />
     </van-cell-group>
