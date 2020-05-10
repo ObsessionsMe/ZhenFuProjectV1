@@ -29,13 +29,13 @@ namespace WebUI.Controllers.Client
         }
 
         [Route("getCashDetail")]
-        public ActionResult GetCashDetail(int type,string GoodsId)
+        public ActionResult GetCashDetail(int type, string GoodsId)
         {
             var result = new AjaxResult();
             try
             {
                 //获取用户的兑现详情
-                result.data =  cashService.GetCashDetail(userModel.UserId, type, GoodsId).ToDynamics().First();
+                result.data = cashService.GetCashDetail(userModel.UserId, type, GoodsId).ToDynamics().First();
                 result.state = ResultType.success.ToString();
             }
             catch (Exception ex)
@@ -56,17 +56,40 @@ namespace WebUI.Controllers.Client
         [Route("submitCash")]
         public ActionResult InsertCash(CashInfoEntity entity)
         {
+            var flag = true;
             var result = new AjaxResult();
             try
             {
-                entity.UserId = userModel.UserId;
-                entity.Date = DateTime.Now;
-                result = cashService.InsertCashInfo(entity);
+                var currHour = DateTime.Now.Hour;
+                if (!(currHour >= BeginHour && currHour <= EndHour))
+                {
+                    flag = false;
+                    result.state = ResultType.error.ToString();
+                    result.message = $"提现时间为{BeginHour}:00-{EndHour}:00!";
+                }
+
+                if (flag)
+                {
+                    if (entity.BankUserName != userModel.Name)
+                    {
+                        flag = false;
+                        result.state = ResultType.error.ToString();
+                        result.message = "开户人姓名与当前账号用户姓名不一致!";
+                    }
+                }
+
+                if (flag)
+                {
+                    entity.UserId = userModel.UserId;
+                    entity.Date = DateTime.Now;
+                    result.state = ResultType.success.ToString();
+                    result = cashService.InsertCashInfo(entity);
+                }
             }
             catch (Exception ex)
             {
                 result.message = "提交失败!";
-                result.state = ResultType.success.ToString();
+                result.state = ResultType.error.ToString();
                 LogHelper.Log.Error(ex);
             }
             return Json(result);

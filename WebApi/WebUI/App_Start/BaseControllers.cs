@@ -12,6 +12,10 @@ namespace WebUI.App_Start
     [TokenAuth]
     public class BaseControllers : Controller
     {
+        public int BeginHour = 8;
+
+        public int EndHour = 21;
+
         public UserInfoEntity userModel
         {
             get

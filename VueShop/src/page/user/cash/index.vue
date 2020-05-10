@@ -28,9 +28,9 @@
       </van-cell>
     </el-main>
     <el-footer>
-      <!-- <el-button v-if="IsDisabled" style="width:100%;" type="success" @click="onSubmit" round>提交</el-button>
-      <el-button v-if="IsDisabled==false" style="width:100%;" type="info" disabled round>提现时间为{{beginHour}}:00-{{endHour}}:00</el-button> -->
-      <el-button style="width:100%;" type="success" @click="onSubmit" round>提交</el-button>
+      <el-button v-if="IsDisabled" style="width:100%;" type="success" @click="onSubmit" round>提交</el-button>
+      <el-button v-if="!IsDisabled" style="width:100%;" type="info" disabled round>提现时间为{{beginHour}}:00-{{endHour}}:00</el-button>
+      <!-- <el-button style="width:100%;" type="success" @click="onSubmit" round>提交</el-button> -->
     </el-footer>
   </div>
 </template>
@@ -46,7 +46,8 @@ import {
   Slider,
   CellGroup,
   Cell,
-  Toast
+  Toast,
+  Dialog
 } from "vant";
 
 export default {
@@ -69,9 +70,9 @@ export default {
     return {
       id: 0,
       name: "",
-      IsDisabled:false,
-      beginHour:8,
-      endHour:21,
+      IsDisabled: true,
+      beginHour: 8,
+      endHour: 21,
       showPayPicker: false,
       showBankPicker: false,
       showGoodsPicker: false,
@@ -96,20 +97,24 @@ export default {
     };
   },
   created() {
-    const that=this;
+    const that = this;
     this.entity.Type = parseInt(this.$route.query.type);
     this.name = this.$route.query.name;
     this.init();
-    this.$nextTick(function() {
-      setInterval(function() {
-         const hour=new Date().getHours()
-         that.IsDisabled=(hour>this.beginHour&&hour<this.endHour)
-      },1000);
-    });
   },
 
   methods: {
+    SetDisabled() {
+      const hour = new Date().getHours();
+      this.IsDisabled = hour > this.beginHour && hour < this.endHour;
+    },
     init() {
+      this.SetDisabled();
+      this.$nextTick(function() {
+        setInterval(function() {
+          that.SetDisabled();
+        }, 30000);
+      });
       GetGoodsList().then(response => {
         if (response.state == "success") {
           console.log("response.data.shopDataList", response.data.shopDataList);
@@ -142,12 +147,57 @@ export default {
       this.showBankPicker = false;
     },
     onSubmit() {
-      submitCash(this.entity).then(res => {
-        if (res.state == "success") {
-          Toast.success(res.message);
-          this.$router.push({ path: "/user/index" });
-        }
-      });
+
+      if (this.entity.bankTypeName.length < 1) {
+        Toast.fail("所属银行不能为空!");
+        return;
+      }
+
+      if (this.entity.bankUserName.length < 1) {
+        Toast.fail("开户人姓名不能为空!");
+        return;
+      }
+
+      if (this.entity.account.length < 1) {
+        Toast.fail("账号不能为空!");
+        return;
+      }
+
+      if (this.entity.integral == 0) {
+        Toast.fail("提现积分必须大于0!");
+        return;
+      }
+
+      if (this.entity.Type == 2) {
+        Dialog.confirm({
+          title: "温馨提示",
+          message:
+            "团队提现将会收取5%的手续费，实际提现" +
+            this.integral * 0.05 +
+            "，请确认是否要进行兑现？"
+        })
+          .then(() => {
+            this.integral = this.integral * 0.05;
+            submitCash(this.entity).then(res => {
+              if (res.state == "success") {
+                Toast.success(res.message);
+                this.$router.push({ path: "/user/index" });
+              } else {
+                Toast.fail(res.message);
+              }
+            });
+          })
+          .catch(() => {});
+      } else {
+        submitCash(this.entity).then(res => {
+          if (res.state == "success") {
+            Toast.success(res.message);
+            this.$router.push({ path: "/user/index" });
+          } else {
+            Toast.success(res.message);
+          }
+        });
+      }
     }
   }
 };
