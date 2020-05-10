@@ -61,7 +61,7 @@
             <div>待收货</div>
           </van-col>
         </router-link>
-        <router-link to="/user/aftersale">
+        <router-link to="/user/2">
           <van-col span="6">
             <van-icon name="after-sale">
               <!-- <van-info :info="data.AfterSaleTotal"   /> -->

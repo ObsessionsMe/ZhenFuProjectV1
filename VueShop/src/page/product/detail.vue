@@ -32,7 +32,7 @@
         加入购物车
     </van-goods-action-big-btn>-->
     <van-goods-action>
-      <van-goods-action-big-btn primary @click="showSku">立即购买</van-goods-action-big-btn>
+      <van-goods-action-big-btn primary @click="showSku">立即兑换</van-goods-action-big-btn>
     </van-goods-action>
 
     <!-- <van-sku
@@ -176,6 +176,12 @@ export default {
         goodsNum: data.selectedNum,
         goodsId: data.goodsId
       };
+      console.log("data.selectedNum",data.selectedNum);
+      if(parseInt(data.selectedNum)>20){
+        this.$toast("购买数量不能大于20!");
+        return
+      }
+      //校验购买的次数
       this.$store.commit("saveOrderInfo", orderInfo);
       this.$router.push({ path: this.redirect || "/order" }); //进入订单页面
     },

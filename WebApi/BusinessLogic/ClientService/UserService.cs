@@ -21,10 +21,12 @@ namespace BusinessLogic.ClientService
         /// </summary>
         private IUserRepository userRepository;
         private IUserPrintsSumRepository sumRepository;
-        public UserService(IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository)
+        private IOrderRepository order;
+        public UserService(IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository, IOrderRepository _order)
         {
             userRepository = _userRepository;
             sumRepository = _sumRepository;
+            order = _order;
         }
 
 
@@ -145,14 +147,22 @@ namespace BusinessLogic.ClientService
                     //一级用户
                     var treeData = new UserTreeData();
                     treeData.id = firstItem.UserId;
-                    treeData.label = firstItem.Name + "(" + firstItem.UserTelephone + ")";
+                    int count1 = GetUserPayCout(firstItem.UserId);
+                    //查询该用户购买的和数
+                    string tel = firstItem.UserTelephone;
+                    string tel_new = tel.Substring(0, 3) + "****" + tel.Substring(7);
+                    //string tel = firstItem.UserTelephone.Replace(firstItem.UserTelephone, "(\\d{3})\\d{5}(\\d{3})", "$1*****$2");
+                    treeData.label = "vip1 "+ firstItem.Name + "(" + tel_new + ")" + "(" + count1 + ")";
                     foreach (var item in allUsers)
                     {
                         if (firstItem.UserTelephone == item.ReferrerTelephone)
                         {
                             //二级用户
                             var chirds = new List<UserTreeData>();
-                            chirds.Add(new UserTreeData { id = item.UserId, label = item.Name + "(" + item.UserTelephone + ")" });
+                            int count2 = GetUserPayCout(firstItem.UserId);
+                            tel = item.UserTelephone;
+                            tel_new = tel.Substring(0, 3) + "****" + tel.Substring(7);
+                            chirds.Add(new UserTreeData { id = item.UserId, label = "vip2 " + item.Name + "(" + tel_new + ")" + "(" + count2 + ")" });
                             treeData.children = chirds;
                             results.Add(treeData);
                         }
@@ -169,8 +179,19 @@ namespace BusinessLogic.ClientService
                 throw ex;
             }
         }
+        public int GetUserPayCout(string userId)
+        {
+            //查询订单表，获取用户购买盒数
+            List<OrderInfoEntity> list = order.FindList(x => x.UserId == userId);
+            int count = 0;
+            for (int i = 0; i < list.Count; i++)
+            {
+                count += list[i].BuyGoodsNums;
+            }
+            return count;
+        }
 
-        public UserPrintsSumEntity GetUserPorints(string userId)
+            public UserPrintsSumEntity GetUserPorints(string userId)
         {
             return sumRepository.FindEntity(x => x.UserId == userId);
         }

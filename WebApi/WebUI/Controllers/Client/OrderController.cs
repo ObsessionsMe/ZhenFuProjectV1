@@ -47,7 +47,7 @@ namespace WebUI.Controllers.Client
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败，请重新登录", data = "" });
             }
             //获取商品详细
-            GoodsService servers = new GoodsService(goodsRepository,orderRepository);
+            GoodsService servers = new GoodsService(goodsRepository, orderRepository);
             var goodsData = servers.GetGoodsDetails(goodsId);
             if (goodsData == null)
             {
@@ -74,7 +74,7 @@ namespace WebUI.Controllers.Client
         /// </summary>
         /// <param name="jsonString"></param>
         /// <returns></returns>
-         [Route("SubmitOrder")]
+        [Route("SubmitOrder")]
         public ActionResult SubmitOrder(string jsonString)
         {
             if (userModel == null)
@@ -118,6 +118,18 @@ namespace WebUI.Controllers.Client
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "下单失败", data = data });
             }
             return Json(data);
+        }
+
+        /// <summary>
+        /// 提交订单
+        /// </summary>
+        /// <param name="jsonString"></param>
+        /// <returns></returns>
+        [Route("CheckUserPayCount")]
+        public ActionResult CheckUserPayCount(string userId, string payCount)
+        {
+            string data = null;
+           return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
         }
     }
 }

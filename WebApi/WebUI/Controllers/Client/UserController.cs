@@ -29,10 +29,12 @@ namespace WebUI.Controllers.Client
     {
         private readonly IUserRepository userRepository;
         private IUserPrintsSumRepository sumRepository;
-        public UserController(IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository)
+        private IOrderRepository order;
+        public UserController(IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository, IOrderRepository _order)
         {
             userRepository = _userRepository;
             sumRepository = _sumRepository;
+            order = _order;
         }
 
         [Route("getTeamEarn")]
@@ -99,7 +101,7 @@ namespace WebUI.Controllers.Client
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败", data = "" });
             }
             //返回用户层级结构(包含自己总共三层)
-            UserService servers = new UserService(userRepository, sumRepository);
+            UserService servers = new UserService(userRepository, sumRepository,order);
             var data = userRepository.FindEntity(x => x.UserId == userModel.UserId && x.UserTelephone == userModel.UserTelephone && x.Enable == "Y");
             if (data == null)
             {
@@ -126,7 +128,7 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败", data = "" });
             }
-            UserService servers = new UserService(userRepository, sumRepository);
+            UserService servers = new UserService(userRepository, sumRepository,order);
             var data = servers.GetUserPorints(userId);
             if (data == null)
             {

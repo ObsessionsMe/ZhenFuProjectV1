@@ -78,7 +78,7 @@
         加入购物车
       </van-goods-action-big-btn> -->
       <van-goods-action-big-btn primary @click="showSku">
-        立即购买
+        立即兑现
       </van-goods-action-big-btn>
     </van-goods-action>
     <!-- <van-actionsheet v-model="show" title="促销" style="font-size:14px;">

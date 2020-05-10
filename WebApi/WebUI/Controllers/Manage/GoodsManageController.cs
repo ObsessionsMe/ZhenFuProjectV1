@@ -9,6 +9,7 @@ using Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RepositoryFactory.ServiceInterface;
 using WebUI.Tool;
 
@@ -23,10 +24,12 @@ namespace WebUI.Controllers.Manage
     {
         private readonly IGoodsRepository goodsRepository;
         private IHostingEnvironment hostEnvironment;
-        public GoodsManageController(IGoodsRepository _goodsRepository, IHostingEnvironment _hostEnvironment)
+        private IAttachMentRepository attachRepository;
+        public GoodsManageController(IGoodsRepository _goodsRepository, IHostingEnvironment _hostEnvironment, IAttachMentRepository _attachRepository)
         {
             goodsRepository = _goodsRepository;
             hostEnvironment = _hostEnvironment;
+            attachRepository = _attachRepository;
         }
         // GET: api/GoodsManage/GetGoodsList
         /// <summary>
@@ -54,35 +57,103 @@ namespace WebUI.Controllers.Manage
         /// </summary>
         /// <returns></returns>
         [Route("SubmitGoods")]
-        public ActionResult SubmitGoods(GoodsEntity goodsEntity)
+        public ActionResult SubmitGoods(string jsonString)
         {
-            //1:商品基础数据入库
-            //2:商品附件入库
-            if (goodsEntity == null)
+            try
             {
-                return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
-            }
-            if (string.IsNullOrEmpty(goodsEntity.GoodsId))
-            {
-                //新增
-                goodsEntity.GoodsId = "GD" + Common.CreateNo() + Common.RndNum(5);
-                goodsEntity.Enable = "Y";
-                goodsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                GoodsEntity goodsEntity = JsonConvert.DeserializeObject<GoodsEntity>(jsonString);
+                //2:商品附件入库//1:商品基础数据入库
+                if (goodsEntity == null)
+                {
+                    return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
+                }
+                if (string.IsNullOrEmpty(goodsEntity.GoodsId))
+                {
+                    if (goodsEntity.isProduct == "N")
+                    {
+                        //新增商品
+                        goodsEntity.GoodsId = "GD" + Common.CreateNo() + Common.RndNum(5);
+                        goodsEntity.Enable = "Y";
+                        goodsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                        goodsEntity.ItemPoints = goodsEntity.IndirectPoints = goodsEntity.DirectPoints = 0;
+                        goodsEntity.GoodsLevel = 1;
+                        goodsEntity.StockCount = 10000;
 
+                    }
+                }
+                else
+                {
+                    //修改
+                }
+                GoodsManageServices service = new GoodsManageServices(goodsRepository);
+                int j = service.SubmitGoodsGoodsEntity(goodsEntity);
+                if (j <= 0)
+                {
+                    return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
+                }
+                //附件表存储商品Id相关附件，主图单个和详情图多个，商品详情轮播图可能有多个
+                //1添加主图
+                AttachMentInfoEntity attach = new AttachMentInfoEntity();
+                attach.MainId = goodsEntity.GoodsId;
+                attach.AttachmentType = 4;
+                attach.AttachmentName = goodsEntity.Exterd1;
+                attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                attachRepository.Insert(attach);
+                if (j <= 0)
+                {
+                    return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
+                }
+                //2添加详情图
+                if (goodsEntity.Exterd2.IndexOf(',') == -1)
+                {
+                    attach = new AttachMentInfoEntity();
+                    attach.MainId = goodsEntity.GoodsId;
+                    attach.AttachmentType = 2;
+                    attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                    attach.AttachmentName = goodsEntity.Exterd2;
+                    attachRepository.Insert(attach);
+                }
+                else
+                {
+                    string[] detailsImgs = goodsEntity.Exterd2.Split(',');
+                    for (int i = 0; i < detailsImgs.Length; i++)
+                    {
+                        attach = new AttachMentInfoEntity();
+                        attach.MainId = goodsEntity.GoodsId;
+                        attach.AttachmentType = 2;
+                        attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                        attach.AttachmentName = detailsImgs[i];
+                        attachRepository.Insert(attach);
+                    }
+                }
+                //3添加轮播图
+                if (goodsEntity.Exterd3.IndexOf(',') == -1)
+                {
+                    attach = new AttachMentInfoEntity();
+                    attach.MainId = goodsEntity.GoodsId;
+                    attach.AttachmentType = 1;
+                    attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                    attach.AttachmentName = goodsEntity.Exterd3;
+                    attachRepository.Insert(attach);
+                }
+                else
+                {
+                    string[] scrollImgs = goodsEntity.Exterd3.Split(',');
+                    for (int i = 0; i < scrollImgs.Length; i++)
+                    {
+                        attach = new AttachMentInfoEntity();
+                        attach.MainId = goodsEntity.GoodsId;
+                        attach.AttachmentType = 1;
+                        attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                        attach.AttachmentName = scrollImgs[i];
+                        attachRepository.Insert(attach);
+                    }
+                }
+                return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "" });
             }
-            else
-            {
-                //修改
+            catch (Exception ex) {
+                throw ex;
             }
-            GoodsManageServices service = new GoodsManageServices(goodsRepository);
-            int i = service.SubmitGoodsGoodsEntity(goodsEntity);
-            if (i <= 0)
-            {
-                return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
-            }
-            //附件表存储商品Id相关附件，主图和详情图只有一个，商品详情轮播图可能有多个
-
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "" });
         }
 
         /// <summary>
@@ -117,7 +188,7 @@ namespace WebUI.Controllers.Manage
                 {
                     data.CopyTo(stream);
                 }
-                return Json(new AjaxResult { state = ResultType.success, message = "上传文件成功", data = "Upload/GoodsImg/" + fileName });
+                return Json(new AjaxResult { state = ResultType.success, message = "上传文件成功", data = fileName });
             }
             catch (Exception ex)
             {

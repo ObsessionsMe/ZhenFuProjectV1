@@ -28,17 +28,20 @@ namespace WebUI.Controllers.Client
     {
         private readonly IUserRepository userRepository;
         private IUserPrintsSumRepository sumRepository;
-        public LoginController(IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository)
+        private IOrderRepository order;
+        public LoginController(IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository, IOrderRepository _order)
         {
             userRepository = _userRepository;
             sumRepository = _sumRepository;
+            order = _order;
         }
+    
         // GET: api/User/LoginOn
         [Route("LoginOn")]
         public ActionResult LoginOn(string telephone, string password)
         {
             //校验用户Telephone合法性
-            UserService servers = new UserService(userRepository, sumRepository);
+            UserService servers = new UserService(userRepository, sumRepository, order);
             var data = servers.GetUserNameByPhone(telephone);
             if (data == null)
             {
@@ -84,7 +87,7 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "两次密码输入不一致", data = "" });
             }
-            UserService servers = new UserService(userRepository, sumRepository);
+            UserService servers = new UserService(userRepository, sumRepository, order);
             //校验手机号
             if (!string.IsNullOrEmpty(telephone))
             {
@@ -106,7 +109,7 @@ namespace WebUI.Controllers.Client
         public ActionResult UserRegister(string jsonString)
         {
             UserInfoEntity userInfo = JsonConvert.DeserializeObject<UserInfoEntity>(jsonString);
-            UserService servers = new UserService(userRepository, sumRepository);
+            UserService servers = new UserService(userRepository, sumRepository, order);
             if (userInfo == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取数据失败", data = "" });
@@ -145,7 +148,7 @@ namespace WebUI.Controllers.Client
         [Route("GetUserNameByPhone")]
         public ActionResult GetUserNameByPhone(string telephone)
         {
-            UserService servers = new UserService(userRepository, sumRepository);
+            UserService servers = new UserService(userRepository, sumRepository, order);
             var data = servers.GetUserNameByPhone(telephone);
             if (data == null)
             {

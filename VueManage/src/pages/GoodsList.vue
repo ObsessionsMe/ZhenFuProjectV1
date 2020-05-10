@@ -13,7 +13,7 @@
             :value="item.id"
           ></el-option>
         </el-select>
-      </el-form-item> -->
+      </el-form-item>-->
       <el-form-item>
         <!-- <el-button type="primary" icon="el-icon-circle-plus-outline">查询</el-button> -->
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addGoods">添加商品</el-button>
@@ -35,7 +35,7 @@
           <el-table-column prop="goodsLevel" label="所属种类" width="100"></el-table-column>
           <el-table-column prop="unitPrice" label="商品单价" sortable width="100"></el-table-column>
           <el-table-column prop="goodsLevel" label="商品级别" width="100"></el-table-column>
-          <el-table-column prop="unitPrice" label="商品主图" sortable width="150"></el-table-column>
+          <!-- <el-table-column prop="unitPrice" label="商品主图" sortable width="150"></el-table-column> -->
           <!-- <el-table-column prop="itemPoints" label="库存数量" sortable width="100"></el-table-column> -->
           <el-table-column prop="enable" label="商品状态" sortable width="100">
             <template slot-scope="scope">{{scope.row.enable=="Y"?"已上架":"已下架"}}</template>
@@ -67,7 +67,12 @@
             label-width="220px"
           >
             <el-form-item label="类别">
-              <el-select placeholder="选择商品类型(必填)" v-model="defalutShopType" label-width="200px">
+              <el-select
+                placeholder="选择商品类型(必填)"
+                v-model="defalutShopType"
+                label-width="200px"
+                disabled
+              >
                 <el-option
                   v-for="item in allShopType"
                   :key="item.id"
@@ -78,7 +83,7 @@
             </el-form-item>
 
             <el-form-item label="商品种类" v-if="defalutShopType==1">
-              <el-select placeholder="选择商品种类(必填)"  v-model="defalutGoodsType" label-width="200px">
+              <el-select placeholder="选择商品种类(必填)" v-model="defalutGoodsType" label-width="200px">
                 <el-option
                   v-for="item in allGoodsType"
                   :key="item.id"
@@ -89,7 +94,7 @@
             </el-form-item>
             <el-form-item label="商品名称">
               <el-input
-                v-model="goodsEntity.goodsName"
+                v-model="goodsEntity.GoodsName"
                 type="text"
                 placeholder="商品名称(必填)"
                 label-width="200px"
@@ -98,7 +103,7 @@
 
             <el-form-item label="商品单价">
               <el-input
-                v-model="goodsEntity.goodsName"
+                v-model="goodsEntity.UnitPrice"
                 type="number"
                 placeholder="商品单价(必填)"
                 label-width="20px"
@@ -107,7 +112,7 @@
 
             <el-form-item label="每日产生积分" v-if="this.defalutShopType==0">
               <el-input
-                v-model="goodsEntity.goodsName"
+                v-model="goodsEntity.ItemPoints"
                 type="number"
                 placeholder="持仓后每日可产生的积分"
                 label-width="200px"
@@ -116,7 +121,7 @@
 
             <el-form-item label="直接分享产生积分" v-if="this.defalutShopType==0">
               <el-input
-                v-model="goodsEntity.goodsName"
+                v-model="goodsEntity.DirectPoints"
                 type="number"
                 placeholder="直接分享后每日产生积分"
                 label-width="200px"
@@ -125,7 +130,7 @@
 
             <el-form-item label="间接分享产生积分" v-if="this.defalutShopType==0">
               <el-input
-                v-model="goodsEntity.goodsName"
+                v-model="goodsEntity.IndirectPoints"
                 type="number"
                 placeholder="间接分享后每日产生积分"
                 label-width="200px"
@@ -146,17 +151,17 @@
                 placeholder="该商品的总库存数"
                 label-width="200px"
               ></el-input>
-            </el-form-item> -->
+            </el-form-item>-->
             <el-form-item label="商品详情介绍">
               <el-input
-                v-model="goodsEntity.goodsName"
+                v-model="goodsEntity.GoodsDescribe"
                 type="textarea"
                 rows="3"
                 style="width:640px"
                 placeholder="请输入该商品相关的商品详情介绍信息...(可不填)"
               ></el-input>
             </el-form-item>
-            <el-form-item label="物流发货备注">
+            <!-- <el-form-item label="物流发货备注">
               <el-input
                 v-model="goodsEntity.goodsName"
                 type="textarea"
@@ -164,7 +169,7 @@
                 style="width:640px"
                 placeholder="请输入该商品相关的物流发货备注信息...(可不填)"
               ></el-input>
-            </el-form-item>
+            </el-form-item>-->
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="2商品相关图片" name="second">
@@ -178,15 +183,14 @@
             <el-form-item label="商品主图(单张)">
               <el-upload
                 class="upload-demo"
-                action="https://localhost:44380/api/GoodsManage/UploadGoodsFile"
-                :on-preview="handlePreview1"
+                :action="uploadApi"
                 :on-remove="handleRemove1"
                 :before-remove="beforeRemove1"
                 :on-success="handleSuccessImg1"
                 multiple
                 :limit="1"
-                :on-exceed="handleExceed"
-                :file-list="fileList_main" 
+                :on-exceed="handleExceed1"
+                :file-list="fileList_main"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -196,14 +200,13 @@
             <el-form-item label="商品详情图(最多20张)">
               <el-upload
                 class="upload-demo"
-                action="https://localhost:44380/api/GoodsManage/UploadGoodsFile"
-                :on-preview="handlePreview2"
+                :action="uploadApi"
                 :on-remove="handleRemove2"
                 :before-remove="beforeRemove2"
                 :on-success="handleSuccessImg2"
                 multiple
                 :limit="20"
-                :on-exceed="handleExceed"
+                :on-exceed="handleExceed2"
                 :file-list="fileList_details"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
@@ -213,15 +216,14 @@
             <el-form-item label="商品详情轮播图(最多5张)">
               <el-upload
                 class="upload-demo"
-                action="https://localhost:44380/api/GoodsManage/UploadGoodsFile"
-                :on-preview="handlePreview3"
+                :action="uploadApi"
                 :on-remove="handleRemove3"
                 :before-remove="beforeRemove3"
                 :on-success="handleSuccessImg3"
                 multiple
                 :limit="5"
-                :on-exceed="handleExceed"
-                :file-list="fileList_scorll" 
+                :on-exceed="handleExceed3"
+                :file-list="fileList_scorll"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -247,8 +249,11 @@ export default {
   data() {
     return {
       fileList_main: [],
+      fileList_main1: "",
       fileList_details: [],
+      fileList2: [],
       fileList_scorll: [],
+      fileList3: [],
       activeName: "first",
       kw: "",
       tableData: [],
@@ -256,8 +261,8 @@ export default {
       pageSize: 10,
       pageIndex: 1,
       keyword: "",
-      isShowAddDialog: false,   
-      //查询条件 
+      isShowAddDialog: false,
+      //查询条件
       defalutShopType_c: -1,
       allShopType_c: [
         { id: -1, name: "选择商品类型" },
@@ -265,9 +270,9 @@ export default {
         { id: 1, name: "商品" }
       ],
       //新增
-      defalutShopType: -1,
+      defalutShopType: 1,
       allShopType: [
-        { id: -1, name: "选择商品类型(必填)"},
+        { id: -1, name: "选择商品类型(必填)" },
         { id: 0, name: "产品" },
         { id: 1, name: "商品" }
       ],
@@ -281,14 +286,16 @@ export default {
         { id: 4, name: "家具家纺" },
         { id: 5, name: "手机数码" },
         { id: 6, name: "配饰背包" },
-        { id: 7, name: "汽车用品" },  
+        { id: 7, name: "汽车用品" }
       ],
-      goodsEntity: {}
+      goodsEntity: {},
+      uploadApi: ""
     };
   },
   created() {
     //页面初始化
     this.GetGoodsList();
+    this.uploadApi = url.UploadGoodsFile;
   },
   methods: {
     //获取商品列表
@@ -326,76 +333,160 @@ export default {
     },
     //查看商品详情
     checkGoods() {},
-
-    handleSuccessImg(response, file, fileList) {
-      console.log("response", response);
-      console.log(file);
-      console.log(fileList);
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 1 个文件，本次选择了 ${
-          files.length
-        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
-      );
-    },
-    beforeRemove(file, fileList) {
-      console.log(fileList);
-      return this.$confirm(`确定移除 ${file.name}？`);
-    },
     cannel() {
       this.isShowAddDialog = false;
     },
     //提交商品
     submitGoods() {
       var errorMsg = this.verificationGoods();
+      console.log("errorMsg",errorMsg);
       console.log(errorMsg);
-      var goodsEntitys = {
-        GoodsName: this.goodsEntity.GoodsName
-      };
-      console.log(goodsEntitys);
-      http.post(url.SubmitGoods, this.goodsEntitys).then(res => {
+      if(errorMsg != ""){
+        this.$message({
+            type: "error",
+            message: errorMsg
+          });
+          return;
+      }
+      this.goodsEntity.GoodsType = this.defalutGoodsType;
+      this.goodsEntity.isProduct = this.defalutShopType == 1 ? "N" : "Y";
+      console.log("商品基础信息", this.goodsEntity);
+      if (this.fileList1 == "" || this.fileList1 ==undefined) {
+        this.$message({
+            type: "error",
+            message: "主图不能为空"
+          });
+          return;
+      }
+      this.goodsEntity.Exterd1 = this.fileList1; 
+      if(this.fileList2.length==0){
+         this.$message({
+            type: "error",
+            message: "详情图最少传一个"
+          });
+          return;
+      }
+      this.goodsEntity.Exterd2 = this.fileList2.toString(); 
+      if(this.fileList3.length==0){
+          this.$message({
+            type: "error",
+            message: "轮播图最少传一个"
+          });
+          return;
+      }
+      this.goodsEntity.Exterd3 = this.fileList3.toString(); 
+      http.post(url.SubmitGoods,{jsonString:JSON.stringify(this.goodsEntity)}).then(res => {
         console.log("res", res);
+        if(res.data.state=="success"){
+          this.$message({
+            type: "success",
+            message: "添加商品成功"
+          });
+          this.isShowAddDialog = false;
+          this.GetGoodsList();
+        }
       });
     },
     verificationGoods() {
       var errorMsg = "";
       if (
         this.goodsEntity.GoodsName == "" ||
-        this.goodsEntity.GoodsName == ""
+        this.goodsEntity.GoodsName == undefined
       ) {
-        errorMsg += "商品名称不能为空";
-        return;
+        errorMsg += "商品名称不能为空;   ";
       }
       if (
-        this.goodsEntity.GoodsName == "" ||
-        this.goodsEntity.GoodsName == ""
+        this.defalutGoodsType == "" ||
+        this.defalutGoodsType == undefined||
+        this.defalutGoodsType == -1
       ) {
-        errorMsg += "商品名称不能为空";
-        return;
+        errorMsg += "商品种类不能为空;   ";
       }
       if (
-        this.goodsEntity.GoodsName == "" ||
-        this.goodsEntity.GoodsName == ""
+        this.goodsEntity.UnitPrice == "" ||
+        this.goodsEntity.UnitPrice == undefined
       ) {
-        errorMsg += "商品名称不能为空";
-        return;
-      }
-      if (
-        this.goodsEntity.GoodsName == "" ||
-        this.goodsEntity.GoodsName == ""
-      ) {
-        errorMsg += "商品名称不能为空";
-        return;
-      }
-      if (
-        this.goodsEntity.GoodsName == "" ||
-        this.goodsEntity.GoodsName == ""
-      ) {
-        errorMsg += "商品名称不能为空";
-        return;
+        errorMsg += "商品单价不能为空;   ";
       }
       return errorMsg;
+    },
+    //商品主图1
+    handleExceed1(files, fileList_main) {
+      console.log(fileList_main);
+      this.$message.warning(
+        `当前限制选择 1 个文件，本次选择了 ${files.length} 个文件`
+      );
+    },
+    beforeRemove1(file, fileList_main) {
+      console.log("fileList_main1", fileList_main);
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    handleSuccessImg1(response, file, fileList_main) {
+      this.fileList1 = response.data;
+      console.log("fileList_main2", fileList_main);
+    },
+    handleRemove1(file, fileList_main) {
+      console.log("删除成功", fileList_main);
+      if (this.fileList1 == file.response.data) {
+        this.fileList1 = "";
+      }
+    },
+    //商品详情图最少一个
+    handleExceed2(files, fileList_details) {
+      this.$message.warning(
+        `当前限制选择 1 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList_details.length} 个文件`
+      );
+    },
+    beforeRemove2(file, fileList_details) {
+      console.log(fileList_details);
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    handleSuccessImg2(response, file, fileList_details) {
+      console.log("response", response);
+      console.log(file);
+      console.log(fileList_details);
+      this.fileList2.push(response.data);
+    },
+    handleRemove2(file, fileList_details) {
+      console.log("详情图file", file);
+      console.log(file, "主图" + fileList_details);
+      //移除
+      for (var i = 0; i < this.fileList2.length; i++) {
+        if (this.fileList2[i] == file.response.data) {
+          this.fileList2.splice(i, 1);
+          return;
+        }
+      }
+    },
+    //商品轮播图
+    handleExceed3(files, fileList_scorll) {
+      this.$message.warning(
+        `当前限制选择 1 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList_scorll.length} 个文件`
+      );
+    },
+    beforeRemove3(file, fileList_scorll) {
+      console.log(fileList_scorll);
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    handleSuccessImg3(response, file, fileList_scorll) {
+      console.log("response", response);
+      console.log(file);
+      console.log(fileList_scorll);
+      this.fileList3.push(response.data);
+    },
+    handleRemove3(file, fileList_scorll) {
+      console.log(file, "主图" + fileList_scorll);
+       //移除
+      for (var i = 0; i < this.fileList3.length; i++) {
+        if (this.fileList3[i] == file.response.data) {
+          this.fileList3.splice(i, 1);
+          return;
+        }
+      }
     }
   }
 };

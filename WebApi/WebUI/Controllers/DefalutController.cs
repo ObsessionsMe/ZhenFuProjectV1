@@ -33,13 +33,13 @@ namespace WebUI.Controllers
         [Route("GetUserInfo")]
         public ActionResult GetUserInfo()
         {
-            UserService servers = new UserService(userRepository, sumRepository);
-            var data = servers.FindUserList();
-            if (data == null)
-            {
-                return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "未获取到用户数据" });
-            }
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
+            //UserService servers = new UserService(userRepository, sumRepository, order);
+            //var data = servers.FindUserList();
+            //if (data == null)
+            //{
+            //    return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "未获取到用户数据" });
+            //}
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "获取数据成功" });
         }
     }
 }
