@@ -133,36 +133,35 @@ namespace BusinessLogic.ClientService
         /// <param name="userTelephone"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public object GetMyTream(string userTelephone)
+        public object GetMyTream(string userId,string goodsId)
         {
             try
             {
-                //通过递归实现树形数据，找出推荐人为我的直属下级和间接下级用户
                 List<UserTreeData> results = new List<UserTreeData>();
-                //2获取当前用户下的所有分支用户
-                List<UserInfoEntity> firstUsers = userRepository.FindList(x => userTelephone == x.ReferrerTelephone && x.Enable == "Y" && x.IsAdmin == "N");
-                List<UserInfoEntity> allUsers = userRepository.FindList(x => x.Enable == "Y" && x.IsAdmin == "N");
-                foreach (var firstItem in firstUsers)
+                DataTable treeTable1 = userRepository.GetUserTeamLevel1(userId, goodsId);
+                DataTable treeTable2 = userRepository.GetUserTeamLevel2(userId, goodsId);
+                for (int i = 0; i < treeTable1.Rows.Count; i++)
                 {
+                    var obj = treeTable1.Rows[i];
+                    int level = Convert.ToInt32(obj["Level"]);
                     //一级用户
                     var treeData = new UserTreeData();
-                    treeData.id = firstItem.UserId;
-                    int count1 = GetUserPayCout(firstItem.UserId);
-                    //查询该用户购买的和数
-                    string tel = firstItem.UserTelephone;
+                    treeData.id = obj["UserId"].ToString();
+                    int count = Convert.ToInt32(obj["BuyGoodsCount"]);
+                    string tel = obj["UserTelephone"].ToString();
                     string tel_new = tel.Substring(0, 3) + "****" + tel.Substring(7);
-                    //string tel = firstItem.UserTelephone.Replace(firstItem.UserTelephone, "(\\d{3})\\d{5}(\\d{3})", "$1*****$2");
-                    treeData.label = "vip1 "+ firstItem.Name + "(" + tel_new + ")" + "(" + count1 + ")";
-                    foreach (var item in allUsers)
+                    treeData.label = "vip1 " + obj["Name"].ToString() + "(" + tel_new + ")" + "(" + count + ")";
+                    for (int j = 0; j < treeTable2.Rows.Count; j++)
                     {
-                        if (firstItem.UserTelephone == item.ReferrerTelephone)
+                        //二级用户
+                        var dr = treeTable2.Rows[j];
+                        if (dr["ReferrerTelephone"].ToString() == tel)
                         {
-                            //二级用户
                             var chirds = new List<UserTreeData>();
-                            int count2 = GetUserPayCout(firstItem.UserId);
-                            tel = item.UserTelephone;
+                            count = Convert.ToInt32(dr["BuyGoodsCount"]);
+                            tel = dr["UserTelephone"].ToString();
                             tel_new = tel.Substring(0, 3) + "****" + tel.Substring(7);
-                            chirds.Add(new UserTreeData { id = item.UserId, label = "vip2 " + item.Name + "(" + tel_new + ")" + "(" + count2 + ")" });
+                            chirds.Add(new UserTreeData { id = dr["UserId"].ToString(), label = "vip2 " + dr["Name"].ToString() + "(" + tel_new + ")" + "(" + count + ")" });
                             treeData.children = chirds;
                             results.Add(treeData);
                         }

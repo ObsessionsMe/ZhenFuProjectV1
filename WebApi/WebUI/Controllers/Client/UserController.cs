@@ -94,7 +94,7 @@ namespace WebUI.Controllers.Client
 
 
         [Route("GetMyTream")]
-        public ActionResult GetMyTream()
+        public ActionResult GetMyTream(string goodsId)
         {
             if (userModel == null)
             {
@@ -107,7 +107,7 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "用户不存在", data = "" });
             }
-            var result = servers.GetMyTream(userModel.UserTelephone);
+            var result = servers.GetMyTream(userModel.UserId, goodsId);
             var results = new
             {
                 parentName = data.Referrer + data.ReferrerTelephone,

@@ -24,10 +24,16 @@ namespace RepositoryFactory.RepositoryService
             return dbcontext.UserPorintListEntity.ToList();        
         }
 
-        public DataTable GetUserTeam(string userId, string goodsId)
+        public DataTable GetUserTeamLevel1(string userId, string goodsId)
         {
-            string sql = string.Format(" select * From f_get_user_shop_team( '{0}' , '{1}' ) order by Level ", userId, goodsId);
+            string sql = string.Format(" select * From f_get_user_shop_team( '{0}' , '{1}' ) where Level =1 ", userId, goodsId);
             return ExecuteSql.SqlQuery(new DatabaseFacade(dbcontext), sql);
         }
+        public DataTable GetUserTeamLevel2(string userId, string goodsId)
+        {
+            string sql = string.Format(" select * From f_get_user_shop_team( '{0}' , '{1}' )  where Level =2 ", userId, goodsId);
+            return ExecuteSql.SqlQuery(new DatabaseFacade(dbcontext), sql);
+        }
+
     }
 }

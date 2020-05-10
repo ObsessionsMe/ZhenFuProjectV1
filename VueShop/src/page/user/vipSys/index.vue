@@ -131,7 +131,8 @@ export default {
       }
     },
     getMyTream() {
-      GetMyTream().then(response => {
+      console.log("goodsId",this.teamEarn.param.GoodsId);
+      GetMyTream(this.teamEarn.param.GoodsId).then(response => {
         console.log(response.data.parentName);
         if (response.data.parentName != "管理员888888") {
           this.treeData[0].label = response.data.parentName + "(推荐人)";
@@ -139,15 +140,6 @@ export default {
         this.treeData[0].children[0].label = response.data.name + "(我)";
         console.log("treeData", response.data.treeData);
         this.treeData[0].children[0].children = response.data.treeData;
-        //this.treeData[0].children[0].children = response.data.treeData;
-        //firsts.push(response.data.treeData)
-        //this.treeData[0].children[0].children.push(response.treeData);
-        // if (response.state == "success") {
-        //   console.log(response);
-        // } else {
-        //   this.$toast(response.message);
-        // }
-        //this.data=response;
       });
     }
     // handleNodeClick(data) {
