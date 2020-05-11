@@ -77,6 +77,11 @@ namespace Entity
         public int StockCount { get; set; }
 
         /// <summary>
+        /// 商品数量(默认10000)
+        /// </summary>
+        public int GoodsFreight { get; set; }
+
+        /// <summary>
         /// 商品级别
         /// </summary>
         public int GoodsLevel { get; set; }

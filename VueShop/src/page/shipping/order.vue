@@ -28,7 +28,7 @@
     <div style="height:15px;"></div>
     <van-cell-group class="total">
       <van-cell title="商品总额" :value="goodsTotal" />
-      <van-cell title="运费" value="到付,已实际运费为主" />
+      <van-cell title="运费" :value="goodsFreight" />
       <!-- <van-cell title="折扣" value="- 5.00" /> -->
       <van-cell title="实付金额" :value="goodsTotal" style="font-weight: 700;" />
     </van-cell-group>
@@ -134,7 +134,8 @@ export default {
       GoodsUnitPrice: 0,
       BuyGoodsNums: 0,
       PayCount: 0,
-      addressList: {}
+      addressList: {},
+      goodsFreight:0
     };
   },
   methods: {
@@ -152,7 +153,8 @@ export default {
         BuyGoodsNums: this.BuyGoodsNums,
         PayCount: this.goodsTotal,
         UsePorintsType: parseInt(this.payMethod),
-        GoodsUnitPrice: this.GoodsUnitPrice
+        GoodsUnitPrice: this.GoodsUnitPrice,
+        goodsFreight:this.goodsFreight
       };
       if (!this.isSure) {
         this.$toast("前先勾选同意珍福商城购买协议");
@@ -199,6 +201,7 @@ export default {
         this.goodsTotal_r = parseInt(this.goodsTotal) * 100;
         this.BuyGoodsNums = this.$store.state.orderInfo.goodsNum;
         this.GoodsUnitPrice = response.data.goodsData.unitPrice;
+        this.goodsFreight = response.data.goodsData.goodsFreight;//运费
         if (response.data.goodsData.isProduct == "N") {
           this.isProduct = true;
         }
