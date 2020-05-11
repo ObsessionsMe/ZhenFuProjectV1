@@ -15,10 +15,16 @@ namespace Entity
         /// 自增长Id
         /// </summary>
         public int Id { get; set; }
+
         /// <summary>
         /// 用户Id
         /// </summary>
         public string UserId { get; set; }
+
+        /// <summary>
+        /// 商品Id
+        /// </summary>
+        public string GoodsId { get; set; }
 
         /// <summary>
         /// 产品赠送积分

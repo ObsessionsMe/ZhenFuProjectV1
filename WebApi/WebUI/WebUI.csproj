@@ -38,5 +38,9 @@
     <Folder Include="Upload\新文件夹\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include=".vs\WebUI\config\applicationhost.config" />
+  </ItemGroup>
+
 
 </Project>

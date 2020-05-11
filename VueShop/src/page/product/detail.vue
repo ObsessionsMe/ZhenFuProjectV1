@@ -177,6 +177,7 @@ export default {
         goodsId: data.goodsId
       };
       console.log("data.selectedNum",data.selectedNum);
+      
       if(parseInt(data.selectedNum)>20){
         this.$toast("购买数量不能大于20!");
         return

@@ -90,14 +90,6 @@ namespace BusinessLogic.ClientService
                 userEntity.TourismPorints = 1000;
                 userEntity.isHold = "N";
                 userRepository.Insert(userEntity);
-                //用户汇总初始化数据
-                var sumporintsEntity = new UserPrintsSumEntity();
-                sumporintsEntity.UserId = userEntity.UserId;
-                sumporintsEntity.ProductPorints = 0;
-                sumporintsEntity.TreamPorints = 0;
-                sumporintsEntity.PorintsSurplus = 0;
-                sumporintsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                sumRepository.Insert(sumporintsEntity);
                 return new AjaxResult { state = ResultType.success.ToString(), message = "注册成功！", data = userEntity };
             }
             catch (Exception ex)
