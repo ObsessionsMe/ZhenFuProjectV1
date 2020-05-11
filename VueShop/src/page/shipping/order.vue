@@ -28,7 +28,7 @@
     <div style="height:15px;"></div>
     <van-cell-group class="total">
       <van-cell title="商品总额" :value="goodsTotal" />
-      <van-cell title="运费" value="+ 0.00" />
+      <van-cell title="运费" value="到付,已实际运费为主" />
       <!-- <van-cell title="折扣" value="- 5.00" /> -->
       <van-cell title="实付金额" :value="goodsTotal" style="font-weight: 700;" />
     </van-cell-group>

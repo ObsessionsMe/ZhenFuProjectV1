@@ -9,6 +9,8 @@ using Infrastructure;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Repository.RepositoryService;
 using RepositoryFactory.ServiceInterface;
 using WebUI.Tool;
 
@@ -27,7 +29,7 @@ namespace WebUI.Controllers.Manage
         private readonly IUserPrintsSumRepository sumRepository;
         private readonly IUserPorintsRecordRepository recordRepository;
 
-        public UserManageController(IUserRepository _userRepository,IGoodsRepository _goodsRepository, IOrderRepository _orderRepository,
+        public UserManageController(IUserRepository _userRepository, IGoodsRepository _goodsRepository, IOrderRepository _orderRepository,
             IUserPrintsSumRepository _sumRepository, IUserPorintsRecordRepository _recordRepository
             )
         {
@@ -142,6 +144,57 @@ namespace WebUI.Controllers.Manage
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "充值失败", data = data });
             }
             return Json(data);
+        }
+
+        [Route("DeleteUser")]
+        public ActionResult DeleteUser(string UserId)
+        {
+            if (string.IsNullOrEmpty(UserId)) {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "用户不存在", data = null });
+            }
+            UserManageService server = new UserManageService(userRepository);
+            var data = server.DeleteUser(UserId);
+            if (data == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "充值失败", data = data });
+            }
+            return Json(data);
+        }
+        //修改用户
+        public ActionResult EditUser(string jsonString)
+        {
+            var user = JsonConvert.DeserializeObject<UserInfoEntity>(jsonString);
+            var entity = userRepository.FindEntity(x => x.ReferrerTelephone == user.UserTelephone);
+            if (entity == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "你输入的推荐人手机号在系统中不存在", data = null });
+            }
+            //可以改姓名，推荐人手机号，积分余额
+            user.Referrer = entity.Referrer;
+            user.ReferrerTelephone = entity.ReferrerTelephone;
+            int i = userRepository.Update(user);
+            if (i < 1)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "修改用户失败", data = null });
+            }
+           var sumEntity = sumRepository.FindEntity(x => x.UserId == user.UserId);
+            if (sumEntity == null)
+            {
+                var sumporintsEntity = new UserPrintsSumEntity();
+                sumporintsEntity.UserId = user.UserId;
+                //sumporintsEntity.GoodsId = order.GoodsId;
+                sumporintsEntity.ProductPorints = 0;
+                sumporintsEntity.TreamPorints = 0;
+                sumporintsEntity.PorintsSurplus = 0;
+                sumporintsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                sumRepository.Insert(sumporintsEntity);
+                if (i < 1)
+                {
+                    return null;
+                }
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "修改用户失败", data = null });
+            }
+            return Json(new AjaxResult { state = ResultType.error.ToString(), message = "下单失败", data = "" });
         }
     }
 }

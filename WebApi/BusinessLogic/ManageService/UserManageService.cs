@@ -41,5 +41,16 @@ namespace BusinessLogic.ManageService
             // }
             //return userRepository.FindList(expression, pagination);
         }
+
+        public AjaxResult DeleteUser(string userId)
+        {
+            //删除用户表，汇总表，记录表，订单表
+            string procStr = string.Format(" p_delete_user '{0}' ", userId);
+            int i =  userRepository.ExecuteProc(procStr, new object[] { });
+            if (i <= 0) {
+                return new AjaxResult { state = ResultType.error.ToString(), message = "删除失败！", data = "" };
+            }
+            return new AjaxResult { state = ResultType.success.ToString(), message = "删除成功！", data = "" };
+        }
     }
 }

@@ -122,6 +122,7 @@ namespace BusinessLogic.ClientService
                     userPorintsRecord.UserId = userId;
                     userPorintsRecord.GoodsId = order.GoodsId;
                     userPorintsRecord.ProductPorints = sumItemPoints;
+                    userPorintsRecord.PorintsType = 1;
                     userPorintsRecord.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                     recordRepository.Insert(userPorintsRecord);
                     if (i < 1)
@@ -180,6 +181,29 @@ namespace BusinessLogic.ClientService
                 return null;
             }
             return new AjaxResult { state = ResultType.success.ToString(), message = "充值成功！", data = "" };
+        }
+
+        public AjaxResult CheckUserPayGoodsCount(int payNum, string goodsId, string userId)
+        {
+            var orderList = orderRepository.FindList(x => x.UserId == userId && x.GoodsId == goodsId);
+            int alreadPayCount = 0;
+            foreach (var item in orderList)
+            {
+                alreadPayCount += Convert.ToInt32(item.BuyGoodsNums);
+            }
+            if (alreadPayCount == 0)
+            {
+                if (payNum > 20)
+                {
+                    return new AjaxResult { state = ResultType.error.ToString(), message = "你当前的购买数量已经超过了最大数额(20件)，请选择其他产品进行购买", data = "" };
+                }
+            }
+            int count = Convert.ToInt32(20 - alreadPayCount);
+            if (payNum > count)
+            {
+                return new AjaxResult { state = ResultType.error.ToString(), message = "你当前的购买数量已经超过了最大数额(20件)，请选择其他产品进行购买", data = "" };
+            }
+            return new AjaxResult { state = ResultType.success.ToString(), message = "操作成功！", data = "" };
         }
     }
 }

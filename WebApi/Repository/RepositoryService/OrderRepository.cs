@@ -1,5 +1,6 @@
 ﻿using Entity;
 using Infrastructure.DBContext;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using RepositoryFactory.RepositoryBase;
 using RepositoryFactory.RepositorysBase;
@@ -26,7 +27,5 @@ namespace RepositoryFactory.RepositoryService
             }
             return list[0].GoodsLevel;
         }
-
-
     }
 }

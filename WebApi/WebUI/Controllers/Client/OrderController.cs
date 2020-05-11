@@ -120,16 +120,20 @@ namespace WebUI.Controllers.Client
             return Json(data);
         }
 
-        /// <summary>
-        /// 提交订单
-        /// </summary>
-        /// <param name="jsonString"></param>
-        /// <returns></returns>
-        [Route("CheckUserPayCount")]
-        public ActionResult CheckUserPayCount(string userId, string payCount)
+
+        public ActionResult CheckUserPayGoodsCount(string goodsId, int payNum)
         {
-            string data = null;
-           return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
+            if (userModel == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败，请重新登录", data = "" });
+            }
+            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository);
+            var data = server.CheckUserPayGoodsCount(payNum, goodsId, userModel.UserId);
+            if (data == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取数据成功", data = data });
+            }
+            return Json(data);
         }
     }
 }
