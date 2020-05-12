@@ -62,6 +62,7 @@ namespace WebUI.Controllers.Manage
             try
             {
                 GoodsEntity goodsEntity = JsonConvert.DeserializeObject<GoodsEntity>(jsonString);
+                GoodsManageServices service = new GoodsManageServices(goodsRepository);
                 //2:商品附件入库//1:商品基础数据入库
                 if (goodsEntity == null)
                 {
@@ -78,28 +79,32 @@ namespace WebUI.Controllers.Manage
                         goodsEntity.ItemPoints = goodsEntity.IndirectPoints = goodsEntity.DirectPoints = 0;
                         goodsEntity.GoodsLevel = 1;
                         goodsEntity.StockCount = 10000;
-
+                        int j = service.SubmitGoodsGoodsEntity(goodsEntity);
+                        if (j <= 0)
+                        {
+                            return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
+                        }
                     }
                 }
                 else
                 {
-                    //修改
+                    //修改商品
+                    int j = goodsRepository.Update(goodsEntity);
+                    if (j <= 0)
+                    {
+                        return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
+                    }
                 }
-                GoodsManageServices service = new GoodsManageServices(goodsRepository);
-                int j = service.SubmitGoodsGoodsEntity(goodsEntity);
-                if (j <= 0)
-                {
-                    return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
-                }
+ 
                 //附件表存储商品Id相关附件，主图单个和详情图多个，商品详情轮播图可能有多个
                 //1添加主图
                 AttachMentInfoEntity attach = new AttachMentInfoEntity();
                 attach.MainId = goodsEntity.GoodsId;
                 attach.AttachmentType = 4;
                 attach.AttachmentName = goodsEntity.Exterd1;
-                attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                attachRepository.Insert(attach);
-                if (j <= 0)
+                attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");          
+                int k = attachRepository.Insert(attach);
+                if (k <= 0)
                 {
                     return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
                 }
@@ -194,6 +199,24 @@ namespace WebUI.Controllers.Manage
             {
                 throw ex;
             }
+        }
+
+        //下架商品
+        [Route("ItemDownshelf")]
+        public ActionResult ItemDownshelf(string goodsId)
+        {
+            var entity = goodsRepository.FindEntity(x => x.GoodsId == goodsId);
+            if (entity == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "下架商品失败", data = null });
+            }
+            entity.Enable = "N";
+            int i = goodsRepository.Update(entity);
+            if (i <= 0)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "下架商品失败", data = null });
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "下架商品成功", data = null });
         }
     }
 }

@@ -17,6 +17,7 @@
       <el-form-item>
         <!-- <el-button type="primary" icon="el-icon-circle-plus-outline">查询</el-button> -->
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addGoods">添加商品</el-button>
+        <!-- <el-button type="primary" icon="el-icon-circle-plus-outline" @click="downGoods">下架商品</el-button> -->
       </el-form-item>
     </el-form>
     <section class="content">
@@ -30,6 +31,24 @@
           highlight-current-row
           height="650"
         >
+          <el-table-column label="操作" width="150">
+            <template slot-scope="scope">
+              <el-button
+                @click.native.prevent="downGoods(scope.row.goodsId)"
+                v-if="scope.row.enable=='Y'"
+                type="primary"
+                size="small"
+                icon="el-icon-circle-plus-outline"
+              >下架</el-button>
+              <el-button
+                @click.native.prevent="editGoods(scope.row)"
+                v-if="false"
+                type="primary"
+                size="small"
+                icon="el-icon-circle-plus-outline"
+              >编辑</el-button>
+            </template>
+          </el-table-column>
           <el-table-column prop="goodsName" label="商品名称" width="300" show-overflow-tooltip></el-table-column>
           <el-table-column prop="goodsLevel" label="商品类型" width="100"></el-table-column>
           <el-table-column prop="goodsLevel" label="所属种类" width="100"></el-table-column>
@@ -94,7 +113,7 @@
             </el-form-item>
             <el-form-item label="商品名称">
               <el-input
-                v-model="goodsEntity.GoodsName"
+                v-model="goodsEntity.goodsName"
                 type="text"
                 placeholder="商品名称(必填)"
                 label-width="200px"
@@ -103,7 +122,7 @@
 
             <el-form-item label="商品单价">
               <el-input
-                v-model="goodsEntity.UnitPrice"
+                v-model="goodsEntity.unitPrice"
                 type="number"
                 placeholder="商品单价(必填)"
                 label-width="20px"
@@ -112,7 +131,7 @@
 
             <el-form-item label="每日产生积分" v-if="this.defalutShopType==0">
               <el-input
-                v-model="goodsEntity.ItemPoints"
+                v-model="goodsEntity.itemPoints"
                 type="number"
                 placeholder="持仓后每日可产生的积分"
                 label-width="200px"
@@ -121,7 +140,7 @@
 
             <el-form-item label="直接分享产生积分" v-if="this.defalutShopType==0">
               <el-input
-                v-model="goodsEntity.DirectPoints"
+                v-model="goodsEntity.directPoints"
                 type="number"
                 placeholder="直接分享后每日产生积分"
                 label-width="200px"
@@ -130,7 +149,7 @@
 
             <el-form-item label="间接分享产生积分" v-if="this.defalutShopType==0">
               <el-input
-                v-model="goodsEntity.IndirectPoints"
+                v-model="goodsEntity.indirectPoints"
                 type="number"
                 placeholder="间接分享后每日产生积分"
                 label-width="200px"
@@ -154,7 +173,7 @@
             </el-form-item>-->
             <el-form-item label="商品详情介绍">
               <el-input
-                v-model="goodsEntity.GoodsDescribe"
+                v-model="goodsEntity.goodsDescribe"
                 type="textarea"
                 rows="3"
                 style="width:640px"
@@ -191,6 +210,7 @@
                 :limit="1"
                 :on-exceed="handleExceed1"
                 :file-list="fileList_main"
+                list-type="picture"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -208,6 +228,7 @@
                 :limit="20"
                 :on-exceed="handleExceed2"
                 :file-list="fileList_details"
+                list-type="picture"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -224,6 +245,7 @@
                 :limit="5"
                 :on-exceed="handleExceed3"
                 :file-list="fileList_scorll"
+                list-type="picture"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -243,13 +265,12 @@
 <script>
 //此处引入
 import { http, url } from "@/lib";
-//import { fileHost } from "@/lib/common";
 //我的存储
 export default {
   data() {
     return {
       fileList_main: [],
-      fileList_main1: "",
+      fileList1: [],
       fileList_details: [],
       fileList2: [],
       fileList_scorll: [],
@@ -289,7 +310,12 @@ export default {
         { id: 7, name: "汽车用品" }
       ],
       goodsEntity: {},
-      uploadApi: ""
+      uploadApi: "",
+      isEdit: false,
+      fileUrl:
+        process.env.NODE_ENV === "development"
+          ? "https://localhost:44380/"
+          : "/shop.api/"
     };
   },
   created() {
@@ -329,6 +355,7 @@ export default {
     //新增商品
     addGoods() {
       //显示弹框
+      this.goodsEntity = {};
       this.isShowAddDialog = true;
     },
     //查看商品详情
@@ -336,75 +363,184 @@ export default {
     cannel() {
       this.isShowAddDialog = false;
     },
-    //提交商品
+    //下架商品
+    downGoods(goodsId, isProduct) {
+      console.log("goodsId", goodsId);
+      console.log("isProduct", isProduct);
+      this.$confirm("此操作将永久下架该商品, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          http
+            .post(url.ItemDownshelf, {
+              goodsId: goodsId
+            })
+            .then(res => {
+              console.log("res", res);
+              this.GetGoodsList();
+              if (res.data.state == "success") {
+                this.$message({
+                  type: "success",
+                  message: "下架商品成功!"
+                });
+              } else {
+                this.$message({
+                  type: "info",
+                  message: "下架商品失败"
+                });
+              }
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    //修改商品
+    editGoods(rows) {
+      this.isEdit = true;
+      this.goodsEntity = {};
+      this.goodsEntity = rows;
+      this.isShowAddDialog = true;
+      this.defalutGoodsType = this.goodsEntity.goodsType;
+      //商品主图
+      this.fileList_main = [];
+      var href = this.fileUrl + "Upload/GoodsImg/";
+      var main_Imghref = href + this.goodsEntity.exterd1;
+      var item = {
+        name: this.goodsEntity.exterd1.substr(0, 8),
+        url: main_Imghref
+      };
+      this.fileList_main.push(item);
+      //商品详情图
+      this.fileList_details = [];
+      console.log("this.goodsEntity.exterd2", this.goodsEntity.exterd2);
+      if (this.goodsEntity.exterd2.indexOf(",") == -1) {
+        item = {
+          name: this.goodsEntity.exterd2,
+          url: href + this.goodsEntity.exterd2
+        };
+        this.fileList_details.push(item);
+      } else {
+        var detailsImgs = this.goodsEntity.exterd2.split(",");
+        console.log("detailsImgs", detailsImgs);
+        for (var i = 0; i < detailsImgs.length; i++) {
+          item = {
+            name: detailsImgs[i],
+            url: href + detailsImgs[i]
+          };
+          this.fileList_details.push(item);
+        }
+        console.log(this.fileList_details);
+      }
+      //商品轮播图
+      this.fileList_scorll = [];
+      console.log("this.goodsEntity.exterd3", this.goodsEntity.exterd3);
+      if (this.goodsEntity.exterd3.indexOf(",") == -1) {
+        item = {
+          name: this.goodsEntity.exterd3,
+          url: href + this.goodsEntity.exterd3
+        };
+        this.fileList_scorll.push(item);
+      } else {
+        var scrollImgs = this.goodsEntity.exterd3.split(",");
+        for (var j = 0; j < scrollImgs.length; j++) {
+          item = {
+            name: scrollImgs[j],
+            url: href + scrollImgs[j]
+          };
+          this.fileList_scorll.push(item);
+        }
+        console.log(this.fileList_scorll);
+      }
+      console.log(" this.goodsEntity ", this.goodsEntity);
+    },
+    //新增商品
     submitGoods() {
       var errorMsg = this.verificationGoods();
-      console.log("errorMsg",errorMsg);
+      console.log("errorMsg", errorMsg);
       console.log(errorMsg);
-      if(errorMsg != ""){
+      if (errorMsg != "") {
         this.$message({
-            type: "error",
-            message: errorMsg
-          });
-          return;
+          type: "error",
+          message: errorMsg
+        });
+        return;
       }
-      this.goodsEntity.GoodsType = this.defalutGoodsType;
+      this.goodsEntity.goodsType = this.defalutGoodsType;
       this.goodsEntity.isProduct = this.defalutShopType == 1 ? "N" : "Y";
       console.log("商品基础信息", this.goodsEntity);
-      if (this.fileList1 == "" || this.fileList1 ==undefined) {
-        this.$message({
+      if (this.isEdit) {
+        //修改
+        this.fileList1 = this.fileList_main[0].name.toString();
+        for (var j = 0; j < this.fileList_details.length; j++) {
+          this.fileList2.push(this.fileList_details[j].name);
+        }
+        for (var k = 0; k < this.fileList_scorll.length; k++) {
+          this.fileList3.push(this.fileList_scorll[k].name);
+        }
+      } else {
+        if (this.fileList1 == "" || this.fileList1 == undefined) {
+          this.$message({
             type: "error",
             message: "主图不能为空"
           });
           return;
-      }
-      this.goodsEntity.Exterd1 = this.fileList1; 
-      if(this.fileList2.length==0){
-         this.$message({
+        }
+        this.goodsEntity.exterd1 = this.fileList1;
+        if (this.fileList2.length == 0) {
+          this.$message({
             type: "error",
             message: "详情图最少传一个"
           });
           return;
-      }
-      this.goodsEntity.Exterd2 = this.fileList2.toString(); 
-      if(this.fileList3.length==0){
+        }
+        this.goodsEntity.exterd2 = this.fileList2.toString();
+        if (this.fileList3.length == 0) {
           this.$message({
             type: "error",
             message: "轮播图最少传一个"
           });
           return;
-      }
-      this.goodsEntity.Exterd3 = this.fileList3.toString(); 
-      http.post(url.SubmitGoods,{jsonString:JSON.stringify(this.goodsEntity)}).then(res => {
-        console.log("res", res);
-        if(res.data.state=="success"){
-          this.$message({
-            type: "success",
-            message: "添加商品成功"
-          });
-          this.isShowAddDialog = false;
-          this.GetGoodsList();
         }
-      });
+        this.goodsEntity.exterd3 = this.fileList3.toString();
+      }
+      http
+        .post(url.SubmitGoods, { jsonString: JSON.stringify(this.goodsEntity) })
+        .then(res => {
+          console.log("res", res);
+          if (res.data.state == "success") {
+            this.$message({
+              type: "success",
+              message: "保存成功"
+            });
+            this.isShowAddDialog = false;
+            this.GetGoodsList();
+          }
+        });
     },
     verificationGoods() {
       var errorMsg = "";
       if (
-        this.goodsEntity.GoodsName == "" ||
-        this.goodsEntity.GoodsName == undefined
+        this.goodsEntity.goodsName == "" ||
+        this.goodsEntity.goodsName == undefined
       ) {
         errorMsg += "商品名称不能为空;   ";
       }
       if (
         this.defalutGoodsType == "" ||
-        this.defalutGoodsType == undefined||
+        this.defalutGoodsType == undefined ||
         this.defalutGoodsType == -1
       ) {
         errorMsg += "商品种类不能为空;   ";
       }
       if (
-        this.goodsEntity.UnitPrice == "" ||
-        this.goodsEntity.UnitPrice == undefined
+        this.goodsEntity.unitPrice == "" ||
+        this.goodsEntity.unitPrice == undefined
       ) {
         errorMsg += "商品单价不能为空;   ";
       }
@@ -422,13 +558,26 @@ export default {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     handleSuccessImg1(response, file, fileList_main) {
-      this.fileList1 = response.data;
+      if (this.isEdit) {
+        var href = this.fileUrl + "Upload/GoodsImg/";
+        var item = {
+          name: response.data,
+          url: href + response.data
+        };
+        this.fileList_main.push(item);
+      } else {
+        this.fileList1 = response.data;
+      }
       console.log("fileList_main2", fileList_main);
     },
     handleRemove1(file, fileList_main) {
       console.log("删除成功", fileList_main);
-      if (this.fileList1 == file.response.data) {
-        this.fileList1 = "";
+      if (this.isEdit) {
+        this.fileList_main = [];
+      } else {
+        if (this.fileList1 == file.response.data) {
+          this.fileList1 = "";
+        }
       }
     },
     //商品详情图最少一个
@@ -447,16 +596,29 @@ export default {
       console.log("response", response);
       console.log(file);
       console.log(fileList_details);
-      this.fileList2.push(response.data);
+      if (this.isEdit) {
+        this.fileList_main.push(response.data);
+      } else {
+        this.fileList2.push(response.data);
+      }
     },
     handleRemove2(file, fileList_details) {
       console.log("详情图file", file);
       console.log(file, "主图" + fileList_details);
       //移除
-      for (var i = 0; i < this.fileList2.length; i++) {
-        if (this.fileList2[i] == file.response.data) {
-          this.fileList2.splice(i, 1);
-          return;
+      if (this.isEdit) {
+        for (var i = 0; i < this.fileList_main.length; i++) {
+          if (this.fileList_main[i] == file.response.data) {
+            this.fileList_main.splice(i, 1);
+            return;
+          }
+        }
+      } else {
+        for (var j = 0; j < this.fileList_details.length; j++) {
+          if (this.fileList_details[j] == file.response.data) {
+            this.fileList_details.splice(j, 1);
+            return;
+          }
         }
       }
     },
@@ -476,15 +638,28 @@ export default {
       console.log("response", response);
       console.log(file);
       console.log(fileList_scorll);
-      this.fileList3.push(response.data);
+      if (this.isEdit) {
+        this.fileList_scorll.push(response.data);
+      } else {
+        this.fileList3.push(response.data);
+      }
     },
     handleRemove3(file, fileList_scorll) {
       console.log(file, "主图" + fileList_scorll);
-       //移除
-      for (var i = 0; i < this.fileList3.length; i++) {
-        if (this.fileList3[i] == file.response.data) {
-          this.fileList3.splice(i, 1);
-          return;
+      //移除
+      if (this.isEdit) {
+        for (var i = 0; i < this.fileList_scorll.length; i++) {
+          if (this.fileList_scorll[i] == file.response.data) {
+            this.fileList_scorll.splice(i, 1);
+            return;
+          }
+        }
+      } else {
+        for (var j = 0; j < this.fileList3.length; j++) {
+          if (this.fileList3[j] == file.response.data) {
+            this.fileList3.splice(j, 1);
+            return;
+          }
         }
       }
     }
