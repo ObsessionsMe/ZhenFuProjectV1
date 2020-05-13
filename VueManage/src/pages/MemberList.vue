@@ -16,7 +16,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchUser">查询</el-button>
-      </el-form-item> -->
+      </el-form-item>-->
     </el-form>
     <section class="content">
       <h5>会员列表</h5>
@@ -29,6 +29,24 @@
           highlight-current-row
           height="650"
         >
+          <el-table-column prop="userId" label="操作" sortable width="200">
+            <template slot-scope="scope">
+              <el-button
+                v-if="scope.row.isAdmin=='N'"
+                type="primary"
+                icon="el-icon-circle-plus-outline"
+                size="small"
+                @click="payPorints(scope.row.userId)"
+              >充值</el-button>
+              <el-button
+                v-if="scope.row.isAdmin=='N'"
+                type="primary"
+                icon="el-icon-circle-plus-outline"
+                size="small"
+                @click="editUser(scope.row)"
+              >修改</el-button>
+            </template>
+          </el-table-column>
           <el-table-column prop="name" label="会员姓名" width="120" show-overflow-tooltip></el-table-column>
           <el-table-column prop="userTelephone" label="会员手机号" width="200"></el-table-column>
           <el-table-column prop="referrer" label="推荐人姓名" sortable width="120"></el-table-column>
@@ -44,17 +62,6 @@
             <template slot-scope="scope">{{scope.row.enable=="Y"?"有效":"无效"}}</template>
           </el-table-column>
           <el-table-column prop="addtime" label="注册时间" sortable width="200"></el-table-column>
-          <el-table-column prop="userId" label="操作" sortable width="200">
-            <template slot-scope="scope">
-              <el-button
-                v-if="scope.row.isAdmin=='N'"
-                type="primary"
-                icon="el-icon-circle-plus-outline"
-                size="small"
-                @click="payPorints(scope.row.userId)"
-              >充值</el-button>
-            </template>
-          </el-table-column>
         </el-table>
       </el-row>
       <el-pagination
@@ -68,6 +75,34 @@
         :total="total"
       ></el-pagination>
     </section>
+    <!--弹出框(新增,编辑,查看)-->
+    <el-dialog :visible.sync="isShowDialog" width="60%">
+      <el-tabs type="border-card" align="left" v-model="activeName">
+        <el-tab-pane label="修改用戶新信息" name="first">
+          <el-form
+            :inline="true"
+            v-model="userEntity"
+            class="form-inline"
+            label-position="right"
+            label-width="220px"
+          >
+            <el-form-item label="姓名">
+              <el-input v-model="userEntity.name" type="text"></el-input>
+            </el-form-item>
+            <el-form-item label="推荐人手机号">
+              <el-input v-model="userEntity.referrerTelephone" type="number"></el-input>
+            </el-form-item>
+            <el-form-item label="积分余额">
+              <el-input v-model="userEntity.porintsSurplus" type="number"></el-input>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+      </el-tabs>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cannel()">取 消</el-button>
+        <el-button type="primary" @click="editUserOn()">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -78,6 +113,8 @@ import { http, url } from "@/lib";
 export default {
   data() {
     return {
+      isShowDialog: false,
+      activeName: "first",
       kw: "",
       tableData: [],
       total: 0,
@@ -85,6 +122,11 @@ export default {
       pageIndex: 1,
       keyword: "",
       defalutMemBerType: 100,
+      userEntity: {
+        name: "",
+        referrerTelephone: null,
+        porintsSurplus: null
+      },
       allMemberType: [
         { id: 100, name: "全部" },
         { id: -1, name: "管理员" },
@@ -103,7 +145,7 @@ export default {
     this.searchUser();
   },
   methods: {
-    //获取日志列表
+    //获取列表
     searchUser() {
       http
         .post(url.GetMemberList, {
@@ -178,6 +220,53 @@ export default {
             });
           }
         });
+    },
+    cannel() {
+      this.isShowDialog = false;
+      this.userEntity = {};
+    },
+    editUser(row) {
+      this.isShowDialog = true;
+      this.userEntity = row;
+    },
+    editUserOn(){
+      if(this.userEntity.name == "" || this.userEntity.name == null){
+        this.$message({
+            type: "error",
+            message: "姓名不能为空"
+          });
+          return;
+      }
+      //手機格式校驗
+      if(this.userEntity.referrerTelephone == "" || this.userEntity.referrerTelephone == null){
+        this.$message({
+            type: "error",
+            message: "推荐人手机号不能为空"
+          });
+         return;
+      }
+      if(parseInt(this.userEntity.porintsSurplus) < 0){
+        this.$message({
+            type: "error",
+            message: "积分余额不能小于0"
+          });
+         return;
+      }
+      http.post(url.editUser, {jsonString:JSON.stringify(this.userEntity)}).then(res => {
+        this.searchUser();
+        this.isShowDialog = false;
+        if (res.data.state == "success") {
+          this.$message({
+            type: "success",
+            message: "修改成功"
+          });
+        } else {
+          this.$message({
+            type: "info",
+            message: "修改失败"
+          });
+        }
+      });
     }
   }
 };

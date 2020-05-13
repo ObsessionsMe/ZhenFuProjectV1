@@ -11,7 +11,8 @@ let url = {
     SubmitGoods: "api/GoodsManage/SubmitGoods", 
     ManagePayPorints: "api/UserManage/ManagePayPorints",  
     UploadGoodsFile:"api/GoodsManage/UploadGoodsFile",//上传文件
-    ItemDownshelf:"api/GoodsManage/ItemDownshelf"//下架商品 
+    ItemDownshelf:"api/GoodsManage/ItemDownshelf",//下架商品 
+    editUser:"api/UserManage/editUser"//下架商品 
     //logout: "api/Login/OutLogin",
     //getGridJson: "api/User/GetGridJson",
     //getPersonalFileList:"/File/GetFileList",    

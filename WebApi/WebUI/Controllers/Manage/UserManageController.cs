@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Repository.RepositoryService;
 using RepositoryFactory.ServiceInterface;
+using ViewEntity;
 using WebUI.Tool;
 
 namespace WebUI.Controllers.Manage
@@ -160,18 +161,25 @@ namespace WebUI.Controllers.Manage
             }
             return Json(data);
         }
+        [Route("EditUser")]
         //修改用户
         public ActionResult EditUser(string jsonString)
         {
-            var user = JsonConvert.DeserializeObject<UserInfoEntity>(jsonString);
-            var entity = userRepository.FindEntity(x => x.ReferrerTelephone == user.UserTelephone);
+            var users = JsonConvert.DeserializeObject<UserPorintListEntity>(jsonString);
+            var entity = userRepository.FindEntity(x => x.UserId == users.UserId);
+            if (entity == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "该用户在系统中不存在", data = null });
+            }
+            entity = userRepository.FindEntity(x => x.UserTelephone == users.ReferrerTelephone);
             if (entity == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "你输入的推荐人手机号在系统中不存在", data = null });
             }
             //可以改姓名，推荐人手机号，积分余额
-            user.Referrer = entity.Referrer;
-            user.ReferrerTelephone = entity.ReferrerTelephone;
+            var user = userRepository.FindEntity(x => x.UserId == users.UserId);
+            user.Referrer = entity.Name;
+            user.ReferrerTelephone = entity.UserTelephone;
             int i = userRepository.Update(user);
             if (i < 1)
             {
@@ -190,11 +198,18 @@ namespace WebUI.Controllers.Manage
                 sumRepository.Insert(sumporintsEntity);
                 if (i < 1)
                 {
-                    return null;
+                    return Json(new AjaxResult { state = ResultType.error.ToString(), message = "修改用户失败", data = null });
                 }
-                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "修改用户失败", data = null });
             }
-            return Json(new AjaxResult { state = ResultType.error.ToString(), message = "下单失败", data = "" });
+            else {
+                sumEntity.PorintsSurplus = Convert.ToInt32(users.PorintsSurplus);
+                sumRepository.Update(sumEntity);
+                if (i < 1)
+                {
+                    return Json(new AjaxResult { state = ResultType.error.ToString(), message = "修改用户失败", data = null });
+                }
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "保存成功", data = "" });
         }
     }
 }

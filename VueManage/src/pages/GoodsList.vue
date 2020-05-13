@@ -31,7 +31,7 @@
           highlight-current-row
           height="650"
         >
-          <el-table-column label="操作" width="150">
+          <el-table-column label="操作" width="200">
             <template slot-scope="scope">
               <el-button
                 @click.native.prevent="downGoods(scope.row.goodsId)"
@@ -42,7 +42,7 @@
               >下架</el-button>
               <el-button
                 @click.native.prevent="editGoods(scope.row)"
-                v-if="false"
+                v-if="scope.row.enable=='Y' && scope.row.isProduct=='N'"
                 type="primary"
                 size="small"
                 icon="el-icon-circle-plus-outline"
@@ -312,6 +312,8 @@ export default {
       goodsEntity: {},
       uploadApi: "",
       isEdit: false,
+      defalut_Details: [],
+      defalut_Scorll: [],
       fileUrl:
         process.env.NODE_ENV === "development"
           ? "https://localhost:44380/"
@@ -357,6 +359,14 @@ export default {
       //显示弹框
       this.goodsEntity = {};
       this.isShowAddDialog = true;
+      this.fileList_scorll = [];
+      this.fileList_details = [];
+      this.fileList_main = [];
+      this.fileList1 = [];
+      this.fileList2 = [];
+      this.fileList3 = [];
+      this.defalut_Details = [];
+      this.defalut_Scorll = [];
     },
     //查看商品详情
     checkGoods() {},
@@ -404,6 +414,12 @@ export default {
     editGoods(rows) {
       this.isEdit = true;
       this.goodsEntity = {};
+      this.defalut_Details = [];
+      this.defalut_Scorll = [];
+      this.fileList1 = [];
+      this.fileList2 = [];
+      this.fileList3 = [];
+      this.defalut_Scorll = [];
       this.goodsEntity = rows;
       this.isShowAddDialog = true;
       this.defalutGoodsType = this.goodsEntity.goodsType;
@@ -412,7 +428,7 @@ export default {
       var href = this.fileUrl + "Upload/GoodsImg/";
       var main_Imghref = href + this.goodsEntity.exterd1;
       var item = {
-        name: this.goodsEntity.exterd1.substr(0, 8),
+        name: this.goodsEntity.exterd1,
         url: main_Imghref
       };
       this.fileList_main.push(item);
@@ -425,6 +441,7 @@ export default {
           url: href + this.goodsEntity.exterd2
         };
         this.fileList_details.push(item);
+        this.defalut_Details.push(item);
       } else {
         var detailsImgs = this.goodsEntity.exterd2.split(",");
         console.log("detailsImgs", detailsImgs);
@@ -434,6 +451,7 @@ export default {
             url: href + detailsImgs[i]
           };
           this.fileList_details.push(item);
+          this.defalut_Details.push(item);
         }
         console.log(this.fileList_details);
       }
@@ -446,6 +464,7 @@ export default {
           url: href + this.goodsEntity.exterd3
         };
         this.fileList_scorll.push(item);
+        this.defalut_Scorll.push(item);
       } else {
         var scrollImgs = this.goodsEntity.exterd3.split(",");
         for (var j = 0; j < scrollImgs.length; j++) {
@@ -454,6 +473,7 @@ export default {
             url: href + scrollImgs[j]
           };
           this.fileList_scorll.push(item);
+          this.defalut_Scorll.push(item);
         }
         console.log(this.fileList_scorll);
       }
@@ -475,23 +495,66 @@ export default {
       this.goodsEntity.isProduct = this.defalutShopType == 1 ? "N" : "Y";
       console.log("商品基础信息", this.goodsEntity);
       if (this.isEdit) {
+        if (this.fileList_main.length == 0) {
+          this.$message({
+            type: "error",
+            message: "商品主图不能为空"
+          });
+          return;
+        }
+        if (this.defalut_Details.length == 0) {
+          this.$message({
+            type: "error",
+            message: "商品详情图不能为空"
+          });
+          return;
+        }
+        if (this.defalut_Scorll.length == 0) {
+          this.$message({
+            type: "error",
+            message: "详情轮播图不能为空"
+          });
+          return;
+        }
         //修改
-        this.fileList1 = this.fileList_main[0].name.toString();
-        for (var j = 0; j < this.fileList_details.length; j++) {
-          this.fileList2.push(this.fileList_details[j].name);
+        var arr1 = [];
+        var arr2 = [];
+        var arr3 = [];
+        for (var p = 0; p < this.fileList_main.length; p++) {
+          arr1.push(this.fileList_main[p].name);
         }
-        for (var k = 0; k < this.fileList_scorll.length; k++) {
-          this.fileList3.push(this.fileList_scorll[k].name);
+        for (var j = 0; j < this.fileList2.length; j++) {
+          arr2.push(this.fileList2[j].name);
         }
+        for (var k = 0; k < this.fileList3.length; k++) {
+          arr3.push(this.fileList3[k].name);
+        }
+        for (var m = 0; m < this.defalut_Details.length; m++) {
+          arr2.push(this.defalut_Details[m].name);
+        }
+        for (var n = 0; n < this.defalut_Scorll.length; n++) {
+          arr3.push(this.defalut_Scorll[n].name);
+        }
+        arr2 = this.removeRepeat(arr2);
+        arr3 = this.removeRepeat(arr3);
+        this.goodsEntity.exterd1 = arr1.toString();
+        this.goodsEntity.exterd2 = arr2.toString();
+        this.goodsEntity.exterd3 = arr3.toString();
+
+        console.log("---fileList_details-----", this.fileList_details);
+        console.log("---fileList_scorll-----", this.fileList_scorll);
+        console.log("---exterd1-----", this.goodsEntity.exterd1);
+        console.log("---exterd2-----", this.goodsEntity.exterd2);
+        console.log("---exterd3-----", this.goodsEntity.exterd3);
       } else {
-        if (this.fileList1 == "" || this.fileList1 == undefined) {
+        if (this.fileList1.length == 0) {
           this.$message({
             type: "error",
             message: "主图不能为空"
           });
           return;
         }
-        this.goodsEntity.exterd1 = this.fileList1;
+
         if (this.fileList2.length == 0) {
           this.$message({
             type: "error",
@@ -499,7 +562,7 @@ export default {
           });
           return;
         }
-        this.goodsEntity.exterd2 = this.fileList2.toString();
+
         if (this.fileList3.length == 0) {
           this.$message({
             type: "error",
@@ -507,8 +570,13 @@ export default {
           });
           return;
         }
+        this.goodsEntity.exterd1 = this.fileList1;
+        this.goodsEntity.exterd2 = this.fileList2.toString();
         this.goodsEntity.exterd3 = this.fileList3.toString();
       }
+      console.log("this.goodsEntity.exterd1", this.goodsEntity.exterd1);
+      console.log("this.goodsEntity.exterd2 ", this.goodsEntity.exterd2);
+      console.log("this.goodsEntity.exterd3", this.goodsEntity.exterd3);
       http
         .post(url.SubmitGoods, { jsonString: JSON.stringify(this.goodsEntity) })
         .then(res => {
@@ -546,6 +614,14 @@ export default {
       }
       return errorMsg;
     },
+    //去重復
+    removeRepeat(arr) {
+      var arr_n = [];
+      for (var i = 0, len = arr.length; i < len; i++) {
+        !RegExp(arr[i], "g").test(arr_n.join(",")) && arr_n.push(arr[i]);
+      }
+      return arr_n;
+    },
     //商品主图1
     handleExceed1(files, fileList_main) {
       console.log(fileList_main);
@@ -558,25 +634,27 @@ export default {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     handleSuccessImg1(response, file, fileList_main) {
+      console.log(fileList_main, file);
       if (this.isEdit) {
         var href = this.fileUrl + "Upload/GoodsImg/";
         var item = {
           name: response.data,
-          url: href + response.data
+          url: href + response.data,
+          status: "success"
         };
         this.fileList_main.push(item);
       } else {
-        this.fileList1 = response.data;
+        this.fileList1.push(response.data);
       }
-      console.log("fileList_main2", fileList_main);
+      console.log("fileList1", this.fileList1);
     },
     handleRemove1(file, fileList_main) {
       console.log("删除成功", fileList_main);
       if (this.isEdit) {
         this.fileList_main = [];
       } else {
-        if (this.fileList1 == file.response.data) {
-          this.fileList1 = "";
+        if (this.fileList1[0].name == file.response.data) {
+          this.fileList1 = [];
         }
       }
     },
@@ -597,8 +675,15 @@ export default {
       console.log(file);
       console.log(fileList_details);
       if (this.isEdit) {
-        this.fileList_main.push(response.data);
+        var href = this.fileUrl + "Upload/GoodsImg/";
+        var item = {
+          name: response.data,
+          url: href + response.data,
+          status: "success"
+        };
+        this.defalut_Details.push(item);
       } else {
+        console.log("response.data", response.data);
         this.fileList2.push(response.data);
       }
     },
@@ -607,15 +692,33 @@ export default {
       console.log(file, "主图" + fileList_details);
       //移除
       if (this.isEdit) {
-        for (var i = 0; i < this.fileList_main.length; i++) {
-          if (this.fileList_main[i] == file.response.data) {
-            this.fileList_main.splice(i, 1);
-            return;
+        //console.log(file.response);
+        var name = "";
+        if (!file.response) {
+          name = file.name;
+        } else {
+          name = file.response.data;
+        }
+        console.log("移除前", this.fileList_details);
+        console.log("移除前", this.defalut_Details);
+        for (var k = 0; k < this.defalut_Details.length; k++) {
+          if (this.defalut_Details[k].name == name) {
+            this.defalut_Details.splice(k, 1);
+            break;
           }
         }
+        for (var i = 0; i < this.fileList2.length; i++) {
+          if (this.fileList2[i].name == name) {
+            console.log("移除");
+            this.fileList2.splice(i, 1);
+            break;
+          }
+        }
+        console.log("移除后", this.fileList2);
+        console.log("移除后", this.defalut_Details);
       } else {
         for (var j = 0; j < this.fileList_details.length; j++) {
-          if (this.fileList_details[j] == file.response.data) {
+          if (this.fileList_details[j] == name) {
             this.fileList_details.splice(j, 1);
             return;
           }
@@ -639,7 +742,13 @@ export default {
       console.log(file);
       console.log(fileList_scorll);
       if (this.isEdit) {
-        this.fileList_scorll.push(response.data);
+        var href = this.fileUrl + "Upload/GoodsImg/";
+        var item = {
+          name: response.data,
+          url: href + response.data,
+          status: "success"
+        };
+        this.defalut_Scorll.push(item);
       } else {
         this.fileList3.push(response.data);
       }
@@ -647,16 +756,28 @@ export default {
     handleRemove3(file, fileList_scorll) {
       console.log(file, "主图" + fileList_scorll);
       //移除
+      var name = "";
+      if (!file.response) {
+        name = file.name;
+      } else {
+        name = file.response.data;
+      }
       if (this.isEdit) {
-        for (var i = 0; i < this.fileList_scorll.length; i++) {
-          if (this.fileList_scorll[i] == file.response.data) {
-            this.fileList_scorll.splice(i, 1);
-            return;
+        for (var k = 0; k < this.defalut_Scorll.length; k++) {
+          if (this.defalut_Scorll[k].name == name) {
+            this.defalut_Scorll.splice(k, 1);
+            break;
+          }
+        }
+        for (var i = 0; i < this.fileList3.length; i++) {
+          if (this.fileList3[i].name == name) {
+            this.fileList3.splice(i, 1);
+            break;
           }
         }
       } else {
         for (var j = 0; j < this.fileList3.length; j++) {
-          if (this.fileList3[j] == file.response.data) {
+          if (this.fileList3[j] == name) {
             this.fileList3.splice(j, 1);
             return;
           }

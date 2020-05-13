@@ -85,6 +85,17 @@ namespace WebUI.Controllers.Manage
                             return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
                         }
                     }
+                    else
+                    {
+                        //产品
+
+                    }
+                    //附件表存储商品Id相关附件，主图单个和详情图多个，商品详情轮播图可能有多个
+                    bool isSave = AddAttacMentInfo(goodsEntity);
+                    if (!isSave)
+                    {
+                        return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
+                    }
                 }
                 else
                 {
@@ -94,71 +105,191 @@ namespace WebUI.Controllers.Manage
                     {
                         return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
                     }
+                    //附件表存储商品Id相关附件，主图单个和详情图多个，商品详情轮播图可能有多个
+                    var entity = attachRepository.FindEntity(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 4);
+                    attachRepository.Delete(entity);
+                    entity = attachRepository.FindEntity(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 2);
+                    attachRepository.Delete(entity);
+                    entity = attachRepository.FindEntity(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 1);
+                    attachRepository.Delete(entity);
+                    bool isSave = AddAttacMentInfo(goodsEntity);
+                    if (!isSave)
+                    {
+                        return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
+                    }
                 }
- 
-                //附件表存储商品Id相关附件，主图单个和详情图多个，商品详情轮播图可能有多个
-                //1添加主图
+                return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "" });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 更新附件表(r如果有就不更新)
+        /// </summary>
+        /// <param name="goodsEntity"></param>
+        /// <returns></returns>
+        public bool UpdateAttacMentInfo(GoodsEntity goodsEntity)
+        {
+            try
+            {
+
+                //1图片主图
+                var entity = new AttachMentInfoEntity();
                 AttachMentInfoEntity attach = new AttachMentInfoEntity();
-                attach.MainId = goodsEntity.GoodsId;
-                attach.AttachmentType = 4;
-                attach.AttachmentName = goodsEntity.Exterd1;
-                attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");          
-                int k = attachRepository.Insert(attach);
-                if (k <= 0)
+                List<string> attlist = new List<string>();
+                entity = attachRepository.FindEntity(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 4 && x.AttachmentName == goodsEntity.Exterd1);
+                if (entity == null)
                 {
-                    return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
+                    attach.MainId = goodsEntity.GoodsId;
+                    attach.AttachmentType = 4;
+                    attach.AttachmentName = goodsEntity.Exterd1;
+                    attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                    int k = attachRepository.Insert(attach);
+                    if (k <= 0)
+                    {
+                        return false;
+                    }
                 }
-                //2添加详情图
+                //2图片详情
                 if (goodsEntity.Exterd2.IndexOf(',') == -1)
+                {
+                    entity = attachRepository.FindEntity(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 2 && x.AttachmentName == goodsEntity.Exterd1);
+                    if (entity == null)
+                    {
+                        attach.MainId = goodsEntity.GoodsId;
+                        attach.AttachmentType = 2;
+                        attach.AttachmentName = goodsEntity.Exterd1;
+                        attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                        int k = attachRepository.Insert(attach);
+                        if (k <= 0)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    string[] detailsImgs = goodsEntity.Exterd2.Split(',');
+                    // List<AttachMentInfoEntity> attlist = attachRepository.FindList(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 2 && x.AttachmentName == goodsEntity.Exterd1);
+                    attlist = attachRepository.FindList(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 2 && x.AttachmentName == goodsEntity.Exterd2).Select(x => x.AttachmentName).ToList();
+                    for (int i = 0; i < detailsImgs.Length; i++)
+                    {
+                        if (!attlist.Contains(detailsImgs[i]))
+                        {
+                            attach = new AttachMentInfoEntity();
+                            attach.MainId = goodsEntity.GoodsId;
+                            attach.AttachmentType = 2;
+                            attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                            attach.AttachmentName = detailsImgs[i];
+                            attachRepository.Insert(attach);
+                        }
+                    }
+                }
+                //3图片轮播
+                if (goodsEntity.Exterd3.IndexOf(',') == -1)
+                {
+                    entity = attachRepository.FindEntity(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 1 && x.AttachmentName == goodsEntity.Exterd3);
+                    if (entity == null)
+                    {
+                        attach.MainId = goodsEntity.GoodsId;
+                        attach.AttachmentType = 1;
+                        attach.AttachmentName = goodsEntity.Exterd1;
+                        attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                        int k = attachRepository.Insert(attach);
+                        if (k <= 0)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    string[] scorllImgs = goodsEntity.Exterd3.Split(',');
+                    attlist = attachRepository.FindList(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 1 && x.AttachmentName == goodsEntity.Exterd3).Select(x => x.AttachmentName).ToList();
+                    for (int i = 0; i < scorllImgs.Length; i++)
+                    {
+                        if (!attlist.Contains(scorllImgs[i]))
+                        {
+                            attach = new AttachMentInfoEntity();
+                            attach.MainId = goodsEntity.GoodsId;
+                            attach.AttachmentType = 1;
+                            attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                            attach.AttachmentName = scorllImgs[i];
+                            attachRepository.Insert(attach);
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+        }
+
+        //新增附件表
+        public bool AddAttacMentInfo(GoodsEntity goodsEntity)
+        {
+            //1添加主图
+            AttachMentInfoEntity attach = new AttachMentInfoEntity();
+            attach.MainId = goodsEntity.GoodsId;
+            attach.AttachmentType = 4;
+            attach.AttachmentName = goodsEntity.Exterd1;
+            attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+            int k = attachRepository.Insert(attach);
+            if (k <= 0)
+            {
+                return false;
+            }
+            //2添加详情图
+            if (goodsEntity.Exterd2.IndexOf(',') == -1)
+            {
+                attach = new AttachMentInfoEntity();
+                attach.MainId = goodsEntity.GoodsId;
+                attach.AttachmentType = 2;
+                attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                attach.AttachmentName = goodsEntity.Exterd2;
+                attachRepository.Insert(attach);
+            }
+            else
+            {
+                string[] detailsImgs = goodsEntity.Exterd2.Split(',');
+                for (int i = 0; i < detailsImgs.Length; i++)
                 {
                     attach = new AttachMentInfoEntity();
                     attach.MainId = goodsEntity.GoodsId;
                     attach.AttachmentType = 2;
                     attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                    attach.AttachmentName = goodsEntity.Exterd2;
+                    attach.AttachmentName = detailsImgs[i];
                     attachRepository.Insert(attach);
                 }
-                else
-                {
-                    string[] detailsImgs = goodsEntity.Exterd2.Split(',');
-                    for (int i = 0; i < detailsImgs.Length; i++)
-                    {
-                        attach = new AttachMentInfoEntity();
-                        attach.MainId = goodsEntity.GoodsId;
-                        attach.AttachmentType = 2;
-                        attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                        attach.AttachmentName = detailsImgs[i];
-                        attachRepository.Insert(attach);
-                    }
-                }
-                //3添加轮播图
-                if (goodsEntity.Exterd3.IndexOf(',') == -1)
+            }
+            //3添加轮播图
+            if (goodsEntity.Exterd3.IndexOf(',') == -1)
+            {
+                attach = new AttachMentInfoEntity();
+                attach.MainId = goodsEntity.GoodsId;
+                attach.AttachmentType = 1;
+                attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                attach.AttachmentName = goodsEntity.Exterd3;
+                attachRepository.Insert(attach);
+            }
+            else
+            {
+                string[] scrollImgs = goodsEntity.Exterd3.Split(',');
+                for (int i = 0; i < scrollImgs.Length; i++)
                 {
                     attach = new AttachMentInfoEntity();
                     attach.MainId = goodsEntity.GoodsId;
                     attach.AttachmentType = 1;
                     attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                    attach.AttachmentName = goodsEntity.Exterd3;
+                    attach.AttachmentName = scrollImgs[i];
                     attachRepository.Insert(attach);
                 }
-                else
-                {
-                    string[] scrollImgs = goodsEntity.Exterd3.Split(',');
-                    for (int i = 0; i < scrollImgs.Length; i++)
-                    {
-                        attach = new AttachMentInfoEntity();
-                        attach.MainId = goodsEntity.GoodsId;
-                        attach.AttachmentType = 1;
-                        attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                        attach.AttachmentName = scrollImgs[i];
-                        attachRepository.Insert(attach);
-                    }
-                }
-                return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "" });
             }
-            catch (Exception ex) {
-                throw ex;
-            }
+            return true;
         }
 
         /// <summary>
