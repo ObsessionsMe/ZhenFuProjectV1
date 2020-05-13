@@ -570,7 +570,7 @@ export default {
           });
           return;
         }
-        this.goodsEntity.exterd1 = this.fileList1;
+        this.goodsEntity.exterd1 = this.fileList1.toString();
         this.goodsEntity.exterd2 = this.fileList2.toString();
         this.goodsEntity.exterd3 = this.fileList3.toString();
       }

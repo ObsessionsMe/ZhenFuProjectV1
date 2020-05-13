@@ -51,7 +51,16 @@ export function GetAttachmentList(goodsId) {
   return request({
     url: '/api/Attachment/GetAttachmentList',
     method: 'get',
-    params: { goodsId:goodsId,type:'1,2'}
+    params: { goodsId:goodsId,type:'1,2,4'}
   })
 }
+
+export function CheckUserPayGoodsCount(goodsId,payNum) {
+  return request({
+    url: '/api/order/CheckUserPayGoodsCount',
+    method: 'get',
+    params: { goodsId:goodsId,payNum:payNum }
+  })
+}
+
 

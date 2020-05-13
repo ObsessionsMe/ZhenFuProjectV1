@@ -120,7 +120,7 @@ namespace WebUI.Controllers.Client
             return Json(data);
         }
 
-
+        [Route("CheckUserPayGoodsCount")]
         public ActionResult CheckUserPayGoodsCount(string goodsId, int payNum)
         {
             if (userModel == null)
@@ -131,7 +131,7 @@ namespace WebUI.Controllers.Client
             var data = server.CheckUserPayGoodsCount(payNum, goodsId, userModel.UserId);
             if (data == null)
             {
-                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取数据成功", data = data });
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = data.message, data = data });
             }
             return Json(data);
         }

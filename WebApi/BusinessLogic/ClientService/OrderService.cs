@@ -195,15 +195,15 @@ namespace BusinessLogic.ClientService
             {
                 if (payNum > 20)
                 {
-                    return new AjaxResult { state = ResultType.error.ToString(), message = "你当前的购买数量已经超过了最大数额(20件)，请选择其他产品进行购买", data = "" };
+                    return new AjaxResult { state = ResultType.error.ToString(), message = "你当前的购买数量已经超过了最大数额(20件)，请选择其他产品进行购买", data = null };
                 }
             }
             int count = Convert.ToInt32(20 - alreadPayCount);
             if (payNum > count)
             {
-                return new AjaxResult { state = ResultType.error.ToString(), message = "你当前的购买数量已经超过了最大数额(20件)，请选择其他产品进行购买", data = "" };
+                return new AjaxResult { state = ResultType.error.ToString(), message = "你当前的购买数量已经超过了最大数额(20件)，请选择其他产品进行购买", data = null };
             }
-            return new AjaxResult { state = ResultType.success.ToString(), message = "操作成功！", data = "" };
+            return new AjaxResult { state = ResultType.success.ToString(), message = "操作成功！", data = count };
         }
     }
 }

@@ -75,6 +75,7 @@ export default {
       this.activeKey = key;
       GetGoodsListByType(key).then(res=>{
         if (res.state == "success") {
+          console.log("res.data",res.data);
           this.productlist=res.data
         } else {
           this.$toast(res.message);
