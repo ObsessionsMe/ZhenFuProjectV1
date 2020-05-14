@@ -62,7 +62,7 @@ namespace Entity
         public int OrderStatus { get; set; }
 
         /// <summary>
-        ///  使用的积分类型【1-余额积分，2-团队积分】
+        ///  使用的积分类型【1-余额积分，2-团队积分，3-专项积分】
         /// </summary>
         public int UsePorintsType { get; set; }
 
