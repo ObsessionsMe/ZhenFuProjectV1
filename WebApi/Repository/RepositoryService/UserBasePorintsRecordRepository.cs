@@ -13,6 +13,7 @@ namespace Repository.RepositoryService
         public UserBasePorintsRecordRepository(ZFDBContext _dbcontext) : base(_dbcontext)
         {
 
+
         }
     }
 }
