@@ -8,5 +8,6 @@ namespace Repository.ServiceInterface
 {
     public interface IUserBasePorintsRecordRepository : IRepository<UserBasePorintsRecordEntity>
     {
+
     }
 }
