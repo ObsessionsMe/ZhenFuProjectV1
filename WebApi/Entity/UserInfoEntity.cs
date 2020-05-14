@@ -56,7 +56,17 @@ namespace Entity
         ///  旅游积分(默认1000)，--新用户注册时赠送
         /// </summary>
         public int TourismPorints { get; set; }
-   
+
+        /// <summary>
+        ///  积分余额(充值积分)
+        /// </summary>
+        public int PorintsSurplus { get; set; }
+
+        /// <summary>
+        ///  专项积分
+        /// </summary>
+        public int PecialItemPorints { get; set; }
+
         /// <summary>
         /// 是否为管理员（N-否，Y-是）
         /// </summary>

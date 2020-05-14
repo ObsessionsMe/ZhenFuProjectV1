@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic.ClientService;
+using BusinessLogic.ManageService;
 using Entity;
 using Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Repository.RepositoryService;
+using Repository.ServiceInterface;
 using RepositoryFactory.ServiceInterface;
 using WebUI.App_Start;
 
@@ -25,8 +28,10 @@ namespace WebUI.Controllers.Client
         private readonly IOrderRepository orderRepository;
         private readonly IUserPrintsSumRepository sumRepository;
         private readonly IUserPorintsRecordRepository recordRepository;
+        private readonly IUserRepository userRepository;
+        private readonly IUserBasePorintsRecordRepository basePorintRepository;
         public OrderController(IGoodsRepository _goodsRepository, IReceiveAddressRepository _receiveAddressRepository, IOrderRepository _orderRepository,
-            IUserPrintsSumRepository _sumRepository, IUserPorintsRecordRepository _recordRepository
+            IUserPrintsSumRepository _sumRepository, IUserPorintsRecordRepository _recordRepository, IUserRepository _userRepository, IUserBasePorintsRecordRepository _basePorintRepository
             )
         {
             goodsRepository = _goodsRepository;
@@ -34,6 +39,8 @@ namespace WebUI.Controllers.Client
             orderRepository = _orderRepository;
             sumRepository = _sumRepository;
             recordRepository = _recordRepository;
+            userRepository = _userRepository;
+            basePorintRepository = _basePorintRepository;
         }
         /// <summary>
         ///  准备下单-获选获取收货地址和商品详情
@@ -87,7 +94,7 @@ namespace WebUI.Controllers.Client
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "订单传入的参数为空", data = "" });
             }
             OrderInfoEntity orderInfo = JsonConvert.DeserializeObject<OrderInfoEntity>(jsonString);
-            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository);
+            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository,userRepository, basePorintRepository);
             var data = server.SubmitOrder(orderInfo, userModel.UserId);
             if (data == null)
             {
@@ -111,8 +118,9 @@ namespace WebUI.Controllers.Client
             {
                 return null;
             }
-            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository);
-            var data = server.PayPorints(payNum, userModel.UserId);
+            //OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository, userRepository, basePorintRepository);
+            UserManageService service = new UserManageService(userRepository);
+            var data = service.PayPorints(payNum, userModel.UserId, 1);
             if (data == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "下单失败", data = data });
@@ -127,7 +135,7 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败，请重新登录", data = "" });
             }
-            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository);
+            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository, userRepository, basePorintRepository);
             var data = server.CheckUserPayGoodsCount(payNum, goodsId, userModel.UserId);
             if (data == null)
             {

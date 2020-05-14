@@ -27,5 +27,15 @@ namespace RepositoryFactory.RepositoryService
             }
             return list[0].GoodsLevel;
         }
+
+        public bool IsWorkDate(string date)
+        {
+            var dateEntity = dbcontext.WorkDateEntity.FirstOrDefault(x => x.WorkDates == date);
+            if (dateEntity == null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

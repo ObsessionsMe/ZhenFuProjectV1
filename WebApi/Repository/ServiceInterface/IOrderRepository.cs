@@ -10,5 +10,7 @@ namespace RepositoryFactory.ServiceInterface
     public interface IOrderRepository : IRepository<OrderInfoEntity>
     {
         int GetUser_PayMaxGoodsLeve(string userId);
+
+        bool IsWorkDate(string date);
     }
 }

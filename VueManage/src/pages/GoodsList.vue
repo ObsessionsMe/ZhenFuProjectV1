@@ -337,11 +337,12 @@ export default {
             sord: "desc",
             record: ""
           },
-          keyword: this.kw
+          keyword: ""
         })
         .then(res => {
           console.log("res", res);
           this.tableData = res.data.data.rows;
+          console.log("this.tableData",this.tableData);
           this.total = res.data.data.records;
         });
     },

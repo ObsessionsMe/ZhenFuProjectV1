@@ -24,6 +24,8 @@ namespace Infrastructure.DBContext
         public DbSet<AttachMentInfoEntity> AttachMentInfoEntity { get; set; }
 
         public DbSet<UserPorintListEntity> UserPorintListEntity { get; set; }
+
+        public DbSet<WorkDateEntity> WorkDateEntity { get; set; }
         
     }
  }

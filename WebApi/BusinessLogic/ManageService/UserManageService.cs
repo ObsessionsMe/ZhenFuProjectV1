@@ -42,6 +42,29 @@ namespace BusinessLogic.ManageService
             //return userRepository.FindList(expression, pagination);
         }
 
+        public AjaxResult PayPorints(int payNum, string userId, int type)
+        {
+            var user = new UserInfoEntity();
+            user = userRepository.FindEntity(x => x.UserId == userId && x.Enable == "Y");
+            if (user == null)
+            {
+                return null;
+            }
+            if (type == 1)
+            {
+                user.PorintsSurplus = (user.PorintsSurplus) + (payNum);
+            }
+            else if (type == 2) {
+                user.PecialItemPorints = (user.PecialItemPorints) + (payNum);
+            }
+            int i = userRepository.Update(user);
+            if (i < 1)
+            {
+                return null;
+            }
+            return new AjaxResult { state = ResultType.success.ToString(), message = "充值成功！", data = "" };
+        }
+
         public AjaxResult DeleteUser(string userId)
         {
             //删除用户表，汇总表，记录表，订单表

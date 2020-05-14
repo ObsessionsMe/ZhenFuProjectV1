@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Repository.RepositoryService;
+using Repository.ServiceInterface;
 using RepositoryFactory.ServiceInterface;
 using ViewEntity;
 using WebUI.Tool;
@@ -29,9 +30,9 @@ namespace WebUI.Controllers.Manage
         private readonly IOrderRepository orderRepository;
         private readonly IUserPrintsSumRepository sumRepository;
         private readonly IUserPorintsRecordRepository recordRepository;
-
+        private IUserBasePorintsRecordRepository basePorintRepository;
         public UserManageController(IUserRepository _userRepository, IGoodsRepository _goodsRepository, IOrderRepository _orderRepository,
-            IUserPrintsSumRepository _sumRepository, IUserPorintsRecordRepository _recordRepository
+            IUserPrintsSumRepository _sumRepository, IUserPorintsRecordRepository _recordRepository, IUserBasePorintsRecordRepository _basePorintRepository
             )
         {
             userRepository = _userRepository;
@@ -39,6 +40,7 @@ namespace WebUI.Controllers.Manage
             orderRepository = _orderRepository;
             sumRepository = _sumRepository;
             recordRepository = _recordRepository;
+            basePorintRepository = _basePorintRepository;
         }
         /// <summary>
         /// 获取用户列表(会员)
@@ -132,14 +134,14 @@ namespace WebUI.Controllers.Manage
         }
 
         [Route("ManagePayPorints")]
-        public ActionResult ManagePayPorints(int payNum, string UserId)
+        public ActionResult ManagePayPorints(int payNum, string UserId, int type)
         {
             if (payNum <= 0 || string.IsNullOrEmpty(UserId))
             {
                 return null;
             }
-            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository);
-            var data = server.PayPorints(payNum, UserId);
+            UserManageService service = new UserManageService(userRepository);
+            var data = service.PayPorints(payNum, UserId, type);
             if (data == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "充值失败", data = data });

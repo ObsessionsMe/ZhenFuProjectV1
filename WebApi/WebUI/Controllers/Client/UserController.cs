@@ -128,13 +128,25 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败", data = "" });
             }
-            UserService servers = new UserService(userRepository, sumRepository,order);
-            var data = servers.GetUserPorints(userId);
-            if (data == null)
+            UserService servers = new UserService(userRepository, sumRepository, order);
+            var sum = servers.GetUserPorints(userId);
+            if (sum == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "找不到用户相关的积分数据", data = "" });
             }
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
+            var user = servers.GetUserPorints_Base(userId);
+            if (sum == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "找不到用户相关的积分数据", data = "" });
+            }
+            var result = new
+            {
+                producePorints = sum.ProductPorints,
+                treamPorints = sum.TreamPorints,
+                pecialItemPorints = user.PecialItemPorints,
+                porintsSurplus = user.PorintsSurplus
+            };
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = result });
         }
     }
 }
