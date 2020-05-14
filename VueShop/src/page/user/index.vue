@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--商品个人图-->
-    <div class="user-profile" style="height:165px;line-height:20px;">
+    <div class="user-profile" style="height:175px;line-height:20px;">
       <div class="user-profile-avatar">
         <a>
           <img
@@ -24,6 +24,10 @@
         <van-row type="flex" justify="center">
           <van-col span="6">旅游积分</van-col>
           <van-col span="6">{{userInfo.tourismPorints}}</van-col>
+        </van-row>
+        <van-row type="flex" justify="center">
+          <van-col span="6">专项积分</van-col>
+          <van-col span="6">{{userInfo.pecialItemPorints}}</van-col>
         </van-row>
         <van-row type="flex" justify="center">
           <van-col span="6">产品积分</van-col>
@@ -139,6 +143,7 @@ export default {
     this.userInfo.tourismPorints = this.$store.state.userInfo.tourismPorints;
     this.userInfo.name = this.$store.state.userInfo.name;
     this.userInfo.userTelephone = this.$store.state.userInfo.userTelephone;
+    this.userInfo.pecialItemPorints = this.$store.state.userInfo.pecialItemPorints;
     //获取用户积分
     this.GetUserPorintsOn(userId);
     //获取商品

@@ -337,11 +337,12 @@ export default {
             sord: "desc",
             record: ""
           },
-          keyword: this.kw
+          keyword: ""
         })
         .then(res => {
           console.log("res", res);
           this.tableData = res.data.data.rows;
+          console.log("this.tableData",this.tableData);
           this.total = res.data.data.records;
         });
     },
@@ -570,7 +571,7 @@ export default {
           });
           return;
         }
-        this.goodsEntity.exterd1 = this.fileList1;
+        this.goodsEntity.exterd1 = this.fileList1.toString();
         this.goodsEntity.exterd2 = this.fileList2.toString();
         this.goodsEntity.exterd3 = this.fileList3.toString();
       }

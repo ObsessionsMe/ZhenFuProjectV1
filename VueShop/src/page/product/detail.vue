@@ -54,6 +54,8 @@
     />-->
     <van-sku
       v-model="showBase"
+      buy-text="立即兑换"
+      :quota=20
       :sku="goods_sku"
       :goods="goods_sku.goods_info"
       :goods-id="goods_sku.goods_id"
@@ -72,27 +74,23 @@
 
 <script>
 import skuData from "../../data/sku";
-import { GetGoodsDetails, checkGoodLevel,GetAttachmentList } from "../../api/goods.js";
+import {
+  GetGoodsDetails,
+  checkGoodLevel,
+  GetAttachmentList,
+  CheckUserPayGoodsCount
+} from "../../api/goods.js";
 import { getFilesUrl } from "../../config/Utilitie.js";
 export default {
   components: {},
   data() {
     this.skuData = skuData;
     return {
-      detailsImageList: [
-        // require("@/assets/images/zffm001.png"),
-        // require("@/assets/images/zffm002.png"),
-        // require("@/assets/images/zffm003.png"),
-        // require("@/assets/images/zffm004.png"),
-        // require("@/assets/images/zffm005.png")
-      ],
+      detailsImageList: [],
       goodsId: "",
       show: false,
       showTag: false,
-      scorllgoodsImg: [
-        // require("@/assets/images/zffm_s001.png"),
-        // require("@/assets/images/zffm_s002.png")
-      ],
+      scorllgoodsImg: [],
       goods: {},
       goods_alert: {},
       goods_sku: {
@@ -105,8 +103,8 @@ export default {
         tree: [],
         goods_id: "",
         goods_info: {
-          title: "", //商品名称
-          picture: require("@/assets/images/zffm_s001.png") //商品图片(单张)
+          title: "", //商品图片(单张)
+          picture: ""
         }
       },
       showBase: false,
@@ -176,15 +174,22 @@ export default {
         goodsNum: data.selectedNum,
         goodsId: data.goodsId
       };
-      console.log("data.selectedNum",data.selectedNum);
-      
-      if(parseInt(data.selectedNum)>20){
+      if (parseInt(data.selectedNum) > 20) {
         this.$toast("购买数量不能大于20!");
-        return
+        return;
       }
       //校验购买的次数
-      this.$store.commit("saveOrderInfo", orderInfo);
-      this.$router.push({ path: this.redirect || "/order" }); //进入订单页面
+      CheckUserPayGoodsCount(data.goodsId,data.selectedNum,).then(response => {
+        console.log(response);
+        if (response.state == "success") 
+        {
+          this.$store.commit("saveOrderInfo", orderInfo);
+          this.$router.push({ path: this.redirect || "/order" }); //进入订单页面
+        }
+        else{
+          this.$toast(response.message);
+        }
+      });
     },
     onAddCartClicked(data) {
       //console.log(JSON.stringify(data));
@@ -204,7 +209,7 @@ export default {
     GetGoodsDetails(goodsId).then(response => {
       if (response.state == "success") {
         var goodsData = response.data;
-        console.log("goodsData",goodsData);
+        console.log("goodsData", goodsData);
         this.goods = goodsData;
         this.goods.unitPrice = parseInt(goodsData.unitPrice) * 100;
         this.goods_sku.list[0].stock_num = goodsData.stockCount;
@@ -219,15 +224,23 @@ export default {
     GetAttachmentList(goodsId).then(response => {
       if (response.state == "success") {
         var goodsDatas = response.data;
-          console.log("goodsData",goodsDatas);
-        for(var i=0; i < goodsDatas.length;i++){
-          if(goodsDatas[i].attachmentType == 1){
-            this.scorllgoodsImg.push(getFilesUrl() + goodsDatas[i].attachmentName);
+        console.log("goodsData", goodsDatas);
+        for (var i = 0; i < goodsDatas.length; i++) {
+          if (goodsDatas[i].attachmentType == 1) {
+            this.scorllgoodsImg.push(
+              getFilesUrl() + goodsDatas[i].attachmentName
+            );
           }
-          if(goodsDatas[i].attachmentType == 2){
-            this.detailsImageList.push(getFilesUrl() + goodsDatas[i].attachmentName);
+          if (goodsDatas[i].attachmentType == 2) {
+            this.detailsImageList.push(
+              getFilesUrl() + goodsDatas[i].attachmentName
+            );
           }
-        }     
+          if (goodsDatas[i].attachmentType == 4) {
+            this.goods_sku.goods_info.picture =
+              getFilesUrl() + goodsDatas[i].attachmentName;
+          }
+        }
       }
     });
   }

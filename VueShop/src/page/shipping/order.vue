@@ -45,6 +45,11 @@
             <van-radio name="2" />
           </template>
         </van-cell>
+        <van-cell title="专项积分" clickable @click="payMethod = '3'" v-if="isProduct">
+          <template #right-icon>
+            <van-radio name="3" />
+          </template>
+        </van-cell>
         <van-cell>
           <van-checkbox
             v-model="isSure"

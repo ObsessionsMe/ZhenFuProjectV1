@@ -12,6 +12,8 @@ namespace ViewEntity
 
         public int PorintsSurplus { get; set; }
 
+        public int PecialItemPorints { get; set; }
+
         public int TreamPorints { get; set; }
 
         public int ProductPorints { get; set; }

@@ -182,10 +182,14 @@ namespace BusinessLogic.ClientService
             return count;
         }
 
-            public UserPrintsSumEntity GetUserPorints(string userId)
+       public UserPrintsSumEntity GetUserPorints(string userId)
         {
             return sumRepository.FindEntity(x => x.UserId == userId);
         }
-        
+
+        public UserInfoEntity GetUserPorints_Base(string userId)
+        {
+            return userRepository.FindEntity(x => x.UserId == userId && x.Enable == "Y");
+        }
     }
 }

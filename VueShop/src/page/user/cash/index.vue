@@ -112,7 +112,7 @@ export default {
       this.SetDisabled();
       this.$nextTick(function() {
         setInterval(function() {
-          that.SetDisabled();
+          this.SetDisabled();
         }, 30000);
       });
       GetGoodsList().then(response => {

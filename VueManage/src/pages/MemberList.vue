@@ -29,15 +29,22 @@
           highlight-current-row
           height="650"
         >
-          <el-table-column prop="userId" label="操作" sortable width="200">
+          <el-table-column prop="userId" label="操作" sortable width="360">
             <template slot-scope="scope">
               <el-button
                 v-if="scope.row.isAdmin=='N'"
                 type="primary"
                 icon="el-icon-circle-plus-outline"
                 size="small"
-                @click="payPorints(scope.row.userId)"
-              >充值</el-button>
+                @click="payPorints(scope.row.userId,1)"
+              >充值余额</el-button>
+              <el-button
+                v-if="scope.row.isAdmin=='N'"
+                type="primary"
+                icon="el-icon-circle-plus-outline"
+                size="small"
+                @click="payPorints(scope.row.userId,2)"
+              >充值专项积分</el-button>
               <el-button
                 v-if="scope.row.isAdmin=='N'"
                 type="primary"
@@ -55,8 +62,10 @@
             <template slot-scope="scope">{{getUserType(scope.row.userType)}}</template>
           </el-table-column>
           <el-table-column prop="porintsSurplus" label="积分余额" sortable width="100"></el-table-column>
+          <el-table-column prop="pecialItemPorints" label="专项积分" sortable width="100"></el-table-column>
           <el-table-column prop="productPorints" label="产品积分" sortable width="100"></el-table-column>
           <el-table-column prop="treamPorints" label="团队积分" sortable width="100"></el-table-column>
+
           <!-- <el-table-column prop="indirectPoints" label="是否持仓" sortable width="100"></el-table-column> -->
           <el-table-column prop="enable" label="是否有效" sortable width="100">
             <template slot-scope="scope">{{scope.row.enable=="Y"?"有效":"无效"}}</template>
@@ -178,19 +187,27 @@ export default {
       var arr = this.allMemberType.find(x => x.id == userType);
       return arr.name;
     },
-    payPorints(userId) {
+    payPorints(userId,type) {
       if (userId == null || userId == "") {
         return;
       }
+      var title = "";
+      if(type==1){
+        title = "请输入要充值的积分余额数";
+      }
+      else if(type == "2"){
+        title = "请输入要充值的专项积分数";
+      }
+      console.log(title);
       //弹框显示充值金额
-      this.$prompt("请输入要充值的积分数", "提示", {
+      this.$prompt(title, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         inputPattern: /^(\+?[1-9][0-9]*)$/,
         inputErrorMessage: "请输入正整数,且必须大于0"
       })
         .then(({ value }) => {
-          this.payPorintsOn(userId, value);
+          this.payPorintsOn(userId, value,type);
         })
         .catch(() => {
           this.$message({
@@ -200,11 +217,12 @@ export default {
         });
       console.log(userId);
     },
-    payPorintsOn(userId, value) {
+    payPorintsOn(userId, value,type) {
       http
         .get(url.ManagePayPorints, {
           payNum: value,
-          UserId: userId
+          UserId: userId,
+          type: type
         })
         .then(res => {
           this.searchUser();

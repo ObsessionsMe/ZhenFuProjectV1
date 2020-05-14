@@ -19,6 +19,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Repository.RepositoryService;
+using Repository.ServiceInterface;
 using RepositoryFactory.RepositoryService;
 using RepositoryFactory.ServiceInterface;
 using WebUI.App_Start;
@@ -58,6 +59,8 @@ namespace WebUI
             services.AddTransient<IUserPrintsSumRepository, UserPrintsSumRepository>();
             services.AddTransient<ICashRepository, CashRepository>();
             services.AddTransient<IAttachMentRepository, AttachMentRepository>();
+            services.AddTransient<IUserBasePorintsRecordRepository, UserBasePorintsRecordRepository>();
+            
             //注册文件访问权限
             services.AddDirectoryBrowser();
 
