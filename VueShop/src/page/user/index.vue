@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--商品个人图-->
-    <div class="user-profile" style="height:175px;line-height:20px;">
+    <div class="user-profile" style="height:180px;line-height:20px;">
       <div class="user-profile-avatar">
         <a>
           <img
@@ -31,7 +31,7 @@
         </van-row>
         <van-row type="flex" justify="center">
           <van-col span="6">产品积分</van-col>
-          <van-col span="6">{{userInfo.producePorints}}</van-col>
+          <van-col span="6">{{userInfo.productPorints}}</van-col>
         </van-row>
         <van-row type="flex" justify="center">
           <van-col span="6">团队积分</van-col>
@@ -143,7 +143,6 @@ export default {
     this.userInfo.tourismPorints = this.$store.state.userInfo.tourismPorints;
     this.userInfo.name = this.$store.state.userInfo.name;
     this.userInfo.userTelephone = this.$store.state.userInfo.userTelephone;
-    this.userInfo.pecialItemPorints = this.$store.state.userInfo.pecialItemPorints;
     //获取用户积分
     this.GetUserPorintsOn(userId);
     //获取商品
@@ -155,8 +154,9 @@ export default {
         console.log(response);
         if (response.state == "success") {
           this.userInfo.porintsSurplus = response.data.porintsSurplus;
-          this.userInfo.producePorints = response.data.productPorints;
+          this.userInfo.productPorints = response.data.productPorints;
           this.userInfo.treamPorints = response.data.treamPorints;
+          this.userInfo.pecialItemPorints =   response.data.pecialItemPorints;
         } else {
           this.userInfo.porintsSurplus = this.userInfo.producePorints = this.userInfo.treamPorints = 0;
         }

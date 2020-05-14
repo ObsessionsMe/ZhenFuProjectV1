@@ -141,7 +141,7 @@ namespace WebUI.Controllers.Client
             }
             var result = new
             {
-                producePorints = sum.ProductPorints,
+                productPorints = sum.ProductPorints,
                 treamPorints = sum.TreamPorints,
                 pecialItemPorints = user.PecialItemPorints,
                 porintsSurplus = user.PorintsSurplus

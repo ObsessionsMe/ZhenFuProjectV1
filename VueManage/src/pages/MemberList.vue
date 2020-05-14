@@ -29,16 +29,19 @@
           highlight-current-row
           height="650"
         >
-          <el-table-column prop="userId" label="操作" sortable width="360">
+          <el-table-column prop="userId" label="操作" sortable width="250">
             <template slot-scope="scope">
-              <el-button
+              <el-link type="primary" v-if="scope.row.isAdmin=='N'" @click="payPorints(scope.row.userId,1)">充值余额</el-link>
+              <el-link type="primary" v-if="scope.row.isAdmin=='N'" @click="payPorints(scope.row.userId,2)" style="margin-left:2%">充值专项积分</el-link>
+              <el-link type="warning" v-if="scope.row.isAdmin=='N'" @click="editUser(scope.row)" style="margin-left:2%">修改</el-link>
+              <!-- <el-button
                 v-if="scope.row.isAdmin=='N'"
                 type="primary"
                 icon="el-icon-circle-plus-outline"
                 size="small"
                 @click="payPorints(scope.row.userId,1)"
-              >充值余额</el-button>
-              <el-button
+              >充值余额</el-button> -->
+              <!-- <el-button
                 v-if="scope.row.isAdmin=='N'"
                 type="primary"
                 icon="el-icon-circle-plus-outline"
@@ -51,7 +54,7 @@
                 icon="el-icon-circle-plus-outline"
                 size="small"
                 @click="editUser(scope.row)"
-              >修改</el-button>
+              >修改</el-button> -->
             </template>
           </el-table-column>
           <el-table-column prop="name" label="会员姓名" width="120" show-overflow-tooltip></el-table-column>
@@ -87,7 +90,7 @@
     <!--弹出框(新增,编辑,查看)-->
     <el-dialog :visible.sync="isShowDialog" width="60%">
       <el-tabs type="border-card" align="left" v-model="activeName">
-        <el-tab-pane label="修改用戶新信息" name="first">
+        <el-tab-pane label="修改会员信息" name="first">
           <el-form
             :inline="true"
             v-model="userEntity"
@@ -192,15 +195,18 @@ export default {
         return;
       }
       var title = "";
+      var content = "";
       if(type==1){
         title = "请输入要充值的积分余额数";
+        content = "充值积分余额";
       }
       else if(type == "2"){
         title = "请输入要充值的专项积分数";
+        content = "充值专项积分";
       }
       console.log(title);
       //弹框显示充值金额
-      this.$prompt(title, "提示", {
+      this.$prompt(title, content, {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         inputPattern: /^(\+?[1-9][0-9]*)$/,
