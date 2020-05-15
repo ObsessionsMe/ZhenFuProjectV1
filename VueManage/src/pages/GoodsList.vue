@@ -175,7 +175,7 @@
               <el-input
                 v-model="goodsEntity.goodsDescribe"
                 type="textarea"
-                rows="3"
+                rows="5"
                 style="width:640px"
                 placeholder="请输入该商品相关的商品详情介绍信息...(可不填)"
               ></el-input>
@@ -479,6 +479,7 @@ export default {
         console.log(this.fileList_scorll);
       }
       console.log(" this.goodsEntity ", this.goodsEntity);
+      this.goodsEntity.goodsDescribe = this.goodsEntity.goodsDescribe.replace(/\*/g, ":");
     },
     //新增商品
     submitGoods() {
@@ -578,6 +579,12 @@ export default {
       console.log("this.goodsEntity.exterd1", this.goodsEntity.exterd1);
       console.log("this.goodsEntity.exterd2 ", this.goodsEntity.exterd2);
       console.log("this.goodsEntity.exterd3", this.goodsEntity.exterd3);
+      console.log("替换前-goodsDescribe",this.goodsEntity.goodsDescribe);
+      this.goodsEntity.goodsDescribe = this.goodsEntity.goodsDescribe.replace(/：/g, ":");
+      this.goodsEntity.goodsDescribe = this.goodsEntity.goodsDescribe.replace(/:/g, "*");
+      this.goodsEntity.goodsDescribe = this.goodsEntity.goodsDescribe.replace(/\?/g, " ");
+      this.goodsEntity.goodsDescribe = this.goodsEntity.goodsDescribe.replace(/\//g, " ");
+      console.log("替换后-goodsDescribe",this.goodsEntity.goodsDescribe);
       http
         .post(url.SubmitGoods, { jsonString: JSON.stringify(this.goodsEntity) })
         .then(res => {

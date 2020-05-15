@@ -70,6 +70,7 @@ namespace WebUI.Controllers.Manage
                 }
                 if (string.IsNullOrEmpty(goodsEntity.GoodsId))
                 {
+                    goodsEntity.GoodsDescribe = goodsEntity.GoodsDescribe.Replace('*', ':');
                     if (goodsEntity.isProduct == "N")
                     {
                         //新增商品

@@ -30,7 +30,7 @@
           <van-col span="6">{{userInfo.pecialItemPorints}}</van-col>
         </van-row>
         <van-row type="flex" justify="center">
-          <van-col span="6">产品积分</van-col>
+          <van-col span="6">个人积分</van-col>
           <van-col span="6">{{userInfo.productPorints}}</van-col>
         </van-row>
         <van-row type="flex" justify="center">
@@ -101,7 +101,7 @@
       <van-cell title="我的团队" is-link to="/user/myteam" />
     </van-cell-group>-->
     <van-cell-group>
-      <van-cell title="产品积分兑现" is-link :to="{path:'/user/cash',query:{type:1,name:'产品积分兑现'}}" />
+      <van-cell title="个人积分兑现" is-link :to="{path:'/user/cash',query:{type:1,name:'个人积分兑现'}}" />
     </van-cell-group>
     <van-cell-group>
       <van-cell title="团队积分兑现" is-link :to="{path:'/user/cash',query:{type:2,name:'团队积分兑现'}}" />

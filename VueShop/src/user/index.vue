@@ -9,7 +9,7 @@
       </div>
 
       <div class="user-profile-username" style="font-size:14px">
-        <span>产品积分:{{userInfo.producePorints}}</span>
+        <span>个人积分:{{userInfo.producePorints}}</span>
         <span style="margin-left:1%">{{userInfo.treamPorints}}</span>
       </div>
     </div>
@@ -80,7 +80,7 @@
       <van-cell title="我的团队" is-link to="/user/myteam" />
     </van-cell-group>
     <van-cell-group>
-      <van-cell title="产品积分兑现" is-link :to="{path:'/user/cash',query:{id:1,name:'产品积分兑现'}}" />
+      <van-cell title="个人积分兑现" is-link :to="{path:'/user/cash',query:{id:1,name:'个人积分兑现'}}" />
     </van-cell-group>
     <van-cell-group>
       <van-cell title="团队积分兑现" is-link :to="{path:'/user/cash',query:{id:2,name:'团队积分兑现'}}" />
