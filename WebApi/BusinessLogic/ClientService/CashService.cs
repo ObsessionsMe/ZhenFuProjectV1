@@ -17,10 +17,12 @@ namespace BusinessLogic.ClientService
         /// </summary>
         private ICashRepository CashRepository;
         private IUserPrintsSumRepository userPrintsSumRepository;
-        public CashService(ICashRepository _CashRepository, IUserPrintsSumRepository _userPrintsSumRepository)
+        private IUserPorintsRecordRepository userPorintsRecordRepository;
+        public CashService(ICashRepository _CashRepository, IUserPrintsSumRepository _userPrintsSumRepository, IUserPorintsRecordRepository _userPorintsRecordRepository)
         {
             CashRepository = _CashRepository;
             userPrintsSumRepository = _userPrintsSumRepository;
+            userPorintsRecordRepository = _userPorintsRecordRepository;
         }
 
         public AjaxResult InsertCashInfo(CashInfoEntity entity)
@@ -38,6 +40,16 @@ namespace BusinessLogic.ClientService
                 sumEntity.TreamPorints -= entity.Deduct;
             }
             userPrintsSumRepository.Update(sumEntity);
+            //扣除记录
+            userPorintsRecordRepository.Insert(new UserPorintsRecordEntity()
+            {
+                UserId=entity.UserId,
+                TreamPorints = entity.Type == 2 ? entity.Deduct : 0,
+                ProductPorints = entity.Type == 1 ? entity.Deduct : 0,
+                PorintsType = 2,
+                Addtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            });
+
 
             result.state = ResultType.success.ToString();
             result.message = "提交成功！";

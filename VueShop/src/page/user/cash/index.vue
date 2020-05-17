@@ -92,7 +92,8 @@ export default {
         account: "",
         integral: 0,
         deductRate: 0,
-        deduct: 0
+        deduct: 0,
+        poundageRate:0.0,
       }
     };
   },
@@ -133,6 +134,7 @@ export default {
         if (res.state == "success") {
           this.entity.integral = res.data.integral;
           this.entity.deductRate = res.data.deductRate;
+          this.entity.poundageRate=res.data.poundageRate;
         }
       });
     },
@@ -163,7 +165,7 @@ export default {
         return;
       }
 
-      if (this.entity.integral == 0) {
+      if (this.entity.deduct == 0) {
         Toast.fail("提现积分必须大于0!");
         return;
       }
@@ -172,12 +174,11 @@ export default {
         Dialog.confirm({
           title: "温馨提示",
           message:
-            "团队提现将会收取5%的手续费，实际提现" +
-            this.integral * 0.05 +
+            "团队提现将会收取"+(this.entity.poundageRate*100)+"%的手续费，实际提现" +
+            this.entity.deduct * 0.05 +
             "，请确认是否要进行兑现？"
         })
           .then(() => {
-            this.integral = this.integral * 0.05;
             submitCash(this.entity).then(res => {
               if (res.state == "success") {
                 Toast.success(res.message);

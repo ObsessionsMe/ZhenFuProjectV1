@@ -46,7 +46,7 @@ namespace Entity
         public int TreamPorints { get; set; }
 
         /// <summary>
-        /// 积分类型(1:赠送积分,2兑现积分)
+        /// 积分类型(1:赠送积分,2兑现积分,3每日收益积分)
         /// </summary>
         public int PorintsType { get; set; }
 
