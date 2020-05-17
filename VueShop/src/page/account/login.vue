@@ -7,9 +7,9 @@
           <van-field placeholder="请输入手机号" type="number" v-model="telephone" label="中国 +86" />
           <van-field type="password" placeholder="请输入密码" v-model="password" />
         </van-cell-group>
-        <!-- <van-col span="8" style="height:30px;line-height:30px;margin-left:4%">
-            <el-link type="primary" to="/login/password">忘记密码</el-link>
-          </van-col> -->
+        <van-col span="8" style="height:30px;line-height:30px;margin-left:4%">
+          <el-checkbox v-model="isSave">记住密码</el-checkbox>
+        </van-col>
         <div style="margin: 10px;">
           <van-button size="large" type="primary" style="height: 45px;line-height:45px;" @click="handleLogin()">登录</van-button>
           <van-button size="large" type="primary" style="height: 45px;line-height:45px;" @click="register()">注册新账号</van-button>
@@ -31,6 +31,7 @@ export default {
   name: "Login",
   data() {
     return {
+      isSave: true,
       // telephone:"15914071422",
       // password:"xiapeng-2020"
       telephone: "",
@@ -82,10 +83,14 @@ export default {
           this.$store.commit("setToken", response.data.token);
           this.$store.commit("saveUserInfo", response.data.data);
           //存储cookie
-          window.localStorage.setItem(
-            "user",
-            JSON.stringify({ name: this.telephone, value: this.password })
-          );
+          if (this.isSave) {
+            window.localStorage.setItem(
+              "user",
+              JSON.stringify({ name: this.telephone, value: this.password })
+            );
+          } else {
+            window.localStorage.removeItem("user");
+          }
           this.$router.push({ path: this.redirect || "/category" }); //进入到首页
         } else {
           this.$toast(response.message);
@@ -102,4 +107,15 @@ export default {
 };
 </script>
 <style>
+.el-checkbox {
+  color: #4b0;
+}
+.el-checkbox__input.is-checked + .el-checkbox__label {
+  color: #4b0;
+}
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: #4b0;
+  border-color: #4b0;
+}
 </style>
