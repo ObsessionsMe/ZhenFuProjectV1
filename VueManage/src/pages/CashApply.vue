@@ -70,8 +70,8 @@
       <br />
       <span style="color:red">点击兑现驳回，表示取消了对商城会员转账操作</span>
       <span slot="footer" class="dialog-footer">      
-        <el-button type="primary" @click="turnUp()">兑现通过</el-button>
-        <el-button type="primary" @click="turnDown()">兑现驳回</el-button>
+        <el-button type="primary" @click="Apply(1)">兑现通过</el-button>
+        <el-button type="primary" @click="Apply(2)">兑现驳回</el-button>
         <el-button @click="check_dialog = false">取 消</el-button>
       </span>
     </el-dialog>
@@ -151,9 +151,10 @@ export default {
       }
       this.check_dialog = true;
     },
-    Apply(){
+    Apply(type){
       http
         .post(url.UserCashApply, {
+          cashType:type,
           ids:this.checkIds.toString()
         })
         .then(res => {

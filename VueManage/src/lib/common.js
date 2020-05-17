@@ -61,6 +61,8 @@ let common = {
             break;
             case 5:
                 switch(value){
+                    case 2: result = "已驳回"; 
+                    break;
                     case 1: result = "完成"; 
                     break;
                     case 0: result = "待兑现";

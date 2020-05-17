@@ -36,7 +36,7 @@ namespace BusinessLogic.ManageService
             var expression = ExtLinq.True<UserPorintListEntity>();
             if (!string.IsNullOrEmpty(keyword))
             {
-                expression = expression.And(t => t.Name == keyword);
+                expression = expression.And(t => t.Name.Contains(keyword));
             }
             return userRepository.GetUser_PorintList(pagination, expression);
         }

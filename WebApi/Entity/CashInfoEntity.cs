@@ -83,9 +83,9 @@ namespace Entity
         /// 兑现积分数
         /// </summary>
         public int Deduct { get; set; }
-        
+
         /// <summary>
-        /// 兑现状态 1:完成 0:待兑现
+        /// 兑现状态 1:完成 0:待兑现,2已驳回
         /// </summary>
         public int Status { get; set; }
 

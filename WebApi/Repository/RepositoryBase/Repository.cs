@@ -124,7 +124,9 @@ namespace RepositoryFactory.RepositorysBase
                 throw ex;
             }
         }
-    
+
+
+
         public List<TEntity> FindList(Expression<Func<TEntity, bool>> predicate, Pagination pagination)
         {
             try
