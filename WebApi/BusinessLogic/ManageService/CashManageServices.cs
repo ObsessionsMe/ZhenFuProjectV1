@@ -29,24 +29,11 @@ namespace BusinessLogic.ManageService
         }
         public bool UserCashApply(int cashType, string ids)
         {
-            bool bo = true;
-            string[] cashIds = ids.Split(',');
-            if (cashType == 1)
-            {
-                //审批通过，直接更新状态
-                for (int i = 0; i < cashIds.Length; i++)
-                {
-                    int Id = Convert.ToInt32(cashIds[i]);
-                    var entity = cashRepository.FindEntity(Id);
-                    entity.Status = 1;
-                    cashRepository.Update(entity);
-                }
+            int i  = cashRepository.ApplyUserCash(cashType, ids);
+            if (i <= 0) {
+                return false;
             }
-            else if (cashType == 2) { 
-                  //审批驳回
-
-            }
-            return bo;
+            return true;
         }
     }
 }

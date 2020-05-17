@@ -2,6 +2,7 @@
 using Infrastructure;
 using Infrastructure.DBContext;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Repository;
 using RepositoryFactory.RepositoryBase;
@@ -37,6 +38,15 @@ namespace RepositoryFactory.RepositoryService
         {
             var repositorys = new Repository<CashListEntity>(dbcontext);
             return repositorys.FindList(predicate, pagination);
+        }
+        public int ApplyUserCash(int type, string cashIds)
+        {
+            var sqlParams = new SqlParams();
+            sqlParams.Params.Add("@type", type);
+            sqlParams.Params.Add("@ids", cashIds);
+            string execSql = "p_apply_user_cash";
+            int i = dbcontext.Database.ExecuteSqlCommand(execSql, sqlParams);
+            return i;
         }
     }
 }

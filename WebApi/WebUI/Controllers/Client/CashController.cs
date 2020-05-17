@@ -23,9 +23,9 @@ namespace WebUI.Controllers.Client
     {
         public CashService cashService;
 
-        public CashController(ICashRepository _CashRepository, IUserPrintsSumRepository _userPrintsSumRepository)
+        public CashController(ICashRepository _CashRepository, IUserPrintsSumRepository _userPrintsSumRepository, IUserPorintsRecordRepository _userRecordRepository)
         {
-            cashService = new CashService(_CashRepository, _userPrintsSumRepository);
+            cashService = new CashService(_CashRepository, _userPrintsSumRepository, _userRecordRepository);
         }
 
         [Route("getCashDetail")]

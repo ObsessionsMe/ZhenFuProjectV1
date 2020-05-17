@@ -15,5 +15,7 @@ namespace RepositoryFactory.ServiceInterface
         DataTable GetCashDetail(string userId, int type, string GoodsId);
 
         List<CashListEntity> GetUse_CashList(Pagination pagination, Expression<Func<CashListEntity, bool>> predicate);
+
+        int ApplyUserCash(int type, string cashIds);
     }
 }
