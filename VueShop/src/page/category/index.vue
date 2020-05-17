@@ -83,7 +83,7 @@ export default {
     };
   },
   created() {
-    localStorage.clear();
+    localStorage.removeItem("localStorage");
   },
   methods: {
     //onSearch() {

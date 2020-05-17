@@ -85,6 +85,11 @@ namespace Entity
         public int Deduct { get; set; }
         
         /// <summary>
+        /// 手续费比例
+        /// </summary>
+        public double PoundageRate { get; set; }
+
+        /// <summary>
         /// 兑现状态 1:完成 0:待兑现
         /// </summary>
         public int Status { get; set; }
