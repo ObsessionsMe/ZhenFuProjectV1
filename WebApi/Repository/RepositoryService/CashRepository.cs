@@ -1,4 +1,5 @@
 ﻿using Entity;
+using Infrastructure;
 using Infrastructure.DBContext;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -10,7 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
+using ViewEntity;
 
 namespace RepositoryFactory.RepositoryService
 {
@@ -28,6 +31,12 @@ namespace RepositoryFactory.RepositoryService
             sqlParams.Params.Add("@type", type);
             sqlParams.Params.Add("@goodsId", GoodsId);
             return ExecuteSql.ProcQuery(new DatabaseFacade(dbcontext), "p_get_cash_detail", sqlParams).Tables[0];
+        }
+
+        public List<CashListEntity> GetUse_CashList(Pagination pagination, Expression<Func<CashListEntity, bool>> predicate)
+        {
+            var repositorys = new Repository<CashListEntity>(dbcontext);
+            return repositorys.FindList(predicate, pagination);
         }
     }
 }

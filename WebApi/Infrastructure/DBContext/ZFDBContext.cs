@@ -30,6 +30,11 @@ namespace Infrastructure.DBContext
 
         public DbSet<WorkDateEntity> WorkDateEntity { get; set; }
 
+        public DbSet<OrderListEntity> OrderListEntity { get; set; }
+
+        public DbSet<CashListEntity> CashListEntity { get; set; }
+        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //string executingAssemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

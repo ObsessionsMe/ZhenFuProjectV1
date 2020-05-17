@@ -12,7 +12,10 @@ let url = {
     ManagePayPorints: "api/UserManage/ManagePayPorints",  
     UploadGoodsFile:"api/GoodsManage/UploadGoodsFile",//上传文件
     ItemDownshelf:"api/GoodsManage/ItemDownshelf",//下架商品 
-    editUser:"api/UserManage/editUser"//下架商品 
+    editUser:"api/UserManage/editUser",//下架商品 
+    GetOrderList: "api/OrderManage/GetOrderList",  
+    GetCashList: "api/CashManage/GetCashList",
+    UserCashApply: "api/CashManage/UserCashApply"
     //logout: "api/Login/OutLogin",
     //getGridJson: "api/User/GetGridJson",
     //getPersonalFileList:"/File/GetFileList",    

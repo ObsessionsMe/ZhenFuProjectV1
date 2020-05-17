@@ -1,9 +1,11 @@
 ﻿using Entity;
+using Infrastructure;
 using RepositoryFactory.RepositorysBase;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
-
+using ViewEntity;
 
 namespace RepositoryFactory.ServiceInterface
 {
@@ -12,5 +14,7 @@ namespace RepositoryFactory.ServiceInterface
         int GetUser_PayMaxGoodsLeve(string userId);
 
         bool IsWorkDate(string date);
+
+        List<OrderListEntity> GetUse_OrderList(Pagination pagination, Expression<Func<OrderListEntity, bool>> predicate);
     }
 }

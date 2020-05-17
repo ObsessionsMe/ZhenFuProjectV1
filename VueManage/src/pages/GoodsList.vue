@@ -59,8 +59,18 @@
           <el-table-column prop="enable" label="商品状态" sortable width="100">
             <template slot-scope="scope">{{scope.row.enable=="Y"?"已上架":"已下架"}}</template>
           </el-table-column>
-          <el-table-column prop="addtime" label="上架时间" sortable width="300"></el-table-column>
-          <el-table-column prop="goodsDescribe" label="商品描述" sortable width="300"></el-table-column>
+          <el-table-column prop="goodsDescribe" label="商品描述" sortable width="400" >
+              <!-- <template slot-scope="scope" :title="scope.row.goodsDescribe">{{scope.row.goodsDescribe==null||scope.row.goodsDescribe==""?"":scope.row.goodsDescribe.substr(0,25)}}</template> -->
+            <template slot-scope="scope">
+            <el-popover trigger="hover" placement="top">
+              <p>{{scope.row.goodsDescribe}}</p>
+              <div slot="reference" class="name-wrapper">
+                <el-tag size="medium">{{scope.row.goodsDescribe==null||scope.row.goodsDescribe==""?"":scope.row.goodsDescribe.substr(0,30)}}</el-tag>
+              </div>
+            </el-popover>
+             </template>
+          </el-table-column>
+           <el-table-column prop="addtime" label="上架时间" sortable width="200"></el-table-column>
         </el-table>
       </el-row>
       <el-pagination

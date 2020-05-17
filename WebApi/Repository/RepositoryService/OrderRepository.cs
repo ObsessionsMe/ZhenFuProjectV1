@@ -1,4 +1,5 @@
 ﻿using Entity;
+using Infrastructure;
 using Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -8,7 +9,9 @@ using RepositoryFactory.ServiceInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
+using ViewEntity;
 
 namespace RepositoryFactory.RepositoryService
 {
@@ -36,6 +39,13 @@ namespace RepositoryFactory.RepositoryService
                 return false;
             }
             return true;
+        }
+
+        public List<OrderListEntity> GetUse_OrderList(Pagination pagination, Expression<Func<OrderListEntity, bool>> predicate)
+        {
+            //return dbcontext.UserPorintListEntity.ToList();
+            var repositorys = new Repository<OrderListEntity>(dbcontext);
+            return repositorys.FindList(predicate, pagination);
         }
     }
 }

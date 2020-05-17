@@ -33,13 +33,12 @@ namespace BusinessLogic.ManageService
 
         public List<UserPorintListEntity> GetUserList(Pagination pagination, string keyword)
         {
-            return userRepository.GetUser_PorintList();
-            //var expression = ExtLinq.True<UserInfoEntity>();
-            // if (!string.IsNullOrEmpty(keyword))
-            // {
-            //     expression = expression.And(t => t.Name == keyword);
-            // }
-            //return userRepository.FindList(expression, pagination);
+            var expression = ExtLinq.True<UserPorintListEntity>();
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                expression = expression.And(t => t.Name == keyword);
+            }
+            return userRepository.GetUser_PorintList(pagination, expression);
         }
 
         public AjaxResult PayPorints(int payNum, string userId, int type)

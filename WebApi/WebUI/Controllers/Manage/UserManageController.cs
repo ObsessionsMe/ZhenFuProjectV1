@@ -42,15 +42,6 @@ namespace WebUI.Controllers.Manage
             recordRepository = _recordRepository;
             basePorintRepository = _basePorintRepository;
         }
-        /// <summary>
-        /// 获取用户列表(会员)
-        /// </summary>
-        /// <returns></returns>
-        [Route("GetUserList")]
-        public ActionResult GetUserList()
-        {
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "" });
-        }
 
         /// <summary>
         /// 确认已完成转账(针对--用户提现)

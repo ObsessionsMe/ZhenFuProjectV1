@@ -15,6 +15,7 @@
         </el-select>
       </el-form-item> -->
       <el-form-item>
+         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="cashApply">兑现审批</el-button>
         <!-- <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchCashApplyList">查询</el-button> -->
         <!-- <el-button type="primary" icon="el-icon-edit" @click="editUserGroup">编辑</el-button>
         <el-button type="primary" icon="el-icon-delete" @click="deleteUserGroup">删除</el-button> -->
@@ -31,16 +32,23 @@
           style="width: 100%"
           highlight-current-row
           height="650"
+          @selection-change="handleSelectionChange" 
         >
-          <el-table-column prop="goodsId"   label="申请人姓名" sortable width="150"></el-table-column>
-          <el-table-column prop="goodsName"  label="申请人手机号" width="150" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="goodsLevel" label="积分兑现类别" width="150"></el-table-column>
-          <el-table-column prop="goodsLevel" label="支付方式" width="100"></el-table-column>
-          <el-table-column prop="unitPrice"  label="支付账号" sortable width="250"></el-table-column>
-          <el-table-column prop="itemPoints" label="银行卡类型" sortable width="250"></el-table-column>
-          <el-table-column prop="directPoints" label="银行卡开户人姓名" sortable width="200"></el-table-column>
-          <el-table-column prop="indirectPoints" label="兑现积分数" sortable width="130"></el-table-column>
-          <el-table-column prop="enable" label="兑现提交时间" sortable width="200"></el-table-column>
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column prop="userTelephone"  label="手机号" width="150" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="type" label="兑现类别" width="150">
+              <template slot-scope="scope">{{common.getTypeName(4,scope.row.type)}}</template>
+          </el-table-column>
+          <el-table-column prop="bankTypeName" label="银行卡名称" width="180"></el-table-column>
+          <el-table-column prop="account"   label="银行账号" sortable width="220"></el-table-column>
+           <el-table-column prop="bankUserName"  label="开户人" width="150" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="integral"  label="账号总积分" sortable width="120"></el-table-column>
+          <el-table-column prop="deductRate" label="可兑现比例" sortable width="120"></el-table-column>
+          <el-table-column prop="deduct" label="兑现积分数" sortable width="120"></el-table-column>
+          <el-table-column prop="status" label="兑现状态" sortable width="120">
+            <template slot-scope="scope">{{common.getTypeName(5,scope.row.status)}}</template>
+          </el-table-column>
+          <el-table-column prop="date" label="兑现提交时间" sortable width="200"></el-table-column>
         </el-table>
       </el-row>
       <el-pagination
@@ -54,12 +62,26 @@
         :total="total"
       ></el-pagination>
     </section>
+    <el-dialog
+      title="提示"
+      :visible.sync="check_dialog"
+      width="30%">
+      <span style="color:red">点击兑现通过，表示已经对商城会员转账成功了</span>
+      <br />
+      <span style="color:red">点击兑现驳回，表示取消了对商城会员转账操作</span>
+      <span slot="footer" class="dialog-footer">      
+        <el-button type="primary" @click="turnUp()">兑现通过</el-button>
+        <el-button type="primary" @click="turnDown()">兑现驳回</el-button>
+        <el-button @click="check_dialog = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 //此处引入
 import { http, url } from "@/lib";
+import common from "../lib/common.js";
 //我的存储
 export default {
   data() {
@@ -76,17 +98,20 @@ export default {
         { id: 0, name: "待兑现" },
         { id: 1, name: "已兑现" }
       ],
+      common:common,
+      checkIds:[],
+      check_dialog:false
     };
   },
   created() {
     //页面初始化
-    this.searchApplyList();
+    this.searchCashApplyList();
   },
   methods: {
     //获取用户兑换申请列表
     searchCashApplyList() {
       http
-        .post(url.searchCashApplyList, {
+        .post(url.GetCashList, {
           pagination: {
             rows: this.pageSize,
             page: this.pageIndex,
@@ -111,9 +136,31 @@ export default {
       this.pageIndex = currentindex;
       this.searchCashApplyList();
     },
-    //查看商品
-    exportApplyList(){
-
+    handleSelectionChange(val) {
+      for(var i = 0;i < val.length;i++){
+        this.checkIds.push(val[i].id);
+      }
+    },
+    cashApply(){
+      if(this.checkIds.length == 0){
+        this.$message({
+            type: "error",
+            message: "请至少勾选一条记录"
+          });
+         return; 
+      }
+      this.check_dialog = true;
+    },
+    Apply(){
+      http
+        .post(url.UserCashApply, {
+          ids:this.checkIds.toString()
+        })
+        .then(res => {
+          console.log("res", res)
+          this.tableData = res.data.data.rows;
+          this.total = res.data.data.records;
+        });
     }
   }
 };

@@ -67,7 +67,7 @@ namespace Entity
         public int UsePorintsType { get; set; }
 
         /// <summary>
-        ///  支付方式【1-微信支付，2-支付宝】
+        ///  支付方式【1-微信支付，2-支付宝，0-其他】
         /// </summary>
         public int PayMethod { get; set; }
         

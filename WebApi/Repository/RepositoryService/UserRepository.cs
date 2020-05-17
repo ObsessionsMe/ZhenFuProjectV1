@@ -1,4 +1,5 @@
 ﻿using Entity;
+using Infrastructure;
 using Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using RepositoryFactory.RepositoryBase;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using ViewEntity;
 
@@ -19,9 +21,11 @@ namespace RepositoryFactory.RepositoryService
         {
 
         }
-        public List<UserPorintListEntity> GetUser_PorintList()
+        public List<UserPorintListEntity> GetUser_PorintList(Pagination pagination, Expression<Func<UserPorintListEntity, bool>> predicate)
         {
-            return dbcontext.UserPorintListEntity.ToList();        
+            //return dbcontext.UserPorintListEntity.ToList();
+            var repositorys = new Repository<UserPorintListEntity>(dbcontext);
+            return repositorys.FindList(predicate, pagination);
         }
 
         public DataTable GetUserTeamLevel1(string userId, string goodsId)
