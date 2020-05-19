@@ -111,11 +111,11 @@ export default {
     },
     init() {
       this.SetDisabled();
-      this.$nextTick(function() {
-        setInterval(function() {
-          this.SetDisabled();
-        }, 30000);
-      });
+      // this.$nextTick(function() {
+      //   setInterval(function() {
+      //     this.SetDisabled();
+      //   }, 30000);
+      // });
       GetGoodsList().then(response => {
         if (response.state == "success") {
           console.log("response.data.shopDataList", response.data.shopDataList);

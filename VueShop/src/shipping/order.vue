@@ -20,7 +20,7 @@
     </van-cell-group>
     <div style="height:15px;"></div>
     <van-cell-group class="total">
-      <van-cell title="优惠券" is-link value="抵扣¥5.00" />
+      <van-cell title="优惠券" is-link value="抵扣5.00" />
     </van-cell-group>
 
     <div style="height:15px;"></div>

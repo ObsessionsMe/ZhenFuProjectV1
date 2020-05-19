@@ -6,10 +6,10 @@
         <strong>选择地址</strong>
       </template>
       <template v-else>
-          <!-- <strong>张三 138****6520</strong>
-          <div>广东省深圳市南山区科技园</div>-->
-          <strong>{{addressList.receiveUser}}({{addressList.receiveTelephone}})</strong>
-          <div>{{addressList.detailsAddress}}</div>
+        <!-- <strong>张三 138****6520</strong>
+        <div>广东省深圳市南山区科技园</div>-->
+        <strong>{{addressList.receiveUser}}({{addressList.receiveTelephone}})</strong>
+        <div>{{addressList.detailsAddress}}</div>
       </template>
     </van-cell>
     <div style="height:15px;"></div>
@@ -22,7 +22,7 @@
     </van-cell-group>
     <div style="height:15px;"></div>
     <van-cell-group class="total">
-      <van-cell title="优惠券" is-link value="抵扣¥5.00" />
+      <van-cell title="优惠券" is-link value="抵扣5.00" />
     </van-cell-group>
     -->
     <div style="height:15px;"></div>
@@ -140,7 +140,7 @@ export default {
       BuyGoodsNums: 0,
       PayCount: 0,
       addressList: {},
-      goodsFreight:0
+      goodsFreight: 0
     };
   },
   methods: {
@@ -159,7 +159,7 @@ export default {
         PayCount: this.goodsTotal,
         UsePorintsType: parseInt(this.payMethod),
         GoodsUnitPrice: this.GoodsUnitPrice,
-        goodsFreight:this.goodsFreight
+        goodsFreight: this.goodsFreight
       };
       if (!this.isSure) {
         this.$toast("前先勾选同意珍福商城购买协议");
@@ -203,15 +203,21 @@ export default {
         this.goodsTotal =
           parseInt(response.data.goodsData.unitPrice) *
           parseInt(this.$store.state.orderInfo.goodsNum);
+          console.log("this.goodsFreight",this.goodsFreight);
+          
+        this.goodsFreight = response.data.goodsData.goodsFreight; //运费
+        if (parseInt(this.goodsFreight) > 0) {
+          this.goodsTotal = this.goodsTotal + parseInt(this.$store.state.orderInfo.goodsNum) * parseInt(this.goodsFreight);
+        }
         this.goodsTotal_r = parseInt(this.goodsTotal) * 100;
         this.BuyGoodsNums = this.$store.state.orderInfo.goodsNum;
         this.GoodsUnitPrice = response.data.goodsData.unitPrice;
-        this.goodsFreight = response.data.goodsData.goodsFreight;//运费
+       
         if (response.data.goodsData.isProduct == "N") {
           this.isProduct = true;
         }
         var addresses = response.data.receiveAddressData;
-        console.log("addresses",addresses);
+        console.log("addresses", addresses);
         if (addresses == null) {
           this.type = "0";
           return;

@@ -70,7 +70,10 @@ namespace Entity
         ///  支付方式【1-微信支付，2-支付宝，0-其他】
         /// </summary>
         public int PayMethod { get; set; }
-        
+
+        //订单运费
+         public int GoodsFreight { get; set; }
+
         /// <summary>
         /// 下单时间
         /// </summary>

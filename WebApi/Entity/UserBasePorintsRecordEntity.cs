@@ -26,7 +26,7 @@ namespace Entity
         /// <summary>
         /// 操作类型(1-充值，2-下单)
         /// </summary>
-        public int OperateType { get; set; }
+        public int OpreateType { get; set; }
 
         /// <summary>
         /// 积分类型(1-余额，2-专项)

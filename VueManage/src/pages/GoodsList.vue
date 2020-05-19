@@ -165,22 +165,22 @@
                 label-width="200px"
               ></el-input>
             </el-form-item>
-            <!-- <el-form-item label="商品运输费用">
+            <el-form-item label="商品运费">
               <el-input
-                v-model="goodsEntity.goodsName"
+                v-model="goodsEntity.goodsFreight"
                 type="number"
-                placeholder="商品运输费用,包邮请填0"
+                placeholder="商品运费,包邮请填0"
                 label-width="200px"
               ></el-input>
             </el-form-item>
-            <el-form-item label="库存">
+            <!-- <el-form-item label="库存">
               <el-input
                 v-model="goodsEntity.goodsName"
                 type="number"
                 placeholder="该商品的总库存数"
                 label-width="200px"
               ></el-input>
-            </el-form-item>-->
+            </el-form-item> -->
             <el-form-item label="商品详情介绍">
               <el-input
                 v-model="goodsEntity.goodsDescribe"
@@ -347,7 +347,7 @@ export default {
             sord: "desc",
             record: ""
           },
-          keyword: ""
+          keyword: this.kw
         })
         .then(res => {
           console.log("res", res);
@@ -590,10 +590,11 @@ export default {
       console.log("this.goodsEntity.exterd2 ", this.goodsEntity.exterd2);
       console.log("this.goodsEntity.exterd3", this.goodsEntity.exterd3);
       console.log("替换前-goodsDescribe",this.goodsEntity.goodsDescribe);
-      this.goodsEntity.goodsDescribe = this.goodsEntity.goodsDescribe.replace(/：/g, ":");
-      this.goodsEntity.goodsDescribe = this.goodsEntity.goodsDescribe.replace(/:/g, "*");
-      this.goodsEntity.goodsDescribe = this.goodsEntity.goodsDescribe.replace(/\?/g, " ");
-      this.goodsEntity.goodsDescribe = this.goodsEntity.goodsDescribe.replace(/\//g, " ");
+      var goodsDescribe = this.goodsEntity.goodsDescribe;
+      this.goodsEntity.goodsDescribe = goodsDescribe == "" || goodsDescribe == undefined ?"":goodsDescribe.replace(/：/g, ":");
+      this.goodsEntity.goodsDescribe = goodsDescribe == "" || goodsDescribe == undefined ?"":goodsDescribe.replace(/:/g, "*");
+      this.goodsEntity.goodsDescribe = goodsDescribe == "" || goodsDescribe == undefined ?"":goodsDescribe.replace(/\?/g, " ");
+      this.goodsEntity.goodsDescribe = goodsDescribe == "" || goodsDescribe == undefined ?"":goodsDescribe.replace(/\//g, " ");
       console.log("替换后-goodsDescribe",this.goodsEntity.goodsDescribe);
       http
         .post(url.SubmitGoods, { jsonString: JSON.stringify(this.goodsEntity) })
@@ -617,18 +618,32 @@ export default {
       ) {
         errorMsg += "商品名称不能为空;   ";
       }
+      console.log("this.defalutGoodsType",this.defalutGoodsType);
+      if(parseInt(this.defalutGoodsType)!=0){
       if (
         this.defalutGoodsType == "" ||
         this.defalutGoodsType == undefined ||
-        this.defalutGoodsType == -1
-      ) {
-        errorMsg += "商品种类不能为空;   ";
-      }
+        this.defalutGoodsType == -1 
+        ) {
+          errorMsg += "商品种类不能为空;   ";
+        }
+      }    
       if (
         this.goodsEntity.unitPrice == "" ||
         this.goodsEntity.unitPrice == undefined
       ) {
         errorMsg += "商品单价不能为空;   ";
+      }
+      if (
+        this.goodsEntity.goodsFreight == "" ||
+        this.goodsEntity.goodsFreight == undefined 
+      ) {
+        errorMsg += "商品运费不能为空;   ";
+      }
+       if (
+        this.goodsEntity.goodsFreight != "" &&  parseInt(this.goodsEntity.goodsFreight) < 0
+      ) {
+        errorMsg += "商品运费不能位负数;   ";
       }
       return errorMsg;
     },

@@ -12,6 +12,7 @@
         <span class="goods-price">{{ formatPrice(goods.unitPrice) }}</span>
         <div class="goods-title">{{ goods.goodsName }}</div>
         <div class="goods-subtit">{{goods.goodsDescribe}}</div>
+        <span style="color:red">运费:{{goods.goodsFreight}}</span>
       </van-cell>
     </van-cell-group>
 
@@ -86,6 +87,7 @@ export default {
   data() {
     this.skuData = skuData;
     return {
+      goodsFreight:0,
       detailsImageList: [],
       goodsId: "",
       show: false,
@@ -142,7 +144,7 @@ export default {
   },
   methods: {
     formatPrice(data) {
-      return "¥" + (data / 100).toFixed(2);
+      return (data / 100).toFixed(2) + "积分";
     },
     // onClickCart() {
     //   this.$router.push('/cart');
@@ -217,6 +219,7 @@ export default {
         this.goods_sku.goods_id = goodsData.goodsId;
         this.goods_sku.goods_info.title = goodsData.goodsName;
         this.goodsId = goodsData.goodsId;
+        this.goodsFreight = goodsData.goodsFreight; 
       }
     });
 

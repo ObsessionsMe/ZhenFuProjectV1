@@ -25,7 +25,7 @@
                             </router-link>
                         </div>
                         <div slot="footer">
-                            <span class="total">总价：￥8154898.89</span>
+                            <span class="total">总价：8154898.89</span>
                             <van-button size="small">确认收货</van-button>
                             <van-button size="small" type="danger">支付</van-button>
                         </div>

@@ -48,14 +48,19 @@ namespace BusinessLogic.ClientService
             {
                 //执行存储过程，处理的逻辑
                 //1:扣除该用户的积分，类型为余额积分/团队积分，专项积分
-                var userEntity = userRepository.FindEntity(x => x.UserId == userId && x.Enable == "Y");
+                 var userEntity = userRepository.FindEntity(x => x.UserId == userId && x.Enable == "Y");
                 var sumEntity = new UserPrintsSumEntity();
                 if (userEntity == null)
                 {
                     return new AjaxResult { state = ResultType.error.ToString(), message = "你账号无效，请使用其他账号登录", data = "" };
                 }
-                int i = 0;
+                 int i = 0;
                 int payCount = (order.GoodsUnitPrice) * (order.BuyGoodsNums);  //下单总价
+                //减去运费
+                if (order.GoodsFreight > 0)
+                {
+                    payCount = payCount - order.GoodsFreight;
+                }
                 if (order.UsePorintsType == 1)
                 {
                     //积分余额结算
@@ -74,21 +79,21 @@ namespace BusinessLogic.ClientService
                 {
                     //团队积分结算
                     sumEntity = sumRepository.FindEntity(x => x.UserId == userId && x.GoodsId == order.GoodsId);
-                    if (sumEntity == null)
-                    {
-                        var sumporintsEntity = new UserPrintsSumEntity();
-                        sumporintsEntity.UserId = order.UserId;
-                        sumporintsEntity.GoodsId = order.GoodsId;
-                        sumporintsEntity.ProductPorints = 0;
-                        sumporintsEntity.TreamPorints = 0;
-                        sumporintsEntity.PorintsSurplus = 0;
-                        sumporintsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                        sumRepository.Insert(sumporintsEntity);
-                        if (i < 1)
-                        {
-                            return null;
-                        }
-                    }
+                    //if (sumEntity == null)
+                    //{
+                    //    var sumporintsEntity = new UserPrintsSumEntity();
+                    //    sumporintsEntity.UserId = userId;
+                    //    sumporintsEntity.GoodsId = order.GoodsId;
+                    //    sumporintsEntity.ProductPorints = 0;
+                    //    sumporintsEntity.TreamPorints = 0;
+                    //    sumporintsEntity.PorintsSurplus = 0;
+                    //    sumporintsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                    //    sumRepository.Insert(sumporintsEntity);
+                    //    if (i < 1)
+                    //    {
+                    //        return null;
+                    //    }
+                    //}
                     int TreamPorints = sumEntity.TreamPorints;
                     if (TreamPorints <= 0)
                     {
@@ -197,9 +202,9 @@ namespace BusinessLogic.ClientService
                     //专项/余额
                     basePorintEntity.UserId = userEntity.UserId;
                     basePorintEntity.MainId = order.GoodsId;
-                    basePorintEntity.OperateType = 2;
+                    basePorintEntity.OpreateType = 2;
                     basePorintEntity.PorintsType = order.UsePorintsType;
-                    basePorintEntity.PorintsSurplus = ItemPoints * order.BuyGoodsNums;
+                     basePorintEntity.PorintsSurplus = ItemPoints * order.BuyGoodsNums;
                     basePorintEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                     i = basePorintRepository.Insert(basePorintEntity);
                     if (i < 1)

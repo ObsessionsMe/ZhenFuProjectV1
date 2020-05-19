@@ -98,7 +98,7 @@
             <van-cell  is-link @click="sorry" >
                 <template slot="title">
                     <van-tag type="danger">限购</van-tag>
-                    <span> 购买不超过5件时享受单件价￥8.00，超出数量以结算价为准</span>
+                    <span> 购买不超过5件时享受单件价8.00，超出数量以结算价为准</span>
                 </template>
             </van-cell>
     </van-actionsheet> -->
@@ -240,7 +240,7 @@ export default {
   },
   methods: {
     formatPrice(data) {
-      return '¥' + (data / 100).toFixed(2);
+      return (data / 100).toFixed(2)+ "积分";
     },
     onClickCart() {
       this.$router.push('/cart');

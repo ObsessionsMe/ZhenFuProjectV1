@@ -28,6 +28,8 @@ namespace Infrastructure.DBContext
 
         public DbSet<UserPorintListEntity> UserPorintListEntity { get; set; }
 
+       public DbSet<UserBasePorintsRecordEntity> UserBasePorintsRecordEntity { get; set; }
+
         public DbSet<WorkDateEntity> WorkDateEntity { get; set; }
 
         public DbSet<OrderListEntity> OrderListEntity { get; set; }

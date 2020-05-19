@@ -24,7 +24,7 @@ namespace BusinessLogic.ManageService
             {
                 expression = expression.And(t => t.GoodsName.Contains(keyword));
             }
-            return goodsRepository.FindList(expression, pagination);
+            return goodsRepository.FindList(t => t.Enable == "Y", pagination);
         }
         public int SubmitGoodsGoodsEntity(GoodsEntity goodsEntity)
         {
