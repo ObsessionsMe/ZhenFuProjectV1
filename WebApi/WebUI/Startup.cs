@@ -60,7 +60,10 @@ namespace WebUI
             services.AddTransient<ICashRepository, CashRepository>();
             services.AddTransient<IAttachMentRepository, AttachMentRepository>();
             services.AddTransient<IUserBasePorintsRecordRepository, UserBasePorintsRecordRepository>();
+            services.AddTransient<IDictionaryRepository, DictionaryRepository>();
+
             
+
             //注册文件访问权限
             services.AddDirectoryBrowser();
 
