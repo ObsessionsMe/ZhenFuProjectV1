@@ -15,7 +15,9 @@ let url = {
     editUser:"api/UserManage/editUser",//下架商品 
     GetOrderList: "api/OrderManage/GetOrderList",  
     GetCashList: "api/CashManage/GetCashList",
-    UserCashApply: "api/CashManage/UserCashApply"
+    UserCashApply: "api/CashManage/UserCashApply",
+    GetDicList:"api/Dictionary/GetDicList",
+    AddDic:"api/Dictionary/AddDic",
     //logout: "api/Login/OutLogin",
     //getGridJson: "api/User/GetGridJson",
     //getPersonalFileList:"/File/GetFileList",    

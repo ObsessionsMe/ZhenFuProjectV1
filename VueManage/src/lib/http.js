@@ -1,23 +1,47 @@
 import axios from "axios"
 
 let ajax = function (method, url, data) {
-  return new Promise((resolve, reject) => {
-    //默认带上cookie
-    axios.defaults.withCredentials = true
-    //统一处理状态码
-    axios({method, url, data, params: data})
-      .then((res) => {
-        if (res.status === 200) {
-          resolve(res)
-        } else if (res.status === 401) {
-          location.href = "index.html"
-        }
 
-      })
-      .catch((res) => {
-        reject(res)
-      })
-  })
+  if (method == 'get') {
+    return new Promise((resolve, reject) => {
+      //默认带上cookie
+      axios.defaults.withCredentials = true
+      //统一处理状态码
+      axios({ method, url, params: data })
+        .then((res) => {
+          if (res.status === 200) {
+            resolve(res)
+          } else if (res.status === 401) {
+            location.href = "index.html"
+          }
+
+        })
+        .catch((res) => {
+          reject(res)
+        })
+    })
+  }
+  else {
+    return new Promise((resolve, reject) => {
+      //默认带上cookie
+      axios.defaults.withCredentials = true
+      //统一处理状态码
+      axios({ method, url, data:data, params: data })
+        .then((res) => {
+          if (res.status === 200) {
+            resolve(res)
+          } else if (res.status === 401) {
+            location.href = "index.html"
+          }
+
+        })
+        .catch((res) => {
+          reject(res)
+        })
+    })
+  }
+
+
 }
 
 let http = {

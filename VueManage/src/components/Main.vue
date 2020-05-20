@@ -16,7 +16,7 @@
     .app-main {
         height: 100%;
         width: 100%;
-        min-width: 1200px;
+        min-width: 1000px;
         position: relative;
         overflow: hidden;
     }
