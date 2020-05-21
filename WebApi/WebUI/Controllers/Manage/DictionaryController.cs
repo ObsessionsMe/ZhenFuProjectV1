@@ -47,31 +47,50 @@ namespace WebUI.Controllers.Manage
             return ajaxResult;
         }
 
-        [Route("AddDic")]
-        public AjaxResult<int> InsertDictionary(ExpandoObject obj)
+        [Route("SubDic")]
+        public AjaxResult<int> SubmitDictionary(ExpandoObject obj)
         {
             AjaxResult<int> ajaxResult = new AjaxResult<int>();
             var dataObj = obj as dynamic;
             string fileName = dataObj.fileName.ToString();
             DictionaryEntity entity = Newtonsoft.Json.JsonConvert.DeserializeObject<DictionaryEntity>(dataObj.entity.ToString());
 
-            entity.Code = Common.CreateSystemId("GDT");
-            entity.AddTime = DateTime.Now;
-            entity.AddUserId = "0";
-            entity.Id = dictionaryRepository.Insert(entity);
+            if (entity.Id>0)
+            {  //编辑
+                var oldEntity = dictionaryRepository.FindEntity(entity.Id);
+                if (oldEntity != null)
+                {
+                    oldEntity.Sort = entity.Sort;
+                    oldEntity.Name = entity.Name;
+                    oldEntity.Enable = entity.Enable;
+                    entity = oldEntity;
+                    dictionaryRepository.Update(entity);
+                }
+            }
+            else
+            {  //新增
+                entity.Code = Common.CreateSystemId("GDT");
+                entity.AddTime = DateTime.Now;
+                entity.AddUserId = "0";
+                entity.Id = dictionaryRepository.Insert(entity);
+            }
 
-            //附件关联
-            attachMentRepository.Insert(new AttachMentInfoEntity()
+            if (!string.IsNullOrEmpty(fileName))
             {
-                MainId = entity.Code,
-                AttachmentType = 5,
-                AttachmentName = fileName,
-                UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-            });
+                attachMentRepository.Delete(d => d.MainId == entity.Code && d.AttachmentType == 5);
+                //附件关联
+                attachMentRepository.Insert(new AttachMentInfoEntity()
+                {
+                    MainId = entity.Code,
+                    AttachmentType = 5,
+                    AttachmentName = fileName,
+                    UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                });
+            }
 
             ajaxResult.data = entity.Id;
             ajaxResult.state = ResultType.success;
-            ajaxResult.message = "新增成功";
+            ajaxResult.message = "提交成功";
             return ajaxResult;
         }
     }

@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header class="elHeader">
-      <el-button style="float: left;" type="primary" icon="el-icon-circle-plus" @click="dialogVisible = true">添加</el-button>
+      <el-button style="float: left;" type="primary" icon="el-icon-circle-plus" @click="dialogVisible = true;entity=$options.data().entity;">添加</el-button>
     </el-header>
     <el-container>
       <!-- <el-aside width="15%" style="background-color: rgb(238, 241, 246)">
@@ -19,14 +19,14 @@
           <el-table-column prop="code" label="编码"></el-table-column>
           <el-table-column prop="sort" label="排序值"></el-table-column>
           <el-table-column prop="enable" label="状态"></el-table-column>
-          <!-- <el-table-column prop="payMethod" label="支付方式" sortable width="100">
-                        <template slot-scope="scope">{{common.getTypeName(2,scope.row.payMethod)}}</template>
-                    </el-table-column> -->
+          <el-table-column prop="payMethod" label="操作" sortable width="100">
+                        <template slot-scope="scope"><el-button type="primary" @click="edit(scope.row)"  >编辑</el-button></template>
+                    </el-table-column>
         </el-table>
         <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageIndex" :page-sizes="[10, 15, 20, 30, 50, 100]" :page-size="pageSize" layout="total, sizes, prev, pager, next" :total="total"></el-pagination>
       </el-main>
     </el-container>
-    <el-dialog :v-if="dialogVisible" :title="'新增'+name" :visible.sync="dialogVisible" width="30%">
+    <el-dialog :v-if="dialogVisible" :title="(entity.Id>0?'编辑':'新增')+name" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="entity" label-width="80px">
         <el-form-item label="类型名称">
           <el-input v-model="entity.Name"></el-input>
@@ -35,7 +35,7 @@
           <el-input-number v-model="entity.Sort" :min="0" label="描述文字"></el-input-number>
         </el-form-item>
         <el-form-item label="是否启用">
-          <el-switch @change='EnableChange' :value="entity.Enable=='Y'?true:false"></el-switch>
+          <el-switch @change='EnableChange' v-model="enable"></el-switch>
         </el-form-item>
         <el-form-item label="附件(单张)">
           <el-upload class="upload-demo" :action="uploadApi" :on-remove="handleRemove1" :before-remove="beforeRemove1" :on-success="handleSuccessImg1" multiple :limit="1" :on-exceed="handleExceed1" list-type="picture">
@@ -45,7 +45,7 @@
         </el-form-item>
         <el-form-item>
           <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addData()">确 定</el-button>
+          <el-button type="primary" @click="submit()">确 定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -62,7 +62,9 @@ export default {
       height: 300,
       dialogVisible: false,
       name: "",
+      enable:true,
       entity: {
+        Id:0,
         Name: "",
         Pid: 0,
         Sort: 1,
@@ -92,6 +94,13 @@ export default {
     ////console.log("aa",common.getTypeName)
   },
   methods: {
+    edit(row){
+      this.entity.Id=row.id;
+      this.entity.Name=row.name;
+      this.entity.Sort=row.sort;
+      this.enable=(row.enable=='Y')?true:false;
+      this.dialogVisible = true;
+    },
     //商品主图1
     handleExceed1(files) {
       //console.log(fileList_main);
@@ -128,9 +137,9 @@ export default {
           }
         });
     },
-    addData() {
+    submit() {
       http
-        .post(url.AddDic, {
+        .post(url.SubDic, {
           entity: this.entity,
           fileName: this.fileName
         })

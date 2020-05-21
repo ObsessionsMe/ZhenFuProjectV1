@@ -17,7 +17,7 @@ let url = {
     GetCashList: "api/CashManage/GetCashList",
     UserCashApply: "api/CashManage/UserCashApply",
     GetDicList:"api/Dictionary/GetDicList",
-    AddDic:"api/Dictionary/AddDic",
+    SubDic:"api/Dictionary/SubDic",
     //logout: "api/Login/OutLogin",
     //getGridJson: "api/User/GetGridJson",
     //getPersonalFileList:"/File/GetFileList",    
