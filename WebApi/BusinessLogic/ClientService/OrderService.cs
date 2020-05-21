@@ -81,7 +81,7 @@ namespace BusinessLogic.ClientService
                     sumEntity = sumRepository.FindEntity(x => x.UserId == userId && x.GoodsId == order.GoodsId);
                     if (sumEntity == null)
                     {
-                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的团队积分余额不足，请用余额购买", data = "" };
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的团队积分余额不足", data = "" };
                     }
                     //if (sumEntity == null)
                     //{
@@ -101,11 +101,11 @@ namespace BusinessLogic.ClientService
                     int TreamPorints = sumEntity.TreamPorints;
                     if (TreamPorints <= 0)
                     {
-                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的团队积分余额不足，请用余额购买", data = "" };
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的团队积分余额不足", data = "" };
                     }
                     if (TreamPorints < payCount)
                     {
-                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的团队积分余额不足，请用余额购买", data = "" };
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的团队积分余额不足", data = "" };
                     }
                     sumEntity.TreamPorints = (sumEntity.TreamPorints) - (payCount);
                     i = sumRepository.Update(sumEntity);
@@ -120,11 +120,11 @@ namespace BusinessLogic.ClientService
                     int PecialItemPorints = userEntity.PecialItemPorints;
                     if (PecialItemPorints <= 0)
                     {
-                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的专项积分不足，请先充值", data = "" };
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的专项积分不足", data = "" };
                     }
                     if (PecialItemPorints < payCount)
                     {
-                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的专项积分不足，请先充值", data = "" };
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的专项积分不足", data = "" };
                     }
                     userEntity.PecialItemPorints = (userEntity.PecialItemPorints) - (payCount);
                 }
