@@ -123,7 +123,6 @@ namespace BusinessLogic.ClientService
                         return new AjaxResult { state = ResultType.error.ToString(), message = "你的专项积分不足，请先充值", data = "" };
                     }
                     userEntity.PecialItemPorints = (userEntity.PecialItemPorints) - (payCount);
-
                 }
                 i = userRepository.Update(userEntity);//扣除积分
                 if (i < 1)
