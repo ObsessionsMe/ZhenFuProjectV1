@@ -11,6 +11,7 @@ using System.Text;
 
 namespace Infrastructure
 {
+
     /// <summary>
     /// 常用公共类
     /// </summary>
@@ -81,6 +82,17 @@ namespace Infrastructure
             string code = DateTime.Now.ToString("yyyyMMddHHmmss") + strRandom;//形如
             return code;
         }
+
+        /// <summary>
+        /// Id生成器 模块英文名+yyyyMMddHHmmss+(4-5位随机数)+5位随机数
+        /// </summary>
+        /// <param name="ModuleName"></param>
+        /// <returns></returns>
+        public static string CreateSystemId(string ModuleName)
+        {
+            return ModuleName + CreateNo() + RndNum(5);
+        }
+
         #endregion
 
         #region 生成0-9随机数

@@ -171,7 +171,7 @@ namespace RepositoryFactory.RepositorysBase
         {
             try
             {
-                var tempData = dbcontext.Set<TEntity>().Where(predicate);
+                { } var tempData = dbcontext.Set<TEntity>().Where(predicate);
                 if (tempData != null)
                 {
                     return tempData.ToList();

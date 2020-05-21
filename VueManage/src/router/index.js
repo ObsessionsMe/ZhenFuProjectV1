@@ -9,6 +9,7 @@ import cashApply from "../pages/CashApply"
 import member from "../pages/MemberList"
 import goods from "../pages/GoodsList"
 import order from "../pages/OrderManage"
+import dic from "@/pages/Dictionary"
 
 import VueCookies from 'vue-cookies'
 Vue.use(VueCookies)
@@ -47,6 +48,10 @@ const router = new Router({
             ,{
                 path: "order",
                 component: order,
+            }
+            ,{
+                path: "dic",
+                component: dic,
             }
         ]
         },
