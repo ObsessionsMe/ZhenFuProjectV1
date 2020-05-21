@@ -67,11 +67,11 @@ namespace BusinessLogic.ClientService
                     int PorintsSurplus = userEntity.PorintsSurplus;
                     if (PorintsSurplus <= 0)
                     {
-                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的积分余额月不足，请先充值", data = "" };
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的积分余额不足，请先充值", data = "" };
                     }
                     if (PorintsSurplus < payCount)
                     {
-                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的积分余额月不足，请先充值", data = "" };
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的积分余额不足，请先充值", data = "" };
                     }
                     userEntity.PorintsSurplus = (userEntity.PorintsSurplus) - (payCount);
                 }
@@ -79,6 +79,10 @@ namespace BusinessLogic.ClientService
                 {
                     //团队积分结算
                     sumEntity = sumRepository.FindEntity(x => x.UserId == userId && x.GoodsId == order.GoodsId);
+                    if (sumEntity == null)
+                    {
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的团队积分余额不足，请用余额购买", data = "" };
+                    }
                     //if (sumEntity == null)
                     //{
                     //    var sumporintsEntity = new UserPrintsSumEntity();
