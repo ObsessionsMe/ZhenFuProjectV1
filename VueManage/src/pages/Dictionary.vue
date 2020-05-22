@@ -138,6 +138,13 @@ export default {
         });
     },
     submit() {
+      if(this.entity.Name.length==0){
+        this.$message({
+            type: "error",
+            message: "名称不能为空!"
+          });
+          return;
+      }
       http
         .post(url.SubDic, {
           entity: this.entity,

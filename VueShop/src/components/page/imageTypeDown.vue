@@ -1,7 +1,7 @@
 <template>
   <div class="cap-image-ad__image-nav">
     <div
-      v-for="(item,index)  in imagelist"
+      v-for="(item,index)  in data"
       :key="index"
       class="image-wrapper"
       style="width:25%;margin-right:0px;"
@@ -23,28 +23,28 @@ export default {
   },
   data: function() {
     return {
-      imagelist: [
-        {
-          link: "/#/list/4",
-          src: "http://47.115.57.178/resource/images/cfyp.jpg"
-        },
-        {
-          link: "/#/list/5",
-          src: "http://47.115.57.178/resource/images/jydq.jpg"
-        },
-        {
-          link: "/#/list/6",
-          src: "http://47.115.57.178/resource/images/qcyp.jpg"
-        },
-        {
-          link: "/#/list/7",
-          src: "http://47.115.57.178/resource/images/sjsm.jpg"
-        }
-      ]
+      // imagelist: [
+      //   {
+      //     link: "/#/list/4",
+      //     src: "http://47.115.57.178/resource/images/cfyp.jpg"
+      //   },
+      //   {
+      //     link: "/#/list/5",
+      //     src: "http://47.115.57.178/resource/images/jydq.jpg"
+      //   },
+      //   {
+      //     link: "/#/list/6",
+      //     src: "http://47.115.57.178/resource/images/qcyp.jpg"
+      //   },
+      //   {
+      //     link: "/#/list/7",
+      //     src: "http://47.115.57.178/resource/images/sjsm.jpg"
+      //   }
+      // ]
     };
   },
   created: function() {
-    this.data.width = 100 / this.data.imagelist.length;
+    this.data.width = 100 / 4;
   }
 };
 </script>

@@ -44,11 +44,11 @@ export default {
       this.telephone = user.name;
       this.password = user.value;
     } else {
-      // if (autoLoginUserInfo != undefined) {
-      //   this.telephone = autoLoginUserInfo.name;
-      //   this.password = autoLoginUserInfo.value;
-      //   // this.handleLogin();
-      // }
+      if (autoLoginUserInfo != undefined) {
+        this.telephone = autoLoginUserInfo.name;
+        this.password = autoLoginUserInfo.value;
+        // this.handleLogin();
+      }
     }
   },
   methods: {

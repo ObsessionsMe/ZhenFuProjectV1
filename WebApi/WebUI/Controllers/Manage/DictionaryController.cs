@@ -29,6 +29,19 @@ namespace WebUI.Controllers.Manage
             attachMentRepository = _attachMentRepository;
         }
 
+        [Route("GetDicAllList")]
+        public AjaxResult<dynamic> GetDictionaryListByPid(int Pid)
+        {
+            AjaxResult<dynamic> ajaxResult = new AjaxResult<dynamic>();
+
+
+            ajaxResult.data = dictionaryRepository.FindList(w => w.PId == Pid && w.Enable=="Y").Select(s => new { Name = s.Name, Code = s.Code,Sort=s.Sort, FileName = attachMentRepository.FindEntity(f => f.MainId == s.Code && f.AttachmentType == 5)?.AttachmentName }).OrderBy(o=>o.Sort);
+            ajaxResult.state = ResultType.success;
+            ajaxResult.message = "获取成功";
+
+            return ajaxResult;
+        }
+
         [Route("GetDicList")]
         public AjaxResult<dynamic> GetDictionaryListByPid(BasePara basePara)
         {
@@ -55,7 +68,7 @@ namespace WebUI.Controllers.Manage
             string fileName = dataObj.fileName.ToString();
             DictionaryEntity entity = Newtonsoft.Json.JsonConvert.DeserializeObject<DictionaryEntity>(dataObj.entity.ToString());
 
-            if (entity.Id>0)
+            if (entity.Id > 0)
             {  //编辑
                 var oldEntity = dictionaryRepository.FindEntity(entity.Id);
                 if (oldEntity != null)

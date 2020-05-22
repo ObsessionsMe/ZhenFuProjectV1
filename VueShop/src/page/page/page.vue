@@ -3,8 +3,10 @@
   <div style="background-color:#fff">
     <div :style="'height:'+topheight+'px'"></div>
     <imageAd></imageAd>
-    <imageTypeOn ></imageTypeOn>
-    <imageTypeDown ></imageTypeDown>
+    <!-- <imageTypeOn ></imageTypeOn> -->
+    <template v-for="(value,key) in productType">
+      <imageTypeDown :key='key' :data='value'></imageTypeDown>
+    </template>
     <!-- <pageLine></pageLine> -->
     <product></product>
   </div>
@@ -17,9 +19,10 @@ import imageAd from "../../components/page/imageAd.vue";
 import imageTypeOn from "../../components/page/imageTypeOn.vue";
 import imageTypeDown from "../../components/page/imageTypeDown.vue";
 import product from "../../components/page/product.vue";
+import { getFilesUrl } from '@/config/Utilitie.js'
 //import { GetPage } from "../../api/page.js";
 //import GetPage from "@/data/page/GetPage.json";
-
+import { GetDicAllList } from "@/api/dictionary.js";
 export default {
   name: "page",
   components: {
@@ -32,7 +35,27 @@ export default {
   },
   data: function() {
     return {
-      topheight: 0
+      topheight: 0,
+      productType: {
+        // imagelist: [
+        // {
+        //   link: "/#/list/4",
+        //   src: "http://47.115.57.178/resource/images/cfyp.jpg"
+        // },
+        // {
+        //   link: "/#/list/5",
+        //   src: "http://47.115.57.178/resource/images/jydq.jpg"
+        // },
+        // {
+        //   link: "/#/list/6",
+        //   src: "http://47.115.57.178/resource/images/qcyp.jpg"
+        // },
+        // {
+        //   link: "/#/list/7",
+        //   src: "http://47.115.57.178/resource/images/sjsm.jpg"
+        // }
+        // ]
+      }
     };
   },
   created: function() {
@@ -46,10 +69,34 @@ export default {
     //     console.log(response);
     //     //this.productlist=response;
     // })
+    this.loadTypeData();
   },
   methods: {
     settopheight: function(value) {
       this.topheight = value;
+    },
+    loadTypeData() {
+      GetDicAllList({ pid: 1 }).then(res => {
+        if (res.state == 1) {
+          var data = res.data;
+          if (data) {
+            var productType = {};
+            var i = 0;
+            while (data.length > 0) {
+              if (productType[i] == undefined || productType[i].length == 4) {
+                i += 1;
+                productType[i] = [];
+              }
+              var item = data.shift();
+              productType[i].push({
+                link: "/#/list/" + item.code,
+                src:getFilesUrl()+item.fileName
+              });
+            }
+            this.productType = productType;
+          }
+        }
+      });
     }
   }
 };
