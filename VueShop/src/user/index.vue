@@ -74,7 +74,7 @@
       <van-cell title="推广二维码" is-link to="" />
     </van-cell-group> -->
     <van-cell-group>
-      <van-cell title="积分充值" is-link to="" />
+      <van-cell title="积分充值" is-link to="/user/buypoints" />
     </van-cell-group>
     <van-cell-group>
       <van-cell title="我的团队" is-link to="/user/myteam" />

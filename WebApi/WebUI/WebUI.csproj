@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <Folder Include="Upload\新文件夹\" />
+    <Folder Include="Ashx\" />
   </ItemGroup>
 
   <ItemGroup>

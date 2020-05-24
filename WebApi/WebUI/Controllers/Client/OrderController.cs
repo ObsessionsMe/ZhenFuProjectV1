@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
+using Aop.Api;
+using Aop.Api.Domain;
+using Aop.Api.Request;
+using Aop.Api.Response;
 using BusinessLogic.ClientService;
 using BusinessLogic.ManageService;
 using Entity;
 using Infrastructure;
+using Infrastructure.LogConfig;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -105,27 +112,6 @@ namespace WebUI.Controllers.Client
                 return Json(data);
             }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
-        }
-
-        [Route("PayPorints")]
-        public ActionResult PayPorints(int payNum)
-        {
-            if (userModel == null)
-            {
-                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败，请重新登录", data = "" });
-            }
-            if (payNum <= 0)
-            {
-                return null;
-            }
-            //OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository, userRepository, basePorintRepository);
-            UserManageService service = new UserManageService(userRepository);
-            var data = service.PayPorints(payNum, userModel.UserId, 1);
-            if (data == null)
-            {
-                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "下单失败", data = data });
-            }
-            return Json(data);
         }
 
         [Route("CheckUserPayGoodsCount")]

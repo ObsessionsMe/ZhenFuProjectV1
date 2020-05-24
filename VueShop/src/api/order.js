@@ -18,8 +18,8 @@ export function SubmitOrder(params) {
 
 export function PayPorints(params) {
   return request({
-    url: '/api/order/PayPorints',
+    url: '/api/AliPayNotify/AliPayPorints',
     method: 'post',
-    params: { payNum:params}
+    params: params
   })
 }

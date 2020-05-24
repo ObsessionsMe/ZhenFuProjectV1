@@ -1,6 +1,7 @@
 ﻿using Entity;
 using Infrastructure;
 using RepositoryFactory.ServiceInterface;
+using System;
 using System.Collections.Generic;
 using ViewEntity;
 
@@ -56,6 +57,23 @@ namespace BusinessLogic.ManageService
             else if (type == 2) {
                 user.PecialItemPorints = (user.PecialItemPorints) + (payNum);
             }
+            int i = userRepository.Update(user);
+            if (i < 1)
+            {
+                return null;
+            }
+            return new AjaxResult { state = ResultType.success.ToString(), message = "充值成功！", data = "" };
+        }
+
+        public AjaxResult PayPorints(decimal payNum, string userId)
+        {
+            var user = new UserInfoEntity();
+            user = userRepository.FindEntity(x => x.UserId == userId && x.Enable == "Y");
+            if (user == null)
+            {
+                return null;
+            }
+            user.PorintsSurplus = Convert.ToInt32(user.PorintsSurplus + payNum);
             int i = userRepository.Update(user);
             if (i < 1)
             {

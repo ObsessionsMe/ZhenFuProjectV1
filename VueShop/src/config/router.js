@@ -97,6 +97,14 @@ const routes = [
     }
   },
   {
+    path: '/user/AliPay',
+    name: 'AliPay',
+    component: () => import('../page/user/buypoints/AliPay'),
+    meta: {
+      title: '支付'
+    }
+  },
+  {
     path: '/user/myteam',
     name: 'myteam',
     component: () => import('../page/user/myteam/list'),
@@ -237,21 +245,23 @@ const router = new Router({ routes });
 
 router.beforeEach((to, from, next) => {
 
-  const title = to.meta && to.meta.title;
-
-
-  if (to.path == '/login') { //如果是登录页面路径，就直接next()
+  // const title = to.meta && to.meta.title;
+  // if (title) {
+  //   document.title = title;
+  // }
+  if (to.path == '/login' || to.name == 'AliPay') { //如果是登录页面路径，就直接next()
     next();
-  } else 
-  { //不然就跳转到登录；
+  } 
+  else 
+  { 
+    //不然就跳转到登录；
     if (!router.app.$store.state.Token) {
       next('/login')
     }
+    else{
+      next();
+    }  
   }
-  if (title) {
-    document.title = title;
-  }
-  next();
 });
 
 export {

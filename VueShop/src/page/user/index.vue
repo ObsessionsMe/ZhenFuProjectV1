@@ -94,9 +94,9 @@
     <van-cell-group>
       <van-cell title="收支明细(现金/积分)" is-link to="/user/coupon"/>
     </van-cell-group>-->
-    <!-- <van-cell-group>
+    <van-cell-group>
       <van-cell title="积分充值" is-link to="/user/buypoints" />
-    </van-cell-group> -->
+    </van-cell-group>
     <!-- <van-cell-group>
       <van-cell title="我的团队" is-link to="/user/myteam" />
     </van-cell-group>-->
