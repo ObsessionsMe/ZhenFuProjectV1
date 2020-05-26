@@ -39,6 +39,7 @@ const routes = [
   },
   {
     path: '/login/register',
+    name: 'register',
     component: () => import('../page/account/register'),
     meta: {
       title: '注册'
@@ -249,19 +250,19 @@ router.beforeEach((to, from, next) => {
   // if (title) {
   //   document.title = title;
   // }
-  if (to.path == '/login' || to.name == 'AliPay') { //如果是登录页面路径，就直接next()
+  if (to.path == '/login' || to.name == 'AliPay' || to.name == 'register') { //如果是登录页面路径，就直接next()
     next();
+    return;
   } 
   else 
   { 
     //不然就跳转到登录；
     if (!router.app.$store.state.Token) {
-      next('/login')
-    }
-    else{
-      next();
-    }  
+      next('/login');
+      return;
+    } 
   }
+  next();
 });
 
 export {
