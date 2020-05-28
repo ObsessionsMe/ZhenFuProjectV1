@@ -35,7 +35,7 @@ namespace WebUI.Controllers.Manage
             AjaxResult<dynamic> ajaxResult = new AjaxResult<dynamic>();
 
 
-            ajaxResult.data = dictionaryRepository.FindList(w => w.PId == Pid && w.Enable=="Y").Select(s => new { Name = s.Name, Code = s.Code,Sort=s.Sort, FileName = attachMentRepository.FindEntity(f => f.MainId == s.Code && f.AttachmentType == 5)?.AttachmentName }).OrderBy(o=>o.Sort);
+            ajaxResult.data = dictionaryRepository.FindList(w => w.PId == Pid && w.Enable == "Y").Select(s => new { Name = s.Name, Code = s.Code, Sort = s.Sort, FileName = attachMentRepository.FindEntity(f => f.MainId == s.Code && f.AttachmentType == 5)?.AttachmentName }).OrderBy(o => o.Sort);
             ajaxResult.state = ResultType.success;
             ajaxResult.message = "获取成功";
 
@@ -52,7 +52,7 @@ namespace WebUI.Controllers.Manage
             {
                 Pid = basePara.KeyVals["pid"].ToInt();
             }
-            Expression<Func<DictionaryEntity, bool>> predicate = b => (Pid != 0 && b.PId == Pid);
+            Expression<Func<DictionaryEntity, bool>> predicate = b => (Pid != 0 && b.PId == Pid );
             ajaxResult.data = new { rows = dictionaryRepository.FindList(predicate, basePara), records = basePara.records };
             ajaxResult.state = ResultType.success;
             ajaxResult.message = "获取成功";

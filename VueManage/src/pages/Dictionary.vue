@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header class="elHeader">
-      <el-button style="float: left;" type="primary" icon="el-icon-circle-plus" @click="dialogVisible = true;entity=$options.data().entity;">添加</el-button>
+      <el-button style="float: left;" type="primary" icon="el-icon-circle-plus" @click="dialogVisible = true;initData();">添加</el-button>
     </el-header>
     <el-container>
       <!-- <el-aside width="15%" style="background-color: rgb(238, 241, 246)">
@@ -61,6 +61,7 @@ export default {
     return {
       height: 300,
       dialogVisible: false,
+      id:0,
       name: "",
       enable:true,
       entity: {
@@ -85,8 +86,9 @@ export default {
   },
   created() {
     this.height = window.innerHeight;
-    this.entity.Pid = parseInt(this.$route.query.id);
+    this.id = parseInt(this.$route.query.id);
     this.name = this.$route.query.name;
+    this.initData();
     this.getData();
     //页面初始化
     // this.searchOrderList();
@@ -94,6 +96,10 @@ export default {
     ////console.log("aa",common.getTypeName)
   },
   methods: {
+    initData(){
+      this.entity=this.$options.data().entity;
+      this.entity.Pid=this.id;
+    },
     edit(row){
       this.entity.Id=row.id;
       this.entity.Name=row.name;
@@ -138,6 +144,7 @@ export default {
         });
     },
     submit() {
+      console.log('entity',this.entity)
       if(this.entity.Name.length==0){
         this.$message({
             type: "error",

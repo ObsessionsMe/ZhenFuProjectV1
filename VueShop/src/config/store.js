@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     Token: null,
     userInfo: null,
-    orderInfo: null
+    orderInfo: null,
+    productType:null
   },
   mutations: {
     saveUserInfo(state, value) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     setToken(state, value) {
       state.Token = value
+    },
+    getProductType(){
+
     }
   },
   actions: {},
