@@ -28,11 +28,12 @@ namespace WebUI.Controllers.Client
     public class AliPayNotifyController : Controller
     {
         private readonly IUserRepository userRepository;
-        public AliPayNotifyController(IUserRepository _userRepository)
+        private readonly IAliNotifyRepository aliNotify;
+        public AliPayNotifyController(IUserRepository _userRepository, IAliNotifyRepository _aliNotify)
         {
             userRepository = _userRepository;
+            aliNotify = _aliNotify;
         }
-
         /// <summary>
         /// 
         /// </summary>
@@ -43,7 +44,8 @@ namespace WebUI.Controllers.Client
             try
             {
                 LogHelper.Log.Error($"AsyAliPayNotifyInfo-Quray:进来了");
-                //var entity = new AliNotify_Entity();
+                LogHelper.Log.Error($"AsyAliPayNotifyInfo-商户单号:{Request.Form["out_trade_no"]}");
+                LogHelper.Log.Error($"AsyAliPayNotifyInfo-支付宝单号:{Request.Form["trade_no"]}");
                 string orderStatus = Request.Form["trade_status"];
                 if (string.IsNullOrEmpty(orderStatus))
                 {
@@ -61,24 +63,38 @@ namespace WebUI.Controllers.Client
                 string receipt_amount = Request.Form["receipt_amount"];
                 if (orderStatus == "TRADE_SUCCESS")
                 {
-                    //交易成功，给用户充值积分
+                    string trade_no = Request.Form["trade_no"]; 
                     UserId = HttpUtility.UrlDecode(UserId);
-                    UserManageService service = new UserManageService(userRepository);
-                    decimal payNum = Convert.ToDecimal(receipt_amount);
-                    var data = service.PayPorints(payNum, UserId);
-                    if (data == null)
+                    var entity = aliNotify.FindEntity(x => x.trade_no == trade_no && x.user_id == UserId);
+                    if (entity == null)
                     {
-                        LogHelper.Log.Error($"AsyAliPayNotifyInfo-积分保存失败:{data}");
+                        //1记录充值记录
+                        var payEntity = new AliNotify_Entity();
+                        payEntity.user_id = UserId;
+                        payEntity.trade_no = trade_no;
+                        payEntity.out_trade_no = Request.Form["out_trade_no"];
+                        payEntity.trade_status = orderStatus;
+                        payEntity.sign = Request.Form["sign"];
+                        payEntity.receipt_amount = Request.Form["receipt_amount"];
+                        payEntity.notify_time = Request.Form["notify_time"];
+                        payEntity.gmt_close = Request.Form["gmt_close"];
+                       int i = aliNotify.Insert(payEntity);
+                        if (i <= 0)
+                        {
+                            LogHelper.Log.Error($"AsyAliPayNotifyInfo-2记录充值记录保存时失败:{payEntity}");
+                            return;
+                        }
+                        //2交易成功，给用户充值积分
+                        UserManageService service = new UserManageService(userRepository);
+                        decimal payNum = Convert.ToDecimal(receipt_amount);
+                        var data = service.PayPorints(payNum, UserId);
+                        if (data == null)
+                        {
+                            LogHelper.Log.Error($"AsyAliPayNotifyInfo-积分保存失败:{data}");
+                            return;
+                        }
                     }
                 }
-                //entity.trade_status = Request.Form["trade_status"];            
-                //entity.trade_no = Request.Form["trade_no"];
-                //entity.out_trade_no = Request.Form["out_trade_no"];//商户订单号，由商户传入的
-                //entity.sign = Request.Form["sign"];
-                //entity.receipt_amount = Request.Form["receipt_amount"];
-                //entity.notify_time = Request.Form["notify_time"];
-                //entity.gmt_close = Request.Form["gmt_close"];
-
             }
             catch (Exception ex)
             {

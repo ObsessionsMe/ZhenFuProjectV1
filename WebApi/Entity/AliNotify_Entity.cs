@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace UtilitieEntity
+namespace Entity
 {
+    [Table("zf_AliNotify_Info")]
     /// <summary>
     /// 支付宝支付异步通知
     /// </summary>
-   public class AliNotify_Entity
+    public class AliNotify_Entity
     {
+
+        public int Id { get; set; }
+
+        public string user_id { get; set; }
+
         /// <summary>
         ///  支付宝交易号
         /// </summary>

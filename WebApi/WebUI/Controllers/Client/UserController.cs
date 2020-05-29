@@ -132,12 +132,16 @@ namespace WebUI.Controllers.Client
             var sum = servers.GetUserPorints(userId);
             if (sum == null)
             {
-                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "找不到用户相关的积分数据", data = "" });
+                sum = new UserPrintsSumEntity();
+                sum.ProductPorints = 0;
+                sum.TreamPorints = 0;
             }
             var user = servers.GetUserPorints_Base(userId);
             if (sum == null)
             {
-                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "找不到用户相关的积分数据", data = "" });
+                user = new UserInfoEntity();
+                user.PecialItemPorints = 0;
+                user.PorintsSurplus = 0;
             }
             var result = new
             {

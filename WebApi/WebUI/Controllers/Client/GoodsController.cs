@@ -44,7 +44,7 @@ namespace WebUI.Controllers.Client
         /// </summary>
         /// <returns></returns>
         [Route("GetGoodsListByType")]
-        public ActionResult GetGoodsListByType(int type)
+        public ActionResult GetGoodsListByType(string type)
         {
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = servers.GetGoodsListByType(type) });
         }

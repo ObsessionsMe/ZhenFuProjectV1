@@ -61,8 +61,8 @@ namespace WebUI
             services.AddTransient<IAttachMentRepository, AttachMentRepository>();
             services.AddTransient<IUserBasePorintsRecordRepository, UserBasePorintsRecordRepository>();
             services.AddTransient<IDictionaryRepository, DictionaryRepository>();
+            services.AddTransient<IAliNotifyRepository, AliNotifyRepository>();
 
-            
 
             //注册文件访问权限
             services.AddDirectoryBrowser();

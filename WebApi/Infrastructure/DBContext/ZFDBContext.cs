@@ -37,6 +37,9 @@ namespace Infrastructure.DBContext
         public DbSet<CashListEntity> CashListEntity { get; set; }
         
         public DbSet<DictionaryEntity> DictionaryEntity { get; set; }
+
+        public DbSet<AliNotify_Entity> AliNotify_Entity { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //string executingAssemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
