@@ -39,22 +39,18 @@ namespace RepositoryFactory.RepositoryService
             var repositorys = new Repository<CashListEntity>(dbcontext);
             return repositorys.FindList(predicate, pagination);
         }
+
+
+        /// <summary>
+        /// 兑现审批
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="cashIds"></param>
+        /// <returns></returns>
         public int ApplyUserCash(int type, string cashIds)
         {
-            //1:更改兑现状态
-            //2:如果是驳回就需要恢复用户的积分
-            var sqlParams = new SqlParams();
-            //sqlParams.Params.Add("@type", type);
-            //sqlParams.Params.Add("@ids", cashIds);
-            //string execSql = "p_apply_user_cash";
-            string execSql = string.Format(" update zf_cash_info set staus = {0} where id in ( {1} ) ", type, cashIds);
-            int i = dbcontext.Database.ExecuteSqlCommand(execSql, null);
-            if (i <= 0) {
-                return -1;
-            }
-            execSql = string.Format(" update zf_cash_info set staus = {0} where id in ( {1} ) ", type, cashIds);
-
-            return i;
+            string execSql = string.Format(" exec proc_apply_userCash {0},'{1}' ", type, cashIds);
+           return dbcontext.Database.ExecuteSqlCommand(execSql, new object[] { });
         }
     }
 }

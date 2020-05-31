@@ -27,7 +27,7 @@ namespace BusinessLogic.ManageService
             }
             return cashRepository.GetUse_CashList(pagination, expression);
         }
-        public bool UserCashApply(int cashType, string ids)
+        public bool ApplyUserCash(int cashType, string ids)
         {
             int i  = cashRepository.ApplyUserCash(cashType, ids);
             if (i <= 0) {

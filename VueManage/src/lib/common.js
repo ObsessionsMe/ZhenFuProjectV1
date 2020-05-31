@@ -63,9 +63,9 @@ let common = {
                 switch(value){
                     case 2: result = "已驳回"; 
                     break;
-                    case 1: result = "完成"; 
+                    case 1: result = "已转账"; 
                     break;
-                    case 0: result = "待兑现";
+                    case 0: result = "待转账";
                     break;
                     default :break;
                 }     

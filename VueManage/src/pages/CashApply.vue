@@ -19,7 +19,7 @@
         <!-- <el-button type="primary" icon="el-icon-edit" @click="editUserGroup">编辑</el-button>
         <el-button type="primary" icon="el-icon-delete" @click="deleteUserGroup">删除</el-button>-->       
         <!-- <el-button type="primary" icon="el-icon-search" @click="exportApplyList">导出excel</el-button> -->
-        <!-- <el-button type="primary" icon="el-icon-circle-plus-outline" @click="cashApply">兑现审批</el-button> -->
+        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="cashApply">兑现审批</el-button>
       </el-form-item>
     </el-form>
     <section class="content">
@@ -35,9 +35,9 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" :selectable="selectable"></el-table-column>
-
+          <el-table-column prop="name" label="会员姓名" width="100" show-overflow-tooltip></el-table-column>
           <el-table-column prop="userTelephone" label="手机号" width="150" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="type" label="兑现类别" width="150">
+          <el-table-column prop="type" label="兑现类别" width="100">
             <template slot-scope="scope">{{common.getTypeName(4,scope.row.type)}}</template>
           </el-table-column>
           <el-table-column prop="bankTypeName" label="银行卡名称" width="180"></el-table-column>
@@ -49,6 +49,7 @@
           <el-table-column prop="status" label="兑现状态" sortable width="120">
             <template slot-scope="scope">{{common.getTypeName(5,scope.row.status)}}</template>
           </el-table-column>
+           <el-table-column prop="date" label="会员注册时间" sortable width="200"></el-table-column>
           <el-table-column prop="date" label="兑现提交时间" sortable width="200"></el-table-column>
         </el-table>
       </el-row>
@@ -64,9 +65,11 @@
       ></el-pagination>
     </section>
     <el-dialog title="提示" :visible.sync="check_dialog" width="30%">
-      <span style="color:red">兑现通过，表示已经对商城会员成功转账了</span>
-      <br />
-      <span style="color:red">兑现驳回，表示取消了对商城会员的转账操作，会员申请的兑现积分将会恢复到原有积分数</span>
+      <span style="color:red">兑现通过：表示已经对会员转账成功了</span>
+      <br /><br />
+      <span style="color:red">兑现驳回：表示拒绝了对商城会员的转账操作</span>
+      <br /><br />
+      <span style="color:silver">兑现驳回后，会员发起申请的兑现积分将会恢复到原有积分数</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="Apply(1)">兑现通过</el-button>
         <el-button type="primary" @click="Apply(2)">兑现驳回</el-button>
@@ -165,6 +168,7 @@ export default {
         })
         .then(res => {
           console.log("res", res);
+          this.GetCashList(); 
           if (res.data.state == "success") {
             this.$message({
               type: "success",

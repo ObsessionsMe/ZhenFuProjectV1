@@ -84,6 +84,16 @@ namespace ViewEntity
         public int Status { get; set; }
 
         /// <summary>
+        /// 会员姓名
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 会员姓名
+        /// </summary>
+        public string Addtime { get; set; }
+
+        /// <summary>
         /// 操作人
         /// </summary>
         public int OperatorUser { get; set; }

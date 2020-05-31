@@ -46,7 +46,7 @@ namespace WebUI.Controllers.Manage
         public ActionResult UserCashApply(int cashType, string ids)
         {
             CashManageServices service = new CashManageServices(cashRepository);
-            bool bo = service.UserCashApply(cashType, ids);
+            bool bo = service.ApplyUserCash(cashType, ids);
             if (!bo)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "审批失败", data = null });
