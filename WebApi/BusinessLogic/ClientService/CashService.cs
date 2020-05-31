@@ -42,14 +42,14 @@ namespace BusinessLogic.ClientService
             }
             userPrintsSumRepository.Update(sumEntity);
             //扣除记录
-            userPorintsRecordRepository.Insert(new UserPorintsRecordEntity()
-            {
-                UserId = entity.UserId,
-                TreamPorints = entity.Type == 2 ? entity.Deduct : 0,
-                ProductPorints = entity.Type == 1 ? entity.Deduct : 0,
-                PorintsType = 2,
-                Addtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-            });
+            //userPorintsRecordRepository.Insert(new UserPorintsRecordEntity()
+            //{
+            //    UserId = entity.UserId,
+            //    TreamPorints = entity.Type == 2 ? entity.Deduct : 0,
+            //    ProductPorints = entity.Type == 1 ? entity.Deduct : 0,
+            //    PorintsType = 2,
+            //    Addtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            //});
 
 
             result.state = ResultType.success.ToString();

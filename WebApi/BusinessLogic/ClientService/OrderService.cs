@@ -1,4 +1,5 @@
-﻿using Entity;
+﻿using Aop.Api.Domain;
+using Entity;
 using Infrastructure;
 using Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
@@ -48,13 +49,13 @@ namespace BusinessLogic.ClientService
             {
                 //执行存储过程，处理的逻辑
                 //1:扣除该用户的积分，类型为余额积分/团队积分，专项积分
-                 var userEntity = userRepository.FindEntity(x => x.UserId == userId && x.Enable == "Y");
+                var userEntity = userRepository.FindEntity(x => x.UserId == userId && x.Enable == "Y");
                 var sumEntity = new UserPrintsSumEntity();
                 if (userEntity == null)
                 {
                     return new AjaxResult { state = ResultType.error.ToString(), message = "你账号无效，请使用其他账号登录", data = "" };
                 }
-                 int i = 0;
+                int i = 0;
                 int payCount = (order.GoodsUnitPrice) * (order.BuyGoodsNums);  //下单总价
                 //减去运费
                 if (order.GoodsFreight > 0)
@@ -78,40 +79,25 @@ namespace BusinessLogic.ClientService
                 else if (order.UsePorintsType == 2)
                 {
                     //团队积分结算
-                    sumEntity = sumRepository.FindEntity(x => x.UserId == userId && x.GoodsId == order.GoodsId);
-                    if (sumEntity == null)
+                    var sumList = sumRepository.FindList(x => x.UserId == userId);
+                    int treamSum = sumList.Sum(x => x.TreamPorints);
+                    if (treamSum < payCount)
                     {
                         return new AjaxResult { state = ResultType.error.ToString(), message = "你的团队积分余额不足", data = "" };
                     }
-                    //if (sumEntity == null)
-                    //{
-                    //    var sumporintsEntity = new UserPrintsSumEntity();
-                    //    sumporintsEntity.UserId = userId;
-                    //    sumporintsEntity.GoodsId = order.GoodsId;
-                    //    sumporintsEntity.ProductPorints = 0;
-                    //    sumporintsEntity.TreamPorints = 0;
-                    //    sumporintsEntity.PorintsSurplus = 0;
-                    //    sumporintsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                    //    sumRepository.Insert(sumporintsEntity);
-                    //    if (i < 1)
-                    //    {
-                    //        return null;
-                    //    }
-                    //}
-                    int TreamPorints = sumEntity.TreamPorints;
-                    if (TreamPorints <= 0)
+                    var sumList_ = sumList.OrderByDescending(x => x.TreamPorints).ToList();
+                    int payCount_ = payCount;
+                    for (int k = 0; k < sumList_.Count; k++)
                     {
-                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的团队积分余额不足", data = "" };
-                    }
-                    if (TreamPorints < payCount)
-                    {
-                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的团队积分余额不足", data = "" };
-                    }
-                    sumEntity.TreamPorints = (sumEntity.TreamPorints) - (payCount);
-                    i = sumRepository.Update(sumEntity);
-                    if (i < 1)
-                    {
-                        return null;
+                        var x = sumList_[k];
+                        int counts = x.TreamPorints > payCount_ ? payCount_ : x.TreamPorints;
+                        x.TreamPorints -= counts;
+                        i = sumRepository.Update(x);
+                        payCount_ -= counts;
+                        if (payCount_ == 0)
+                        {
+                            break;
+                        }
                     }
                 }
                 else if (order.UsePorintsType == 3)
@@ -157,7 +143,8 @@ namespace BusinessLogic.ClientService
                 var goods = goodsRepository.FindEntity(x => x.GoodsId == order.GoodsId && x.Enable == "Y");
                 if (goods.isProduct == "N")
                 {
-                    //不对商品进行赠送，只对产品进行赠送
+                    //购买商品时，记录到对应表中去
+                    bool bl = SavePorintsRecordByShop(order, userEntity, payCount);
                     return new AjaxResult { state = ResultType.success.ToString(), message = "下单成功！", data = "" };
                 }
                 //赠送条件 //日期为工作日并且时间为0点到21点
@@ -168,19 +155,16 @@ namespace BusinessLogic.ClientService
                     //非工作日
                     return new AjaxResult { state = ResultType.success.ToString(), message = "下单成功！", data = "" };
                 }
-                 var currHour = DateTime.Now.Hour;
-                int Begin_PayOderHour = 0;
+                var currHour = DateTime.Now.Hour;
+                int Begin_PayOderHour = 8;
                 int End_PayOderHour = 21;
                 var sum = new UserPrintsSumEntity();
-                if (currHour <= Begin_PayOderHour && currHour >= End_PayOderHour)
+                if (currHour >= Begin_PayOderHour && currHour <= End_PayOderHour)
                 {
-                    //不在时间范围，不赠送积分，0点到21点送积分，大于9点不送分
-                    return new AjaxResult { state = ResultType.success.ToString(), message = "下单成功！", data = "" };
-                }
-                //3:更新到相关的记录表和
-               if(!SavePorintsRecord(order, userEntity))
-                {
-                    return null;
+                    if (!SavePorintsRecordByProduct(order, userEntity))
+                    {
+                        return null;
+                    }
                 }
                 return new AjaxResult { state = ResultType.success.ToString(), message = "下单成功！", data = "" };
             }
@@ -190,8 +174,54 @@ namespace BusinessLogic.ClientService
             }
         }
 
-        //赠送完积分后，添加到对应记录，以及汇总
-        public bool SavePorintsRecord(OrderInfoEntity order, UserInfoEntity userEntity)
+        //(产品)1往记录中赠送积分，添加到对应记录
+        public bool SavePorintsRecordByProduct(OrderInfoEntity order, UserInfoEntity userEntity)
+        {
+            try
+            {
+                var userPorintsRecord = new UserPorintsRecordEntity();
+                int ItemPoints = goodsRepository.FindEntity(x => x.GoodsId == order.GoodsId).ItemPoints;
+                userPorintsRecord.UserId = userEntity.UserId;
+                userPorintsRecord.GoodsId = order.GoodsId;
+                userPorintsRecord.ProductPorints = ItemPoints * order.BuyGoodsNums;
+                userPorintsRecord.PorintsType = 1;
+                userPorintsRecord.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                int i = recordRepository.Insert(userPorintsRecord);
+                if (i < 1)
+                {
+                    return false;
+                }
+                var sumEntity = sumRepository.FindEntity(x => x.UserId == userEntity.UserId && x.GoodsId == order.GoodsId);
+                if (sumEntity == null)
+                {
+                    var sumporintsEntity = new UserPrintsSumEntity();
+                    sumporintsEntity.UserId = userEntity.UserId;
+                    sumporintsEntity.GoodsId = order.GoodsId;
+                    sumporintsEntity.ProductPorints = 0;
+                    sumporintsEntity.TreamPorints = ItemPoints * order.BuyGoodsNums;
+                    sumporintsEntity.PorintsSurplus = 0;
+                    sumporintsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                    sumRepository.Insert(sumporintsEntity);
+                    if (i < 1)
+                    {
+                        return false;
+                    }
+                }
+                sumEntity.TreamPorints += (ItemPoints * order.BuyGoodsNums);
+                sumRepository.Update(sumEntity);
+                if (i < 1)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        //(商品)1赠送积分后，添加到对应记录
+        public bool SavePorintsRecordByShop(OrderInfoEntity order, UserInfoEntity userEntity, int payCount)
         {
             try
             {
@@ -200,36 +230,17 @@ namespace BusinessLogic.ClientService
                 var basePorintEntity = new UserBasePorintsRecordEntity();
                 int ItemPoints = goodsRepository.FindEntity(x => x.GoodsId == order.GoodsId).ItemPoints;
                 int sumItemPoints = 0;
-                if (order.UsePorintsType == 1 || order.UsePorintsType == 3)
+                //专项/余额
+                basePorintEntity.UserId = userEntity.UserId;
+                basePorintEntity.MainId = order.GoodsId;
+                basePorintEntity.OpreateType = 2;
+                basePorintEntity.PorintsType = order.UsePorintsType;
+                basePorintEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                basePorintEntity.PorintsSurplus = payCount;
+                i = basePorintRepository.Insert(basePorintEntity);
+                if (i < 1)
                 {
-                    //专项/余额
-                    basePorintEntity.UserId = userEntity.UserId;
-                    basePorintEntity.MainId = order.GoodsId;
-                    basePorintEntity.OpreateType = 2;
-                    basePorintEntity.PorintsType = order.UsePorintsType;
-                     basePorintEntity.PorintsSurplus = ItemPoints * order.BuyGoodsNums;
-                    basePorintEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                    i = basePorintRepository.Insert(basePorintEntity);
-                    if (i < 1)
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    //团队
-                    sumItemPoints = ItemPoints * order.BuyGoodsNums;
-                    var userPorintsRecord = new UserPorintsRecordEntity();
-                    userPorintsRecord.UserId = userEntity.UserId;
-                    userPorintsRecord.GoodsId = order.GoodsId;
-                    userPorintsRecord.ProductPorints = sumItemPoints;
-                    userPorintsRecord.PorintsType = 1;
-                    userPorintsRecord.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                    recordRepository.Insert(userPorintsRecord);
-                    if (i < 1)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
                 return true;
             }

@@ -71,11 +71,13 @@ namespace WebUI.Controllers.Client
                 CarouselData.GoodsMainImg = item.GoodsMainImg;
                 CarouselDataList.Add(CarouselData);
                 var ShopData = new GoodsViewTypeModel();
+                ShopData.enable = item.Enable;
+                ShopData.isProduct = item.isProduct; 
                 ShopData.GoodsId = item.GoodsId;
                 ShopData.GoodsName = item.GoodsName;
                 ShopData.GoodsDescribe = item.GoodsDescribe;
                 ShopData.UnitPrice = item.UnitPrice;
-                ShopData.GoodsMainImg = item.GoodsMainImg;
+                ShopData.GoodsMainImg = item.GoodsMainImg;//关联查附件表
                 ShopData.GoodsDetailsImg = item.GoodsDetailsImg;
                 ShopDataList.Add(ShopData);
             }

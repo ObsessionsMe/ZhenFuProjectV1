@@ -37,7 +37,8 @@ namespace BusinessLogic.ClientService
         /// <returns></returns>
         public List<GoodsEntity> FindGoodsList()
         {
-            return goodsRepository.IQueryable(x => x.Enable == "Y" && x.isProduct == "Y").ToList();
+            //return goodsRepository.IQueryable(x => x.Enable == "Y" && x.isProduct == "Y").ToList();
+            return goodsRepository.IQueryable(x => x.isProduct == "Y").ToList();
         }
 
         public GoodsEntity GetGoodsDetails(string goodsId)

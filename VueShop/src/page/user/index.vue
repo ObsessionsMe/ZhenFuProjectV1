@@ -78,7 +78,10 @@
       <van-cell title="会员系统" />
       <van-row class="user-links">
         <template v-for="item in vipSys">
-          <router-link :key="item.goodsId" :to="{path:'/user/vipSys',query:{ id:item.goodsId,name:item.goodsName }}">
+          <router-link
+            :key="item.goodsId"
+            :to="{path:'/user/vipSys',query:{ id:item.goodsId,name:item.goodsName }}"
+          >
             <van-col span="6">
               <van-icon name="after-sale" />
               <div>{{item.goodsName}}</div>
@@ -111,7 +114,7 @@
     </van-cell-group>
     <!-- <van-cell-group>
       <van-cell title="修改密码" is-link to="/login/password" />
-    </van-cell-group> -->
+    </van-cell-group>-->
     <van-cell-group>
       <van-cell title="退出登录" is-link to="/login" />
     </van-cell-group>
@@ -133,8 +136,7 @@ export default {
         tourismPorints: 0,
         porintsSurplus: 0,
         userTelephone: "",
-        pecialItemPorints:0,
-
+        pecialItemPorints: 0
       },
       vipSys: []
     };
@@ -155,21 +157,29 @@ export default {
       GetUserPorints(userId).then(response => {
         console.log(response);
         if (response.state == "success") {
-           console.log("response.data",response.data);
+          console.log("response.data", response.data);
           this.userInfo.porintsSurplus = response.data.porintsSurplus;
           this.userInfo.productPorints = response.data.productPorints;
           this.userInfo.treamPorints = response.data.treamPorints;
-          this.userInfo.pecialItemPorints =   response.data.pecialItemPorints;
-        } 
-        console.log("this.userInfo",this.userInfo);
+          this.userInfo.pecialItemPorints = response.data.pecialItemPorints;
+        }
+        console.log("this.userInfo", this.userInfo);
       });
-
     },
     GetGoodsOn() {
       GetGoodsList().then(response => {
         if (response.state == "success") {
           console.log("response.data.shopDataList", response.data.shopDataList);
-          this.vipSys = response.data.shopDataList;
+          var shopDataLists = response.data.shopDataList;
+          for (var i = 0; i < shopDataLists.length; i++) {
+            if (shopDataLists[i].enable == "Y") {
+              var item = {
+                goodsId:shopDataLists[i].goodsId,
+                goodsName:shopDataLists[i].goodsName,
+              }
+              this.vipSys.push(item);
+            }
+          }
         }
       });
     }

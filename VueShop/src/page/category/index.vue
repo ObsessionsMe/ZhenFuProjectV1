@@ -13,12 +13,12 @@
       :active-key="activeKey"
       class="tab"
       :style="'height:'+fullHeight+'px'"
-      style="width:95px"
+      style="width:95px;background:#f8f8f8"
     >
-      <van-badge title="生产商简介" @click="onClick" />
-      <van-badge title="研发者简介" @click="onClick" />
-      <van-badge title="产品介绍" @click="onClick" />
-      <van-badge title="真福时刻" @click="onClick" />
+      <van-badge title="生产商简介" @click="onClick"  style="color:#228fbd;"/>
+      <van-badge title="研发者简介" @click="onClick" style="color:#228fbd;" />
+      <van-badge title="产品介绍" @click="onClick" style="color:#228fbd;"/>
+      <van-badge title="真福时刻" @click="onClick"  style="color:#228fbd;"/>
     </van-badge-group>
     <div class="content" :style="'width:'+fullWidth+'px;height:'+(fullHeight-7)+'px'">
       <div v-if="this.activeKey==0" class="category-div">

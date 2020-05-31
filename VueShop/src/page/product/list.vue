@@ -5,10 +5,10 @@
       :active-key="activeKey"
       class="tab"
       :style="'height:'+fullHeight+'px'"
-      style="width:95px"
+      style="width:95px;background:#f8f8f8"
     >
       <template v-for="item in productTypes">
-        <van-badge v-bind:key="item.code" :title="item.name" @click="onClick(item.code)" />
+        <van-badge v-bind:key="item.code" :title="item.name" @click="onClick(item.code)" style="color:#228fbd;" />
       </template>
     </van-badge-group>
     <!--首页-商品列表-->
@@ -127,6 +127,7 @@ export default {
     onClick(key) {
       this.loading=true;
       this.activeKey = this.IndexMapper[key];
+      this.productlist = [];
       this.productlist = this.allProductlist.filter(x => x.goodsType == key);
       console.log(this.productlist);
       this.loading=false;

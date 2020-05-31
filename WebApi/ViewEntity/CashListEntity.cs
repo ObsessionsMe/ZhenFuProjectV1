@@ -58,6 +58,12 @@ namespace ViewEntity
         /// </summary>
         public string BankUserName { get; set; }
 
+
+        public string ProvinceName { get; set; }
+
+
+        public string CityName { get; set; }
+
         /// <summary>
         /// 账号
         /// </summary>
@@ -79,6 +85,11 @@ namespace ViewEntity
         public int Deduct { get; set; }
 
         /// <summary>
+        /// 提现手续费
+        /// </summary>
+        public double PoundageRate { get; set; }
+
+        /// <summary>
         /// 兑现状态 1:完成 0:待兑现
         /// </summary>
         public int Status { get; set; }
@@ -87,6 +98,10 @@ namespace ViewEntity
         /// 会员姓名
         /// </summary>
         public string Name { get; set; }
+
+        public int ProductPorints { get; set; }
+
+        public int TreamPorints { get; set; }
 
         /// <summary>
         /// 会员姓名

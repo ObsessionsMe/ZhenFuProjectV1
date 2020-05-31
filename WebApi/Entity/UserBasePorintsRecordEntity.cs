@@ -29,12 +29,12 @@ namespace Entity
         public int OpreateType { get; set; }
 
         /// <summary>
-        /// 积分类型(1-余额，2-专项)
+        /// 积分类型(1-余额，2-专项，3团队积分)
         /// </summary>
         public int PorintsType { get; set; }
 
         /// <summary>
-        /// 充值积分数
+        /// 积分数
         /// </summary>
         public int PorintsSurplus { get; set; }
 

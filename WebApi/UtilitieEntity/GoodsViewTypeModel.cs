@@ -9,6 +9,10 @@ namespace UtilitieEntity
     /// </summary>
     public class GoodsViewTypeModel
     {
+        public string isProduct { get; set; }
+        
+        public string enable { get; set; }
+
         public string GoodsId { get; set; }
 
         public string GoodsName { get; set; }

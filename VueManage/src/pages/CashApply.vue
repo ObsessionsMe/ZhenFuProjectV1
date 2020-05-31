@@ -40,15 +40,22 @@
           <el-table-column prop="type" label="兑现类别" width="100">
             <template slot-scope="scope">{{common.getTypeName(4,scope.row.type)}}</template>
           </el-table-column>
-          <el-table-column prop="bankTypeName" label="银行卡名称" width="180"></el-table-column>
-          <el-table-column prop="account" label="银行账号" sortable width="220"></el-table-column>
-          <el-table-column prop="bankUserName" label="开户人" width="150" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="integral" label="账号总积分" sortable width="120"></el-table-column>
-          <el-table-column prop="deductRate" label="可兑现比例" sortable width="120"></el-table-column>
-          <el-table-column prop="deduct" label="兑现积分数" sortable width="120"></el-table-column>
           <el-table-column prop="status" label="兑现状态" sortable width="120">
             <template slot-scope="scope">{{common.getTypeName(5,scope.row.status)}}</template>
           </el-table-column>
+          <el-table-column prop="bankTypeName" label="银行卡名称" width="180"></el-table-column>
+          <el-table-column prop="account" label="银行账号" sortable width="220"></el-table-column>
+          <el-table-column prop="bankUserName" label="开户人" width="150" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="productPorints" label="个人积分余额" width="120" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="treamPorints" label="团队积分余额" width="120" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="provinceName" label="开户行所在地" width="150" show-overflow-tooltip>
+             <template slot-scope="scope">{{scope.row.provinceName}}{{scope.row.cityName}}</template>
+          </el-table-column>
+          <el-table-column prop="deduct" label="兑现积分" sortable width="120"></el-table-column>
+          <el-table-column prop="deduct" label="转账金额(已扣除费率)" sortable width="200">
+             <template slot-scope="scope">{{scope.row.deduct * (1-scope.row.poundageRate)}}</template>
+          </el-table-column>
+          <el-table-column prop="deductRate" label="可兑现比例" sortable width="120"></el-table-column>
            <el-table-column prop="date" label="会员注册时间" sortable width="200"></el-table-column>
           <el-table-column prop="date" label="兑现提交时间" sortable width="200"></el-table-column>
         </el-table>
@@ -168,7 +175,6 @@ export default {
         })
         .then(res => {
           console.log("res", res);
-          this.GetCashList(); 
           if (res.data.state == "success") {
             this.$message({
               type: "success",
@@ -180,6 +186,7 @@ export default {
               message: res.data.message
             });
           }
+          this.check_dialog = false;
           this.searchCashApplyList();
         });
     }

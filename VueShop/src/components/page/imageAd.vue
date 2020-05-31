@@ -17,7 +17,7 @@
       >
         <div class="image-wrapper">
           <a>
-            <img alt class="cap-image-ad__image" src="https://haitao.nosdn1.127.net/61556274-32ef-44bf-84af-b3d4485ac157.png" />
+            <img alt class="cap-image-ad__image" :src="require('@/assets/images/shop_Center.jpg')" />
           </a>
         </div>
       </li>
