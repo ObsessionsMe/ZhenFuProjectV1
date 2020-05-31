@@ -65,9 +65,31 @@ namespace Entity
         public string BankUserName { get; set; }
 
         /// <summary>
+        /// 省ID
+        /// </summary>
+        public string ProvinceCode { get; set; }
+
+        /// <summary>
+        /// 省名称
+        /// </summary>
+        public string ProvinceName { get; set; }
+
+
+        /// <summary>
+        /// 市ID
+        /// </summary>
+        public string CityCode { get; set; }
+
+        /// <summary>
+        /// 市名称
+        /// </summary>
+        public string CityName { get; set; }
+
+        /// <summary>
         /// 账号
         /// </summary>
         public string Account { get; set; }
+
 
         /// <summary>
         /// 总积分
@@ -80,9 +102,15 @@ namespace Entity
         public double DeductRate { get; set; }
 
         /// <summary>
+        /// 提现手续费
+        /// </summary>
+        public double PoundageRate { get; set; }
+
+        /// <summary>
         /// 兑现积分数
         /// </summary>
         public int Deduct { get; set; }
+
 
         /// <summary>
         /// 兑现状态 1:完成 0:待兑现,2已驳回

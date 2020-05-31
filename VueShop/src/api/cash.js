@@ -14,3 +14,10 @@ export function getCashDetail(type,goodsId) {
     method: 'get'
   })
 }
+
+export function recentCash() {
+  return request({
+    url: '/api/cash/RecentCash',
+    method: 'get'
+  })
+}

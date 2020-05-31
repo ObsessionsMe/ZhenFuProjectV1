@@ -48,6 +48,41 @@ namespace WebUI.Controllers.Client
 
         }
 
+        /// <summary>
+        ///  提交兑现
+        /// </summary>
+        /// <returns></returns>
+        [Route("RecentCash")]
+        public ActionResult RecentCash()
+        {
+            var result = new AjaxResult();
+            try
+            {
+                var entity = cashService.RecentCash(userModel.UserId);
+                result.state = ResultType.success.ToString();
+                result.data = new
+                {
+                    Account = entity.Account,
+                    BankType = entity.BankType,
+                    BankTypeName = entity.BankTypeName,
+                    BankUserName = entity.BankUserName,
+                    CityCode = entity.CityCode,
+                    CityName = entity.CityName,
+                    PayType = entity.PayType,
+                    PayTypeName = entity.PayTypeName,
+                    ProvinceCode = entity.ProvinceCode,
+                    ProvinceName = entity.ProvinceName
+                };
+            }
+            catch (Exception ex)
+            {
+                result.message = "提交失败!";
+                result.state = ResultType.error.ToString();
+                LogHelper.Log.Error(ex);
+            }
+            return Json(result);
+        }
+
 
         /// <summary>
         ///  提交兑现
@@ -94,6 +129,8 @@ namespace WebUI.Controllers.Client
             }
             return Json(result);
         }
+
+
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Entity;
 using Infrastructure;
+using Microsoft.EntityFrameworkCore.Internal;
 using RepositoryFactory.ServiceInterface;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,7 @@ namespace BusinessLogic.ClientService
             //扣除记录
             userPorintsRecordRepository.Insert(new UserPorintsRecordEntity()
             {
-                UserId=entity.UserId,
+                UserId = entity.UserId,
                 TreamPorints = entity.Type == 2 ? entity.Deduct : 0,
                 ProductPorints = entity.Type == 1 ? entity.Deduct : 0,
                 PorintsType = 2,
@@ -54,6 +55,11 @@ namespace BusinessLogic.ClientService
             result.state = ResultType.success.ToString();
             result.message = "提交成功！";
             return result;
+        }
+
+        public CashInfoEntity RecentCash(string UserId)
+        {
+            return CashRepository.FindList(f => f.UserId == UserId)?.OrderByDescending(o => o.Id).FirstOrDefault();
         }
 
         public DataTable GetCashDetail(string userId, int type, string GoodsId)
