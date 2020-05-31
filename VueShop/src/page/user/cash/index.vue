@@ -16,7 +16,7 @@
 
         <van-field label="开户人姓名" placeholder="请输入开户人姓名" v-model="entity.bankUserName" />
 
-        <van-field readonly clickable name="picker" :value="entity.ProvinceName+entity.CityName" label="开户地" placeholder="请选择" @click="showAreaPicker = true" />
+        <van-field readonly clickable name="picker" :value="entity.provinceName+entity.cityName" label="开户地" placeholder="请选择" @click="showAreaPicker = true" />
         <van-popup v-model="showAreaPicker" position="bottom">
           <van-area :area-list="areaList" :columns-num="2" @confirm="onAreaConfirm" @cancel="showAreaPicker = false" />
         </van-popup>
@@ -103,10 +103,10 @@ export default {
         bankType: 0,
         bankTypeName: "",
         bankUserName: "",
-        ProvinceCode: "",
-        ProvinceName: "",
-        CityCode: "",
-        CityName: "",
+        provinceCode: "",
+        provinceName: "",
+        cityCode: "",
+        cityName: "",
         account: "",
         integral: 0,
         deductRate: 0,
@@ -175,10 +175,10 @@ export default {
     onAreaConfirm(data) {
       const province=data[0];
       const city=data[1];
-      this.entity.ProvinceCode=province.code;
-      this.entity.ProvinceName=province.name;
-      this.entity.CityCode=city.code;
-      this.entity.CityName=city.name;
+      this.entity.provinceCode=province.code;
+      this.entity.provinceName=province.name;
+      this.entity.cityCode=city.code;
+      this.entity.cityName=city.name;
       this.showAreaPicker = false;
     },
     onSubmit() {
