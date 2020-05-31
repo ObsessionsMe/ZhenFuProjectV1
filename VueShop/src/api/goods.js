@@ -14,10 +14,11 @@ export function GetProductList() {
   })
 }
 
-export function GetGoodsListByType(type) {
+export function GetGoodsListByType(params) {
   return request({
-    url: '/api/goods/GetGoodsListByType?type='+type,
+    url: '/api/goods/GetGoodsListByType',
     method: 'get',
+    params:params
   })
 }
 

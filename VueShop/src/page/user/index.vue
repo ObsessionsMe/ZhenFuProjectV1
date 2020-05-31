@@ -128,11 +128,13 @@ export default {
     return {
       userInfo: {
         name: "",
-        producePorints: 0,
+        productPorints: 0,
         treamPorints: 0,
         tourismPorints: 0,
         porintsSurplus: 0,
-        userTelephone: ""
+        userTelephone: "",
+        pecialItemPorints:0,
+
       },
       vipSys: []
     };
@@ -153,13 +155,13 @@ export default {
       GetUserPorints(userId).then(response => {
         console.log(response);
         if (response.state == "success") {
+           console.log("response.data",response.data);
           this.userInfo.porintsSurplus = response.data.porintsSurplus;
           this.userInfo.productPorints = response.data.productPorints;
           this.userInfo.treamPorints = response.data.treamPorints;
           this.userInfo.pecialItemPorints =   response.data.pecialItemPorints;
-        } else {
-          this.userInfo.porintsSurplus = this.userInfo.producePorints = this.userInfo.treamPorints = 0;
-        }
+        } 
+        console.log("this.userInfo",this.userInfo);
       });
 
     },

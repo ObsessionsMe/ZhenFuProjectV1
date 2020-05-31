@@ -59,18 +59,20 @@
           <el-table-column prop="enable" label="商品状态" sortable width="100">
             <template slot-scope="scope">{{scope.row.enable=="Y"?"已上架":"已下架"}}</template>
           </el-table-column>
-          <el-table-column prop="goodsDescribe" label="商品描述" sortable width="400" >
-              <!-- <template slot-scope="scope" :title="scope.row.goodsDescribe">{{scope.row.goodsDescribe==null||scope.row.goodsDescribe==""?"":scope.row.goodsDescribe.substr(0,25)}}</template> -->
+          <el-table-column prop="goodsDescribe" label="商品描述" sortable width="400">
+            <!-- <template slot-scope="scope" :title="scope.row.goodsDescribe">{{scope.row.goodsDescribe==null||scope.row.goodsDescribe==""?"":scope.row.goodsDescribe.substr(0,25)}}</template> -->
             <template slot-scope="scope">
-            <el-popover trigger="hover" placement="top">
-              <p>{{scope.row.goodsDescribe}}</p>
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{scope.row.goodsDescribe==null||scope.row.goodsDescribe==""?"":scope.row.goodsDescribe.substr(0,30)}}</el-tag>
-              </div>
-            </el-popover>
-             </template>
+              <el-popover trigger="hover" placement="top">
+                <p>{{scope.row.goodsDescribe}}</p>
+                <div slot="reference" class="name-wrapper">
+                  <el-tag
+                    size="medium"
+                  >{{scope.row.goodsDescribe==null||scope.row.goodsDescribe==""?"":scope.row.goodsDescribe.substr(0,30)}}</el-tag>
+                </div>
+              </el-popover>
+            </template>
           </el-table-column>
-           <el-table-column prop="addtime" label="上架时间" sortable width="200"></el-table-column>
+          <el-table-column prop="addtime" label="上架时间" sortable width="200"></el-table-column>
         </el-table>
       </el-row>
       <el-pagination
@@ -115,9 +117,9 @@
               <el-select placeholder="选择商品种类(必填)" v-model="defalutGoodsType" label-width="200px">
                 <el-option
                   v-for="item in allGoodsType"
-                  :key="item.id"
+                  :key="item.code"
                   :label="item.name"
-                  :value="item.id"
+                  :value="item.code"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -180,7 +182,7 @@
                 placeholder="该商品的总库存数"
                 label-width="200px"
               ></el-input>
-            </el-form-item> -->
+            </el-form-item>-->
             <el-form-item label="商品详情介绍">
               <el-input
                 v-model="goodsEntity.goodsDescribe"
@@ -309,15 +311,15 @@ export default {
       ],
       defalutGoodsType: -1,
       allGoodsType: [
-        { id: -1, name: "选择商品种类(必填)" },
-        { id: 0, name: "个人清洁" },
-        { id: 1, name: "美妆护肤" },
-        { id: 2, name: "厨房用品" },
-        { id: 3, name: "家用电器" },
-        { id: 4, name: "家具家纺" },
-        { id: 5, name: "手机数码" },
-        { id: 6, name: "配饰背包" },
-        { id: 7, name: "汽车用品" }
+        // { id: -1, name: "选择商品种类(必填)" },
+        // { id: 0, name: "个人清洁" },
+        // { id: 1, name: "美妆护肤" },
+        // { id: 2, name: "厨房用品" },
+        // { id: 3, name: "家用电器" },
+        // { id: 4, name: "家具家纺" },
+        // { id: 5, name: "手机数码" },
+        // { id: 6, name: "配饰背包" },
+        // { id: 7, name: "汽车用品" }
       ],
       goodsEntity: {},
       uploadApi: "",
@@ -333,9 +335,27 @@ export default {
   created() {
     //页面初始化
     this.GetGoodsList();
+    this.getAllGoodsType();
     this.uploadApi = url.UploadGoodsFile;
   },
   methods: {
+    //获取所有商品分类
+    getAllGoodsType() {
+      http.post(url.GetDicList, {
+          keyVals: { pid: 1 },
+          sidx: "Id",
+          sord: "ASC",
+          page: 1,
+          rows: 10000
+        })
+        .then(res => {
+          if (res.data.state == 1) {
+            console.log("res.data1", res.data);
+            this.allGoodsType = res.data.data.rows;
+            this.allGoodsType.splice(0,0,{code: -1, name: "选择商品种类(必填)"});
+          }
+        });
+    },
     //获取商品列表
     GetGoodsList() {
       http
@@ -352,7 +372,7 @@ export default {
         .then(res => {
           console.log("res", res);
           this.tableData = res.data.data.rows;
-          console.log("this.tableData",this.tableData);
+          console.log("this.tableData", this.tableData);
           this.total = res.data.data.records;
         });
     },
@@ -489,7 +509,10 @@ export default {
         console.log(this.fileList_scorll);
       }
       console.log(" this.goodsEntity ", this.goodsEntity);
-      this.goodsEntity.goodsDescribe = this.goodsEntity.goodsDescribe.replace(/\*/g, ":");
+      this.goodsEntity.goodsDescribe = this.goodsEntity.goodsDescribe.replace(
+        /\*/g,
+        ":"
+      );
     },
     //新增商品
     submitGoods() {
@@ -589,13 +612,25 @@ export default {
       console.log("this.goodsEntity.exterd1", this.goodsEntity.exterd1);
       console.log("this.goodsEntity.exterd2 ", this.goodsEntity.exterd2);
       console.log("this.goodsEntity.exterd3", this.goodsEntity.exterd3);
-      console.log("替换前-goodsDescribe",this.goodsEntity.goodsDescribe);
+      console.log("替换前-goodsDescribe", this.goodsEntity.goodsDescribe);
       var goodsDescribe = this.goodsEntity.goodsDescribe;
-      this.goodsEntity.goodsDescribe = goodsDescribe == "" || goodsDescribe == undefined ?"":goodsDescribe.replace(/：/g, ":");
-      this.goodsEntity.goodsDescribe = goodsDescribe == "" || goodsDescribe == undefined ?"":goodsDescribe.replace(/:/g, "*");
-      this.goodsEntity.goodsDescribe = goodsDescribe == "" || goodsDescribe == undefined ?"":goodsDescribe.replace(/\?/g, " ");
-      this.goodsEntity.goodsDescribe = goodsDescribe == "" || goodsDescribe == undefined ?"":goodsDescribe.replace(/\//g, " ");
-      console.log("替换后-goodsDescribe",this.goodsEntity.goodsDescribe);
+      this.goodsEntity.goodsDescribe =
+        goodsDescribe == "" || goodsDescribe == undefined
+          ? ""
+          : goodsDescribe.replace(/：/g, ":");
+      this.goodsEntity.goodsDescribe =
+        goodsDescribe == "" || goodsDescribe == undefined
+          ? ""
+          : goodsDescribe.replace(/:/g, "*");
+      this.goodsEntity.goodsDescribe =
+        goodsDescribe == "" || goodsDescribe == undefined
+          ? ""
+          : goodsDescribe.replace(/\?/g, " ");
+      this.goodsEntity.goodsDescribe =
+        goodsDescribe == "" || goodsDescribe == undefined
+          ? ""
+          : goodsDescribe.replace(/\//g, " ");
+      console.log("替换后-goodsDescribe", this.goodsEntity.goodsDescribe);
       http
         .post(url.SubmitGoods, { jsonString: JSON.stringify(this.goodsEntity) })
         .then(res => {
@@ -618,30 +653,31 @@ export default {
       ) {
         errorMsg += "商品名称不能为空;   ";
       }
-      console.log("this.defalutGoodsType",this.defalutGoodsType);
-      if(parseInt(this.defalutGoodsType)!=0){
-      if (
-        this.defalutGoodsType == "" ||
-        this.defalutGoodsType == undefined ||
-        this.defalutGoodsType == -1 
+      console.log("this.defalutGoodsType", this.defalutGoodsType);
+      if (parseInt(this.defalutGoodsType) != 0) {
+        if (
+          this.defalutGoodsType == "" ||
+          this.defalutGoodsType == undefined ||
+          this.defalutGoodsType == -1
         ) {
           errorMsg += "商品种类不能为空;   ";
         }
-      }    
+      }
       if (
         this.goodsEntity.unitPrice == "" ||
         this.goodsEntity.unitPrice == undefined
       ) {
         errorMsg += "商品单价不能为空;   ";
       }
+      console.log("this.goodsEntity.goodsFreight",this.goodsEntity.goodsFreight);
       if (
-        this.goodsEntity.goodsFreight == "" ||
-        this.goodsEntity.goodsFreight == undefined 
+        this.goodsEntity.goodsFreight == undefined || this.goodsEntity.goodsFreight < 0
       ) {
         errorMsg += "商品运费不能为空;   ";
       }
-       if (
-        this.goodsEntity.goodsFreight != "" &&  parseInt(this.goodsEntity.goodsFreight) < 0
+      if (
+        this.goodsEntity.goodsFreight != "" &&
+        parseInt(this.goodsEntity.goodsFreight) < 0
       ) {
         errorMsg += "商品运费不能位负数;   ";
       }

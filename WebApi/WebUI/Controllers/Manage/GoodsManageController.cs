@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessLogic.ClientService;
 using BusinessLogic.ManageService;
 using Entity;
 using Infrastructure;
@@ -25,12 +26,25 @@ namespace WebUI.Controllers.Manage
         private readonly IGoodsRepository goodsRepository;
         private IHostingEnvironment hostEnvironment;
         private IAttachMentRepository attachRepository;
-        public GoodsManageController(IGoodsRepository _goodsRepository, IHostingEnvironment _hostEnvironment, IAttachMentRepository _attachRepository)
+        GoodsService servers = null;
+        public GoodsManageController(IGoodsRepository _goodsRepository, IHostingEnvironment _hostEnvironment, IAttachMentRepository _attachRepository, IOrderRepository _orderRepository)
         {
             goodsRepository = _goodsRepository;
             hostEnvironment = _hostEnvironment;
             attachRepository = _attachRepository;
+            servers = new GoodsService(_goodsRepository, _orderRepository);
         }
+
+        /// <summary>
+        ///   获取商品类别api/GoodsManage/GetGoodsListByType
+        /// </summary>
+        /// <returns></returns>
+        [Route("GetGoodsListByType")]
+        public ActionResult GetGoodsListByType(string type)
+        {
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = servers.GetGoodsListByType(type) });
+        }
+
         // GET: api/GoodsManage/GetGoodsList
         /// <summary>
         ///  获取所有商品信息

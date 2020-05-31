@@ -15,11 +15,11 @@
         </el-select>
       </el-form-item>-->
       <el-form-item>
-        <!-- <el-button type="primary" icon="el-icon-circle-plus-outline" @click="cashApply">兑现审批</el-button> -->
         <!-- <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchCashApplyList">查询</el-button> -->
         <!-- <el-button type="primary" icon="el-icon-edit" @click="editUserGroup">编辑</el-button>
-        <el-button type="primary" icon="el-icon-delete" @click="deleteUserGroup">删除</el-button>-->
+        <el-button type="primary" icon="el-icon-delete" @click="deleteUserGroup">删除</el-button>-->       
         <!-- <el-button type="primary" icon="el-icon-search" @click="exportApplyList">导出excel</el-button> -->
+        <!-- <el-button type="primary" icon="el-icon-circle-plus-outline" @click="cashApply">兑现审批</el-button> -->
       </el-form-item>
     </el-form>
     <section class="content">
@@ -34,7 +34,8 @@
           height="650"
           @selection-change="handleSelectionChange"
         >
-          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column type="selection" width="55" :selectable="selectable"></el-table-column>
+
           <el-table-column prop="userTelephone" label="手机号" width="150" show-overflow-tooltip></el-table-column>
           <el-table-column prop="type" label="兑现类别" width="150">
             <template slot-scope="scope">{{common.getTypeName(4,scope.row.type)}}</template>
@@ -63,9 +64,9 @@
       ></el-pagination>
     </section>
     <el-dialog title="提示" :visible.sync="check_dialog" width="30%">
-      <span style="color:red">点击兑现通过，表示已经对商城会员转账成功了</span>
+      <span style="color:red">兑现通过，表示已经对商城会员成功转账了</span>
       <br />
-      <span style="color:red">点击兑现驳回，表示取消了对商城会员转账操作</span>
+      <span style="color:red">兑现驳回，表示取消了对商城会员的转账操作，会员申请的兑现积分将会恢复到原有积分数</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="Apply(1)">兑现通过</el-button>
         <el-button type="primary" @click="Apply(2)">兑现驳回</el-button>
@@ -105,6 +106,9 @@ export default {
     this.searchCashApplyList();
   },
   methods: {
+    selectable(row) {
+      return row.status == 0 ? true : false;
+    },
     //获取用户兑换申请列表
     searchCashApplyList() {
       http
@@ -134,11 +138,14 @@ export default {
       this.searchCashApplyList();
     },
     handleSelectionChange(val) {
+      console.log("选择",val);
+      this.checkIds = [];
       for (var i = 0; i < val.length; i++) {
         this.checkIds.push(val[i].id);
       }
     },
     cashApply() {
+      console.log("this.checkIds",this.checkIds);
       if (this.checkIds.length == 0) {
         this.$message({
           type: "error",
@@ -149,8 +156,8 @@ export default {
       this.check_dialog = true;
     },
     Apply(type) {
-      console.log("type",type);
-      console.log("this.checkIds.toString()",this.checkIds.toString());
+      console.log("type", type);
+      console.log("this.checkIds.toString()", this.checkIds.toString());
       http
         .post(url.UserCashApply, {
           cashType: type,
@@ -163,9 +170,8 @@ export default {
               type: "success",
               message: "操作成功"
             });
-          }
-          else{
-             this.$message({
+          } else {
+            this.$message({
               type: "error",
               message: res.data.message
             });
