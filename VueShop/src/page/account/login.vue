@@ -39,6 +39,7 @@ export default {
     };
   },
   created() {
+    this.$store.commit("clearCache");
     var user = JSON.parse(window.localStorage.getItem("user"));
     if (user) {
       this.telephone = user.name;

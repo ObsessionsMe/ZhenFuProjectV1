@@ -19,7 +19,7 @@ import imageAd from "../../components/page/imageAd.vue";
 import imageTypeOn from "../../components/page/imageTypeOn.vue";
 import imageTypeDown from "../../components/page/imageTypeDown.vue";
 import product from "../../components/page/product.vue";
-import { getFilesUrl } from '@/config/Utilitie.js'
+import { getFilesUrl } from "@/config/Utilitie.js";
 //import { GetPage } from "../../api/page.js";
 //import GetPage from "@/data/page/GetPage.json";
 import { GetDicAllList } from "@/api/dictionary.js";
@@ -77,22 +77,32 @@ export default {
     },
     loadTypeData() {
       GetDicAllList({ pid: 1 }).then(res => {
-        if (res.state == 1) {
-          var data = res.data;
+        const { data, state } = res;
+        if (state == 1) {
           if (data) {
             var productType = {};
             var i = 0;
-            while (data.length > 0) {
-              if (productType[i] == undefined || productType[i].length == 4) {
-                i += 1;
-                productType[i] = [];
+            // while (data.length > 0) {
+            //   if (productType[i] == undefined || productType[i].length == 4) {
+            //     i += 1;
+            //     productType[i] = [];
+            //   }
+            //   var item = data.shift();
+            //   productType[i].push({
+            //     link: "/#/list/" + item.code,
+            //     src: getFilesUrl() + item.fileName
+            //   });
+            // }
+            data.forEach((item, index) => {
+              var key = parseInt((index) / 4);
+              if (!productType[key]) {
+                productType[key] = [];
               }
-              var item = data.shift();
-              productType[i].push({
+              productType[key].push({
                 link: "/#/list/" + item.code,
-                src:getFilesUrl()+item.fileName
+                src: getFilesUrl() + item.fileName
               });
-            }
+            });
             this.productType = productType;
           }
         }

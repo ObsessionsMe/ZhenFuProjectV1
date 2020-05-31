@@ -9,6 +9,7 @@ import components from './config/components.js';
 import ElementUI from "element-ui"
 import "element-ui/lib/theme-chalk/index.css"
 import Cookie from "vue-cookie"
+import "@/assets/style/index.css";
 
 Vue.use(Cookie)
 

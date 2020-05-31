@@ -13,6 +13,8 @@ const service = axios.create({
 
 
 const servicef = function (parameter) {
+  const urls = parameter.url.split('/');
+  const apiName = urls[urls.length - 1];
   if (dataSources == 'local') {
     //定义回调函数和axios一致
     const promist = new Promise(function (resolve, reject) {
@@ -24,6 +26,16 @@ const servicef = function (parameter) {
     })
     return promist;
   }
+  //返回缓存数据
+  if (store.state.cache[apiName] != undefined) {
+    //定义回调函数和axios一致
+    const promist = new Promise(function (resolve) {
+      resolve(store.state.cache[apiName]);
+    })
+    console.log('cache',apiName)
+    return promist;
+  }
+  //正常请求
   return service(parameter);
 }
 
@@ -62,11 +74,17 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data;
-    //console.log(res)
-    if(res.message=="Token无效，请重新登录"){
+    const urls = response.config.url.split('/');
+    const apiName = urls[urls.length - 1];
+    if (res.message == "Token无效，请重新登录") {
       //console.log(router)
-      router.push({path:'/login'})
+      router.push({ path: '/login' })
     }
+    //存入缓存
+    if (store.state.cache.hasOwnProperty(apiName)) {
+      store.commit('setCache', { key: apiName, value: res })
+    }
+
     return res;
     // if (res.ResultCode !== 200) {
     //   // Message({

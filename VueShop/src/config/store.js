@@ -9,9 +9,22 @@ export default new Vuex.Store({
     Token: null,
     userInfo: null,
     orderInfo: null,
-    productType:null
+    productType: null,
+    cache: {
+      'GetGoodsList': undefined,
+      'GetDicAllList': undefined,
+      'GetGoodsListByType': undefined
+    }
   },
   mutations: {
+    clearCache(state) {
+      for(var key in state.cache){
+        state.cache[key] = undefined;
+      }
+    },
+    setCache(state, keyVal) {
+      state.cache[keyVal.key] = keyVal.value;
+    },
     saveUserInfo(state, value) {
       state.userInfo = value
     },
@@ -21,14 +34,14 @@ export default new Vuex.Store({
     setToken(state, value) {
       state.Token = value
     },
-    getProductType(){
+    getProductType() {
 
     }
   },
   actions: {},
   getters: {},
   plugins: [
-    createPersistedState({storage: window.sessionStorage})
+    createPersistedState({ storage: window.sessionStorage })
   ]
 })
 
