@@ -14,7 +14,8 @@ let autoLoginUserInfo=undefined
 //开发环境
 if (process.env.NODE_ENV == 'development') {
 	baseUrl='https://localhost:44380/';
-	baseFileUrl = "https://localhost:44380/Upload/GoodsImg/";
+	// baseFileUrl = "https://localhost:44380/Upload/GoodsImg/";
+	baseFileUrl = "http://www.hubeizhenfu.cn/shop.api/Upload/GoodsImg/";
 	//baseUrl = '';
 	autoLoginUserInfo={ name:'15914071422',value:'xiapeng2020' }
 //生产环境	

@@ -1,5 +1,5 @@
 <template>
-    <div style="height:50px;">
+    <div>
     <!-- <van-tabbar bind:change='onChange' v-model="active"> -->
         <van-tabbar   v-model="active"  @change="onChange">
             <!-- <div :key="item.name" v-for='item in tabItems' > -->

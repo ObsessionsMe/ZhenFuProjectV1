@@ -26,7 +26,7 @@ namespace BusinessLogic.ClientService
             return goodsRepository.FindList(f => f.Enable == "Y" & f.isProduct == "Y").OrderByDescending(x => x.Id).ToList();
         }
 
-        public List<GoodsEntity> GetGoodsListByType(string type)
+        public List<dynamic> GetGoodsListByType(string type)
         {
             return goodsRepository.GetGoodsListByType(type);
         }

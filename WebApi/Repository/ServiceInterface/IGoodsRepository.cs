@@ -9,6 +9,6 @@ namespace RepositoryFactory.ServiceInterface
 {
     public interface IGoodsRepository : IRepository<GoodsEntity>
     {
-        List<GoodsEntity> GetGoodsListByType(string type);
+        List<dynamic> GetGoodsListByType(string type);
     }
 }
