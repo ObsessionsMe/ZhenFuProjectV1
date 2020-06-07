@@ -30,7 +30,7 @@ namespace Aop.Api.Domain
         public List<RefundDetail> DetailData { get; set; }
 
         /// <summary>
-        /// 退款请求的当前时间。  格式为：yyyy-MM-dd hh:mm:ss。
+        /// 退款请求的当前时间。  格式为：yyyy-MM-dd HH:mm:ss。
         /// </summary>
         [XmlElement("refund_date")]
         public string RefundDate { get; set; }

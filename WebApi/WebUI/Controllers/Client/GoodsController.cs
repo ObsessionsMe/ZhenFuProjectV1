@@ -21,11 +21,13 @@ namespace WebUI.Controllers.Client
     {
         private readonly IGoodsRepository goodsRepository;
         private readonly IOrderRepository orderRepository;
+        private readonly IProductCfgRepository productCfg;
         GoodsService servers = null;
-        public GoodsController(IGoodsRepository _goodsRepository, IOrderRepository _orderRepository)
+        public GoodsController(IGoodsRepository _goodsRepository, IOrderRepository _orderRepository, IProductCfgRepository _productCfg)
         {
             goodsRepository = _goodsRepository;
             orderRepository = _orderRepository;
+            productCfg = _productCfg;
             servers = new GoodsService(_goodsRepository, _orderRepository);
         }
 
@@ -98,11 +100,21 @@ namespace WebUI.Controllers.Client
         {
             //2取商品
             var data = servers.GetGoodsDetails(goodsId);
+            var prdouctMaxCount = 10000;
+            if (data.isProduct == "Y")
+            {
+                prdouctMaxCount = productCfg.FindEntity(x => x.GoodsId == goodsId).MaxBuysCount;
+            }
             if (data == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "商品详情数据为空", data = "" });
             }
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
+            var result = new
+            {
+                data = data,
+                prdouctMaxCount = prdouctMaxCount
+            };
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = result });
         }
 
         [Route("checkGoodLevel")]

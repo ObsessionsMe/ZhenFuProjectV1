@@ -27,9 +27,10 @@ namespace BusinessLogic.ClientService
         private IGoodsRepository goodsRepository;
         private IUserRepository userRepository;
         private IUserBasePorintsRecordRepository basePorintRepository;
+        private IUserProductFrameworkRepository frameWork;
         public OrderService(IOrderRepository _orderRepository, IUserPrintsSumRepository _sumRepository,
             IUserPorintsRecordRepository _recordRepository, IGoodsRepository _goodsRepository,IUserRepository _userRepository,
-            IUserBasePorintsRecordRepository _basePorintRepository)
+            IUserBasePorintsRecordRepository _basePorintRepository, IUserProductFrameworkRepository _frameWork)
         {
             orderRepository = _orderRepository;
             sumRepository = _sumRepository;
@@ -37,6 +38,7 @@ namespace BusinessLogic.ClientService
             goodsRepository = _goodsRepository;
             userRepository = _userRepository;
             basePorintRepository = _basePorintRepository;
+            frameWork = _frameWork;
         }
 
         /// <summary>
@@ -50,10 +52,24 @@ namespace BusinessLogic.ClientService
                 //执行存储过程，处理的逻辑
                 //1:扣除该用户的积分，类型为余额积分/团队积分，专项积分
                 var userEntity = userRepository.FindEntity(x => x.UserId == userId && x.Enable == "Y");
-                var sumEntity = new UserPrintsSumEntity();
                 if (userEntity == null)
                 {
                     return new AjaxResult { state = ResultType.error.ToString(), message = "你账号无效，请使用其他账号登录", data = "" };
+                }
+                var goods = goodsRepository.FindEntity(x => x.GoodsId == order.GoodsId && x.Enable == "Y");
+                var user = new UserInfoEntity();
+                if (goods.isProduct == "Y")
+                {
+                    //产品时校验推荐人手机号
+                    user = userRepository.FindEntity(x => x.UserTelephone == order.Exterd2 && x.Enable == "Y");
+                    if (user == null)
+                    {
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "你输入的推荐人手机号在系统中不存在或者无效，请重新输入", data = "" };
+                    }
+                    if (userEntity.UserTelephone == order.Exterd2)
+                    {
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "推荐人手机号不可以填写自己的手机号", data = "" };
+                    }
                 }
                 int i = 0;
                 int payCount = (order.GoodsUnitPrice) * (order.BuyGoodsNums);  //下单总价
@@ -134,18 +150,35 @@ namespace BusinessLogic.ClientService
                 orderEntity.PayCount = payCount;
                 orderEntity.UsePorintsType = order.UsePorintsType;
                 orderEntity.AddressId = order.AddressId;
-                orderEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                orderEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 i = orderRepository.Insert(orderEntity);
                 if (i < 1)
                 {
                     return null;
                 }
-                var goods = goodsRepository.FindEntity(x => x.GoodsId == order.GoodsId && x.Enable == "Y");
                 if (goods.isProduct == "N")
                 {
                     //购买商品时，记录到对应表中去
                     bool bl = SavePorintsRecordByShop(order, userEntity, payCount);
                     return new AjaxResult { state = ResultType.success.ToString(), message = "下单成功！", data = "" };
+                }
+                //将推荐人手机号和产品编号更新到用户产品架构表
+               var frameEntity = frameWork.FindEntity(x => x.UserId == userId && x.GoodsId == order.GoodsId);
+                if (frameEntity == null)
+                {
+                    frameEntity = new UserProductFrameworkEntity();
+                    frameEntity.UserId = userId;
+                    frameEntity.GoodsId = order.GoodsId;
+                    frameEntity.UserTelephone = userEntity.UserTelephone;
+                    frameEntity.Name = userEntity.Name;
+                    frameEntity.Referrer = user.Name;//推荐人存储在了扩展字段1中
+                    frameEntity.ReferrerTelephone = user.UserTelephone;//推荐人手机在了扩展字段2中
+                    frameEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    i = frameWork.Insert(frameEntity);
+                    if (i < 1)
+                    {
+                        return null;
+                    }
                 }
                 //赠送条件 //日期为工作日并且时间为0点到21点
                 string nowDate = DateTime.Now.ToString("yyyy-MM-dd");
@@ -159,7 +192,7 @@ namespace BusinessLogic.ClientService
                 int Begin_PayOderHour = 8;
                 int End_PayOderHour = 21;
                 var sum = new UserPrintsSumEntity();
-                if (currHour >= Begin_PayOderHour && currHour <= End_PayOderHour)
+                if (currHour >= Begin_PayOderHour && currHour < End_PayOderHour)
                 {
                     if (!SavePorintsRecordByProduct(order, userEntity))
                     {
@@ -185,7 +218,7 @@ namespace BusinessLogic.ClientService
                 userPorintsRecord.GoodsId = order.GoodsId;
                 userPorintsRecord.ProductPorints = ItemPoints * order.BuyGoodsNums;
                 userPorintsRecord.PorintsType = 1;
-                userPorintsRecord.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                userPorintsRecord.Addtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 int i = recordRepository.Insert(userPorintsRecord);
                 if (i < 1)
                 {
@@ -197,21 +230,24 @@ namespace BusinessLogic.ClientService
                     var sumporintsEntity = new UserPrintsSumEntity();
                     sumporintsEntity.UserId = userEntity.UserId;
                     sumporintsEntity.GoodsId = order.GoodsId;
-                    sumporintsEntity.ProductPorints = 0;
-                    sumporintsEntity.TreamPorints = ItemPoints * order.BuyGoodsNums;
-                    sumporintsEntity.PorintsSurplus = 0;
-                    sumporintsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                    sumporintsEntity.ProductPorints = ItemPoints * order.BuyGoodsNums;
+                    sumporintsEntity.HoldingDays= 0;
+                    sumporintsEntity.TreamPorints =0;
+                    sumporintsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     sumRepository.Insert(sumporintsEntity);
                     if (i < 1)
                     {
                         return false;
                     }
                 }
-                sumEntity.TreamPorints += (ItemPoints * order.BuyGoodsNums);
-                sumRepository.Update(sumEntity);
-                if (i < 1)
+                else
                 {
-                    return false;
+                    sumEntity.ProductPorints += (ItemPoints * order.BuyGoodsNums);
+                    sumRepository.Update(sumEntity);
+                    if (i < 1)
+                    {
+                        return false;
+                    }
                 }
                 return true;
             }
@@ -225,17 +261,16 @@ namespace BusinessLogic.ClientService
         {
             try
             {
-                //判断交易类型，如果专项积分或余额就记录到基础积分明细表，否则扣除团队积分
+                //判断交易类型，如果专项积分或余额就记录到基础积分明细表，否则则是用团队积分都买的，记录到
                 int i = 0;
                 var basePorintEntity = new UserBasePorintsRecordEntity();
                 int ItemPoints = goodsRepository.FindEntity(x => x.GoodsId == order.GoodsId).ItemPoints;
-                int sumItemPoints = 0;
                 //专项/余额
                 basePorintEntity.UserId = userEntity.UserId;
                 basePorintEntity.MainId = order.GoodsId;
                 basePorintEntity.OpreateType = 2;
                 basePorintEntity.PorintsType = order.UsePorintsType;
-                basePorintEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                basePorintEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 basePorintEntity.PorintsSurplus = payCount;
                 i = basePorintRepository.Insert(basePorintEntity);
                 if (i < 1)

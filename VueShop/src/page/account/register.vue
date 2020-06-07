@@ -23,7 +23,6 @@
               >{{auth_time}}秒后重新发送验证码</van-button>
             </van-field>-->
             <van-field type="text" placeholder="您的真实姓名" v-model="name" />
-            <van-field type="number" placeholder="推荐人手机号" v-model="refTelephone" />
             <van-field type="password" placeholder="请输入登录密码" v-model="password" />
           </van-cell-group>
           <div style="margin: 10px;">
@@ -85,20 +84,12 @@ export default {
         this.$toast("姓名不能为空");
         return;
       }
-      if (isNullOrEmpty(this.refTelephone)) {
-        this.$toast("推荐人手机号不能为空");
-        return;
-      }
       if (isNullOrEmpty(this.password)) {
         this.$toast("密码不能为空");
         return;
       }
       if (checkTelephone(this.userTelephone)) {
         this.$toast("你的手机号码格式错误，请重新输入");
-        return;
-      }
-      if (checkTelephone(this.refTelephone)) {
-        this.$toast("推荐人的手机号码格式错误，请重新输入");
         return;
       }
       if (checkName(this.name)) {
@@ -118,17 +109,9 @@ export default {
       this.isRegister = true;
       UserRegister(params).then(response => {
         //console.log("response",response);
-        if (response.state == "success") {       
-          this.$notify({
-            title: "成功",
-            message: "注册成功！你的推荐人是:"+ response.data.referrer+" 请直接登录",
-            type: "success",
-            duration: "5000"
-          });
-          var Interval=setInterval(() => {
-            clearInterval(Interval)
-            this.$router.push({ path: "/login" });
-          }, 1000);
+        if (response.state == "success") {    
+           this.$toast("注册成功");  
+           this.$router.push({ path: "/login" });
         } else {
           this.$toast(response.message);
           return;
@@ -136,7 +119,7 @@ export default {
         this.isRegister = false;
       });
     },
-    //获取手机号验证码
+    //获取手机号验证码(暂时未用到)
     GetPhoneCode() {
       if (isNullOrEmpty(this.userTelephone)) {
         this.$toast("你的手机号不能为空");

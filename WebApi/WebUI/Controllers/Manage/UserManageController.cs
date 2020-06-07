@@ -173,34 +173,11 @@ namespace WebUI.Controllers.Manage
             var user = userRepository.FindEntity(x => x.UserId == users.UserId);
             user.Referrer = entity.Name;
             user.ReferrerTelephone = entity.UserTelephone;
+            user.PorintsSurplus = entity.PorintsSurplus;
             int i = userRepository.Update(user);
             if (i < 1)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "修改用户失败", data = null });
-            }
-           var sumEntity = sumRepository.FindEntity(x => x.UserId == user.UserId);
-            if (sumEntity == null)
-            {
-                var sumporintsEntity = new UserPrintsSumEntity();
-                sumporintsEntity.UserId = user.UserId;
-                //sumporintsEntity.GoodsId = order.GoodsId;
-                sumporintsEntity.ProductPorints = 0;
-                sumporintsEntity.TreamPorints = 0;
-                sumporintsEntity.PorintsSurplus = 0;
-                sumporintsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                sumRepository.Insert(sumporintsEntity);
-                if (i < 1)
-                {
-                    return Json(new AjaxResult { state = ResultType.error.ToString(), message = "修改用户失败", data = null });
-                }
-            }
-            else {
-                sumEntity.PorintsSurplus = Convert.ToInt32(users.PorintsSurplus);
-                sumRepository.Update(sumEntity);
-                if (i < 1)
-                {
-                    return Json(new AjaxResult { state = ResultType.error.ToString(), message = "修改用户失败", data = null });
-                }
             }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "保存成功", data = "" });
         }

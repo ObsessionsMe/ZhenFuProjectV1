@@ -56,7 +56,7 @@
     <van-sku
       v-model="showBase"
       buy-text="立即兑换"
-      :quota=20
+      :quota="prdouctMaxCount"
       :sku="goods_sku"
       :goods="goods_sku.goods_info"
       :goods-id="goods_sku.goods_id"
@@ -87,7 +87,9 @@ export default {
   data() {
     this.skuData = skuData;
     return {
-      goodsFreight:0,
+      isProduct: "",
+      prdouctMaxCount: 0,
+      goodsFreight: 0,
       detailsImageList: [],
       goodsId: "",
       show: false,
@@ -144,6 +146,9 @@ export default {
   },
   methods: {
     formatPrice(data) {
+      if (data == undefined) {
+        return "0积分";
+      }
       return (data / 100).toFixed(2) + "积分";
     },
     // onClickCart() {
@@ -153,14 +158,18 @@ export default {
       this.show = true;
     },
     showSku() {
-      checkGoodLevel(this.goodsId).then(response => {
-        //console.log(response);
-        if (response.state == "success") {
-          this.showBase = true;
-        } else {
-          this.$toast(response.message);
-        }
-      });
+      // if (this.isProduct == "Y") {
+      //   checkGoodLevel(this.goodsId).then(response => {
+      //     //console.log(response);
+      //     if (response.state == "success") {
+      //       this.showBase = true;
+      //     } else {
+      //       this.$toast(response.message);
+      //     }
+      //   });
+      //   return;
+      // }
+      this.showBase = true;
     },
     // onClickShowTag() {
     //   this.showTag = true;
@@ -176,22 +185,27 @@ export default {
         goodsNum: data.selectedNum,
         goodsId: data.goodsId
       };
-      if (parseInt(data.selectedNum) > 20) {
-        this.$toast("购买数量不能大于20!");
-        return;
-      }
-      //校验购买的次数
-      CheckUserPayGoodsCount(data.goodsId,data.selectedNum,).then(response => {
-        console.log(response);
-        if (response.state == "success") 
-        {
-          this.$store.commit("saveOrderInfo", orderInfo);
-          this.$router.push({ path: this.redirect || "/order" }); //进入订单页面
-        }
-        else{
-          this.$toast(response.message);
-        }
-      });
+      // if (parseInt(data.selectedNum) > this.prdouctMaxCount) {
+      //   this.$toast("购买数量不能大于" + this.prdouctMaxCount);
+      //   return;
+      // }
+      // if (this.isProduct == "Y") {
+      //   //校验购买的次数
+      //   CheckUserPayGoodsCount(data.goodsId, data.selectedNum).then(
+      //     response => {
+      //       console.log(response);
+      //       if (response.state == "success") {
+      //         this.$store.commit("saveOrderInfo", orderInfo);
+      //         this.$router.push({ path: this.redirect || "/order" }); //进入订单页面
+      //       } else {
+      //         this.$toast(response.message);
+      //       }
+      //     }
+      //   );
+      //   return;
+      // }
+      this.$store.commit("saveOrderInfo", orderInfo);
+      this.$router.push({ path: this.redirect || "/order" }); //进入订单页面
     },
     onAddCartClicked(data) {
       //console.log(JSON.stringify(data));
@@ -210,7 +224,8 @@ export default {
     }
     GetGoodsDetails(goodsId).then(response => {
       if (response.state == "success") {
-        var goodsData = response.data;
+        var goodsData = response.data.data;
+        console.log("data", response.data);
         console.log("goodsData", goodsData);
         this.goods = goodsData;
         this.goods.unitPrice = parseInt(goodsData.unitPrice) * 100;
@@ -219,7 +234,9 @@ export default {
         this.goods_sku.goods_id = goodsData.goodsId;
         this.goods_sku.goods_info.title = goodsData.goodsName;
         this.goodsId = goodsData.goodsId;
-        this.goodsFreight = goodsData.goodsFreight; 
+        this.goodsFreight = goodsData.goodsFreight;
+        this.prdouctMaxCount = response.data.prdouctMaxCount;
+        this.isProduct = goodsData.isProduct;
       }
     });
 

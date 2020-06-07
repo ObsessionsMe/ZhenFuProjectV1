@@ -39,7 +39,7 @@ namespace Aop.Api.Response
         public string DynamicImgUrl { get; set; }
 
         /// <summary>
-        /// 编码失效时间(yyyy-MM-dd hh:mm:ss)
+        /// 编码失效时间(yyyy-MM-dd HH:mm:ss)
         /// </summary>
         [XmlElement("expire_date")]
         public string ExpireDate { get; set; }

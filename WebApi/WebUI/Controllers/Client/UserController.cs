@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,11 +31,13 @@ namespace WebUI.Controllers.Client
         private readonly IUserRepository userRepository;
         private IUserPrintsSumRepository sumRepository;
         private IOrderRepository order;
-        public UserController(IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository, IOrderRepository _order)
+        private IUserProductFrameworkRepository framekRepository;
+        public UserController(IUserRepository _userRepository, IUserPrintsSumRepository _sumRepository, IOrderRepository _order, IUserProductFrameworkRepository _framekRepository)
         {
             userRepository = _userRepository;
             sumRepository = _sumRepository;
             order = _order;
+            framekRepository = _framekRepository;
         }
 
         [Route("getTeamEarn")]
@@ -76,8 +79,9 @@ namespace WebUI.Controllers.Client
                 var ds = sumRepository.GetProductEarn(param);
                 var list = ds.Tables[0].ToDynamicList();
                 var total = ds.Tables[1].ToDynamics().First();
-                result.data = new { 
-                    list = list, 
+                result.data = new
+                {
+                    list = list,
                     total = total
                 };
                 result.state = ResultType.success.ToString();
@@ -101,12 +105,13 @@ namespace WebUI.Controllers.Client
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败", data = "" });
             }
             //返回用户层级结构(包含自己总共三层)
-            UserService servers = new UserService(userRepository, sumRepository,order);
-            var data = userRepository.FindEntity(x => x.UserId == userModel.UserId && x.UserTelephone == userModel.UserTelephone && x.Enable == "Y");
+            //var data = userRepository.FindEntity(x => x.UserId == userModel.UserId && x.UserTelephone == userModel.UserTelephone && x.Enable == "Y");
+            var data = framekRepository.FindEntity(x => x.UserId == userModel.UserId && x.GoodsId == goodsId);
             if (data == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "用户不存在", data = "" });
             }
+            UserService servers = new UserService(userRepository, sumRepository, order);
             var result = servers.GetMyTream(userModel.UserId, goodsId);
             var results = new
             {
@@ -129,15 +134,8 @@ namespace WebUI.Controllers.Client
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败", data = "" });
             }
             UserService servers = new UserService(userRepository, sumRepository, order);
-            var sum = servers.GetUserPorints(userId);
-            if (sum == null)
-            {
-                sum = new UserPrintsSumEntity();
-                sum.ProductPorints = 0;
-                sum.TreamPorints = 0;
-            }
             var user = servers.GetUserPorints_Base(userId);
-            if (sum == null)
+            if (user == null)
             {
                 user = new UserInfoEntity();
                 user.PecialItemPorints = 0;
@@ -145,12 +143,28 @@ namespace WebUI.Controllers.Client
             }
             var result = new
             {
-                productPorints = sum.ProductPorints,
-                treamPorints = sum.TreamPorints,
                 pecialItemPorints = user.PecialItemPorints,
                 porintsSurplus = user.PorintsSurplus
             };
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = result });
+        }
+
+        [Route("GetPorintSurplus")]
+        public ActionResult GetPorintSurplus(GoodsParam param)
+        {
+            if (userModel == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败", data = "" });
+            }
+            var entity = sumRepository.FindEntity(x => x.GoodsId == param.GoodsId && x.UserId == userModel.UserId);
+            if (entity == null)
+            {
+                entity = new UserPrintsSumEntity();
+                entity.ProductPorints = 0;
+                entity.TreamPorints = 0;
+                entity.HoldingDays = 0;
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = entity });
         }
     }
 }

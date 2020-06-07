@@ -39,6 +39,10 @@ namespace Infrastructure.DBContext
         public DbSet<DictionaryEntity> DictionaryEntity { get; set; }
 
         public DbSet<AliNotify_Entity> AliNotify_Entity { get; set; }
+
+        public DbSet<UserProductFrameworkEntity> UserProductFrameworkEntity { get; set; }
+
+        public DbSet<ProductCfgEntity> ProductCfgEntity { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

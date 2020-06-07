@@ -50,6 +50,13 @@
             <van-radio name="3" />
           </template>
         </van-cell>
+        <van-field
+          v-model="referrerTelephone_r"
+          label="推荐人"
+          placeholder="请输入推荐人手机号"
+          v-if="!isProduct"
+          :disabled="isReffer"
+        />
         <van-cell>
           <van-checkbox
             v-model="isSure"
@@ -72,7 +79,7 @@
       @submit="onSubmit"
       :disabled="isCanPay"
     />
-    <van-actionsheet v-model="isRule" title="关于珍福商城购买须知">
+    <van-actionsheet v-model="isRule" v-if="istheShow" title="关于珍福商城购买须知">
       <div class="content">
         <van-cell-group>
           <van-cell style="color:red" value="产品购买须知" />
@@ -109,11 +116,48 @@
         </van-cell-group>
       </div>
     </van-actionsheet>
+    <van-actionsheet v-model="isRule" v-if="!istheShow" title="关于珍福商城购买须知">
+      <div class="content">
+        <van-cell-group>
+          <van-cell style="color:red" value="产品购买须知" />
+          <van-cell value="1.本产品为预售品，预售期为30个工作日，由购买当日起计算。" />
+          <van-cell value="2.客服在线时间为：工作日8：30—12：00，13：30—18：00。" />
+          <van-cell value="3.每个工作日的8:00-21：00购买，当天产生积分，21:00后购买，次日产生积分，节假日顺延，22:00为系统结算时间。" />
+          <van-cell
+            value="4.每笔订单完成后的3个工作日（含5个工作日）未发起下一笔订单的用户，视为无效户，其账户积分将做清零处理，且所建立的团队架构将直接对接公司总码。"
+          />
+          <van-cell value="5.产品发货后一般三天左右到达，西藏、青海、甘肃、内蒙、新疆等偏远地区7天左右到达，具体视情况而定，不同快递速度稍有区别。" />
+          <van-cell
+            value="6.签收时需本人签收或者委托第三方签收，签收时请查看产品外包装是否完整，检查所购买商品数量和外观问题，如破损、明显挤压变形等问题请及时联系客服或者拒绝签收，一旦签收变为默认收到的东西是完整无缺的，如有损失自行承担。"
+          />
+
+          <van-cell style="color:red" value="退货须知" />
+          <van-cell
+            value="1.由于运输过程造成产品的破损，须及时拍照与客服联系；如有退货需求，在预售期第90个自然日在公众号内发出退货申请，并在7个自然日内填写退货物流信息；"
+          />
+          <van-cell value="2.退货产品必须保持包装完整，勿直接在产品原厂外盒粘贴或书写；" />
+          <van-cell value="3.对于产品原厂外盒有损坏的退货产品，退款金额只为产品最终购买价格的40%；退货产品内部商品及包装、资料缺失损坏的，将不予以退货；" />
+          <van-cell value="4.由于产品的质量问题或生产商失误造成的退换货，本公司将承担来回运费，由于买家自己的问题导致退换货，将自行承担全部运费；" />
+          <van-cell
+            value="5.退换货产品，须以书面形式清晰地写明本人账户名称、联系方式、订单编号以及退换货原因，由于买家退换货时无任何书面信息或字迹模糊无法识别，导致客服无法及时查询到买家交易信息，而造成的换货退款延误，本公司不承担责任。"
+          />
+
+          <van-cell style="color:red" value="商城须知" />
+          <van-cell value="1.商城所列示的商品均为品牌正品，支持专柜验货。" />
+          <van-cell value="2.商城积分兑换的产品将不予以开取发票（特殊产品除外）。" />
+          <van-cell
+            style="color:red"
+            value="敬请顾客朋友在购买之前仔细阅读以上条款，一旦购买本公司产品即视为接受并履行以上条款。最终解释权归本公司所有。"
+          />
+        </van-cell-group>
+      </div>
+    </van-actionsheet>
   </div>
 </template>
 
 <script>
 import { ReadyPlaceOrder, SubmitOrder } from "../../api/order.js";
+import { isNullOrEmpty, checkTelephone } from "../../config/Utilitie.js";
 export default {
   data() {
     return {
@@ -140,7 +184,12 @@ export default {
       BuyGoodsNums: 0,
       PayCount: 0,
       addressList: {},
-      goodsFreight: 0
+      goodsFreight: 0,
+      referrerTelephone_r: "",
+      referrerTelephone: "",
+      referrer: "",
+      isReffer: false,
+      istheShow: false
     };
   },
   methods: {
@@ -152,6 +201,20 @@ export default {
         this.$toast("前先添加收货地址");
         return;
       }
+      if (!this.isProduct) {
+        if (!this.isReffer) {
+          this.referrerTelephone = this.referrerTelephone_r;
+        }
+        console.log("this.referrerTelephone", this.referrerTelephone);
+        if (isNullOrEmpty(this.referrerTelephone)) {
+          this.$toast("你的推荐人手机号不能为空");
+          return;
+        }
+        if (checkTelephone(this.referrerTelephone)) {
+          this.$toast("你的推荐人手机号格式错误，请重新输入");
+          return;
+        }
+      }
       var params = {
         GoodsId: this.goodsId,
         AddressId: this.AddressId,
@@ -159,7 +222,8 @@ export default {
         PayCount: this.goodsTotal,
         UsePorintsType: parseInt(this.payMethod),
         GoodsUnitPrice: this.GoodsUnitPrice,
-        goodsFreight: this.goodsFreight
+        goodsFreight: this.goodsFreight,
+        exterd2: this.referrerTelephone
       };
       if (!this.isSure) {
         this.$toast("前先勾选同意珍福商城购买协议");
@@ -191,7 +255,13 @@ export default {
     if (this.goodsId == null) {
       return;
     }
-
+    console.log("goodsId", this.goodsId);
+    if (this.goodsId == "202004241435002") {
+      this.istheShow = true;
+    } else {
+      this.istheShow = false;
+    }
+    console.log("this.istheShow", this.istheShow);
     //预下单
     ReadyPlaceOrder(this.goodsId).then(response => {
       if (response.state == "success") {
@@ -203,16 +273,19 @@ export default {
         this.goodsTotal =
           parseInt(response.data.goodsData.unitPrice) *
           parseInt(this.$store.state.orderInfo.goodsNum);
-          console.log("this.goodsFreight",this.goodsFreight);
-          
+        console.log("this.goodsFreight", this.goodsFreight);
+
         this.goodsFreight = response.data.goodsData.goodsFreight; //运费
         if (parseInt(this.goodsFreight) > 0) {
-          this.goodsTotal = this.goodsTotal + parseInt(this.$store.state.orderInfo.goodsNum) * parseInt(this.goodsFreight);
+          this.goodsTotal =
+            this.goodsTotal +
+            parseInt(this.$store.state.orderInfo.goodsNum) *
+              parseInt(this.goodsFreight);
         }
         this.goodsTotal_r = parseInt(this.goodsTotal) * 100;
         this.BuyGoodsNums = this.$store.state.orderInfo.goodsNum;
         this.GoodsUnitPrice = response.data.goodsData.unitPrice;
-       
+
         if (response.data.goodsData.isProduct == "N") {
           this.isProduct = true;
         }
@@ -224,6 +297,22 @@ export default {
         } else {
           this.type = "1";
           this.addressList = addresses;
+        }
+        var userRefferEntity = response.data.userRefferEntity;
+        console.log("userRefferEntity", userRefferEntity);
+        this.referrer = userRefferEntity.referrer;
+        this.referrerTelephone = userRefferEntity.referrerTelephone;
+        if (userRefferEntity == null) {
+          this.isReffer = false;
+          this.referrerTelephone = "";
+          return;
+        } else {
+          this.isReffer = true;
+          this.referrerTelephone_r =
+            userRefferEntity.referrer +
+            "(" +
+            userRefferEntity.referrerTelephone +
+            ")";
         }
       }
     });

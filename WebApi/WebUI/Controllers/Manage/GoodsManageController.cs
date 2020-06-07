@@ -90,7 +90,7 @@ namespace WebUI.Controllers.Manage
                         //新增商品
                         goodsEntity.GoodsId = "GD" + Common.CreateNo() + Common.RndNum(5);
                         goodsEntity.Enable = "Y";
-                        goodsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                        goodsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                         goodsEntity.ItemPoints = goodsEntity.IndirectPoints = goodsEntity.DirectPoints = 0;
                         goodsEntity.GoodsLevel = 1;
                         goodsEntity.StockCount = 10000;
@@ -161,7 +161,7 @@ namespace WebUI.Controllers.Manage
                     attach.MainId = goodsEntity.GoodsId;
                     attach.AttachmentType = 4;
                     attach.AttachmentName = goodsEntity.Exterd1;
-                    attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                    attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     int k = attachRepository.Insert(attach);
                     if (k <= 0)
                     {
@@ -177,7 +177,7 @@ namespace WebUI.Controllers.Manage
                         attach.MainId = goodsEntity.GoodsId;
                         attach.AttachmentType = 2;
                         attach.AttachmentName = goodsEntity.Exterd1;
-                        attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                        attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                         int k = attachRepository.Insert(attach);
                         if (k <= 0)
                         {
@@ -197,7 +197,7 @@ namespace WebUI.Controllers.Manage
                             attach = new AttachMentInfoEntity();
                             attach.MainId = goodsEntity.GoodsId;
                             attach.AttachmentType = 2;
-                            attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                            attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                             attach.AttachmentName = detailsImgs[i];
                             attachRepository.Insert(attach);
                         }
@@ -212,7 +212,7 @@ namespace WebUI.Controllers.Manage
                         attach.MainId = goodsEntity.GoodsId;
                         attach.AttachmentType = 1;
                         attach.AttachmentName = goodsEntity.Exterd1;
-                        attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                        attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                         int k = attachRepository.Insert(attach);
                         if (k <= 0)
                         {
@@ -231,7 +231,7 @@ namespace WebUI.Controllers.Manage
                             attach = new AttachMentInfoEntity();
                             attach.MainId = goodsEntity.GoodsId;
                             attach.AttachmentType = 1;
-                            attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                            attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                             attach.AttachmentName = scorllImgs[i];
                             attachRepository.Insert(attach);
                         }
@@ -252,7 +252,7 @@ namespace WebUI.Controllers.Manage
             attach.MainId = goodsEntity.GoodsId;
             attach.AttachmentType = 4;
             attach.AttachmentName = goodsEntity.Exterd1;
-            attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+            attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             int k = attachRepository.Insert(attach);
             if (k <= 0)
             {
@@ -264,7 +264,7 @@ namespace WebUI.Controllers.Manage
                 attach = new AttachMentInfoEntity();
                 attach.MainId = goodsEntity.GoodsId;
                 attach.AttachmentType = 2;
-                attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 attach.AttachmentName = goodsEntity.Exterd2;
                 attachRepository.Insert(attach);
             }
@@ -276,7 +276,7 @@ namespace WebUI.Controllers.Manage
                     attach = new AttachMentInfoEntity();
                     attach.MainId = goodsEntity.GoodsId;
                     attach.AttachmentType = 2;
-                    attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                    attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     attach.AttachmentName = detailsImgs[i];
                     attachRepository.Insert(attach);
                 }
@@ -287,7 +287,7 @@ namespace WebUI.Controllers.Manage
                 attach = new AttachMentInfoEntity();
                 attach.MainId = goodsEntity.GoodsId;
                 attach.AttachmentType = 1;
-                attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 attach.AttachmentName = goodsEntity.Exterd3;
                 attachRepository.Insert(attach);
             }
@@ -299,7 +299,7 @@ namespace WebUI.Controllers.Manage
                     attach = new AttachMentInfoEntity();
                     attach.MainId = goodsEntity.GoodsId;
                     attach.AttachmentType = 1;
-                    attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                    attach.UpdateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     attach.AttachmentName = scrollImgs[i];
                     attachRepository.Insert(attach);
                 }

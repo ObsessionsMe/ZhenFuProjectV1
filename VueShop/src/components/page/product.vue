@@ -48,8 +48,14 @@ export default {
       console.log("shopDataList",shopDataList);
       for (var i = 0; i < shopDataList.length; i++) {
         if (shopDataList[i].enable == "Y") {
-          //多产品时，动态取图
-          shopDataList[i].goodsMainImg = require("@/assets/images/zffm_s002.png");
+          if(shopDataList[i].goodsId == "202004241435002"){
+            //多产品时，动态取图
+             shopDataList[i].goodsMainImg = require("@/assets/images/zffm_s002.png");
+          }
+          else{
+             shopDataList[i].goodsMainImg = require("@/assets/images/danbai001.jpg");
+          }
+        
         } else {
           //未上架图
           shopDataList[i].goodsMainImg = require("@/assets/images/ProductDefalut.jpg");

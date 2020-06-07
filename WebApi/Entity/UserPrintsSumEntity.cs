@@ -27,7 +27,7 @@ namespace Entity
         public string GoodsId { get; set; }
 
         /// <summary>
-        /// 产品赠送积分
+        /// 产品积分
         /// </summary>
         public int ProductPorints { get; set; }
 
@@ -37,9 +37,9 @@ namespace Entity
         public int TreamPorints { get; set; }
 
         /// <summary>
-        /// 积分余额
+        /// 持仓天数
         /// </summary>
-        public int PorintsSurplus { get; set; }
+        public int HoldingDays { get; set; }
 
         /// <summary>
         /// 新增时间

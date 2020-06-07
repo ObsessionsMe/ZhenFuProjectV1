@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--商品个人图-->
-    <div class="user-profile" style="height:180px;line-height:20px;">
+    <div class="user-profile" style="height:150px;line-height:20px;">
       <div class="user-profile-avatar">
         <a>
           <img
@@ -18,25 +18,25 @@
 
       <div class="user-profile-username" style="font-size:14px">
         <van-row type="flex" justify="center">
-          <van-col span="6">积分余额</van-col>
-          <van-col span="6">{{userInfo.porintsSurplus}}</van-col>
-        </van-row>
-        <van-row type="flex" justify="center">
           <van-col span="6">旅游积分</van-col>
           <van-col span="6">{{userInfo.tourismPorints}}</van-col>
+        </van-row>
+        <van-row type="flex" justify="center">
+          <van-col span="6">积分余额</van-col>
+          <van-col span="6">{{userInfo.porintsSurplus}}</van-col>
         </van-row>
         <van-row type="flex" justify="center">
           <van-col span="6">专项积分</van-col>
           <van-col span="6">{{userInfo.pecialItemPorints}}</van-col>
         </van-row>
-        <van-row type="flex" justify="center">
+        <!-- <van-row type="flex" justify="center">
           <van-col span="6">个人积分</van-col>
           <van-col span="6">{{userInfo.productPorints}}</van-col>
         </van-row>
         <van-row type="flex" justify="center">
           <van-col span="6">团队积分</van-col>
           <van-col span="6">{{userInfo.treamPorints}}</van-col>
-        </van-row>
+        </van-row> -->
       </div>
     </div>
 
@@ -131,8 +131,8 @@ export default {
     return {
       userInfo: {
         name: "",
-        productPorints: 0,
-        treamPorints: 0,
+        //productPorints: 0,
+        //treamPorints: 0,
         tourismPorints: 0,
         porintsSurplus: 0,
         userTelephone: "",
@@ -159,8 +159,8 @@ export default {
         if (response.state == "success") {
           console.log("response.data", response.data);
           this.userInfo.porintsSurplus = response.data.porintsSurplus;
-          this.userInfo.productPorints = response.data.productPorints;
-          this.userInfo.treamPorints = response.data.treamPorints;
+          //this.userInfo.productPorints = response.data.productPorints;
+          //this.userInfo.treamPorints = response.data.treamPorints;
           this.userInfo.pecialItemPorints = response.data.pecialItemPorints;
         }
         console.log("this.userInfo", this.userInfo);

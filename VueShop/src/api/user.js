@@ -49,6 +49,15 @@ export function GetProductEarn(data) {
   })
 }
 
+export function getPorintSurplus(data) {
+  return request({
+    url: '/api/user/GetPorintSurplus',
+    method: 'post',
+    data:data
+  })
+}
+
+
 export function GetTeamEarn(data) {
   return request({
     url: '/api/user/getTeamEarn',

@@ -23,7 +23,7 @@ namespace BusinessLogic.ClientService
 
         public List<GoodsEntity> GetGoodsListByProduct()
         {
-            return goodsRepository.FindList(f => f.Enable == "Y" & f.isProduct == "Y");
+            return goodsRepository.FindList(f => f.Enable == "Y" & f.isProduct == "Y").OrderByDescending(x => x.Id).ToList();
         }
 
         public List<GoodsEntity> GetGoodsListByType(string type)
@@ -37,8 +37,7 @@ namespace BusinessLogic.ClientService
         /// <returns></returns>
         public List<GoodsEntity> FindGoodsList()
         {
-            //return goodsRepository.IQueryable(x => x.Enable == "Y" && x.isProduct == "Y").ToList();
-            return goodsRepository.IQueryable(x => x.isProduct == "Y").ToList();
+            return goodsRepository.IQueryable(x => x.Enable == "Y" && x.isProduct == "Y").OrderByDescending(x=>x.Id).ToList();
         }
 
         public GoodsEntity GetGoodsDetails(string goodsId)
@@ -49,7 +48,7 @@ namespace BusinessLogic.ClientService
         //获取用户已经购买过得商品
         public AjaxResult checkGoodLevel(string userId, string goodsId)
         {
-            int beforLevel = goodsRepository.FindEntity(x => x.GoodsId == goodsId && x.Enable == "Y" ).GoodsLevel;  //当前要购买的商品级别
+            int beforLevel = goodsRepository.FindEntity(x => x.GoodsId == goodsId && x.Enable == "Y").GoodsLevel;  //当前要购买的商品级别
             if (beforLevel == 1)
             {
                 return new AjaxResult { state = ResultType.success.ToString(), message = "允许购买！", data = "" };
@@ -59,14 +58,14 @@ namespace BusinessLogic.ClientService
             {
                 if (beforLevel > 1)
                 {
-                    return new AjaxResult { state = ResultType.error.ToString(), message = "前先购买第1级商品", data = "" };
+                    return new AjaxResult { state = ResultType.error.ToString(), message = "请先购买第1支产品", data = "" };
                 }
             }
             int level = orderRepository.GetUser_PayMaxGoodsLeve(userId);
             //当前级别如果是3，以前只卖过1级产品，那么违规了
             if (Convert.ToInt32(beforLevel - level) > 1)
             {
-                return new AjaxResult { state = ResultType.error.ToString(), message = "前先购买第" + (level + 1) + "级商品", data = "" };
+                return new AjaxResult { state = ResultType.error.ToString(), message = "前先购买第" + (level + 1) + "支产品", data = "" };
             }
             return new AjaxResult { state = ResultType.success.ToString(), message = "允许购买！", data = "" };
         }
