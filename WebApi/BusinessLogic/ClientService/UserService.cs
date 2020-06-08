@@ -157,6 +157,59 @@ namespace BusinessLogic.ClientService
                 throw ex;
             }
         }
+        
+        /// <summary>
+        /// 管理后台，获取会员组织架构
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="goodsId"></param>
+        /// <returns></returns>
+        public object GetMyTreamManage(string userId, string goodsId)
+        {
+            try
+            {
+                List<UserTreeData> results = new List<UserTreeData>();
+                DataTable treeTable1 = userRepository.GetUserTeamLevel1(userId, goodsId);
+                DataTable treeTable2 = userRepository.GetUserTeamLevel2(userId, goodsId);
+                for (int i = 0; i < treeTable1.Rows.Count; i++)
+                {
+                    var obj = treeTable1.Rows[i];
+                    int level = Convert.ToInt32(obj["Level"]);
+                    //一级用户
+                    var treeData = new UserTreeData();
+                    treeData.id = obj["UserId"].ToString();
+                    int count = Convert.ToInt32(obj["BuyGoodsCount"]);
+                    string tel = obj["UserTelephone"].ToString();
+                    string tel_new = tel.Substring(0, 3) + "****" + tel.Substring(7);
+                    treeData.label = "vip1 " + obj["Name"].ToString() + "(" + tel + ")" + "(" + count + "盒)";
+                    var chirds = new List<UserTreeData>();
+                    for (int j = 0; j < treeTable2.Rows.Count; j++)
+                    {
+                        //二级用户
+                        var dr = treeTable2.Rows[j];
+                        string reftel = dr["ReferrerTelephone"].ToString();
+                        if (dr["ReferrerTelephone"].ToString() == tel)
+                        {
+                            count = Convert.ToInt32(dr["BuyGoodsCount"]);
+                            string tels = dr["UserTelephone"].ToString();
+                            string tel_news = tels.Substring(0, 3) + "****" + tels.Substring(7);
+                            chirds.Add(new UserTreeData { id = dr["UserId"].ToString(), label = "vip2 " + dr["Name"].ToString() + "(" + tels + ")" + "(" + count + "盒)" });
+                        }
+                    }
+                    treeData.children = chirds;
+                    if (!results.Contains(treeData))
+                    {
+                        results.Add(treeData);
+                    }
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public int GetUserPayCout(string userId)
         {
             //查询订单表，获取用户购买盒数

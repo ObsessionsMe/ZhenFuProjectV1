@@ -56,16 +56,12 @@
         <template slot="title">
           <span>产品介绍</span>
         </template>
-        <el-menu-item index="2">真福.辅酶</el-menu-item>
+        <el-menu-item index="2">真福.福酶</el-menu-item>
         <el-menu-item index="4">免疫球蛋白</el-menu-item>
       </el-submenu>
 
       <el-menu-item index="3">
         <span slot="title">真福时刻</span>
-      </el-menu-item>
-
-      <el-menu-item index="5">
-        <span slot="title">旅游专区</span>
       </el-menu-item>
 
     </el-menu>

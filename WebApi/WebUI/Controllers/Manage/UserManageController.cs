@@ -31,8 +31,10 @@ namespace WebUI.Controllers.Manage
         private readonly IUserPrintsSumRepository sumRepository;
         private readonly IUserPorintsRecordRepository recordRepository;
         private IUserBasePorintsRecordRepository basePorintRepository;
+        private IUserProductFrameworkRepository framekRepository;
         public UserManageController(IUserRepository _userRepository, IGoodsRepository _goodsRepository, IOrderRepository _orderRepository,
-            IUserPrintsSumRepository _sumRepository, IUserPorintsRecordRepository _recordRepository, IUserBasePorintsRecordRepository _basePorintRepository
+            IUserPrintsSumRepository _sumRepository, IUserPorintsRecordRepository _recordRepository, IUserBasePorintsRecordRepository _basePorintRepository,
+            IUserProductFrameworkRepository _framekRepository
             )
         {
             userRepository = _userRepository;
@@ -41,6 +43,7 @@ namespace WebUI.Controllers.Manage
             sumRepository = _sumRepository;
             recordRepository = _recordRepository;
             basePorintRepository = _basePorintRepository;
+            framekRepository = _framekRepository;
         }
 
         /// <summary>
@@ -180,6 +183,33 @@ namespace WebUI.Controllers.Manage
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "修改用户失败", data = null });
             }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "保存成功", data = "" });
+        }
+        [Route("GetMyTream")]
+        public ActionResult GetMyTream(string userId, string goodsId)
+        {
+            //返回用户层级结构(包含自己总共三层)
+            //var data = userRepository.FindEntity(x => x.UserId == userModel.UserId && x.UserTelephone == userModel.UserTelephone && x.Enable == "Y");
+            var data = framekRepository.FindEntity(x => x.UserId == userId && x.GoodsId == goodsId);
+            if (data == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取数据失败", data = null });
+            }
+            UserService servers = new UserService(userRepository, sumRepository, orderRepository);
+            var result = servers.GetMyTreamManage(userId, goodsId);
+            int userPayCount = 0;
+            var list = orderRepository.FindList(x => x.UserId == userId && x.GoodsId == goodsId);
+            for (int i = 0; i < list.Count; i++)
+            {
+                var obj = list[i];
+                userPayCount += obj.BuyGoodsNums;
+            }
+            var results = new
+            {
+                parentName = data.Referrer + data.ReferrerTelephone,
+                name = data.Name + "(" + userPayCount + "盒)",
+                treeData = result,
+            };
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = results });
         }
     }
 }

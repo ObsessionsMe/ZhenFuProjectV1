@@ -29,18 +29,38 @@
           highlight-current-row
           height="650"
         >
-          <el-table-column prop="userId" label="操作" sortable width="250">
+          <el-table-column prop="userId" label="操作" sortable width="300">
             <template slot-scope="scope">
-              <el-link type="primary" v-if="scope.row.isAdmin=='N'" @click="payPorints(scope.row.userId,1)">充值余额</el-link>
-              <el-link type="primary" v-if="scope.row.isAdmin=='N'" @click="payPorints(scope.row.userId,2)" style="margin-left:2%">充值专项积分</el-link>
-              <el-link type="warning" v-if="scope.row.isAdmin=='N'" @click="editUser(scope.row)" style="margin-left:2%">修改</el-link>
+              <el-link
+                type="primary"
+                v-if="scope.row.isAdmin=='N'"
+                @click="payPorints(scope.row.userId,1)"
+              >充值余额</el-link>
+              <el-link
+                type="primary"
+                v-if="scope.row.isAdmin=='N'"
+                @click="payPorints(scope.row.userId,2)"
+                style="margin-left:2%"
+              >充值专项积分</el-link>
+              <el-link
+                type="warning"
+                v-if="scope.row.isAdmin=='N'"
+                @click="editUser(scope.row)"
+                style="margin-left:2%"
+              >修改</el-link>
+              <el-link
+                type="success"
+                v-if="scope.row.isAdmin=='N'"
+                @click="checkUserFreamWork(scope.row)"
+                style="margin-left:2%"
+              >查看会员架构</el-link>
               <!-- <el-button
                 v-if="scope.row.isAdmin=='N'"
                 type="primary"
                 icon="el-icon-circle-plus-outline"
                 size="small"
                 @click="payPorints(scope.row.userId,1)"
-              >充值余额</el-button> -->
+              >充值余额</el-button>-->
               <!-- <el-button
                 v-if="scope.row.isAdmin=='N'"
                 type="primary"
@@ -54,7 +74,7 @@
                 icon="el-icon-circle-plus-outline"
                 size="small"
                 @click="editUser(scope.row)"
-              >修改</el-button> -->
+              >修改</el-button>-->
             </template>
           </el-table-column>
           <el-table-column prop="name" label="会员姓名" width="120" show-overflow-tooltip></el-table-column>
@@ -115,6 +135,39 @@
         <el-button type="primary" @click="editUserOn()">确 定</el-button>
       </div>
     </el-dialog>
+    <!--弹出框(查看用户组织架构)-->
+    <el-dialog :visible.sync="isShowFrameWork" width="30%">
+      <el-tabs type="border-card" align="left" v-model="activeName">
+        <el-tab-pane label="查看会员架构" name="first">
+          <el-select
+            placeholder="选择一个产品"
+            v-model="defalutShopItem"
+            label-width="200px"
+            @change="getUserFreamWork"
+          >
+            <el-option
+              v-for="item in allShops"
+              :key="item.goodsId"
+              :label="item.goodsName"
+              :value="item.goodsId"
+            ></el-option>
+          </el-select>
+          <br />
+          <br />
+          <el-tree
+            default-expand-all
+            :data="treeData"
+            :props="defaultProps"
+            icon-class="el-icon-s-custom"
+            highlight-current
+          ></el-tree>
+          <br />
+        </el-tab-pane>
+      </el-tabs>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cannelFrameWork()">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -125,6 +178,27 @@ import { http, url } from "@/lib";
 export default {
   data() {
     return {
+      treeData: [
+        {
+          id: 1,
+          label: "推荐人",
+          children: [
+            {
+              id: 2,
+              label: "我",
+              children: []
+            }
+          ]
+        }
+      ],
+      defaultProps: {
+        children: "children",
+        label: "label"
+      },
+      userIds: "",
+      allShops: [],
+      defalutShopItem: "",
+      isShowFrameWork: false,
       isShowDialog: false,
       activeName: "first",
       kw: "",
@@ -155,8 +229,63 @@ export default {
   created() {
     //页面初始化
     this.searchUser();
+    //this.GetAllProducts();
   },
   methods: {
+    cannelFrameWork() {
+      this.isShowFrameWork = false;
+    },
+    GetAllProducts() {
+      http.post(url.GetAllProducts, {}).then(res => {
+        console.log("res", res);
+        this.allShops = res.data.data;
+        console.log("this.allShops", this.allShops);
+        this.defalutShopItem = this.allShops[1].goodsId;
+        this.getUserFreamWork();
+      });
+    },
+    getUserFreamWork() {
+      console.log("this.userIds", this.userIds);
+      console.log(this.defalutShopItem);
+      //  var params = {
+      //    userId:this.userIds,
+      //    goodsId:this.defalutShopItem
+      //  }
+      http
+        .post(url.GetMyTream, {
+          userId: this.userIds,
+          goodsId: this.defalutShopItem
+        })
+        .then(response => {
+          console.log("response111", response);
+          if (response.data.state == "success") {
+            console.log("treeData", response.data.data.treeData);
+            this.treeData[0].label = response.data.data.parentName + "(推荐人)";
+            this.treeData[0].children[0].label =
+              response.data.data.name + "(我)";
+            this.treeData[0].children[0].children = response.data.data.treeData;
+          } else {
+            this.treeData = [
+              {
+                id: 1,
+                label: "推荐人",
+                children: [
+                  {
+                    id: 2,
+                    label: "我",
+                    children: []
+                  }
+                ]
+              }
+            ];
+          }
+        });
+    },
+    checkUserFreamWork(row) {
+      this.isShowFrameWork = true;
+      this.userIds = row.userId;
+      this.GetAllProducts();
+    },
     //获取列表
     searchUser() {
       http
@@ -190,17 +319,16 @@ export default {
       var arr = this.allMemberType.find(x => x.id == userType);
       return arr.name;
     },
-    payPorints(userId,type) {
+    payPorints(userId, type) {
       if (userId == null || userId == "") {
         return;
       }
       var title = "";
       var content = "";
-      if(type==1){
+      if (type == 1) {
         title = "请输入要充值的积分余额数";
         content = "充值积分余额";
-      }
-      else if(type == "2"){
+      } else if (type == "2") {
         title = "请输入要充值的专项积分数";
         content = "充值专项积分";
       }
@@ -213,7 +341,7 @@ export default {
         inputErrorMessage: "请输入正整数,且必须大于0"
       })
         .then(({ value }) => {
-          this.payPorintsOn(userId, value,type);
+          this.payPorintsOn(userId, value, type);
         })
         .catch(() => {
           this.$message({
@@ -223,7 +351,7 @@ export default {
         });
       console.log(userId);
     },
-    payPorintsOn(userId, value,type) {
+    payPorintsOn(userId, value, type) {
       http
         .get(url.ManagePayPorints, {
           payNum: value,
@@ -253,44 +381,49 @@ export default {
       this.isShowDialog = true;
       this.userEntity = row;
     },
-    editUserOn(){
-      if(this.userEntity.name == "" || this.userEntity.name == null){
+    editUserOn() {
+      if (this.userEntity.name == "" || this.userEntity.name == null) {
         this.$message({
-            type: "error",
-            message: "姓名不能为空"
-          });
-          return;
+          type: "error",
+          message: "姓名不能为空"
+        });
+        return;
       }
       //手機格式校驗
-      if(this.userEntity.referrerTelephone == "" || this.userEntity.referrerTelephone == null){
+      if (
+        this.userEntity.referrerTelephone == "" ||
+        this.userEntity.referrerTelephone == null
+      ) {
         this.$message({
-            type: "error",
-            message: "推荐人手机号不能为空"
-          });
-         return;
+          type: "error",
+          message: "推荐人手机号不能为空"
+        });
+        return;
       }
-      if(parseInt(this.userEntity.porintsSurplus) < 0){
+      if (parseInt(this.userEntity.porintsSurplus) < 0) {
         this.$message({
-            type: "error",
-            message: "积分余额不能小于0"
-          });
-         return;
+          type: "error",
+          message: "积分余额不能小于0"
+        });
+        return;
       }
-      http.post(url.editUser, {jsonString:JSON.stringify(this.userEntity)}).then(res => {
-        this.searchUser();
-        this.isShowDialog = false;
-        if (res.data.state == "success") {
-          this.$message({
-            type: "success",
-            message: "修改成功"
-          });
-        } else {
-          this.$message({
-            type: "info",
-            message: "修改失败"
-          });
-        }
-      });
+      http
+        .post(url.editUser, { jsonString: JSON.stringify(this.userEntity) })
+        .then(res => {
+          this.searchUser();
+          this.isShowDialog = false;
+          if (res.data.state == "success") {
+            this.$message({
+              type: "success",
+              message: "修改成功"
+            });
+          } else {
+            this.$message({
+              type: "info",
+              message: "修改失败"
+            });
+          }
+        });
     }
   }
 };

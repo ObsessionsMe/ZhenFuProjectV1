@@ -364,5 +364,12 @@ namespace WebUI.Controllers.Manage
             }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "下架商品成功", data = null });
         }
+
+        [Route("GetAllProducts")]
+        public ActionResult GetAllProducts()
+        {
+            GoodsManageServices service = new GoodsManageServices(goodsRepository);
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = service.GetAllProducts() });
+        }
     }
 }

@@ -14,6 +14,8 @@ let url = {
     ItemDownshelf:"api/GoodsManage/ItemDownshelf",//下架商品 
     editUser:"api/UserManage/editUser",//下架商品 
     GetOrderList: "api/OrderManage/GetOrderList",  
+    GetAllProducts: "api/GoodsManage/GetAllProducts",  
+    GetMyTream: "api/UserManage/GetMyTream",  
     GetCashList: "api/CashManage/GetCashList",
     UserCashApply: "api/CashManage/UserCashApply",
     GetDicList:"api/Dictionary/GetDicList",
