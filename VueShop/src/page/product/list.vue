@@ -8,7 +8,7 @@
       style="width:95px;background:#f8f8f8"
     >
       <template v-for="item in productTypes">
-        <van-badge v-bind:key="item.code" :title="item.name" @click="onClick(item.code)" style="color:#228fbd;" />
+        <van-badge v-bind:key="item.code" :title="item.name" @click="onClick(item.code)"/>
       </template>
     </van-badge-group>
     <!--首页-商品列表-->
@@ -68,7 +68,7 @@ export default {
         // { id:'7',name:'汽车用品' },
       ],
       activeKey: 0,
-      fullHeight: document.documentElement.clientHeight - 93,
+      fullHeight: document.documentElement.clientHeight - 64,
       fullWidth: document.documentElement.clientWidth - 110,
       productlist: [],
       IndexMapper: {},
