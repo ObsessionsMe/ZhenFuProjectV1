@@ -30,12 +30,12 @@
       <van-field label="可兑现比例" class="red" :value="(entity.deductRate*100)+'%'" disabled />
       <van-cell title="兑现积分">
         <template #input>
-          <van-stepper :min="min" :max="parseInt((entity.integral*entity.deductRate)/100)*100" v-model="entity.deduct" :step="100" />
+          <van-stepper id='deduct' :min="min" :max="maxDeduct()" v-model="entity.deduct" :step="100" />
         </template>
       </van-cell>
     </el-main>
     <el-footer>
-      <el-button v-if="IsDisabled" style="width:100%;" type="success" @click="onSubmit" round>提交</el-button>
+      <el-button :disabled="isNotSubmit" v-if="IsDisabled" style="width:100%;" type="success" @click="onSubmit" round>提交</el-button>
       <el-button v-if="!IsDisabled" style="width:100%;" type="info" disabled round>提现时间为{{beginHour}}:00-{{endHour}}:00</el-button>
       <!-- <el-button style="width:100%;" type="success" @click="onSubmit" round>提交</el-button> -->
     </el-footer>
@@ -43,7 +43,7 @@
 </template>
 <script>
 import areaList from "@/data/area";
-import { submitCash, getCashDetail,recentCash } from "@/api/cash.js";
+import { submitCash, getCashDetail, recentCash } from "@/api/cash.js";
 import { GetGoodsList } from "@/api/goods.js";
 import {
   Area,
@@ -93,6 +93,7 @@ export default {
       productList: [],
       pays: pays,
       banks: banks,
+      isNotSubmit: false,
       min: 0,
       entity: {
         Type: 0,
@@ -119,13 +120,27 @@ export default {
     const that = this;
     this.entity.Type = parseInt(this.$route.query.type);
     this.name = this.$route.query.name;
+
     this.init();
   },
-
+  mounted() {
+    const that = this;
+    document.querySelector("#deduct input").onfocus = function() {
+      that.isNotSubmit = true;
+    };
+    document.querySelector("#deduct input").onblur = function() {
+      that.isNotSubmit = false;
+    };
+  },
   methods: {
+    maxDeduct() {
+      return (
+        parseInt(this.entity.integral * this.entity.deductRate / 100) * 100
+      );
+    },
     SetDisabled() {
       const hour = new Date().getHours();
-      this.IsDisabled = hour > this.beginHour && hour < this.endHour;
+      this.IsDisabled = hour >= this.beginHour && hour < this.endHour;
     },
     init() {
       this.SetDisabled();
@@ -144,11 +159,11 @@ export default {
         }
       });
       //加载上一次兑现的账号信息
-      recentCash().then(response=>{
+      recentCash().then(response => {
         if (response.state == "success") {
-            Object.assign(this.entity,response.data);
+          Object.assign(this.entity, response.data);
         }
-      })
+      });
     },
     onGoodsConfirm(data) {
       this.entity.GoodsId = data.goodsId;
@@ -173,12 +188,12 @@ export default {
       this.showBankPicker = false;
     },
     onAreaConfirm(data) {
-      const province=data[0];
-      const city=data[1];
-      this.entity.provinceCode=province.code;
-      this.entity.provinceName=province.name;
-      this.entity.cityCode=city.code;
-      this.entity.cityName=city.name;
+      const province = data[0];
+      const city = data[1];
+      this.entity.provinceCode = province.code;
+      this.entity.provinceName = province.name;
+      this.entity.cityCode = city.code;
+      this.entity.cityName = city.name;
       this.showAreaPicker = false;
     },
     onSubmit() {
@@ -213,6 +228,7 @@ export default {
             "，请确认是否要进行兑现？"
         })
           .then(() => {
+            console.log(this.entity);
             submitCash(this.entity).then(res => {
               if (res.state == "success") {
                 Toast.success(res.message);

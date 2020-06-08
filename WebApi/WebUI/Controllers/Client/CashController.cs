@@ -96,7 +96,7 @@ namespace WebUI.Controllers.Client
             try
             {
                 var currHour = DateTime.Now.Hour;
-                if (!(currHour >= BeginHour && currHour <= EndHour))
+                if (!(currHour >= BeginHour && currHour < EndHour))
                 {
                     flag = false;
                     result.state = ResultType.error.ToString();
