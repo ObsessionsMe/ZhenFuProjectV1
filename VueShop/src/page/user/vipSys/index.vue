@@ -7,34 +7,42 @@
       <van-col span="8">持仓天数:{{holdingDay}}</van-col>
     </van-row>
     <!-- <div class="van-ellipsis">这是一段最多显示一行的文字，多余的内容会被省略</div> -->
-    <van-row style="font-size:12px; height:40px; line-height:40px; margin-left:5%;color:silver">
+    <van-row style="font-size:12px; height:30px; line-height:30px; margin-left:5%;color:silver">
       备注:以上积分余额都是经过提现或者兑现商品后计算所得
     </van-row>
     <van-tabs @change="tabChange" v-model="active">
-      <van-tab title="个人收益">
+      <van-tab title="个人积分">
         <van-cell-group>
           <van-cell
             icon="volume-o"
-            :title="'近一月收益:'+productEarn.total"
-            :value="'总收益:'+productEarn.allTotal"
+            :title="'近一月积分:'+productEarn.total"
+            :value="'总积分:'+productEarn.allTotal"
           />
         </van-cell-group>
         <el-table :data="productEarn.datas" stripe style="width: 100%">
           <el-table-column align="center" prop="date" label="日期" width="180"></el-table-column>
-          <el-table-column align="center" prop="value" label="收益"></el-table-column>
+          <el-table-column align="center" prop="value" label="积分"></el-table-column>
         </el-table>
       </van-tab>
-      <van-tab title="团队收益">
+      <van-tab title="团队积分">
         <van-cell-group>
+           <van-cell
+            icon="volume-o"
+            :title="'我的团队总人数:'+teamEarn.AllUserCount"
+            :value="'我的团队总持仓盒数:'+teamEarn.AllBuyGoodsCount"
+          />
           <van-cell
             icon="volume-o"
-            :title="'近一月收益:'+teamEarn.total"
-            :value="'总收益:'+teamEarn.allTotal"
-          />
+            :title="'近一月积分:'+teamEarn.total"
+            :value="'总积分:'+teamEarn.allTotal"
+          />      
         </van-cell-group>
-        <el-table :data="teamEarn.datas" stripe style="width: 100%">
-          <el-table-column align="center" prop="name" label="成员"></el-table-column>
-          <el-table-column align="center" prop="value" label="数量"></el-table-column>
+        <el-table :data="teamEarn.datas" stripe style="width: 100%;">
+          <el-table-column align="center" prop="Addtime" label="日期">
+          </el-table-column>
+          <el-table-column align="center" label="积分">
+            <template slot-scope="scope">{{scope.row.DirectPorints+scope.row.IndirectPorints+scope.row.TreamPorints}}</template>
+          </el-table-column>
         </el-table>
       </van-tab>
       <van-tab title="我的团队">
@@ -85,6 +93,8 @@ export default {
           enddate: null
         },
         total: 0,
+        AllBuyGoodsCount: 0,
+        AllUserCount: 0,
         allTotal: 0,
         datas: []
       },
@@ -145,6 +155,9 @@ export default {
           GetTeamEarn(this.teamEarn.param).then(res => {
             if (res.state == "success") {
               this.teamEarn.datas = res.data.list;
+              this.teamEarn.total = res.data.total.total;
+              this.teamEarn.AllBuyGoodsCount = res.data.total.AllBuyGoodsCount;
+              this.teamEarn.AllUserCount = res.data.total.AllUserCount;
               this.teamEarn.total = res.data.total.total;
               this.teamEarn.allTotal = res.data.total.alltotal;
             }

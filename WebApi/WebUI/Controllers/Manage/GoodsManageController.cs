@@ -122,11 +122,20 @@ namespace WebUI.Controllers.Manage
                     }
                     //附件表存储商品Id相关附件，主图单个和详情图多个，商品详情轮播图可能有多个
                     var entity = attachRepository.FindEntity(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 4);
-                    attachRepository.Delete(entity);
-                    entity = attachRepository.FindEntity(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 2);
-                    attachRepository.Delete(entity);
-                    entity = attachRepository.FindEntity(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 1);
-                    attachRepository.Delete(entity);
+                    if (entity != null)
+                    {
+                        attachRepository.Delete(entity);
+                    }
+                    var entityList = attachRepository.FindList(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 2);
+                    if (entityList.Count > 0)
+                    {
+                        attachRepository.Delete(entityList);
+                    }
+                    entityList = attachRepository.FindList(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 1);
+                    if (entityList.Count > 0)
+                    {
+                        attachRepository.Delete(entityList);
+                    }
                     bool isSave = AddAttacMentInfo(goodsEntity);
                     if (!isSave)
                     {
@@ -171,7 +180,7 @@ namespace WebUI.Controllers.Manage
                 //2图片详情
                 if (goodsEntity.Exterd2.IndexOf(',') == -1)
                 {
-                    entity = attachRepository.FindEntity(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 2 && x.AttachmentName == goodsEntity.Exterd1);
+                    entity = attachRepository.FindEntity(x => x.MainId == goodsEntity.GoodsId && x.AttachmentType == 2 && x.AttachmentName == goodsEntity.Exterd2);
                     if (entity == null)
                     {
                         attach.MainId = goodsEntity.GoodsId;

@@ -21,6 +21,9 @@ export default {
     background-color:rgb(255, 255, 255)!important;
     
   }
+  .cell{
+    display: block !important;
+  }
 </style>
 
 

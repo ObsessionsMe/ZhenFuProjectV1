@@ -61,6 +61,16 @@ namespace RepositoryFactory.RepositorysBase
                 throw ex;
             }
         }
+
+        public int Delete(List<TEntity> entitys)
+        {
+            foreach (var entity in entitys)
+            {
+                dbcontext.Set<TEntity>().Attach(entity);
+                dbcontext.Entry<TEntity>(entity).State = EntityState.Deleted;
+            }
+            return dbcontext.SaveChanges();
+        }
         public int Delete(TEntity entity)
         {
             dbcontext.Set<TEntity>().Attach(entity);

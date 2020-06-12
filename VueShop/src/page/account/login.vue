@@ -51,6 +51,7 @@ export default {
         // this.handleLogin();
       }
     }
+    localStorage.removeItem("activeName");
   },
   methods: {
     //登录
