@@ -8,7 +8,7 @@
     <van-row style="font-size:12px;margin-left:5%;color:silver;height: auto;  
     word-wrap:break-word;  
     word-break:break-all; ">
-      *除本人之外，团队总盒数500-1000盒，每盒1个积分；1001盒以上（含），每盒1.5个积分
+      *详细计算方式请查看对应产品积分规则
     </van-row>
     <van-row>
       <el-table  show-summary :data="teamEarnDetail.datas" stripe style="width: 100%">
