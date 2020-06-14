@@ -16,7 +16,8 @@
     "vue-cookie": "^1.1.4",
     "vue-router": "^3.0.1",
     "vuex": "^3.2.0",
-    "vuex-persistedstate": "^3.0.1"
+    "vuex-persistedstate": "^3.0.1",
+    "weixin-jsapi": "^1.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.3",
