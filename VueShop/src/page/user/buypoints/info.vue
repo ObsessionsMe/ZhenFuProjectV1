@@ -159,9 +159,10 @@ export default {
           paySign: data.paySign, // 支付签名
           success: function(res) {
             //支付成功后的回调函数
-            console.log("支付成功后的回调函数", res);
+            this.$toast("充值成功");
             var arr = data.package.split("=");
             this.prepayId = arr[1];
+            this.$toast(this.prepayId);
             this.OnSaveWeiXinPayOrderInfo();
           },
           fail: function(res) {
