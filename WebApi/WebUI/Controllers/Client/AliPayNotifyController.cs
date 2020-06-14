@@ -35,7 +35,7 @@ namespace WebUI.Controllers.Client
             aliNotify = _aliNotify;
         }
         /// <summary>
-        /// 
+        ///  接受支付宝支付异步通知
         /// </summary>
         /// <returns></returns>
         [Route("AsyAliPayNotifyInfo")]

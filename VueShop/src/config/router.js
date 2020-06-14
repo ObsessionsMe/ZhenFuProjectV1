@@ -257,7 +257,7 @@ router.beforeEach((to, from, next) => {
   // if (title) {
   //   document.title = title;
   // }
-  if (to.path == '/login' || to.name == 'AliPay' || to.name == 'register') { //如果是登录页面路径，就直接next()
+  if (to.path == '/login' || to.name == 'AliPay' || to.name == 'register' || to.name == "buypoints") { //如果是登录页面路径，就直接next()
     next();
     return;
   } 

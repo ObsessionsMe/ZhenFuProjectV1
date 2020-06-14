@@ -23,3 +23,19 @@ export function PayPorints(params) {
     params: params
   })
 }
+
+export function ReadyWeiXinPayOrder(params) {
+  return request({
+    url: '/api/WeiXinPayNotify/ReadyWeiXinPayOrder',
+    method: 'post',
+    params: params
+  })
+}
+
+export function saveWeiXinPayOrderInfo(params) {
+  return request({
+    url: '/api/WeiXinPayNotify/saveWeiXinPayOrderInfo',
+    method: 'post',
+    params: params
+  })
+}

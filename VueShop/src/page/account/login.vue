@@ -11,8 +11,18 @@
           <el-checkbox v-model="isSave">记住密码</el-checkbox>
         </van-col>
         <div style="margin: 10px;">
-          <van-button size="large" type="primary" style="height: 45px;line-height:45px;" @click="handleLogin()">登录</van-button>
-          <van-button size="large" type="primary" style="height: 45px;line-height:45px;" @click="register()">注册新账号</van-button>
+          <van-button
+            size="large"
+            type="primary"
+            style="height: 45px;line-height:45px;"
+            @click="handleLogin()"
+          >登录</van-button>
+          <van-button
+            size="large"
+            type="primary"
+            style="height: 45px;line-height:45px;"
+            @click="register()"
+          >注册新账号</van-button>
         </div>
       </div>
     </div>
@@ -20,7 +30,7 @@
 </template>
 
 <script>
-import { LoginOn } from "../../api/user.js";
+import { LoginOn, GetOpenIdByCode } from "../../api/user.js";
 import { autoLoginUserInfo } from "@/config/env.js";
 import {
   isNullOrEmpty,
@@ -35,11 +45,42 @@ export default {
       // telephone:"15914071422",
       // password:"xiapeng-2020"
       telephone: "",
-      password: ""
+      password: "",
+      appid: "wx1e34c3136b2c182d",
+      redirect_uri: "http://www.hubeizhenfu.cn",
+      state: "1",
+      code: "",
+      scope: "snsapi_base" //静默获取用户信息
     };
   },
   created() {
-    this.$store.commit("clearCache");
+    var code_status = sessionStorage.getItem("codeStatus");
+    if (code_status == "1") {
+      //localStorage.setItem("code2", this.$route.query.code);
+      //向后台发起请求,获取openid
+      var href = location.href;
+      var code = this.getUrlParam("code");
+      this.OnGetOpenIdByCode(code);
+    } else {
+      var code_r = this.$route.query.code;
+      if (code_r == null || code_r == undefined) {
+        sessionStorage.setItem("codeStatus", "1");
+        //https://open.weixin.qq.com/connect/oauth2/authorize？appid=$appid&redirect_uri=$redirect_uri&response_type=code&scope=snsapi_base&state=1#wechat_redirect
+        let path =
+          "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+          "appid=" +
+          this.appid +
+          "&response_type=code&scope=snsapi_base" +
+          "&redirect_uri=" +
+          this.redirect_uri +
+          "&state=1" +
+          "#wechat_redirect";
+        //this.$toast(path);
+        location.replace(path);
+        return;
+      }
+    }
+    //this.$store.commit("clearCache");
     var user = JSON.parse(window.localStorage.getItem("user"));
     if (user) {
       this.telephone = user.name;
@@ -54,8 +95,24 @@ export default {
     localStorage.removeItem("activeName");
   },
   methods: {
+    //获取用openId
+    OnGetOpenIdByCode(code) {
+      if (code == null || code == "") {
+        this.$toast("code为空");
+        return;
+      }
+      GetOpenIdByCode(code).then(response => {
+        this.$toast(response.data);
+        if (response.state == "success") {
+          localStorage.setItem("openid", response.data);
+        } else {
+          this.$toast(response.message);
+        }
+      });
+    },
     //登录
     handleLogin() {
+      sessionStorage.clear();
       if (isNullOrEmpty(this.telephone)) {
         this.$toast("手机号不能为空");
         return;
@@ -100,10 +157,15 @@ export default {
         //this.data=response;
       });
     },
-
     //注册
     register() {
       this.$router.push({ path: this.redirect || "/login/register" });
+    },
+    getUrlParam(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+      var r = window.location.search.substr(1).match(reg); //匹配目标参数
+      if (r != null) return unescape(r[2]);
+      return null; //返回参数值
     }
   }
 };

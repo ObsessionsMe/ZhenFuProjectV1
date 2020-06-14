@@ -141,9 +141,17 @@ export function GetCoupon(data){
 
 export function ExchangeCoupon(code){
   return request({
-    url: '/User/ExchangeCoupon',
+    url: '/WeiXinPayNotify/ExchangeCoupon',
     method: 'Post',
     params: { code:code }
+  })
+}
+
+export function GetOpenIdByCode(params) {
+  return request({
+    url: '/api/WeiXinPayNotify/GetOpenIdByCode',
+    method: 'get',
+    params: { code:params }
   })
 }
 
