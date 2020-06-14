@@ -13,48 +13,38 @@
     <van-tabs @change="tabChange" v-model="active">
       <van-tab title="个人积分">
         <van-cell-group>
-          <van-cell
-            icon="volume-o"
-            :title="'近一月积分:'+productEarn.total"
-            :value="'总积分:'+productEarn.allTotal"
-          />
+          <van-cell icon="volume-o" :title="'近一月积分:'+productEarn.total" :value="'总积分:'+productEarn.allTotal" />
         </van-cell-group>
-        <el-table :data="productEarn.datas" stripe style="width: 100%">
+        <el-table  :data="productEarn.datas" stripe style="width: 100%">
           <el-table-column align="center" prop="date" label="日期" width="180"></el-table-column>
           <el-table-column align="center" prop="value" label="积分"></el-table-column>
         </el-table>
       </van-tab>
       <van-tab title="团队积分">
         <van-cell-group>
-           <van-cell
-            icon="volume-o"
-            :title="'我的团队总人数:'+teamEarn.AllUserCount"
-            :value="'我的团队总持仓盒数:'+teamEarn.AllBuyGoodsCount"
-          />
-          <van-cell
-            icon="volume-o"
-            :title="'近一月积分:'+teamEarn.total"
-            :value="'总积分:'+teamEarn.allTotal"
-          />      
+          <van-cell icon="volume-o" :title="'我的团队总人数:'+teamEarn.AllUserCount" :value="'我的团队总持仓盒数:'+teamEarn.AllBuyGoodsCount" />
+          <van-cell icon="volume-o" :title="'近一月积分:'+teamEarn.total" :value="'总积分:'+teamEarn.allTotal" />
         </van-cell-group>
-        <el-table :data="teamEarn.datas" stripe style="width: 100%;">
+        <el-table  :data="teamEarn.datas" stripe style="width: 100%;">
           <el-table-column align="center" prop="Addtime" label="日期">
           </el-table-column>
           <el-table-column align="center" label="积分">
-            <template slot-scope="scope">{{scope.row.DirectPorints+scope.row.IndirectPorints+scope.row.TreamPorints}}</template>
+            <template slot-scope="scope">
+              {{scope.row.DirectPorints+scope.row.IndirectPorints+scope.row.TreamPorints}}
+              <router-link v-if="(scope.row.DirectPorints+scope.row.IndirectPorints+scope.row.TreamPorints)>0" :to="{path:'/user/vipEarn/teamDetail',query:{ date:scope.row.Addtime,id:GoodsId }}" class="el-link-router">
+                <i class="el-icon-arrow-right"></i>
+              </router-link>
+              <!-- <el-link :underline="false" class="el-link-router" type="primary"  >
+                <i class="el-icon-arrow-right"></i>
+              </el-link> -->
+            </template>
           </el-table-column>
         </el-table>
       </van-tab>
       <van-tab title="我的团队">
         <div style="margin-left:0.5em">
           <!-- <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree> -->
-          <el-tree
-            default-expand-all
-            :data="treeData"
-            :props="defaultProps"
-            icon-class="el-icon-s-custom"
-            highlight-current
-          ></el-tree>
+          <el-tree default-expand-all :data="treeData" :props="defaultProps" icon-class="el-icon-s-custom" highlight-current></el-tree>
         </div>
       </van-tab>
     </van-tabs>
@@ -67,11 +57,14 @@ import { GetMyTream } from "@/api/user.js";
 export default {
   data() {
     return {
+      height:0,
+      chacheSelTabKey: "vipSysTabCurrent",
       productPorint: 0,
       treamPorint: 0,
       holdingDay: 0,
       name: "",
       active: "",
+      GoodsId: "",
       productEarn: {
         param: {
           GoodsId: "",
@@ -119,15 +112,26 @@ export default {
     };
   },
   created() {
+    this.height = document.body.clientHeight - 180;
+    this.GoodsId = this.$route.query.id;
     this.productEarn.param.GoodsId = this.$route.query.id;
     this.teamEarn.param.GoodsId = this.$route.query.id;
     this.name = this.$route.query.name;
     this.OngetPorintSurplus();
-    this.getEarnData(0);
+
     this.getMyTream();
+    var tabIndex = sessionStorage.getItem(this.chacheSelTabKey);
+    if (tabIndex != null || tabIndex != undefined) {
+      tabIndex = parseInt(tabIndex);
+      this.getEarnData(tabIndex);
+      this.active = tabIndex;
+    } else {
+      this.getEarnData(0);
+    }
   },
   methods: {
     tabChange(index) {
+      sessionStorage.setItem(this.chacheSelTabKey, index);
       this.getEarnData(index);
     },
     OngetPorintSurplus() {
@@ -169,21 +173,19 @@ export default {
       console.log("goodsId", this.teamEarn.param.GoodsId);
       GetMyTream(this.teamEarn.param.GoodsId).then(response => {
         if (response.state == "success") {
-          console.log("response.data.parentName",response.data.parentName);
+          console.log("response.data.parentName", response.data.parentName);
           if (response.data.parentName == "管理员13888888888") {
             this.treeData[0].label = "推荐人";
-          } 
-          else{
+          } else {
             this.treeData[0].label = response.data.parentName + "(推荐人)";
           }
           this.treeData[0].children[0].label = response.data.name + "(我)";
           console.log("treeData", response.data.treeData);
           this.treeData[0].children[0].children = response.data.treeData;
-        } 
-        else
-        {
+        } else {
           this.treeData[0].label = "暂无推荐人";
-          this.treeData[0].children[0].label = this.$store.state.userInfo.name + "(我)";
+          this.treeData[0].children[0].label =
+            this.$store.state.userInfo.name + "(我)";
         }
       });
     }
@@ -193,3 +195,10 @@ export default {
   }
 };
 </script>
+<style lang="less">
+.el-link-router {
+  position: absolute;
+  right: 5px;
+  font-size: 19px;
+}
+</style>

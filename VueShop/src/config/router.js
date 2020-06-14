@@ -134,8 +134,15 @@ const routes = [
     meta: {
       title: '会员系统'
     }
-  }
-  ,
+  },
+  {
+    
+    path: '/user/vipEarn/teamDetail',
+    component: () => import('../page/user/vipEarn/teamDetail.vue'),
+    meta: {
+      title: '团队收益详情'
+    }
+  },
   {
     path: '/user/cash',
     component: () => import('../page/user/cash/index'),

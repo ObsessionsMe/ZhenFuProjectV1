@@ -14,5 +14,6 @@ namespace RepositoryFactory.ServiceInterface
     {
         public DataSet GetProductEarn(GoodsParam goodsParam);
         public DataSet GetTeamEarn(GoodsParam param);
+        public DataSet GetTeamEarnDetail(GoodsParam param);
     }
 }

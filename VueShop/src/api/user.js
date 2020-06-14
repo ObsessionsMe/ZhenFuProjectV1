@@ -66,6 +66,14 @@ export function GetTeamEarn(data) {
   })
 }
 
+export function GetTeamEarnDetail(data) {
+  return request({
+    url: '/api/user/getTeamEarnDetail',
+    method: 'post',
+    data:data
+  })
+}
+
 export function LoginOut() {
   return request({
     url: '/api/login/LoginOut',

@@ -62,5 +62,15 @@ namespace Repository.RepositoryService
             return ExecuteSql.ProcQuery(new DatabaseFacade(dbcontext), "p_get_team_earn", sqlParams);
 
         }
+
+        public DataSet GetTeamEarnDetail(GoodsParam goodsParam)
+        {
+            var sqlParams = new SqlParams();
+            sqlParams.Params.Add("@userId", goodsParam.UserId);
+            sqlParams.Params.Add("@goodsId", goodsParam.GoodsId);
+            sqlParams.Params.Add("@date", goodsParam.Date);
+
+            return ExecuteSql.ProcQuery(new DatabaseFacade(dbcontext), "p_get_team_earn_detail", sqlParams);
+        }
     }
 }

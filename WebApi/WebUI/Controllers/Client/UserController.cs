@@ -40,6 +40,33 @@ namespace WebUI.Controllers.Client
             framekRepository = _framekRepository;
         }
 
+        [Route("getTeamEarnDetail")]
+        public ActionResult GetTeamEarnDetail(GoodsParam param)
+        {
+            var result = new AjaxResult<dynamic>();
+            try
+            {
+                param.UserId = userModel.UserId;
+                //获取团队的兑现详情
+                var ds = sumRepository.GetTeamEarnDetail(param);
+                var list = ds.Tables[0].ToDynamicList();
+                var detail = ds.Tables[1].ToDynamics().First();
+                result.data = new
+                {
+                    list = list,
+                    detail = detail
+                };
+                result.state = ResultType.success.ToString();
+            }
+            catch (Exception ex)
+            {
+                result.message = "获取团队收益详情!";
+                result.state = ResultType.success.ToString();
+                LogHelper.Log.Error(ex);
+            }
+            return Json(result);
+        }
+
         [Route("getTeamEarn")]
         public ActionResult GetTeamEarn(GoodsParam param)
         {
@@ -60,12 +87,11 @@ namespace WebUI.Controllers.Client
             }
             catch (Exception ex)
             {
-                result.message = "获取个人收益失败!";
+                result.message = "获取团队收益失败!";
                 result.state = ResultType.success.ToString();
                 LogHelper.Log.Error(ex);
             }
             return Json(result);
-
         }
 
         [Route("getProductEarn")]
