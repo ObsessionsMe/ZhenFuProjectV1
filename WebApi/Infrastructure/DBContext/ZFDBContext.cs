@@ -43,7 +43,10 @@ namespace Infrastructure.DBContext
         public DbSet<UserProductFrameworkEntity> UserProductFrameworkEntity { get; set; }
 
         public DbSet<ProductCfgEntity> ProductCfgEntity { get; set; }
-        
+
+
+        public DbSet<WeiXinNotify_Entity> WeiXinNotify_Entity { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //string executingAssemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

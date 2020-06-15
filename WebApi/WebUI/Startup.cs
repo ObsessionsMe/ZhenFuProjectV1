@@ -64,6 +64,8 @@ namespace WebUI
             services.AddTransient<IAliNotifyRepository, AliNotifyRepository>();
             services.AddTransient<IUserProductFrameworkRepository,UserProductFrameworkRepository>();
             services.AddTransient<IProductCfgRepository, ProductCfgRepository>();
+            services.AddTransient<IWeiXinNotifyRepository, WeiXinNotifyRepository>();
+
             //注册文件访问权限
             services.AddDirectoryBrowser();
 

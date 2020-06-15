@@ -48,8 +48,8 @@ export default {
     };
   },
   created() {
-    var openid = localStorage.getItem("openid");
-    this.$toast("openid为 " + openid);
+    //var openid = localStorage.getItem("openid");
+    //this.$toast("openid为 " + openid);
     // this.code = this.$route.query.code;
     // this.redirect_uri = encodeURI(this.redirect_uri);
     // //https://open.weixin.qq.com/connect/oauth2/authorize？appid=$appid&redirect_uri=$redirect_uri&response_type=code&scope=snsapi_base&state=1#wechat_redirect
@@ -76,6 +76,10 @@ export default {
       if (this.payMethod == "1") {
         //微信支付
         this.WeiXinPay();
+        return;
+      }
+      if (this.PayNum == "") {
+        this.$toast("充值金额不能为空");
         return;
       }
       if (parseInt(this.PayNum) <= 0) {
@@ -117,6 +121,18 @@ export default {
     },
     WeiXinPay() {
       console.log("微信支付");
+      if (this.PayNum == "") {
+        this.$toast("充值金额不能为空");
+        return;
+      }
+      if (parseInt(this.PayNum) <= 0) {
+        this.$toast("充值金额不能小于1");
+        return;
+      }
+      if (parseInt(this.PayNum) >= 50000) {
+        this.$toast("单笔充值金额不能超过5万");
+        return;
+      }
       //1通过code获取用户openid
       //2通过openid在后台发起微信预下单请求
       var userId = this.$store.state.userInfo.userId;
@@ -159,11 +175,12 @@ export default {
           paySign: data.paySign, // 支付签名
           success: function(res) {
             //支付成功后的回调函数
+            this.PayNum = "";
             this.$toast("充值成功");
-            var arr = data.package.split("=");
-            this.prepayId = arr[1];
-            this.$toast(this.prepayId);
-            this.OnSaveWeiXinPayOrderInfo();
+            // var arr = data.package.split("=");
+            // this.prepayId = arr[1];
+            // this.$toast(this.prepayId);
+            // this.OnSaveWeiXinPayOrderInfo();
           },
           fail: function(res) {
             //失败回调函数
@@ -175,6 +192,7 @@ export default {
         // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
         /*alert("config信息验证失败");*/
         console.log("config信息验证失败", res);
+        this.$toast("config信息验证失败");
       });
     },
     OnSaveWeiXinPayOrderInfo() {

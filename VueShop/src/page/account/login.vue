@@ -102,7 +102,6 @@ export default {
         return;
       }
       GetOpenIdByCode(code).then(response => {
-        this.$toast(response.data);
         if (response.state == "success") {
           localStorage.setItem("openid", response.data);
         } else {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Web;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using System.IO;
+using Infrastructure.LogConfig;
 
 namespace WxPayAPI
 {
@@ -17,29 +19,13 @@ namespace WxPayAPI
         /// 接收从微信支付后台发送过来的数据并验证签名
         /// </summary>
         /// <returns>微信支付后台返回的数据</returns>
-        public WxPayData GetNotifyData()
+        public WxPayData GetNotifyData(StringBuilder stringBuilder)
         {
-            //接收从微信后台POST过来的数据
-            //System.IO.Stream s = page.Request.InputStream;
-            System.IO.Stream s = null;//待优化
-            int count = 0;
-            byte[] buffer = new byte[1024];
-            StringBuilder builder = new StringBuilder();
-            while ((count = s.Read(buffer, 0, 1024)) > 0)
-            {
-                builder.Append(Encoding.UTF8.GetString(buffer, 0, count));
-            }
-            s.Flush();
-            s.Close();
-            s.Dispose();
-
-            Log.Info(this.GetType().ToString(), "Receive data from WeChat : " + builder.ToString());
-
             //转换数据格式并验证签名
             WxPayData data = new WxPayData();
             try
             {
-                data.FromXml(builder.ToString());
+                data.FromXml(stringBuilder.ToString());
             }
             catch(WxPayException ex)
             {
@@ -47,19 +33,14 @@ namespace WxPayAPI
                 WxPayData res = new WxPayData();
                 res.SetValue("return_code", "FAIL");
                 res.SetValue("return_msg", ex.Message);
-                Log.Error(this.GetType().ToString(), "Sign check error : " + res.ToXml());
-
+                //Log.Error(this.GetType().ToString(), "Sign check error : " + res.ToXml());
+                LogHelper.Log.Error($"签名校验失败，微信支付失败：{res.ToXml()}");
                 //page.Response.Write(res.ToXml());
                 //page.Response.End();
             }
-            Log.Info(this.GetType().ToString(), "Check sign success");
+            //Log.Info(this.GetType().ToString(), "Check sign success");
+            LogHelper.Log.Error($"签名校成功：{data.FromXml(stringBuilder.ToString())}");
             return data;
-        }
-
-        //派生类需要重写这个方法，进行不同的回调处理
-        public virtual void ProcessNotify()
-        {
-
         }
     }
 }
