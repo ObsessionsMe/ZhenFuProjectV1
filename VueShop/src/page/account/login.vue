@@ -54,30 +54,35 @@ export default {
     };
   },
   created() {
-    var code_status = sessionStorage.getItem("codeStatus");
-    if (code_status == "1") {
-      //localStorage.setItem("code2", this.$route.query.code);
-      //向后台发起请求,获取openid
-      var href = location.href;
-      var code = this.getUrlParam("code");
-      this.OnGetOpenIdByCode(code);
-    } else {
-      var code_r = this.$route.query.code;
-      if (code_r == null || code_r == undefined) {
-        sessionStorage.setItem("codeStatus", "1");
-        //https://open.weixin.qq.com/connect/oauth2/authorize？appid=$appid&redirect_uri=$redirect_uri&response_type=code&scope=snsapi_base&state=1#wechat_redirect
-        let path =
-          "https://open.weixin.qq.com/connect/oauth2/authorize?" +
-          "appid=" +
-          this.appid +
-          "&response_type=code&scope=snsapi_base" +
-          "&redirect_uri=" +
-          this.redirect_uri +
-          "&state=1" +
-          "#wechat_redirect";
-        //this.$toast(path);
-        location.replace(path);
-        return;
+   
+    var ua = window.navigator.userAgent.toLowerCase();
+    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+       //微信端才进去
+      var code_status = sessionStorage.getItem("codeStatus");
+      if (code_status == "1") {
+        //localStorage.setItem("code2", this.$route.query.code);
+        //向后台发起请求,获取openid
+        var href = location.href;
+        var code = this.getUrlParam("code");
+        this.OnGetOpenIdByCode(code);
+      } else {
+        var code_r = this.$route.query.code;
+        if (code_r == null || code_r == undefined) {
+          sessionStorage.setItem("codeStatus", "1");
+          //https://open.weixin.qq.com/connect/oauth2/authorize？appid=$appid&redirect_uri=$redirect_uri&response_type=code&scope=snsapi_base&state=1#wechat_redirect
+          let path =
+            "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+            "appid=" +
+            this.appid +
+            "&response_type=code&scope=snsapi_base" +
+            "&redirect_uri=" +
+            this.redirect_uri +
+            "&state=1" +
+            "#wechat_redirect";
+          //this.$toast(path);
+          location.replace(path);
+          return;
+        }
       }
     }
     //this.$store.commit("clearCache");

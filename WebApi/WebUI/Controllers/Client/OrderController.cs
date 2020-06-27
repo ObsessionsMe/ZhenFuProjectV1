@@ -111,13 +111,13 @@ namespace WebUI.Controllers.Client
             var data = server.SubmitOrder(orderInfo, userModel.UserId);
             if (data == null)
             {
-                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "下单失败", data = data });
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "下单失败", data = "" });
             }
             if (data.state.ToString() == "error")
             {
-                return Json(data);
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "下单失败", data = "" });
             }
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = data });
+            return Json(data);
         }
 
         [Route("CheckUserPayGoodsCount")]

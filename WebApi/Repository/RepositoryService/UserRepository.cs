@@ -39,5 +39,11 @@ namespace RepositoryFactory.RepositoryService
             return ExecuteSql.SqlQuery(new DatabaseFacade(dbcontext), sql);
         }
 
+        //查询某个会员的团队总持仓盒数
+        public object GetUserTeamPayTotal(string userId, string goodsId)
+        {
+            string sql = string.Format(" select sum(payNum) From f_get_user_team( '{0}' , '{1}' )  where Level = 1 or Level = 2 ", userId, goodsId);
+           return dbcontext.Database.SqlQuery<object>(sql).FirstOrDefault();
+        } 
     }
 }

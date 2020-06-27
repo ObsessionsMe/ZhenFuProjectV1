@@ -97,9 +97,9 @@
     <van-cell-group>
       <van-cell title="收支明细(现金/积分)" is-link to="/user/coupon"/>
     </van-cell-group>-->
-    <van-cell-group>
+    <!-- <van-cell-group>
       <van-cell title="积分充值" is-link to="/user/buypoints" />
-    </van-cell-group>
+    </van-cell-group> -->
     <!-- <van-cell-group>
       <van-cell title="我的团队" is-link to="/user/myteam" />
     </van-cell-group>-->
@@ -115,7 +115,7 @@
     <!-- <van-cell-group>
       <van-cell title="修改密码" is-link to="/login/password" />
     </van-cell-group>-->
-    <van-cell-group>
+    <van-cell-group  style="margin-bottom:15%">
       <van-cell title="退出登录" is-link to="/login" />
     </van-cell-group>
     <navigate />

@@ -199,7 +199,12 @@ namespace BusinessLogic.ClientService
                         return null;
                     }
                 }
-                return new AjaxResult { state = ResultType.success.ToString(), message = "下单成功！", data = "" };
+                var result = new
+                {
+                    goodsId = order.GoodsId,
+                    referrer = frameEntity.Referrer
+                };
+                return new AjaxResult { state = ResultType.success.ToString(), message = "下单成功！", data = result };
             }
             catch (Exception ex)
             {

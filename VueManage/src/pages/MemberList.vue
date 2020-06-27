@@ -153,6 +153,7 @@
             ></el-option>
           </el-select>
           <br />
+          <!-- <span> 团队持仓总盒数：{{this.tremProductCount}}</span> -->
           <br />
           <el-tree
             default-expand-all
@@ -195,6 +196,7 @@ export default {
         children: "children",
         label: "label"
       },
+      tremProductCount:0,
       userIds: "",
       allShops: [],
       defalutShopItem: "",

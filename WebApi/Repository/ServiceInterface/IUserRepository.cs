@@ -17,5 +17,7 @@ namespace RepositoryFactory.ServiceInterface
         DataTable GetUserTeamLevel1(string userId, string goodsId);
 
         DataTable GetUserTeamLevel2(string userId, string goodsId);
+
+        object GetUserTeamPayTotal(string userId, string goodsId);
     }
 }
