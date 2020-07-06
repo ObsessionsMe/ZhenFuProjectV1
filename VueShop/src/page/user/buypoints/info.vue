@@ -1,6 +1,6 @@
 <template>
   <div>
-    <headerNav title="积分充值" />
+    <headerNav title="福豆充值" />
     <van-radio-group v-model="payMethod" style="margin-top:2%;">
       <span style="font-size:16px;padding-left:2%">选择支付方式</span>
       <van-cell-group>

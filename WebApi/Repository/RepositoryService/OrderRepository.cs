@@ -47,5 +47,12 @@ namespace RepositoryFactory.RepositoryService
             var repositorys = new Repository<OrderListEntity>(dbcontext);
             return repositorys.FindList(predicate, pagination);
         }
+
+
+        public bool IsOverStp_PayMaxGoodsLeve(string userId, string goodsId)
+        {
+            List<GoodsEntity> list = ExecuteSql.SqlQuery<GoodsEntity>(new DatabaseFacade(dbcontext), string.Format("exec IsOverStp_PayMaxGoodsLeve '{0}','{1}'", userId, goodsId), new object[] { });
+            return  true;
+        }
     }
 }

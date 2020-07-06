@@ -53,7 +53,7 @@ export default {
              shopDataList[i].goodsMainImg = require("@/assets/images/zffm_s002.png");
           }
           else{
-             shopDataList[i].goodsMainImg = require("@/assets/images/danbai001.jpg");
+             shopDataList[i].goodsMainImg = require("@/assets/images/gxbMain.jpg");
           }
         
         } else {

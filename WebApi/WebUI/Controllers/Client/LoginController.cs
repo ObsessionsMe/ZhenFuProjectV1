@@ -118,7 +118,7 @@ namespace WebUI.Controllers.Client
             if (rtnMessage.state.ToString() == "error")
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = rtnMessage.message, data = "" });
-            }
+            } 
             return Json(rtnMessage);
         }
 

@@ -35,7 +35,7 @@
     <div style="height:15px;"></div>
     <van-radio-group v-model="payMethod">
       <van-cell-group>
-        <van-cell title="积分余额" clickable @click="payMethod = '1'">
+        <van-cell title="福豆" clickable @click="payMethod = '1'">
           <template #right-icon>
             <van-radio name="1" />
           </template>
@@ -45,18 +45,18 @@
             <van-radio name="2" />
           </template>
         </van-cell>
-        <van-cell title="专项积分" clickable @click="payMethod = '3'" v-if="isProduct">
+        <van-cell title="可用积分" clickable @click="payMethod = '3'" v-if="isProduct">
           <template #right-icon>
             <van-radio name="3" />
           </template>
         </van-cell>
-        <van-field
+        <!-- <van-field
           v-model="referrerTelephone_r"
           label="推荐人"
           placeholder="请输入推荐人手机号"
           v-if="!isProduct"
           :disabled="isReffer"
-        />
+        /> -->
         <van-cell>
           <van-checkbox
             v-model="isSure"
@@ -72,13 +72,13 @@
       </van-cell-group>
     </van-radio-group>
 
-    <!-- <van-submit-bar
+    <van-submit-bar
       :price="goodsTotal_r"
       button-text="提交订单"
       label="实付金额："
       @submit="onSubmit"
       :disabled="isCanPay"
-    /> -->
+    />
 
     <van-actionsheet v-model="isRule" v-if="isShowZhenfu" :title="ruleName">
       <div class="content" style="height:600px;overflow-y:auto;">
@@ -187,8 +187,8 @@ export default {
       PayCount: 0,
       addressList: {},
       goodsFreight: 0,
-      referrerTelephone_r: "",
-      referrerTelephone: "",
+      //referrerTelephone_r: "",
+      //referrerTelephone: "",
       referrer: "",
       isReffer: false
     };
@@ -202,20 +202,20 @@ export default {
         this.$toast("前先添加收货地址");
         return;
       }
-      if (!this.isProduct) {
-        if (!this.isReffer) {
-          this.referrerTelephone = this.referrerTelephone_r;
-        }
-        console.log("this.referrerTelephone", this.referrerTelephone);
-        if (isNullOrEmpty(this.referrerTelephone)) {
-          this.$toast("你的推荐人手机号不能为空");
-          return;
-        }
-        if (checkTelephone(this.referrerTelephone)) {
-          this.$toast("你的推荐人手机号格式错误，请重新输入");
-          return;
-        }
-      }
+      // if (!this.isProduct) {
+      //   if (!this.isReffer) {
+      //     this.referrerTelephone = this.referrerTelephone_r;
+      //   }
+      //   console.log("this.referrerTelephone", this.referrerTelephone);
+      //   if (isNullOrEmpty(this.referrerTelephone)) {
+      //     this.$toast("你的推荐人手机号不能为空");
+      //     return;
+      //   }
+      //   if (checkTelephone(this.referrerTelephone)) {
+      //     this.$toast("你的推荐人手机号格式错误，请重新输入");
+      //     return;
+      //   }
+      // }
       var params = {
         GoodsId: this.goodsId,
         AddressId: this.AddressId,
@@ -223,8 +223,8 @@ export default {
         PayCount: this.goodsTotal,
         UsePorintsType: parseInt(this.payMethod),
         GoodsUnitPrice: this.GoodsUnitPrice,
-        goodsFreight: this.goodsFreight,
-        exterd2: this.referrerTelephone
+        goodsFreight: this.goodsFreight
+        //exterd2: this.referrerTelephone
       };
       if (!this.isSure) {
         this.$toast("前先勾选同意珍福商城购买协议");
@@ -240,7 +240,8 @@ export default {
           // var message = "恭喜你,提交订单成功！ 你的推荐人是" + response.data.data.referrer;
           // this.$toast(message);
           //console.log("response", response);  
-          var message = "恭喜你,提交订单成功！ 你的推荐人是：" + response.data.referrer;
+          //var message = "恭喜你,提交订单成功！ 你的推荐人是：" + response.data.referrer;
+          var message = "恭喜你,提交订单成功！";
           this.$toast(message);  
           var Interval = setInterval(() => {
             clearInterval(Interval);
@@ -265,7 +266,7 @@ export default {
       this.isShowDbm = false;
       this.isShowGoods = false;
     } else if (this.goodsId == "202004241435003") {
-      this.ruleName = "免疫球蛋白兑换须知";
+      this.ruleName = "核基因干细胞兑换须知";
       this.isShowZhenfu = false;
       this.isShowDbm = true;
       this.isShowGoods = false;
@@ -311,22 +312,22 @@ export default {
           this.type = "1";
           this.addressList = addresses;
         }
-        var userRefferEntity = response.data.userRefferEntity;
-        console.log("userRefferEntity", userRefferEntity);
-        this.referrer = userRefferEntity.referrer;
-        this.referrerTelephone = userRefferEntity.referrerTelephone;
-        if (userRefferEntity == null) {
-          this.isReffer = false;
-          this.referrerTelephone = "";
-          return;
-        } else {
-          this.isReffer = true;
-          this.referrerTelephone_r =
-            userRefferEntity.referrer +
-            "(" +
-            userRefferEntity.referrerTelephone +
-            ")";
-        }
+        // var userRefferEntity = response.data.userRefferEntity;
+        // console.log("userRefferEntity", userRefferEntity);
+        // this.referrer = userRefferEntity.referrer;
+        // this.referrerTelephone = userRefferEntity.referrerTelephone;
+        // if (userRefferEntity == null) {
+        //   this.isReffer = false;
+        //   this.referrerTelephone = "";
+        //   return;
+        // } else {
+        //   this.isReffer = true;
+        //   this.referrerTelephone_r =
+        //     userRefferEntity.referrer +
+        //     "(" +
+        //     userRefferEntity.referrerTelephone +
+        //     ")";
+        // }
       }
     });
     //获取用户收货地址

@@ -1,5 +1,5 @@
 <template>
-<!--积分商城-->
+<!--福豆商城-->
 <div :style="'background-color:'+((page.BackgroundColor==undefined||page.BackgroundColor=='')?'#fff':page.BackgroundColor)">
     <div :style="'height:'+topheight+'px'" ></div>
     <div v-for="(item,index) in page.Sections" :key="index">

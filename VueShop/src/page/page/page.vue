@@ -1,5 +1,5 @@
 <template>
-  <!--积分商城-->
+  <!--福豆商城-->
   <div style="background-color:#fff;padding-bottom:60px">
     <div :style="'height:'+topheight+'px'"></div>
     <imageAd></imageAd>

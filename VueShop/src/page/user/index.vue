@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--商品个人图-->
-    <div class="user-profile" style="height:150px;line-height:20px;">
+    <div class="user-profile" style="height:120px;line-height:25px;">
       <div class="user-profile-avatar">
         <a>
           <img
@@ -17,18 +17,18 @@
       </div>
 
       <div class="user-profile-username" style="font-size:14px">
-        <van-row type="flex" justify="center">
+        <!-- <van-row type="flex" justify="center">
           <van-col span="6">旅游积分</van-col>
           <van-col span="6">{{userInfo.tourismPorints}}</van-col>
-        </van-row>
+        </van-row> -->
         <van-row type="flex" justify="center">
-          <van-col span="6">积分余额</van-col>
+          <van-col span="6">福豆</van-col>
           <van-col span="6">{{userInfo.porintsSurplus}}</van-col>
         </van-row>
-        <van-row type="flex" justify="center">
-          <van-col span="6">专项积分</van-col>
+        <!-- <van-row type="flex" justify="center">
+          <van-col span="6">可用积分</van-col>
           <van-col span="6">{{userInfo.pecialItemPorints}}</van-col>
-        </van-row>
+        </van-row> -->
         <!-- <van-row type="flex" justify="center">
           <van-col span="6">个人积分</van-col>
           <van-col span="6">{{userInfo.productPorints}}</van-col>
@@ -91,24 +91,25 @@
       </van-row>
     </van-cell-group>
 
-    <!-- <van-cell-group>
-      <van-cell title="龙虎榜" is-link to="/user/charts"/>
+    <van-cell-group>
+      <van-cell title="我的团队" is-link to="/user/myteam"/>
     </van-cell-group>
+     <!--
     <van-cell-group>
       <van-cell title="收支明细(现金/积分)" is-link to="/user/coupon"/>
     </van-cell-group>-->
-    <!-- <van-cell-group>
-      <van-cell title="积分充值" is-link to="/user/buypoints" />
-    </van-cell-group> -->
+    <van-cell-group>
+      <van-cell title="福豆充值" is-link to="/user/buypoints" />
+    </van-cell-group>
     <!-- <van-cell-group>
       <van-cell title="我的团队" is-link to="/user/myteam" />
     </van-cell-group>-->
     <van-cell-group>
-      <van-cell title="个人积分兑现" is-link :to="{path:'/user/cash',query:{type:1,name:'个人积分兑现'}}" />
+      <van-cell title="福豆兑现" is-link :to="{path:'/user/cash',query:{type:1,name:'个人积分兑现'}}" />
     </van-cell-group>
-    <van-cell-group>
+    <!-- <van-cell-group>
       <van-cell title="团队积分兑现" is-link :to="{path:'/user/cash',query:{type:2,name:'团队积分兑现'}}" />
-    </van-cell-group>
+    </van-cell-group> -->
     <van-cell-group>
       <van-cell title="收货地址" is-link to="/user/address" />
     </van-cell-group>
@@ -144,7 +145,7 @@ export default {
   created() {
     //发起请求
     var userId = this.$store.state.userInfo.userId;
-    this.userInfo.tourismPorints = this.$store.state.userInfo.tourismPorints;
+    //this.userInfo.tourismPorints = this.$store.state.userInfo.tourismPorints;
     this.userInfo.name = this.$store.state.userInfo.name;
     this.userInfo.userTelephone = this.$store.state.userInfo.userTelephone;
     //获取用户积分

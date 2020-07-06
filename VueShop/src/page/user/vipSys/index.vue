@@ -8,7 +8,7 @@
     </van-row>
     <!-- <div class="van-ellipsis">这是一段最多显示一行的文字，多余的内容会被省略</div> -->
     <van-row style="font-size:12px; height:30px; line-height:30px; margin-left:5%;color:silver">
-      备注:以上积分余额都是经过提现或者兑现商品后计算所得
+      备注:以上福豆都是经过提现或者兑现商品后计算所得
     </van-row>
     <van-tabs @change="tabChange" v-model="active">
       <van-tab title="个人积分">

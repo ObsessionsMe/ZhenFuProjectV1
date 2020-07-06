@@ -172,7 +172,7 @@ namespace WebUI.Controllers.Manage
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "你输入的推荐人手机号在系统中不存在", data = null });
             }
-            //可以改姓名，推荐人手机号，积分余额
+            //可以改姓名，推荐人手机号，福豆
             var user = userRepository.FindEntity(x => x.UserId == users.UserId);
             user.Referrer = entity.Name;
             user.ReferrerTelephone = entity.UserTelephone;

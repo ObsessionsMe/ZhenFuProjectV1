@@ -57,7 +57,7 @@
           <span>产品介绍</span>
         </template>
         <el-menu-item index="2">真福.福酶</el-menu-item>
-        <el-menu-item index="4">免疫球蛋白</el-menu-item>
+        <el-menu-item index="4">干细胞</el-menu-item>
       </el-submenu>
 
       <el-menu-item index="3">
@@ -123,7 +123,7 @@ export default {
         require("@/assets/images/cpjs007.png"),
         require("@/assets/images/cpjs008.png")
       ],
-      cpjs2ImageList: [require("@/assets/images/danbai.jpg")],
+      cpjs2ImageList: [require("@/assets/images/gxbMain001.jpg"),require("@/assets/images/gxbMain.jpg"),require("@/assets/images/gxbMain002.jpg")],
       travelImageList: [],
       cfskImageList: [
         require("@/assets/images/cfsk001.jpg"),

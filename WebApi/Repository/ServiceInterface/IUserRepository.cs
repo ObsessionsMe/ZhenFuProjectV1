@@ -14,6 +14,8 @@ namespace RepositoryFactory.ServiceInterface
     {
         List<UserPorintListEntity> GetUser_PorintList(Pagination pagination, Expression<Func<UserPorintListEntity, bool>> predicate);
 
+        DataTable GetUserTeamLevel(string userId);
+
         DataTable GetUserTeamLevel1(string userId, string goodsId);
 
         DataTable GetUserTeamLevel2(string userId, string goodsId);

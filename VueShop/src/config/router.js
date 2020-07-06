@@ -94,7 +94,7 @@ const routes = [
     name: 'buypoints',
     component: () => import('../page/user/buypoints/info'),
     meta: {
-      title: '积分充值'
+      title: '福豆充值'
     }
   },
   {
@@ -239,7 +239,7 @@ const routes = [
     name: 'category',
     component: () => import('../page/category/index'),
     meta: {
-      title: '积分商城'
+      title: '福豆商城'
     }
   }
 ];

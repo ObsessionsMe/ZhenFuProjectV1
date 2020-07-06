@@ -124,21 +124,20 @@ namespace WebUI.Controllers.Client
 
 
         [Route("GetMyTream")]
-        public ActionResult GetMyTream(string goodsId)
+        public ActionResult GetMyTream()
         {
             if (userModel == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败", data = "" });
             }
             //返回用户层级结构(包含自己总共三层)
-            //var data = userRepository.FindEntity(x => x.UserId == userModel.UserId && x.UserTelephone == userModel.UserTelephone && x.Enable == "Y");
-            var data = framekRepository.FindEntity(x => x.UserId == userModel.UserId && x.GoodsId == goodsId);
+            var data = userRepository.FindEntity(x => x.UserId == userModel.UserId && x.UserTelephone == userModel.UserTelephone && x.Enable == "Y");
             if (data == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "用户不存在", data = "" });
             }
             UserService servers = new UserService(userRepository, sumRepository, order);
-            var result = servers.GetMyTream(userModel.UserId, goodsId);
+            var result = servers.GetMyTream_New(userModel.UserId);
             var results = new
             {
                 parentName = data.Referrer + data.ReferrerTelephone,

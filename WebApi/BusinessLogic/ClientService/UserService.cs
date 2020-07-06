@@ -64,11 +64,24 @@ namespace BusinessLogic.ClientService
                 {
                     return new AjaxResult { state = ResultType.error.ToString(), message = "你输入的手机号为无效账户，请输入其他手机号注册", data = "" };
                 }
+                //2校验推荐人
+                data = userRepository.FindEntity(x => x.UserTelephone == user.ReferrerTelephone && x.Enable == "Y");
+                if (data == null)
+                {
+                    return new AjaxResult { state = ResultType.error.ToString(), message = "你输入的推荐人手机号在系统中不存在，请重新输入推荐人手机号", data = "" };
+                }
+                data = userRepository.FindEntity(x => x.UserTelephone == user.ReferrerTelephone && x.Enable == "N");
+                if (data != null)
+                {
+                    return new AjaxResult { state = ResultType.error.ToString(), message = "你输入的推荐人手机号为无效账户，请重新输入推荐人手机号", data = "" };
+                }
                 //3入库
                 UserInfoEntity userEntity = new UserInfoEntity();
                 userEntity.UserId = Common.CreateNo();
                 userEntity.Name = user.Name;
                 userEntity.UserTelephone = user.UserTelephone;
+                userEntity.Referrer = GetUserNameByPhone(user.ReferrerTelephone).Name;
+                userEntity.ReferrerTelephone = user.ReferrerTelephone;
                 userEntity.IsAdmin = "N";
                 userEntity.Password = DESEncrypt.Encrypt(user.Password);
                 userEntity.UserType = 1;//新用户注册默认都是经销商
@@ -117,7 +130,7 @@ namespace BusinessLogic.ClientService
             try
             {
                 List<UserTreeData> results = new List<UserTreeData>();
-                DataTable treeTable1 = userRepository.GetUserTeamLevel1(userId, goodsId);
+                DataTable treeTable1 = userRepository.GetUserTeamLevel1(userId,goodsId);
                 DataTable treeTable2 = userRepository.GetUserTeamLevel2(userId, goodsId);
                 for (int i = 0; i < treeTable1.Rows.Count; i++)
                 {
@@ -157,7 +170,33 @@ namespace BusinessLogic.ClientService
                 throw ex;
             }
         }
-        
+
+        public object GetMyTream_New(string userId)
+        {
+            try
+            {
+                List<UserTreeData> results = new List<UserTreeData>();
+                DataTable treeTable = userRepository.GetUserTeamLevel(userId);
+                for (int i = 0; i < treeTable.Rows.Count; i++)
+                {
+                    var obj = treeTable.Rows[i];
+                    int level = Convert.ToInt32(obj["Level"]);
+                    //string userId = obj["UserId"].ToString();
+                    // getNextUserInfo(level, userId)
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void getNextUserInfo(string userId, string level)
+        {
+
+        }
+
         /// <summary>
         /// 管理后台，获取会员组织架构
         /// </summary>

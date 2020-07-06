@@ -58,7 +58,7 @@ namespace Entity
         public int TourismPorints { get; set; }
 
         /// <summary>
-        ///  积分余额
+        ///  福豆
         /// </summary>
         public int PorintsSurplus { get; set; }
 

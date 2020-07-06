@@ -8,7 +8,7 @@
             </template>
     <!-- <van-tabbar> -->
         <!-- <van-tabbar-item icon="wap-home" data="/category">关于我们</van-tabbar-item>
-        <van-tabbar-item icon="wap-nav" data="/home" >积分商城</van-tabbar-item>
+        <van-tabbar-item icon="wap-nav" data="/home" >福豆商城</van-tabbar-item>
         <van-tabbar-item icon="cart" data="/cart" >购物车</van-tabbar-item>
         <van-tabbar-item icon="contact" data="/user/index">我的</van-tabbar-item> -->
     </van-tabbar>
@@ -46,7 +46,7 @@ created(){
            active:0,
            tabItems:[
                { name:'关于我们',icon:'wap-home',url:'/category'},
-               { name:'积分商城',icon:'wap-nav',url:'/home'},
+               { name:'福豆商城',icon:'wap-nav',url:'/home'},
             //    { name:'购物车',icon:'cart',url:'/cart'},
                { name:'我的',icon:'contact',url:'/user/index'},
            ]

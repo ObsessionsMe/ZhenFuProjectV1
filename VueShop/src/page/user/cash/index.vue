@@ -6,7 +6,7 @@
       <van-popup v-model="showGoodsPicker" position="bottom">
         <van-picker value-key="goodsName" show-toolbar :columns="productList" @confirm="onGoodsConfirm" @cancel="showGoodsPicker = false" />
       </van-popup>
-
+    
       <!-- <van-field  readonly clickable name="picker" v-model="entity.payTypeName" label="兑现方式" placeholder="请选择" @click="showPayPicker = true" />
       <van-popup v-model="showPayPicker" position="bottom">
         <van-picker value-key="name" show-toolbar :columns="pays" @confirm="onPayConfirm" @cancel="showPayPicker = false" />
