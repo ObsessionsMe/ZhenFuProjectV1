@@ -110,5 +110,16 @@ namespace Entity
         /// 扩展字段
         /// </summary>
         public string Exterd3 { get; set; }
+
+        /// <summary>
+        /// 产品级别名称
+        /// </summary>
+        public string GoodsLevelName { get; set; }
+
+        /// <summary>
+        /// 产品级别显示名称
+        /// </summary>
+        public string GoodsLevelText { get; set; }
+
     }
 }

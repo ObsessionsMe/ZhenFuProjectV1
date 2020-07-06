@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--商品个人图-->
-    <div class="user-profile" style="height:120px;line-height:25px;">
+    <div class="user-profile" style="height:150px;line-height:20px;">
       <div class="user-profile-avatar">
         <a>
           <img
@@ -83,7 +83,8 @@
             :to="{path:'/user/vipSys',query:{ id:item.goodsId,name:item.goodsName }}"
           >
             <van-col span="6">
-              <van-icon name="after-sale" />
+              <!-- <van-icon name="after-sale" /> -->
+              <div style="padding-bottom:10px;">{{item.LevelText}}</div>
               <div>{{item.goodsName}}</div>
             </van-col>
           </router-link>
@@ -105,7 +106,7 @@
       <van-cell title="我的团队" is-link to="/user/myteam" />
     </van-cell-group>-->
     <van-cell-group>
-      <van-cell title="福豆兑现" is-link :to="{path:'/user/cash',query:{type:1,name:'个人积分兑现'}}" />
+      <van-cell title="福豆兑现" is-link :to="{path:'/user/cash',query:{type:2,name:'福豆兑现'}}" />
     </van-cell-group>
     <!-- <van-cell-group>
       <van-cell title="团队积分兑现" is-link :to="{path:'/user/cash',query:{type:2,name:'团队积分兑现'}}" />
@@ -177,6 +178,7 @@ export default {
               var item = {
                 goodsId:shopDataLists[i].goodsId,
                 goodsName:shopDataLists[i].goodsName,
+                LevelText:shopDataLists[i].goodsLevelText,
               }
               this.vipSys.push(item);
             }

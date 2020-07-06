@@ -60,19 +60,22 @@ namespace WebUI.Controllers.Client
             {
                 var entity = cashService.RecentCash(userModel.UserId);
                 result.state = ResultType.success.ToString();
-                result.data = new
+                if (entity != null)
                 {
-                    Account = entity.Account,
-                    BankType = entity.BankType,
-                    BankTypeName = entity.BankTypeName,
-                    BankUserName = entity.BankUserName,
-                    CityCode = entity.CityCode,
-                    CityName = entity.CityName,
-                    PayType = entity.PayType,
-                    PayTypeName = entity.PayTypeName,
-                    ProvinceCode = entity.ProvinceCode,
-                    ProvinceName = entity.ProvinceName
-                };
+                    result.data = new
+                    {
+                        Account = entity.Account,
+                        BankType = entity.BankType,
+                        BankTypeName = entity.BankTypeName,
+                        BankUserName = entity.BankUserName,
+                        CityCode = entity.CityCode,
+                        CityName = entity.CityName,
+                        PayType = entity.PayType,
+                        PayTypeName = entity.PayTypeName,
+                        ProvinceCode = entity.ProvinceCode,
+                        ProvinceName = entity.ProvinceName
+                    };
+                }
             }
             catch (Exception ex)
             {

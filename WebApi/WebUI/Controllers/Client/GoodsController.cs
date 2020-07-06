@@ -81,6 +81,7 @@ namespace WebUI.Controllers.Client
                 ShopData.UnitPrice = item.UnitPrice;
                 ShopData.GoodsMainImg = item.GoodsMainImg;//关联查附件表
                 ShopData.GoodsDetailsImg = item.GoodsDetailsImg;
+                ShopData.GoodsLevelText = item.GoodsLevelText;
                 ShopDataList.Add(ShopData);
             }
             var result = new

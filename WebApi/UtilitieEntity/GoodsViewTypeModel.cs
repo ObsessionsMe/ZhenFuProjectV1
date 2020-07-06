@@ -23,6 +23,8 @@ namespace UtilitieEntity
 
         public string GoodsDetailsImg { get; set; }
 
+        public string GoodsLevelText { get; set; }
+
         public int UnitPrice { get; set; }
     }
 }

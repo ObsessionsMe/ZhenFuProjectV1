@@ -2,10 +2,12 @@
   <div>
     <headerNav :title="name" />
     <el-main>
-      <van-field readonly clickable name="picker" v-model="entity.GoodsName" label="产品" placeholder="请选择" @click="showGoodsPicker = true" />
+      
+      <!-- <van-field readonly clickable name="picker" v-model="entity.GoodsName" label="产品" placeholder="请选择" @click="showGoodsPicker = true" />
       <van-popup v-model="showGoodsPicker" position="bottom">
         <van-picker value-key="goodsName" show-toolbar :columns="productList" @confirm="onGoodsConfirm" @cancel="showGoodsPicker = false" />
-      </van-popup>
+     
+      </van-popup> -->
     
       <!-- <van-field  readonly clickable name="picker" v-model="entity.payTypeName" label="兑现方式" placeholder="请选择" @click="showPayPicker = true" />
       <van-popup v-model="showPayPicker" position="bottom">
@@ -149,15 +151,16 @@ export default {
       //     this.SetDisabled();
       //   }, 30000);
       // });
-      GetGoodsList().then(response => {
-        if (response.state == "success") {
-          console.log("response.data.shopDataList", response.data.shopDataList);
-          this.productList = response.data.shopDataList;
-          if (this.productList.length > 0) {
-            this.onGoodsConfirm(this.productList[0]);
-          }
-        }
-      });
+      
+      // GetGoodsList().then(response => {
+      //   if (response.state == "success") {
+      //     console.log("response.data.shopDataList", response.data.shopDataList);
+      //     this.productList = response.data.shopDataList;
+      //     if (this.productList.length > 0) {
+      //       this.onGoodsConfirm(this.productList[0]);
+      //     }
+      //   }
+      // });
       //加载上一次兑现的账号信息
       recentCash().then(response => {
         if (response.state == "success") {
@@ -221,7 +224,8 @@ export default {
         Dialog.confirm({
           title: "温馨提示",
           message:
-            "团队提现将会收取" +
+
+            "福豆提现将会收取" +
             this.entity.poundageRate * 100 +
             "%的手续费，实际提现" +
             this.entity.deduct * (1 - this.entity.poundageRate) +

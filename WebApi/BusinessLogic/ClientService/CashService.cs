@@ -19,11 +19,13 @@ namespace BusinessLogic.ClientService
         private ICashRepository CashRepository;
         private IUserPrintsSumRepository userPrintsSumRepository;
         private IUserPorintsRecordRepository userPorintsRecordRepository;
-        public CashService(ICashRepository _CashRepository, IUserPrintsSumRepository _userPrintsSumRepository, IUserPorintsRecordRepository _userPorintsRecordRepository)
+        private IUserRepository userRepository;
+        public CashService(ICashRepository _CashRepository, IUserPrintsSumRepository _userPrintsSumRepository, IUserPorintsRecordRepository _userPorintsRecordRepository, IUserRepository _userRepository)
         {
             CashRepository = _CashRepository;
             userPrintsSumRepository = _userPrintsSumRepository;
             userPorintsRecordRepository = _userPorintsRecordRepository;
+            userRepository = _userRepository;
         }
 
         public AjaxResult InsertCashInfo(CashInfoEntity entity)
@@ -31,16 +33,27 @@ namespace BusinessLogic.ClientService
             AjaxResult result = new AjaxResult();
             CashRepository.Insert(entity);
             //积分扣除
-            var sumEntity = userPrintsSumRepository.FindEntity(f => f.GoodsId == entity.GoodsId && f.UserId == entity.UserId);
+            var userEntity=userRepository.FindEntity(f => f.UserId == entity.UserId);
             if (entity.Type == 1)
             {
-                sumEntity.ProductPorints -= entity.Deduct;
+
             }
             else
             {
-                sumEntity.TreamPorints -= entity.Deduct;
+                userEntity.PecialItemPorints -= entity.Deduct;
             }
-            userPrintsSumRepository.Update(sumEntity);
+            userRepository.Update(userEntity);
+
+            //var sumEntity = userPrintsSumRepository.FindEntity(f => f.GoodsId == entity.GoodsId && f.UserId == entity.UserId);
+            //if (entity.Type == 1)
+            //{
+            //    sumEntity.ProductPorints -= entity.Deduct;
+            //}
+            //else
+            //{
+            //    sumEntity.TreamPorints -= entity.Deduct;
+            //}
+            //userPrintsSumRepository.Update(sumEntity);
             //扣除记录
             //userPorintsRecordRepository.Insert(new UserPorintsRecordEntity()
             //{
