@@ -15,11 +15,7 @@ export default {
         treeData: [{
           id: 1,
           label: '推荐人',
-          children: [{
-            id:2,
-            label: '我',
-            children: []
-          }]
+          children: []
         }],
         defaultProps: {
           children: 'children',
@@ -32,8 +28,9 @@ export default {
   },
   methods: {
     getMyTream() {
-      console.log("goodsId", this.teamEarn.param.GoodsId);
-      GetMyTream(this.teamEarn.param.GoodsId).then(response => {
+      //console.log("goodsId", this.teamEarn.param.GoodsId);
+      GetMyTream().then(response => {
+        console.log("response",response)
         if (response.state == "success") {
           console.log("response.data.parentName", response.data.parentName);
           if (response.data.parentName == "管理员13888888888") {
@@ -41,9 +38,8 @@ export default {
           } else {
             this.treeData[0].label = response.data.parentName + "(推荐人)";
           }
-          this.treeData[0].children[0].label = response.data.name + "(我)";
           console.log("treeData", response.data.treeData);
-          this.treeData[0].children[0].children = response.data.treeData;
+          this.treeData[0].children = response.data.treeData;
         } else {
           this.treeData[0].label = "暂无推荐人";
           this.treeData[0].children[0].label =

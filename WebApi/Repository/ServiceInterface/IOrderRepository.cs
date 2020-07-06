@@ -16,5 +16,7 @@ namespace RepositoryFactory.ServiceInterface
         bool IsWorkDate(string date);
 
         List<OrderListEntity> GetUse_OrderList(Pagination pagination, Expression<Func<OrderListEntity, bool>> predicate);
+
+        bool IsOverStp_PayMaxGoodsLeve(string userId, string goodsId);
     }
 }

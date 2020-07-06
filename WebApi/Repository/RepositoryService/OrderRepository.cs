@@ -51,8 +51,8 @@ namespace RepositoryFactory.RepositoryService
 
         public bool IsOverStp_PayMaxGoodsLeve(string userId, string goodsId)
         {
-            List<GoodsEntity> list = ExecuteSql.SqlQuery<GoodsEntity>(new DatabaseFacade(dbcontext), string.Format("exec IsOverStp_PayMaxGoodsLeve '{0}','{1}'", userId, goodsId), new object[] { });
-            return  true;
+            object obj = ExecuteSql.ProcQuerytoScalar(new DatabaseFacade(dbcontext), string.Format("exec proc_IsOverStp_PayMaxGoodsLeve '{0}','{1}'", userId, goodsId), null);
+            return Convert.ToInt32(obj) == 1 ? true : false;
         }
     }
 }

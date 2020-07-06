@@ -56,9 +56,15 @@ namespace BusinessLogic.ClientService
                     return new AjaxResult { state = ResultType.error.ToString(), message = "你账号无效，请使用其他账号登录", data = "" };
                 }
                 //校验当前用户的推荐人都买了哪一级的产品，如果买了E，他就可以买ABCDE产品，如果买了B，就可以买AB产品
-                //var  user = userRepository.FindEntity(x => x.UserTelephone == userEntity.ReferrerTelephone && x.Name == userEntity.Referrer && x.Enable == "Y");
-
-                var goods = goodsRepository.FindEntity(x => x.GoodsId == order.GoodsId && x.Enable == "Y");
+                var goodsEntity = goodsRepository.FindEntity(x => x.GoodsId  == order.GoodsId&& x.Enable == "Y");
+                if (goodsEntity.isProduct == "Y")
+                {
+                    bool bo = orderRepository.IsOverStp_PayMaxGoodsLeve(userId, order.GoodsId);
+                    if (!bo)
+                    {
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "下单失败！你当前购买的产品不能大于你推荐人购买的产品等级，", data = "" };
+                    }
+                }
                 int i = 0;
                 int payCount = (order.GoodsUnitPrice) * (order.BuyGoodsNums);  //下单总价
                 //减去运费

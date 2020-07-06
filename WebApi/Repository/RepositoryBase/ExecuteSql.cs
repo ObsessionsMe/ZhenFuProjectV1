@@ -93,6 +93,24 @@ namespace RepositoryFactory.RepositoryBase
             }
         }
 
+        public static object ProcQuerytoScalar(this DatabaseFacade facade, string procName, SqlParams sqlParams)
+        {
+            try
+            {
+
+                var ds = new DataSet();
+                var cmd = ProcQueryBase(facade, out DbConnection conn, procName, sqlParams);
+                cmd.CommandType = CommandType.StoredProcedure;
+                object obj = cmd.ExecuteScalar();
+                conn.Close();
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         /// <summary>
         /// 执行Sql实体集合
         /// </summary>

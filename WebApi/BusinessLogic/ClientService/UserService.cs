@@ -125,12 +125,12 @@ namespace BusinessLogic.ClientService
         /// <param name="userTelephone"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public object GetMyTream(string userId,string goodsId)
+        public object GetMyTream(string userId, string goodsId)
         {
             try
             {
                 List<UserTreeData> results = new List<UserTreeData>();
-                DataTable treeTable1 = userRepository.GetUserTeamLevel1(userId,goodsId);
+                DataTable treeTable1 = userRepository.GetUserTeamLevel1(userId, goodsId);
                 DataTable treeTable2 = userRepository.GetUserTeamLevel2(userId, goodsId);
                 for (int i = 0; i < treeTable1.Rows.Count; i++)
                 {
@@ -177,12 +177,19 @@ namespace BusinessLogic.ClientService
             {
                 List<UserTreeData> results = new List<UserTreeData>();
                 DataTable treeTable = userRepository.GetUserTeamLevel(userId);
-                for (int i = 0; i < treeTable.Rows.Count; i++)
+                var root = treeTable.AsEnumerable().Where(x => x.Field<int>("Level") == 0).Select(x => new UserTreeData()
                 {
-                    var obj = treeTable.Rows[i];
-                    int level = Convert.ToInt32(obj["Level"]);
-                    //string userId = obj["UserId"].ToString();
-                    // getNextUserInfo(level, userId)
+                    id = x.Field<string>("UserId"),
+                    label = x.Field<string>("Name") + x.Field<string>("GoodsLevelNames") + " (" + x.Field<string>("UserTelephone") + ")",
+                    name = x.Field<string>("Name"),
+                    telephone = x.Field<string>("UserTelephone"),
+                    goodsLevelNames = x.Field<string>("GoodsLevelNames"),
+                    children = new List<UserTreeData>()
+                }).FirstOrDefault();
+                if (root != null)
+                {
+                    getNextUserInfo(treeTable, root);
+                    results.Add(root);
                 }
                 return results;
             }
@@ -192,9 +199,28 @@ namespace BusinessLogic.ClientService
             }
         }
 
-        public void getNextUserInfo(string userId, string level)
-        {
 
+
+
+        public void getNextUserInfo(DataTable treeTable, UserTreeData data)
+        {
+            var result = treeTable.AsEnumerable().Where(x => x.Field<string>("ReferrerTelephone") == data.telephone).Select(x => new UserTreeData()
+            {
+                id = x.Field<string>("UserId"),
+                label =  x.Field<string>("Name") + x.Field<string>("GoodsLevelNames") +" (" + x.Field<string>("UserTelephone") + ")",
+                name = x.Field<string>("Name"),
+                telephone = x.Field<string>("UserTelephone"),
+                goodsLevelNames = x.Field<string>("GoodsLevelNames"),
+                children = new List<UserTreeData>()
+            });
+            if (result.Count() > 0)
+            {
+                foreach (var item in result)
+                {
+                    getNextUserInfo(treeTable, item);
+                    data.children.Add(item);
+                }
+            }
         }
 
         /// <summary>
@@ -261,7 +287,7 @@ namespace BusinessLogic.ClientService
             return count;
         }
 
-       public UserPrintsSumEntity GetUserPorints(string userId)
+        public UserPrintsSumEntity GetUserPorints(string userId)
         {
             return sumRepository.FindEntity(x => x.UserId == userId);
         }

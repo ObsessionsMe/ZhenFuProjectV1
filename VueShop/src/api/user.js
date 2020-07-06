@@ -33,11 +33,10 @@ export function GetUserPorints(params) {
   })
 }
 
-export function GetMyTream(params) {
+export function GetMyTream() {
   return request({
     url: '/api/user/GetMyTream',
-    method: 'get',
-    params: { goodsId:params} 
+    method: 'get'
   })
 }
 
