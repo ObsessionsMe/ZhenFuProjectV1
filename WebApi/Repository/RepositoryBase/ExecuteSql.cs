@@ -64,6 +64,19 @@ namespace RepositoryFactory.RepositoryBase
             }
         }
 
+        public static object SqlQueryScalar(this DatabaseFacade facade, string sql, params object[] parameters)
+        {
+            try
+            {
+                var command = CreateCommand(facade, sql, out DbConnection conn, parameters);
+                return command.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         private static DbCommand ProcQueryBase(this DatabaseFacade facade, out DbConnection conn, string procName, SqlParams sqlParams)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
@@ -67,6 +68,46 @@ namespace WebUI.Controllers.Client
             return Json(result);
         }
 
+        [Route("getTeamDetail")]
+        public ActionResult GetTeamDetail(GoodsParam param)
+        {
+            UserService servers = new UserService(userRepository, sumRepository, order);
+            var result = new AjaxResult<dynamic>();
+            try
+            {
+                param.UserId = userModel.UserId;
+                //获取团队的详情
+                var ds = sumRepository.GetTeamDetail(param);
+                var treeTable= ds.Tables[1];
+                var root = treeTable.AsEnumerable().Where(x => x.Field<int>("Level") == -1).Select(x => new UserTreeData()
+                {
+                    id = x.Field<string>("UserTelephone"),
+                    name = x.Field<string>("Name"),
+                    telephone = x.Field<string>("UserTelephone"),
+                    children = new List<UserTreeData>()
+                }).FirstOrDefault();
+                root.label = root.name + "(" + root.telephone.Substring(root.telephone.Length - 5, 4) + ")";
+                servers.FillTreeData(treeTable, root);
+                var tree = new List<UserTreeData>();
+                tree.Add(root);
+                
+                var detail = ds.Tables[0].ToDynamics().First();
+                result.data = new
+                {
+                    tree = tree,
+                    detail = detail
+                };
+                result.state = ResultType.success.ToString();
+            }
+            catch (Exception ex)
+            {
+                result.message = "获取团队详情!";
+                result.state = ResultType.success.ToString();
+                LogHelper.Log.Error(ex);
+            }
+            return Json(result);
+        }
+
         [Route("getTeamEarn")]
         public ActionResult GetTeamEarn(GoodsParam param)
         {
@@ -93,6 +134,11 @@ namespace WebUI.Controllers.Client
             }
             return Json(result);
         }
+
+       
+
+
+
 
         [Route("getProductEarn")]
         public ActionResult GetProductEarn(GoodsParam param)
@@ -177,6 +223,8 @@ namespace WebUI.Controllers.Client
         [Route("GetPorintSurplus")]
         public ActionResult GetPorintSurplus(GoodsParam param)
         {
+            param.UserId = userModel.UserId;
+            var result= new VipProductDetailModel(); 
             if (userModel == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败", data = "" });
@@ -184,12 +232,20 @@ namespace WebUI.Controllers.Client
             var entity = sumRepository.FindEntity(x => x.GoodsId == param.GoodsId && x.UserId == userModel.UserId);
             if (entity == null)
             {
-                entity = new UserPrintsSumEntity();
-                entity.ProductPorints = 0;
-                entity.TreamPorints = 0;
-                entity.HoldingDays = 0;
+                result.ProductPorints = 0;
+                result.TreamPorints = 0;
+                result.HoldingDays = 0;
+                result.IsAgency = false;
             }
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = entity });
+            else
+            {
+                result.ProductPorints=entity.ProductPorints;
+                result.TreamPorints = entity.TreamPorints;
+                result.HoldingDays = entity.HoldingDays;
+                result.IsAgency = sumRepository.IsAgency(param);
+            }
+
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = result });
         }
     }
 }

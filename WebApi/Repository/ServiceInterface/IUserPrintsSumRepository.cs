@@ -15,5 +15,7 @@ namespace RepositoryFactory.ServiceInterface
         public DataSet GetProductEarn(GoodsParam goodsParam);
         public DataSet GetTeamEarn(GoodsParam param);
         public DataSet GetTeamEarnDetail(GoodsParam param);
+        public DataSet GetTeamDetail(GoodsParam goodsParam);
+        public bool IsAgency(GoodsParam goodsParam);
     }
 }

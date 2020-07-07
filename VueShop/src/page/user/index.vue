@@ -84,7 +84,7 @@
           >
             <van-col span="6">
               <!-- <van-icon name="after-sale" /> -->
-              <div style="padding-bottom:10px;">{{item.LevelName+item.LevelText}}</div>
+              <div style="padding-bottom:10px;">{{item.LevelName}}{{item.LevelText}}</div>
               <div>{{item.goodsName}}</div>
             </van-col>
           </router-link>

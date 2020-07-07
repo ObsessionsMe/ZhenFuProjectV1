@@ -72,5 +72,23 @@ namespace Repository.RepositoryService
 
             return ExecuteSql.ProcQuery(new DatabaseFacade(dbcontext), "p_get_team_earn_detail", sqlParams);
         }
+
+        public DataSet GetTeamDetail(GoodsParam goodsParam)
+        {
+            var sqlParams = new SqlParams();
+            sqlParams.Params.Add("@userId", goodsParam.UserId);
+            sqlParams.Params.Add("@goodsId", goodsParam.GoodsId);
+
+            return ExecuteSql.ProcQuery(new DatabaseFacade(dbcontext), "p_get_team_detail", sqlParams);
+        }
+
+        public bool IsAgency(GoodsParam goodsParam)
+        {
+            var sqlParams = new SqlParams();
+            sqlParams.Params.Add("@userId", goodsParam.UserId);
+            sqlParams.Params.Add("@goodsId", goodsParam.GoodsId);
+
+            return (bool)ExecuteSql.SqlQueryScalar(new DatabaseFacade(dbcontext), "select dbo.f_is_agency(@userId,@goodsId)", sqlParams.GetSqlParameters());
+        }
     }
 }
