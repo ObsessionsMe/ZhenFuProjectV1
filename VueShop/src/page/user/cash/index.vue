@@ -2,14 +2,13 @@
   <div>
     <headerNav :title="name" />
     <el-main>
-      
-      
+
       <!-- <van-field readonly clickable name="picker" v-model="entity.GoodsName" label="产品" placeholder="请选择" @click="showGoodsPicker = true" />
       <van-popup v-model="showGoodsPicker" position="bottom">
         <van-picker value-key="goodsName" show-toolbar :columns="productList" @confirm="onGoodsConfirm" @cancel="showGoodsPicker = false" />
      
       </van-popup> -->
-    
+
       <!-- <van-field  readonly clickable name="picker" v-model="entity.payTypeName" label="兑现方式" placeholder="请选择" @click="showPayPicker = true" />
       <van-popup v-model="showPayPicker" position="bottom">
         <van-picker value-key="name" show-toolbar :columns="pays" @confirm="onPayConfirm" @cancel="showPayPicker = false" />
@@ -152,7 +151,7 @@ export default {
       //     this.SetDisabled();
       //   }, 30000);
       // });
-      
+
       // GetGoodsList().then(response => {
       //   if (response.state == "success") {
       //     console.log("response.data.shopDataList", response.data.shopDataList);
@@ -166,6 +165,13 @@ export default {
       recentCash().then(response => {
         if (response.state == "success") {
           Object.assign(this.entity, response.data);
+        }
+      });
+      getCashDetail(this.entity.Type, "0001").then(res => {
+        if (res.state == "success") {
+          this.entity.integral = res.data.integral;
+          this.entity.deductRate = res.data.deductRate;
+          this.entity.poundageRate = res.data.poundageRate;
         }
       });
     },
@@ -225,7 +231,6 @@ export default {
         Dialog.confirm({
           title: "温馨提示",
           message:
-
             "福豆提现将会收取" +
             this.entity.poundageRate * 100 +
             "%的手续费，实际提现" +
