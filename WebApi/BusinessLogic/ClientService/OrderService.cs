@@ -59,10 +59,13 @@ namespace BusinessLogic.ClientService
                 var goodsEntity = goodsRepository.FindEntity(x => x.GoodsId  == order.GoodsId&& x.Enable == "Y");
                 if (goodsEntity.isProduct == "Y")
                 {
-                    bool bo = orderRepository.IsOverStp_PayMaxGoodsLeve(userId, order.GoodsId);
-                    if (!bo)
+                    if (userEntity.UserId != "20200505001")
                     {
-                        return new AjaxResult { state = ResultType.error.ToString(), message = "下单失败！你当前购买的产品不能大于你推荐人购买的产品等级，", data = "" };
+                        bool bo = orderRepository.IsOverStp_PayMaxGoodsLeve(userId, order.GoodsId);
+                        if (!bo)
+                        {
+                            return new AjaxResult { state = ResultType.error.ToString(), message = "下单失败！你当前购买的产品不能大于你推荐人购买的产品等级，", data = "" };
+                        }
                     }
                 }
                 int i = 0;
@@ -74,17 +77,31 @@ namespace BusinessLogic.ClientService
                 }
                 if (order.UsePorintsType == 1)
                 {
-                    //福豆结算
+                    //福豆余额结算
                     int PorintsSurplus = userEntity.PorintsSurplus;
                     if (PorintsSurplus <= 0)
                     {
-                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的福豆不足，请先充值", data = "" };
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的福豆余额不足，请先充值", data = "" };
                     }
                     if (PorintsSurplus < payCount)
                     {
-                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的福豆不足，请先充值", data = "" };
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的福豆余额不足，请先充值", data = "" };
                     }
                     userEntity.PorintsSurplus = (userEntity.PorintsSurplus) - (payCount);
+                }
+                if (order.UsePorintsType == 3)
+                {
+                    //可用福豆结算
+                    int PecialItemPorints = userEntity.PecialItemPorints;
+                    if (PecialItemPorints <= 0)
+                    {
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的可用福豆不足", data = "" };
+                    }
+                    if (PecialItemPorints < payCount)
+                    {
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "你的可用福豆不足", data = "" };
+                    }
+                    userEntity.PecialItemPorints = (userEntity.PecialItemPorints) - (payCount);
                 }
                 i = userRepository.Update(userEntity);//扣除积分
                 if (i < 1)

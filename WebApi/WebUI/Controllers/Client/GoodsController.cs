@@ -22,12 +22,14 @@ namespace WebUI.Controllers.Client
         private readonly IGoodsRepository goodsRepository;
         private readonly IOrderRepository orderRepository;
         private readonly IProductCfgRepository productCfg;
+        private readonly IAttachMentRepository attachMentRepository;
         GoodsService servers = null;
-        public GoodsController(IGoodsRepository _goodsRepository, IOrderRepository _orderRepository, IProductCfgRepository _productCfg)
+        public GoodsController(IGoodsRepository _goodsRepository, IOrderRepository _orderRepository, IProductCfgRepository _productCfg, IAttachMentRepository  _attachMentRepository)
         {
             goodsRepository = _goodsRepository;
             orderRepository = _orderRepository;
             productCfg = _productCfg;
+            attachMentRepository = _attachMentRepository;
             servers = new GoodsService(_goodsRepository, _orderRepository);
         }
 
@@ -79,8 +81,7 @@ namespace WebUI.Controllers.Client
                 ShopData.GoodsName = item.GoodsName;
                 ShopData.GoodsDescribe = item.GoodsDescribe;
                 ShopData.UnitPrice = item.UnitPrice;
-                ShopData.GoodsMainImg = item.GoodsMainImg;//关联查附件表
-                ShopData.GoodsDetailsImg = item.GoodsDetailsImg;
+                ShopData.GoodsMainImg = attachMentRepository.FindEntity(x => x.MainId == item.GoodsId && x.AttachmentType == 4).AttachmentName;//关联查附件表
                 ShopData.GoodsLevelText = item.GoodsLevelText;
                 ShopData.GoodsLevelName = item.GoodsLevelName;
                 ShopDataList.Add(ShopData);

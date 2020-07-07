@@ -35,17 +35,12 @@
     <div style="height:15px;"></div>
     <van-radio-group v-model="payMethod">
       <van-cell-group>
-        <van-cell title="福豆" clickable @click="payMethod = '1'">
+        <van-cell title="福豆余额" clickable @click="payMethod = '1'">
           <template #right-icon>
             <van-radio name="1" />
           </template>
         </van-cell>
-        <van-cell title="团队积分余额" clickable @click="payMethod = '2'" v-if="isProduct">
-          <template #right-icon>
-            <van-radio name="2" />
-          </template>
-        </van-cell>
-        <van-cell title="可用积分" clickable @click="payMethod = '3'" v-if="isProduct">
+        <van-cell title="可用福豆" clickable @click="payMethod = '3'" v-if="!isProduct">
           <template #right-icon>
             <van-radio name="3" />
           </template>
@@ -80,33 +75,14 @@
       :disabled="isCanPay"
     />
 
-    <van-actionsheet v-model="isRule" v-if="isShowZhenfu" :title="ruleName">
+    <van-actionsheet v-model="isRule" v-if="isProduct" :title="ruleName">
       <div class="content" style="height:600px;overflow-y:auto;">
         <van-cell-group>
-          <van-cell value="1.	本产品由湖北真福医药有限公司提供，所售商品均为品牌正品，假一赔十" />
-          <van-cell value="2.	本公司产品均为预售品，由兑换当日起计算。预售期根据产品生产周期而定。" />
-          <van-cell value="3.	客服在线时间为：工作日8：30—12：00，13：30—18：00。" />
-          <van-cell value="4.	商城结算时间为每日21：00，此时间之后兑换的产品次日产生积分。" />
-          <van-cell value="5.	本产品自动确认收货时间为7个自然日（以快递官网签收时间为准），如过时未收到产品请及时与客服联系。如需开票，开票金额为客户最终兑换金额。" />
-          <van-cell value="6.	每笔订单完成后将不产生任何积分。" />
-          <van-cell
-            value="7. 每笔订单完成后的5个工作日（含5个工作日）未发起下一笔订单的用户，视为无效户，其账户积分将做清零处理，且所建立的团队架构将直接对接此无效户的推荐人。"
-          />
-          <van-cell value="8. 产品发货后一般三天左右到达，西藏、青海、甘肃、内蒙、新疆等偏远地区7天左右到达，具体视情况而定，不同快递速度稍有区别。" />
-          <van-cell
-            value="9. 签收时需本人签收或者委托第三方签收，签收时请查看产品外包装是否完整，检查所兑换商品数量和外观问题，如破损、明显挤压变形等问题请及时联系客服或者拒绝签收，一旦签收便为默认收到的东西是完整无缺的，如有损失自行承担。"
-          />
-          <van-cell value="10. 如遇战争、自然灾害、疫情等人力不可为因素导致公司无法发货时，本公司不承认任何刑事责任和民事赔偿。" />
-
-          <van-cell style="color:red" value="退货须知" />
-          <van-cell value="1. 由于运输过程造成产品的破损，须及时拍照与客服联系；如有退货需求，在预售期结束后公众号内发出退货申请，并在7个自然日内填写退货物流信息" />
-          <van-cell value="2. 退货产品必须保持包装完整，勿直接在产品原厂外盒粘贴或书写" />
-          <van-cell value="3. 对于产品原厂外盒有损坏的退货产品，退款金额只为产品最终兑换价格的40%；退货产品内部商品及包装、资料缺失损坏的，将不予以退货" />
-          <van-cell value="4. 由于产品的质量问题或生产商失误造成的退换货，本公司将承担来回运费，由于买家自己的问题导致退换货，将自行承担全部运费，拒收到付" />
-          <van-cell
-            value="5. 退换货产品，须以书面形式清晰地写明本人账户名称、联系方式、订单编号以及退换货原因，由于买家退换货时无任何书面信息或字迹模糊无法识别，导致客服无法及时查询到买家交易信息，而造成的换货退款延误，本公司不承担责任"
-          />
-
+          <van-cell value="1.本公司产品持仓有效期均为90个工作日，由兑换当日起计算。有效期结束后，如未持仓，将不产生任何福豆。" />
+          <van-cell value="2.商城结算时间为每日21：00，此时间之后兑换的产品次日产生福豆。" />
+          <van-cell value="3.本公司产品自动默认收货时间为7个自然日（以快递官网签收时间为准），如过时未收到产品请及时与客服联系。" />
+          <van-cell value="4.签收时需本人签收或者委托第三方签收，签收时请查看产品外包装是否完整，检查所兑换商品数量和外观问题，如破损、明显挤压变形等问题请及时联系客服或者拒绝签收，一旦签收便为默认收到的东西是完整无缺的，如有损失自行承担。" />
+          <van-cell value="5.如遇战争、自然灾害、疫情等人力不可为因素导致公司无法发货时，本公司不承认任何刑事责任和民事赔偿。" />
           <van-cell
             style="color:red;margin-bottom:15%"
             value="敬请顾客朋友在购买之前仔细阅读以上条款，一旦购买本公司产品即视为接受并履行以上条款。最终解释权归本公司所有。"
@@ -114,35 +90,11 @@
         </van-cell-group>
       </div>
     </van-actionsheet>
-    <van-actionsheet v-model="isRule" v-if="isShowDbm" :title="ruleName">
-      <div class="content" style="height:600px;overflow-y:auto;">
-        <van-cell-group>
-          <van-cell value="1. 本产品由贵州苗氏药业股份有限公司提供，所售商品均为正品，假一赔十。" />
-          <van-cell value="2. 本公司产品均为预售品，由兑换当日起计算。预售期根据产品生产周期而定。" />
-          <van-cell value="3. 客服在线时间为：工作日8：30—12：00，13：30—18：00。" />
-          <van-cell value="4. 商城结算时间为每日21：00，此时间之后兑换的产品次日产生积分。" />
-          <van-cell value="5. 本产品自动确认收货时间为7个自然日（以快递官网签收时间为准），如过时未收到产品请及时与客服联系。如需开票，开票金额为客户最终兑换金额。" />
-          <van-cell value="6. 每笔订单完成后将不产生任何积分。" />
-          <van-cell
-            value="7. 每笔订单完成后的3个工作日（含3个工作日）未发起下一笔订单的用户，视为无效户，其账户积分将做清零处理，且所建立的团队架构将直接对接此无效户的推荐人。。"
-          />
-          <van-cell value="8. 产品发货后一般三天左右到达，西藏、青海、甘肃、内蒙、新疆等偏远地区7天左右到达，具体视情况而定，不同快递速度稍有区别。" />
-          <van-cell
-            value="9. 签收时需本人签收或者委托第三方签收，签收时请查看产品外包装是否完整，检查所兑换商品数量和外观问题，如破损、明显挤压变形等问题请及时联系客服或者拒绝签收，一旦签收便为默认收到的东西是完整无缺的，如有损失自行承担。"
-          />
-          <van-cell value="10. 如遇战争、自然灾害、疫情等人力不可为因素导致公司无法发货时，本公司不承认任何刑事责任和民事赔偿。" />
-          <van-cell
-            style="color:red;margin-bottom:15%"
-            value="敬请顾客朋友在购买之前仔细阅读以上条款，一旦购买本公司产品即视为接受并履行以上条款。最终解释权归本公司所有。"
-          />
-        </van-cell-group>
-      </div>
-    </van-actionsheet>
-    <van-actionsheet v-model="isRule" v-if="isShowGoods" :title="ruleName">
+    <van-actionsheet v-model="isRule" v-if="!isProduct" :title="ruleName">
       <div class="content">
         <van-cell-group>
           <van-cell value="1. 商城所列示的商品如需售后，请直接联系该品牌全国统一售后电话，如需提供发票，请及时联系本公司客服人员。" />
-          <van-cell value="2.商城积分兑换的产品将不予以开取发票（特殊产品除外，须联系客服人员）。" />
+          <van-cell value="2. 商城积分兑换的产品将不予以开取发票（特殊产品除外，须联系客服人员）。" />
           <van-cell
             style="color:red"
             value="敬请顾客朋友在购买之前仔细阅读以上条款，一旦购买本公司产品即视为接受并履行以上条款。最终解释权归本公司所有。"
@@ -159,11 +111,8 @@ import { isNullOrEmpty, checkTelephone } from "../../config/Utilitie.js";
 export default {
   data() {
     return {
-      ruleName: "商城兑换须知",
-      isShowZhenfu: false,
-      isShowDbm: false,
-      isShowGoods: true,
-      isProduct: false,
+      ruleName: "钟艾益参商城兑换须知",
+      isProduct: true,
       isRule: false,
       isSure: false,
       type: "0",
@@ -227,7 +176,7 @@ export default {
         //exterd2: this.referrerTelephone
       };
       if (!this.isSure) {
-        this.$toast("前先勾选同意珍福商城购买协议");
+        this.$toast("前先勾选同意商城购买协议");
         return;
       }
       this.$toast("正在点击提交订单...");
@@ -259,23 +208,6 @@ export default {
     if (this.goodsId == null) {
       return;
     }
-    console.log("goodsId", this.goodsId);
-    if (this.goodsId == "202004241435002") {
-      this.ruleName = "真福·福酶兑换须知";
-      this.isShowZhenfu = true;
-      this.isShowDbm = false;
-      this.isShowGoods = false;
-    } else if (this.goodsId == "202004241435003") {
-      this.ruleName = "核基因干细胞兑换须知";
-      this.isShowZhenfu = false;
-      this.isShowDbm = true;
-      this.isShowGoods = false;
-    } else {
-      this.ruleName = "商城兑换须知";
-      this.isShowZhenfu = false;
-      this.isShowDbm = false;
-      this.isShowGoods = true;
-    }
     //预下单
     ReadyPlaceOrder(this.goodsId).then(response => {
       if (response.state == "success") {
@@ -301,7 +233,8 @@ export default {
         this.GoodsUnitPrice = response.data.goodsData.unitPrice;
 
         if (response.data.goodsData.isProduct == "N") {
-          this.isProduct = true;
+          this.isProduct = false;
+          this.ruleName = "商城兑换须知";
         }
         var addresses = response.data.receiveAddressData;
         console.log("addresses", addresses);

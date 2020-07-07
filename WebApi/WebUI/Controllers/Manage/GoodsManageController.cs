@@ -84,27 +84,27 @@ namespace WebUI.Controllers.Manage
                 }
                 if (string.IsNullOrEmpty(goodsEntity.GoodsId))
                 {
-                    goodsEntity.GoodsDescribe = goodsEntity.GoodsDescribe.Replace('*', ':');
-                    if (goodsEntity.isProduct == "N")
+                    //goodsEntity.GoodsDescribe = goodsEntity.GoodsDescribe.Replace('*', ':');
+                    //if (goodsEntity.isProduct == "N")
+                    //{
+                    //新增商品
+                    goodsEntity.GoodsId = "GD" + Common.CreateNo() + Common.RndNum(5);
+                    goodsEntity.Enable = "Y";
+                    goodsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    goodsEntity.ItemPoints = goodsEntity.IndirectPoints = goodsEntity.DirectPoints = 0;
+                    goodsEntity.GoodsLevel = 1;
+                    goodsEntity.StockCount = 10000;
+                    int j = service.SubmitGoodsGoodsEntity(goodsEntity);
+                    if (j <= 0)
                     {
-                        //新增商品
-                        goodsEntity.GoodsId = "GD" + Common.CreateNo() + Common.RndNum(5);
-                        goodsEntity.Enable = "Y";
-                        goodsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                        goodsEntity.ItemPoints = goodsEntity.IndirectPoints = goodsEntity.DirectPoints = 0;
-                        goodsEntity.GoodsLevel = 1;
-                        goodsEntity.StockCount = 10000;
-                        int j = service.SubmitGoodsGoodsEntity(goodsEntity);
-                        if (j <= 0)
-                        {
-                            return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
-                        }
+                        return Json(new AjaxResult { state = ResultType.error, message = "提交商品失败", data = "" });
                     }
-                    else
-                    {
-                        //产品
+                    //}
+                    //else
+                    //{
+                    //    //产品
 
-                    }
+                    //}
                     //附件表存储商品Id相关附件，主图单个和详情图多个，商品详情轮播图可能有多个
                     bool isSave = AddAttacMentInfo(goodsEntity);
                     if (!isSave)

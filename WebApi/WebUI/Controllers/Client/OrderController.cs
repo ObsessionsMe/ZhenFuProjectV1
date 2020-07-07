@@ -107,7 +107,7 @@ namespace WebUI.Controllers.Client
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "订单传入的参数为空", data = "" });
             }
             OrderInfoEntity orderInfo = JsonConvert.DeserializeObject<OrderInfoEntity>(jsonString);
-            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository,userRepository, basePorintRepository, framkRepository);
+            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository, userRepository, basePorintRepository, framkRepository);
             var data = server.SubmitOrder(orderInfo, userModel.UserId);
             if (data == null)
             {
@@ -115,7 +115,7 @@ namespace WebUI.Controllers.Client
             }
             if (data.state.ToString() == "error")
             {
-                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "下单失败", data = "" });
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = data.message, data = "" });
             }
             return Json(data);
         }

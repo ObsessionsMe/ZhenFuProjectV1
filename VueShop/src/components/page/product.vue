@@ -28,7 +28,7 @@
 
 <script>
 import { GetGoodsList } from "../../api/goods.js";
-
+import { getFilesUrl } from "../../config/Utilitie.js";
 export default {
   name: "product",
   data() {
@@ -47,19 +47,23 @@ export default {
       var shopDataList = response.data.shopDataList;
       console.log("shopDataList",shopDataList);
       for (var i = 0; i < shopDataList.length; i++) {
-        if (shopDataList[i].enable == "Y") {
-          if(shopDataList[i].goodsId == "202004241435002"){
-            //多产品时，动态取图
-             shopDataList[i].goodsMainImg = require("@/assets/images/zffm_s002.png");
-          }
-          else{
-             shopDataList[i].goodsMainImg = require("@/assets/images/gxbMain.jpg");
-          }
-        
-        } else {
-          //未上架图
-          shopDataList[i].goodsMainImg = require("@/assets/images/ProductDefalut.jpg");
-        }
+         var imgSrc = getFilesUrl() + shopDataList[i].goodsMainImg;
+         if(shopDataList[i].goodsMainImg.indexOf('/') == -1){
+            shopDataList[i].goodsMainImg = imgSrc;
+         }
+          //   if (shopDataList[i].enable == "Y") {
+          //     if(shopDataList[i].goodsId == "202004241435002"){
+          //       //多产品时，动态取图
+          //       
+          //     }
+          //     else{
+          //        shopDataList[i].goodsMainImg = require("@/assets/images/gxbMain.jpg");
+          //     }
+            
+          //   } else {
+          //     //未上架图
+          //     shopDataList[i].goodsMainImg = require("@/assets/images/ProductDefalut.jpg");
+          //   }
       }
       this.productlist = shopDataList;
     });

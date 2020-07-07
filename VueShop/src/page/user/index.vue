@@ -22,8 +22,12 @@
           <van-col span="6">{{userInfo.tourismPorints}}</van-col>
         </van-row> -->
         <van-row type="flex" justify="center">
-          <van-col span="6">福豆</van-col>
+          <van-col span="6">福豆余额(充值)</van-col>
           <van-col span="6">{{userInfo.porintsSurplus}}</van-col>
+        </van-row>
+        <van-row type="flex" justify="center">
+          <van-col span="6">可用福豆</van-col>
+          <van-col span="6">{{userInfo.pecialItemPorints}}</van-col>
         </van-row>
         <!-- <van-row type="flex" justify="center">
           <van-col span="6">可用积分</van-col>

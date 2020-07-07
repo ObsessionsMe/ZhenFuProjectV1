@@ -34,7 +34,16 @@
          <img v-for="img in cfskImageList"  :key="img" v-lazy="img" />
       </div>
     </div>-->
-    <el-menu default-active="0" :style="'height:'+(fullHeight+6)+'px;overflow-x:hidden;width:120px;float:left;'" @open="handleOpen" @close="handleClose" @select="selectMenu" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+    <el-menu
+      default-active="0"
+      :style="'height:'+(fullHeight+6)+'px;overflow-x:hidden;width:120px;float:left;'"
+      @open="handleOpen"
+      @close="handleClose"
+      @select="selectMenu"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b"
+    >
       <el-menu-item index="0">
         <span slot="title">生产商简介</span>
       </el-menu-item>
@@ -49,6 +58,11 @@
         </template>
         <el-menu-item index="2">真福.福酶</el-menu-item>
         <el-menu-item index="4">干细胞</el-menu-item>
+        <el-menu-item index="11">金丝皇菊</el-menu-item>
+        <el-menu-item index="12">养生花茶</el-menu-item>
+        <el-menu-item index="13">极品石斛</el-menu-item>
+        <el-menu-item index="14">藏红花</el-menu-item>
+        <el-menu-item index="15">人参</el-menu-item>
       </el-submenu>
 
       <el-menu-item index="3">
@@ -74,6 +88,22 @@
       </div>
       <div v-if="this.activeKey==5" class="category-div">
         <img v-for="img in travelImageList" :key="img" v-lazy="img" />
+      </div>
+
+      <div v-if="this.activeKey==11" class="category-div">
+        <img v-for="img in cpjs11ImageList" :key="img" v-lazy="img" />
+      </div>
+      <div v-if="this.activeKey==12" class="category-div">
+        <img v-for="img in cpjs12ImageList" :key="img" v-lazy="img" />
+      </div>
+      <div v-if="this.activeKey==13" class="category-div">
+        <img v-for="img in cpjs13ImageList" :key="img" v-lazy="img" />
+      </div>
+      <div v-if="this.activeKey==14" class="category-div">
+        <img v-for="img in cpjs13ImageList" :key="img" v-lazy="img" />
+      </div>
+      <div v-if="this.activeKey==15" class="category-div">
+        <img v-for="img in cpjs15ImageList" :key="img" v-lazy="img" />
       </div>
     </div>
     <navigate />
@@ -114,11 +144,12 @@ export default {
         require("@/assets/images/cpjs007.png"),
         require("@/assets/images/cpjs008.png")
       ],
-      cpjs2ImageList: [
-        require("@/assets/images/gxbMain001.jpg"),
-        require("@/assets/images/gxbMain.jpg"),
-        require("@/assets/images/gxbMain002.jpg")
-      ],
+      cpjs2ImageList: [require("@/assets/images/gxbMain001.jpg")],
+      cpjs11ImageList: [require("@/assets/images/图片6.png")],
+      cpjs12ImageList: [require("@/assets/images/图片4.png")],
+      cpjs13ImageList: [require("@/assets/images/图片6.png")],
+      cpjs14ImageList: [require("@/assets/images/图片8.png")],
+      cpjs15ImageList: [require("@/assets/images/图片10.png")],
       travelImageList: [],
       cfskImageList: [
         require("@/assets/images/cfsk001.jpg"),
@@ -151,7 +182,7 @@ export default {
       console.log("选择", key);
       console.log("选择", keyPath);
       this.activeKey = key;
-    }
+    },
   }
 };
 </script>

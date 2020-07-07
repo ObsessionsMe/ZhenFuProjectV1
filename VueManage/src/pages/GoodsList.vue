@@ -42,7 +42,7 @@
               >下架</el-button>
               <el-button
                 @click.native.prevent="editGoods(scope.row)"
-                v-if="scope.row.enable=='Y' && scope.row.isProduct=='N'"
+                v-if="scope.row.enable=='Y'"
                 type="primary"
                 size="small"
                 icon="el-icon-circle-plus-outline"

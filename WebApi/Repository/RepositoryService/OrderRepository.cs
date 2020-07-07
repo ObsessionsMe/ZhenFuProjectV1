@@ -3,6 +3,7 @@ using Infrastructure;
 using Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Repository;
 using RepositoryFactory.RepositoryBase;
 using RepositoryFactory.RepositorysBase;
 using RepositoryFactory.ServiceInterface;
@@ -51,7 +52,10 @@ namespace RepositoryFactory.RepositoryService
 
         public bool IsOverStp_PayMaxGoodsLeve(string userId, string goodsId)
         {
-            object obj = ExecuteSql.ProcQuerytoScalar(new DatabaseFacade(dbcontext), string.Format("exec proc_IsOverStp_PayMaxGoodsLeve '{0}','{1}'", userId, goodsId), null);
+            var sqlParams = new SqlParams();
+            sqlParams.Params.Add("@userId", userId);
+            sqlParams.Params.Add("@goodsId", goodsId);
+            object obj = ExecuteSql.ProcQuerytoScalar(new DatabaseFacade(dbcontext), "proc_IsOverStp_PayMaxGoodsLeve", sqlParams);
             return Convert.ToInt32(obj) == 1 ? true : false;
         }
     }
