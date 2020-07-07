@@ -3,6 +3,7 @@
     <headerNav :title="name" />
     <el-main>
       
+      
       <!-- <van-field readonly clickable name="picker" v-model="entity.GoodsName" label="产品" placeholder="请选择" @click="showGoodsPicker = true" />
       <van-popup v-model="showGoodsPicker" position="bottom">
         <van-picker value-key="goodsName" show-toolbar :columns="productList" @confirm="onGoodsConfirm" @cancel="showGoodsPicker = false" />

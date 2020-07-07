@@ -82,6 +82,7 @@ namespace WebUI.Controllers.Client
                 ShopData.GoodsMainImg = item.GoodsMainImg;//关联查附件表
                 ShopData.GoodsDetailsImg = item.GoodsDetailsImg;
                 ShopData.GoodsLevelText = item.GoodsLevelText;
+                ShopData.GoodsLevelName = item.GoodsLevelName;
                 ShopDataList.Add(ShopData);
             }
             var result = new

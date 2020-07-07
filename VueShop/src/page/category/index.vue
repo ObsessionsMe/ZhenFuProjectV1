@@ -34,16 +34,7 @@
          <img v-for="img in cfskImageList"  :key="img" v-lazy="img" />
       </div>
     </div>-->
-    <el-menu
-      default-active="0"
-      :style="'height:'+(fullHeight+6)+'px;overflow-x:hidden;width:120px;float:left;'"
-      @open="handleOpen"
-      @close="handleClose"
-      @select="selectMenu"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b"
-    >
+    <el-menu default-active="0" :style="'height:'+(fullHeight+6)+'px;overflow-x:hidden;width:120px;float:left;'" @open="handleOpen" @close="handleClose" @select="selectMenu" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
       <el-menu-item index="0">
         <span slot="title">生产商简介</span>
       </el-menu-item>
@@ -123,7 +114,11 @@ export default {
         require("@/assets/images/cpjs007.png"),
         require("@/assets/images/cpjs008.png")
       ],
-      cpjs2ImageList: [require("@/assets/images/gxbMain001.jpg"),require("@/assets/images/gxbMain.jpg"),require("@/assets/images/gxbMain002.jpg")],
+      cpjs2ImageList: [
+        require("@/assets/images/gxbMain001.jpg"),
+        require("@/assets/images/gxbMain.jpg"),
+        require("@/assets/images/gxbMain002.jpg")
+      ],
       travelImageList: [],
       cfskImageList: [
         require("@/assets/images/cfsk001.jpg"),
@@ -156,7 +151,7 @@ export default {
       console.log("选择", key);
       console.log("选择", keyPath);
       this.activeKey = key;
-    },
+    }
   }
 };
 </script>

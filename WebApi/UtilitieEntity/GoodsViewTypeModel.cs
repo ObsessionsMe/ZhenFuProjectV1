@@ -25,6 +25,8 @@ namespace UtilitieEntity
 
         public string GoodsLevelText { get; set; }
 
+        public string GoodsLevelName { get; set; }
+
         public int UnitPrice { get; set; }
     }
 }

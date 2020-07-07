@@ -84,7 +84,7 @@
           >
             <van-col span="6">
               <!-- <van-icon name="after-sale" /> -->
-              <div style="padding-bottom:10px;">{{item.LevelText}}</div>
+              <div style="padding-bottom:10px;">{{item.LevelName+item.LevelText}}</div>
               <div>{{item.goodsName}}</div>
             </van-col>
           </router-link>
@@ -179,6 +179,7 @@ export default {
                 goodsId:shopDataLists[i].goodsId,
                 goodsName:shopDataLists[i].goodsName,
                 LevelText:shopDataLists[i].goodsLevelText,
+                LevelName:shopDataLists[i].goodsLevelName,
               }
               this.vipSys.push(item);
             }
