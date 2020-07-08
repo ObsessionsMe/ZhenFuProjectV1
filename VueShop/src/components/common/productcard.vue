@@ -12,7 +12,7 @@
             </template>
             <template slot="tags">
                 <p class="price" v-if="product.price!=null&&product.price!=''" >
-                    <span>{{product.price}}积分</span>
+                    <span>{{product.price}}福豆</span>
                     <van-tag v-if="product.tags!=null" v-for="tag in product.tags" :key="tag" plain type="danger">{{tag}}</van-tag>
                 </p>
                 <van-stepper v-if="iscard" v-model="product.quantity" :max="product.max"  :min="product.min" />

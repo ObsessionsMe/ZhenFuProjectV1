@@ -129,6 +129,23 @@ namespace BusinessLogic.ClientService
                 {
                     return null;
                 }
+                //SUM表初始化
+                var sumEntity = sumRepository.FindEntity(x => x.UserId == userEntity.UserId && x.GoodsId == order.GoodsId);
+                if (sumEntity == null)
+                {
+                    var sumporintsEntity = new UserPrintsSumEntity();
+                    sumporintsEntity.UserId = userEntity.UserId;
+                    sumporintsEntity.GoodsId = order.GoodsId;
+                    sumporintsEntity.ProductPorints = 0;
+                    sumporintsEntity.TreamPorints = 0;
+                    sumporintsEntity.HoldingDays = 0;
+                    sumporintsEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                    sumRepository.Insert(sumporintsEntity);
+                    if (i < 1)
+                    {
+                        return new AjaxResult { state = ResultType.error.ToString(), message = "下单失败", data = "" };
+                    }
+                }
                 var result = new
                 {
                     goodsId = order.GoodsId

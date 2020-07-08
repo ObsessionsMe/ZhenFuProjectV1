@@ -100,7 +100,7 @@
         <img v-for="img in cpjs13ImageList" :key="img" v-lazy="img" />
       </div>
       <div v-if="this.activeKey==14" class="category-div">
-        <img v-for="img in cpjs13ImageList" :key="img" v-lazy="img" />
+        <img v-for="img in cpjs14ImageList" :key="img" v-lazy="img" />
       </div>
       <div v-if="this.activeKey==15" class="category-div">
         <img v-for="img in cpjs15ImageList" :key="img" v-lazy="img" />
@@ -145,11 +145,11 @@ export default {
         require("@/assets/images/cpjs008.png")
       ],
       cpjs2ImageList: [require("@/assets/images/gxbMain001.jpg")],
-      cpjs11ImageList: [require("@/assets/images/图片6.png")],
-      cpjs12ImageList: [require("@/assets/images/图片4.png")],
-      cpjs13ImageList: [require("@/assets/images/图片6.png")],
-      cpjs14ImageList: [require("@/assets/images/图片8.png")],
-      cpjs15ImageList: [require("@/assets/images/图片10.png")],
+      cpjs11ImageList: [require("@/assets/images/图片4.png")],
+      cpjs12ImageList: [require("@/assets/images/图片6.png")],
+      cpjs13ImageList: [require("@/assets/images/图片10.png")],
+      cpjs14ImageList: [require("@/assets/images/图片2.png")],
+      cpjs15ImageList: [require("@/assets/images/图片8.png")],
       travelImageList: [],
       cfskImageList: [
         require("@/assets/images/cfsk001.jpg"),

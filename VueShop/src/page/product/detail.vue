@@ -147,9 +147,9 @@ export default {
   methods: {
     formatPrice(data) {
       if (data == undefined) {
-        return "0积分";
+        return "0福豆";
       }
-      return (data / 100).toFixed(2) + "积分";
+      return (data / 100).toFixed(2) + "福豆";
     },
     // onClickCart() {
     //   this.$router.push('/cart');

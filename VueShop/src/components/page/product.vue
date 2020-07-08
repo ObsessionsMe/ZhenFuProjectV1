@@ -16,9 +16,9 @@
           <div :class="'cap-goods-list__info has-title has-price '">
             <h3 class="title" style="text-align:center;height:20px">{{item.goodsName}}</h3>
             <p class="sale-info">
-              <span class="sale-price">{{item.unitPrice}}积分</span>
+              <span class="sale-price">{{item.unitPrice}}福豆</span>
             </p>
-          </div>
+          </div>产品
         </router-link>
       </li>
     </ul>
