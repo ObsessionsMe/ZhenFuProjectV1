@@ -18,7 +18,7 @@
             <p class="sale-info">
               <span class="sale-price">{{item.unitPrice}}福豆</span>
             </p>
-          </div>产品
+          </div>
         </router-link>
       </li>
     </ul>
