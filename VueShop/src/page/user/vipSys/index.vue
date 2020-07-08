@@ -41,7 +41,7 @@
       </van-tab>
       <van-tab title="我的团队">
         <van-cell-group>
-          <van-cell icon="volume-o" title="此产品团队总人数" :value="teamDetail.teamUserCount" />
+          <van-cell icon="volume-o" title="此产品团队购买盒数" :value="teamDetail.buyALLGoodsCount" />
         </van-cell-group>
         <div style="margin-left:0.5em">
           <!-- <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree> -->
@@ -102,7 +102,7 @@ export default {
         param: {
           GoodsId: ""
         },
-        teamUserCount: 0,
+        BuyALLGoodsCount: 0,
         treeData: [
           {
             id: 1,
@@ -205,7 +205,7 @@ export default {
           GetTeamDetail(this.teamDetail.param).then(res => {
             var treeData;
             if (res.state == "success") {
-              this.teamDetail.teamUserCount = res.data.detail.TeamUserCount;
+              this.teamDetail.buyALLGoodsCount = res.data.detail.BuyALLGoodsCount;
               treeData = res.data.tree;
               treeData[0].label = "推荐人:" + treeData[0].label;
             } else {

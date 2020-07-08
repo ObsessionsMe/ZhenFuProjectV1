@@ -14,6 +14,8 @@ namespace UtilitieEntity
 
         public string goodsLevelNames { get; set; }
         
+        public int buyGoodsCount { get; set; }
+
         public string label { get; set; }
 
         public List<UserTreeData>? children { get; set; }
