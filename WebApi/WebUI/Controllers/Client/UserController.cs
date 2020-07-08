@@ -79,14 +79,8 @@ namespace WebUI.Controllers.Client
                 //获取团队的详情
                 var ds = sumRepository.GetTeamDetail(param);
                 var treeTable= ds.Tables[1];
-                var root = treeTable.AsEnumerable().Where(x => x.Field<int>("Level") == -1).Select(x => new UserTreeData()
-                {
-                    id = x.Field<string>("UserTelephone"),
-                    name = x.Field<string>("Name"),
-                    telephone = x.Field<string>("UserTelephone"),
-                    children = new List<UserTreeData>()
-                }).FirstOrDefault();
-                root.label = root.name + "(" + root.telephone.Substring(root.telephone.Length - 5, 4) + ")";
+                var root = treeTable.AsEnumerable().Where(x => x.Field<int>("Level") == -1).Select(x => new UserTreeData(x)).FirstOrDefault();
+                root.label = root.name + "(" + root.telephone.Substring(root.telephone.Length - 5, 4) + "):"+root.buyGoodsCount;
                 servers.FillTreeData(treeTable, root);
                 var tree = new List<UserTreeData>();
                 tree.Add(root);

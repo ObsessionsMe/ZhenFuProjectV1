@@ -225,14 +225,7 @@ namespace BusinessLogic.ClientService
 
         public void FillTreeData(DataTable treeTable, UserTreeData data)
         {
-            var result = treeTable.AsEnumerable().Where(x => x.Field<string>("ReferrerTelephone") == data.telephone).Select(x => new UserTreeData()
-            {
-                id = x.Field<string>("UserTelephone"),
-                label = x.Field<string>("Name") + "(" + x.Field<string>("UserTelephone") + ")",
-                name = x.Field<string>("Name"),
-                telephone = x.Field<string>("UserTelephone"),
-                children = new List<UserTreeData>()
-            });
+            var result = treeTable.AsEnumerable().Where(x => x.Field<string>("ReferrerTelephone") == data.telephone).Select(x => new UserTreeData(x));
             if (result.Count() > 0)
             {
                 foreach (var item in result)

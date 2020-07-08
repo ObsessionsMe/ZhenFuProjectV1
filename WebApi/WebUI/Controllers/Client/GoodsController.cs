@@ -61,7 +61,7 @@ namespace WebUI.Controllers.Client
         public ActionResult GetGoodsList()
         {
             //获取轮播图和产品列表           
-            var data = servers.FindGoodsList().OrderBy(o=>o.GoodsLevel);
+            var data = servers.FindGoodsList();
             if (data == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "商品数据为空", data = "" });
