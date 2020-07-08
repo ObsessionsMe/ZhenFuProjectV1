@@ -57,7 +57,7 @@
           <span>产品介绍</span>
         </template>
         <el-menu-item index="2">真福.福酶</el-menu-item>
-        <el-menu-item index="4">干细胞</el-menu-item>
+        <!-- <el-menu-item index="4">干细胞</el-menu-item> -->
         <el-menu-item index="11">金丝皇菊</el-menu-item>
         <el-menu-item index="12">养生花茶</el-menu-item>
         <el-menu-item index="13">极品石斛</el-menu-item>
@@ -66,7 +66,7 @@
       </el-submenu>
 
       <el-menu-item index="3">
-        <span slot="title">真福时刻</span>
+        <span slot="title">永恒瞬间</span>
       </el-menu-item>
 
     </el-menu>
@@ -80,9 +80,9 @@
       <div v-if="this.activeKey==2" class="category-div">
         <img v-for="img in cpjsImageList" :key="img" v-lazy="img" />
       </div>
-      <div v-if="this.activeKey==4" class="category-div">
+      <!-- <div v-if="this.activeKey==4" class="category-div">
         <img v-for="img in cpjs2ImageList" :key="img" v-lazy="img" />
-      </div>
+      </div> -->
       <div v-if="this.activeKey==3" class="category-div">
         <img v-for="img in cfskImageList" :key="img" v-lazy="img" />
       </div>
@@ -144,7 +144,7 @@ export default {
         require("@/assets/images/cpjs007.png"),
         require("@/assets/images/cpjs008.png")
       ],
-      cpjs2ImageList: [require("@/assets/images/gxbMain001.jpg")],
+      // cpjs2ImageList: [require("@/assets/images/gxbMain001.jpg")],
       cpjs11ImageList: [require("@/assets/images/图片4.png")],
       cpjs12ImageList: [require("@/assets/images/图片6.png")],
       cpjs13ImageList: [require("@/assets/images/图片10.png")],
@@ -152,12 +152,7 @@ export default {
       cpjs15ImageList: [require("@/assets/images/图片8.png")],
       travelImageList: [],
       cfskImageList: [
-        require("@/assets/images/cfsk001.jpg"),
-        require("@/assets/images/cfsk002.jpg"),
-        require("@/assets/images/cfsk003.jpg"),
-        require("@/assets/images/cfsk004.jpg"),
-        require("@/assets/images/cfsk005.jpg"),
-        require("@/assets/images/cfsk006.jpg")
+       
       ]
     };
   },

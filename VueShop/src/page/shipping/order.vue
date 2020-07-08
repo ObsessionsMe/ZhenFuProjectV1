@@ -78,7 +78,7 @@
     <van-actionsheet v-model="isRule" v-if="isProduct" :title="ruleName">
       <div class="content" style="height:600px;overflow-y:auto;">
         <van-cell-group>
-          <van-cell value="1.本公司产品持仓有效期均为90个工作日，由兑换当日起计算。有效期结束后，如未持仓，将不产生任何福豆。" />
+          <van-cell value="1.本公司产品持仓有效期均为90个自然日，由兑换当日起计算。有效期结束后，如未持仓，将不产生任何福豆。" />
           <van-cell value="2.商城结算时间为每日21：00，此时间之后兑换的产品次日产生福豆。" />
           <van-cell value="3.本公司产品自动默认收货时间为7个自然日（以快递官网签收时间为准），如过时未收到产品请及时与客服联系。" />
           <van-cell value="4.签收时需本人签收或者委托第三方签收，签收时请查看产品外包装是否完整，检查所兑换商品数量和外观问题，如破损、明显挤压变形等问题请及时联系客服或者拒绝签收，一旦签收便为默认收到的东西是完整无缺的，如有损失自行承担。" />
@@ -107,7 +107,7 @@
 
 <script>
 import { ReadyPlaceOrder, SubmitOrder } from "../../api/order.js";
-import { isNullOrEmpty, checkTelephone } from "../../config/Utilitie.js";
+// import { isNullOrEmpty, checkTelephone } from "../../config/Utilitie.js";
 export default {
   data() {
     return {
