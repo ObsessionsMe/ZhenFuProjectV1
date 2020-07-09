@@ -122,7 +122,7 @@ export default {
       goodsTotal_r: 0,
       products: [
         {
-          imageURL: "http://47.115.57.178/resource/images/shopone1.png",
+          imageURL: "http://www.hubeizhenfu.cn//resource/images/shopone1.png",
           title: "",
           desc: "",
           price: "",

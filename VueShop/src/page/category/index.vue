@@ -44,9 +44,13 @@
       text-color="#fff"
       active-text-color="#ffd04b"
     >
-      <el-menu-item index="0">
-        <span slot="title">生产商简介</span>
-      </el-menu-item>
+      <el-submenu index="21">
+        <template slot="title">
+          <span>生产商简介</span>
+        </template>
+        <el-menu-item index="21">燕七堂</el-menu-item>
+        <el-menu-item index="22">真福</el-menu-item>
+      </el-submenu>
 
       <el-menu-item index="1">
         <span slot="title">研发者简介</span>
@@ -65,7 +69,7 @@
         <el-menu-item index="15">人参</el-menu-item>
       </el-submenu>
 
-      <el-menu-item index="3">
+      <el-menu-item index="31">
         <span slot="title">永恒瞬间</span>
       </el-menu-item>
 
@@ -105,6 +109,21 @@
       <div v-if="this.activeKey==15" class="category-div">
         <img v-for="img in cpjs15ImageList" :key="img" v-lazy="img" />
       </div>
+
+
+      <div v-if="this.activeKey==22" class="category-div">
+        <img v-for="img in scs1ImageList" :key="img" v-lazy="img" />
+      </div>
+
+      <div v-if="this.activeKey==21" class="category-div">
+        <img v-for="img in scs2ImageList" :key="img" v-lazy="img" />
+      </div>
+
+      <div v-if="this.activeKey==31" class="category-div">
+        <img v-for="img in compyImageList" :key="img" v-lazy="img" />
+      </div>
+
+
     </div>
     <navigate />
   </div>
@@ -120,7 +139,15 @@ export default {
       activeKey: 0,
       fullHeight: document.documentElement.clientHeight - 70,
       fullWidth: document.documentElement.clientWidth - 110,
-      scsImageList: [
+      scs1ImageList: [
+        require("@/assets/images/scs_zf001.png"),
+        require("@/assets/images/scs_zf003.png"),
+        require("@/assets/images/scs_zf004.png"),
+        require("@/assets/images/scs_zf005.png"),
+        require("@/assets/images/scs_zf006.png"),
+        require("@/assets/images/scs_zf007.png")
+      ],
+      scs2ImageList: [
         require("@/assets/images/scs001.png"),
         require("@/assets/images/scs002.png"),
         require("@/assets/images/scs003.png"),
@@ -153,6 +180,14 @@ export default {
       travelImageList: [],
       cfskImageList: [
        
+      ],
+      compyImageList:[
+        require("@/assets/images/tream001.png"),
+        require("@/assets/images/tream002.png"),
+        require("@/assets/images/tream003.png"),
+        require("@/assets/images/tream004.png"),
+        require("@/assets/images/tream005.png"),
+        require("@/assets/images/tream006.png")
       ]
     };
   },

@@ -29,19 +29,19 @@
           highlight-current-row
           height="650"
         >
-          <el-table-column prop="userId" label="操作" sortable width="300">
+          <el-table-column prop="userId" label="操作" sortable width="350">
             <template slot-scope="scope">
               <el-link
                 type="primary"
                 v-if="scope.row.isAdmin=='N'"
                 @click="payPorints(scope.row.userId,1)"
-              >充值余额</el-link>
+              >充值福豆余额</el-link>
               <el-link
                 type="primary"
                 v-if="scope.row.isAdmin=='N'"
                 @click="payPorints(scope.row.userId,2)"
                 style="margin-left:2%"
-              >充值专项积分</el-link>
+              >充值可用福豆</el-link>
               <el-link
                 type="warning"
                 v-if="scope.row.isAdmin=='N'"
@@ -84,11 +84,10 @@
           <el-table-column prop="userType" label="会员类型" sortable width="170">
             <template slot-scope="scope">{{getUserType(scope.row.userType)}}</template>
           </el-table-column>
-          <el-table-column prop="porintsSurplus" label="积分余额" sortable width="100"></el-table-column>
-          <el-table-column prop="pecialItemPorints" label="专项积分" sortable width="100"></el-table-column>
-          <el-table-column prop="productPorints" label="产品积分" sortable width="100"></el-table-column>
-          <el-table-column prop="treamPorints" label="团队积分" sortable width="100"></el-table-column>
-
+          <el-table-column prop="porintsSurplus" label="福豆余额" sortable width="100"></el-table-column>
+          <el-table-column prop="pecialItemPorints" label="可用福豆" sortable width="100"></el-table-column>
+          <!-- <el-table-column prop="productPorints" label="产品积分" sortable width="100"></el-table-column>
+          <el-table-column prop="treamPorints" label="团队积分" sortable width="100"></el-table-column> -->
           <!-- <el-table-column prop="indirectPoints" label="是否持仓" sortable width="100"></el-table-column> -->
           <el-table-column prop="enable" label="是否有效" sortable width="100">
             <template slot-scope="scope">{{scope.row.enable=="Y"?"有效":"无效"}}</template>
@@ -124,7 +123,7 @@
             <el-form-item label="推荐人手机号">
               <el-input v-model="userEntity.referrerTelephone" type="number"></el-input>
             </el-form-item>
-            <el-form-item label="积分余额">
+            <el-form-item label="福豆余额">
               <el-input v-model="userEntity.porintsSurplus" type="number"></el-input>
             </el-form-item>
           </el-form>

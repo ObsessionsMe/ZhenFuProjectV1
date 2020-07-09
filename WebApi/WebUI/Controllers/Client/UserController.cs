@@ -178,11 +178,14 @@ namespace WebUI.Controllers.Client
             }
             UserService servers = new UserService(userRepository, sumRepository, order);
             var result = servers.GetMyTream_New(userModel.UserId);
+            DataTable treeTable = userRepository.GetUserTeamLevel(userModel.UserId);
+            int payNum = Convert.ToInt32(treeTable.Compute("sum(BuyAllGoodsNums)", ""));
             var results = new
             {
                 parentName = data.Referrer + data.ReferrerTelephone,
                 name = data.Name,
                 treeData = result,
+                payNum = payNum
             };
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = results });
         }

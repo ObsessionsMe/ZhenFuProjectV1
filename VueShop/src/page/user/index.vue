@@ -5,7 +5,7 @@
       <div class="user-profile-avatar">
         <a>
           <img
-            src="http://haitao.nos.netease.com/ZnB0PM5xDzXZ2FeVlmT170102401021_150_150.png"
+            :src="userImg"
             style="width:50px;height:50px;vertical-align:bottom"
             alt="用户头像"
           />
@@ -86,7 +86,7 @@
             :key="item.goodsId"
             :to="{path:'/user/vipSys',query:{ id:item.goodsId,name:item.goodsName }}"
           >
-            <van-col span="6">
+            <van-col span="6" style="width:30%; padding-top:3%; color: #38f">
               <!-- <van-icon name="after-sale" /> -->
               <div style="padding-bottom:10px;">{{item.LevelName}}{{item.LevelText}}</div>
               <div>{{item.goodsName}}</div>
@@ -144,7 +144,8 @@ export default {
         userTelephone: "",
         pecialItemPorints: 0
       },
-      vipSys: []
+      vipSys: [],
+      userImg:require("@/assets/images/userImg.jpg")
     };
   },
   created() {

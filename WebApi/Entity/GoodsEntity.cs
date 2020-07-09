@@ -114,11 +114,13 @@ namespace Entity
         /// <summary>
         /// 产品级别名称
         /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public string GoodsLevelName { get; set; }
 
         /// <summary>
         /// 产品级别显示名称
         /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public string GoodsLevelText { get; set; }
 
     }

@@ -3,6 +3,9 @@
         <headerNav title="我的团队"/>
         <div style="margin-left:0.5em">
           <!-- <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree> -->
+          <van-row style="font-size:14px;height:40px; line-height:40px;text-align:center">
+            我的团队总持仓盒数:{{payNum}}
+          </van-row>
           <el-tree default-expand-all :data="treeData" :props="defaultProps" icon-class="el-icon-s-custom" highlight-current></el-tree>
         </div>
     </div>
@@ -20,7 +23,8 @@ export default {
         defaultProps: {
           children: 'children',
           label: 'label'
-        }
+        },
+        payNum:""
       };
     },
   created() {
@@ -40,6 +44,7 @@ export default {
           }
           console.log("treeData", response.data.treeData);
           this.treeData[0].children = response.data.treeData;
+          this.payNum = response.data.payNum;
         } else {
           this.treeData[0].label = "暂无推荐人";
           this.treeData[0].children[0].label =
