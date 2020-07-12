@@ -29,7 +29,7 @@ namespace Infrastructure
             try
             {
                 string fileName = sheetName + "-" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".xls"; // 文件名称
-                string urlPath =  @"/UpFiles/ExcelFiles/" + DateTime.Now.ToString("yyyyMMdd") + "/" + fileName; // 文件下载的URL地址，供给前台下载
+                string urlPath = @"/Upload/ExcelFiles/" + DateTime.Now.ToString("yyyyMMdd") + "/" + fileName; // 文件下载的URL地址，供给前台下载
                 //无法引用Server.MapPath，需要重写该方法
                 //string filePath = HttpContext.Current.Server.MapPath("\\" + urlPath); // 文件路径
                 string filePath = hostEnvironments.ContentRootPath + urlPath;

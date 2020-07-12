@@ -20,6 +20,8 @@ let url = {
     UserCashApply: "api/CashManage/UserCashApply",
     GetDicList:"api/Dictionary/GetDicList",
     SubDic:"api/Dictionary/SubDic",
+    SetOutGoods:"api/OrderManage/SetOutGoods",
+    ExportOrderExcel:"api/OrderManage/ExportOrderExcel",
     //logout: "api/Login/OutLogin",
     //getGridJson: "api/User/GetGridJson",
     //getPersonalFileList:"/File/GetFileList",    

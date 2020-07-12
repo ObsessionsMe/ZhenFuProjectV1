@@ -21,7 +21,7 @@
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchCashApplyList">查询</el-button>
         <!-- <el-button type="primary" icon="el-icon-edit" @click="editUserGroup">编辑</el-button>
         <el-button type="primary" icon="el-icon-delete" @click="deleteUserGroup">删除</el-button>-->       
-        <!-- <el-button type="primary" icon="el-icon-search" @click="exportApplyList">导出excel</el-button> -->
+        <el-button type="primary" icon="el-icon-search" @click="exportApplyExcel">导出excel</el-button>
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="cashApply">兑现审批</el-button>
       </el-form-item>
     </el-form>
@@ -193,6 +193,9 @@ export default {
           this.check_dialog = false;
           this.searchCashApplyList();
         });
+    },
+    exportApplyExcel(){
+
     }
   }
 };

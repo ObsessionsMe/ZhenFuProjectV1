@@ -25,7 +25,7 @@ namespace ViewEntity
 
         public string AddressId { get; set; }
 
-        public int UsePorintsType { get; set; }
+        public string UsePorintsType { get; set; }
 
         public string ReceiveUser { get; set; }
 
@@ -39,7 +39,7 @@ namespace ViewEntity
 
         public string DetailsAddress { get; set; }
 
-        public int orderStatus { get; set; }
+        public string orderStatus { get; set; }
 
         /// <summary>
         /// 用户状态

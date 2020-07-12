@@ -6,9 +6,13 @@
 
   <ItemGroup>
     <Compile Remove="UploadFiles\**" />
+    <Compile Remove="Upload\新文件夹\**" />
     <Content Remove="UploadFiles\**" />
+    <Content Remove="Upload\新文件夹\**" />
     <EmbeddedResource Remove="UploadFiles\**" />
+    <EmbeddedResource Remove="Upload\新文件夹\**" />
     <None Remove="UploadFiles\**" />
+    <None Remove="Upload\新文件夹\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,7 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Upload\新文件夹\" />
     <Folder Include="Ashx\" />
   </ItemGroup>
 

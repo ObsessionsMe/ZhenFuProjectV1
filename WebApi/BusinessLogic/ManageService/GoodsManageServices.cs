@@ -23,12 +23,8 @@ namespace BusinessLogic.ManageService
         {
             //var expression = ExtLinq.True<GoodsEntity>();
             //expression = expression.And(t => t.Enable == "Y");
-            //if (!string.IsNullOrEmpty(keyword))
-            //{
-            //    expression = expression.And(t => t.GoodsName.Contains(keyword));
-            //}
-            Expression<Func<GoodsEntity, bool>> expression = b => (b.Enable == "Y" && string.IsNullOrEmpty(b.GoodsName)) || (b.Enable == "Y" &&
-       !string.IsNullOrEmpty(b.GoodsName) && b.GoodsName.Contains(keyword));
+            Expression<Func<GoodsEntity, bool>> expression = b => (b.Enable == "Y" && string.IsNullOrEmpty(keyword)) || (b.Enable == "Y" &&
+       !string.IsNullOrEmpty(keyword) && b.GoodsName.Contains(keyword));
             return goodsRepository.FindList(expression, pagination).ToList();
         }
 
