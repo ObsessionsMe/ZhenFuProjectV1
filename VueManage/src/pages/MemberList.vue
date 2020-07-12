@@ -1,6 +1,9 @@
 <template>
   <div class="container">
     <el-form :inline="true" class="demo-form-inline" style="text-align:left">
+       <el-form-item label="会员姓名">
+        <el-input placeholder="请输入会员姓名" v-model="kw"></el-input>
+      </el-form-item>
       <!-- <el-form-item label="关键字">
         <el-input placeholder="请输入会员姓名或手机号" v-model="kw"></el-input>
       </el-form-item>
@@ -17,6 +20,9 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchUser">查询</el-button>
       </el-form-item>-->
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchUser">查询</el-button>
+      </el-form-item>
     </el-form>
     <section class="content">
       <h5>会员列表</h5>

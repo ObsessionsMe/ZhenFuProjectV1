@@ -28,9 +28,9 @@
         </van-popup>
       </template>
       <van-field :placeholder="'请输入'+entity.payTypeName+'账号'" v-model="entity.account" label="账号" />
-      <van-field label="可用积分" v-model="entity.integral" disabled />
+      <van-field label="可用福豆" v-model="entity.integral" disabled />
       <van-field label="可兑现比例" class="red" :value="(entity.deductRate*100)+'%'" disabled />
-      <van-cell title="兑现积分">
+      <van-cell title="兑现福豆">
         <template #input>
           <van-stepper id='deduct' :min="min" :max="maxDeduct()" v-model="entity.deduct" :step="100" />
         </template>
@@ -223,7 +223,7 @@ export default {
       }
 
       if (this.entity.deduct == 0) {
-        Toast.fail("提现积分必须大于0!");
+        Toast.fail("提现福豆必须大于0!");
         return;
       }
 

@@ -4,6 +4,7 @@ using RepositoryFactory.ServiceInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace BusinessLogic.ManageService
@@ -20,13 +21,17 @@ namespace BusinessLogic.ManageService
         }
         public List<GoodsEntity> GetGoodsList(Pagination pagination, string keyword)
         {
-            var expression = ExtLinq.True<GoodsEntity>();
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                expression = expression.And(t => t.GoodsName.Contains(keyword));
-            }
-            return goodsRepository.FindList(t => t.Enable == "Y", pagination);
+            //var expression = ExtLinq.True<GoodsEntity>();
+            //expression = expression.And(t => t.Enable == "Y");
+            //if (!string.IsNullOrEmpty(keyword))
+            //{
+            //    expression = expression.And(t => t.GoodsName.Contains(keyword));
+            //}
+            Expression<Func<GoodsEntity, bool>> expression = b => (b.Enable == "Y" && string.IsNullOrEmpty(b.GoodsName)) || (b.Enable == "Y" &&
+       !string.IsNullOrEmpty(b.GoodsName) && b.GoodsName.Contains(keyword));
+            return goodsRepository.FindList(expression, pagination).ToList();
         }
+
         public int SubmitGoodsGoodsEntity(GoodsEntity goodsEntity)
         {
             return goodsRepository.Insert(goodsEntity);

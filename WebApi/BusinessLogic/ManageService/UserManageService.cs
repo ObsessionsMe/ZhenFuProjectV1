@@ -3,6 +3,8 @@ using Infrastructure;
 using RepositoryFactory.ServiceInterface;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using ViewEntity;
 
 namespace BusinessLogic.ManageService
@@ -32,14 +34,19 @@ namespace BusinessLogic.ManageService
             return userRepository.FindEntity(x => x.UserId == userId && x.Enable == "Y" && x.IsAdmin == "Y");
         }
 
-        public List<UserPorintListEntity> GetUserList(Pagination pagination, string keyword)
+        public List<UserInfoEntity> GetUserList(Pagination pagination, string keyword)
         {
-            var expression = ExtLinq.True<UserPorintListEntity>();
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                expression = expression.And(t => t.Name.Contains(keyword));
-            }
-            return userRepository.GetUser_PorintList(pagination, expression);
+            //var expression = ExtLinq.True<UserInfoEntity>();
+            //expression = expression.And(t => t.Enable == "Y");
+            //expression = expression.And(t => t.IsAdmin == "N");
+            //if (!string.IsNullOrEmpty(keyword))
+            //{
+            //    expression = expression.And(t => t.Name.Contains(keyword));
+            //    expression = expression.Or(t => t.UserTelephone.Contains(keyword));
+            //}
+            Expression<Func<UserInfoEntity, bool>> expression = b => (b.Enable == "Y" && b.IsAdmin == "N" && string.IsNullOrEmpty(b.Name)) || (b.Enable == "Y" && b.IsAdmin == "N" &&
+            !string.IsNullOrEmpty(b.Name) && b.Name.Contains(keyword));
+            return userRepository.FindList(expression, pagination).ToList();
         }
 
         public AjaxResult PayPorints(int payNum, string userId, int type)

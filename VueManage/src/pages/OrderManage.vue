@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <el-form :inline="true" class="demo-form-inline" style="text-align:left">
+      <el-form-item label="商品名称">
+        <el-input placeholder="请输入商品名称"  v-model="kw"></el-input>
+      </el-form-item>
     <!-- <el-form :inline="true" class="demo-form-inline" style="text-align:left">
       <el-form-item label="订单编号">
         <el-input placeholder="请输入订单编号"></el-input>
@@ -24,6 +28,10 @@
         <el-button type="primary" icon="el-icon-search" @click="exportOrderList">批量导入快递单号(excel)</el-button>
       </el-form-item>
     </el-form> -->
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchOrderList">查询</el-button>
+      </el-form-item>
+    </el-form>
     <section class="content">
       <h5>订单管理</h5>
       <br />

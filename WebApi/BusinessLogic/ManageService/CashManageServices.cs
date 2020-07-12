@@ -3,6 +3,7 @@ using Infrastructure;
 using RepositoryFactory.ServiceInterface;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using ViewEntity;
 
@@ -20,10 +21,15 @@ namespace BusinessLogic.ManageService
         }
         public List<CashListEntity> GetCashList(Pagination pagination, string keyword)
         {
+            //var expression = ExtLinq.True<CashListEntity>();
+            //if (!string.IsNullOrEmpty(keyword))
+            //{
+            //    expression = expression.And(t => t.Account.Contains(keyword));
+            //}
             var expression = ExtLinq.True<CashListEntity>();
             if (!string.IsNullOrEmpty(keyword))
             {
-                expression = expression.And(t => t.Account.Contains(keyword));
+                expression = b => b.GoodsName.Contains(keyword);
             }
             return cashRepository.GetUse_CashList(pagination, expression);
         }

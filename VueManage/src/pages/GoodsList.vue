@@ -1,6 +1,9 @@
 <template>
   <div class="container">
     <el-form :inline="true" class="demo-form-inline" style="text-align:left">
+       <el-form-item label="商品名称">
+        <el-input placeholder="请输入商品名称"  v-model="kw"></el-input>
+      </el-form-item>
       <!-- <el-form-item label="关键字">
         <el-input placeholder="请输入商品名称"></el-input>
       </el-form-item>
@@ -15,7 +18,7 @@
         </el-select>
       </el-form-item>-->
       <el-form-item>
-        <!-- <el-button type="primary" icon="el-icon-circle-plus-outline">查询</el-button> -->
+        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="GetGoodsList">查询</el-button>
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addGoods">添加商品</el-button>
         <!-- <el-button type="primary" icon="el-icon-circle-plus-outline" @click="downGoods">下架商品</el-button> -->
       </el-form-item>
