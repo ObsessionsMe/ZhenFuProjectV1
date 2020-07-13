@@ -36,16 +36,19 @@ namespace BusinessLogic.ManageService
 
         public List<UserInfoEntity> GetUserList(Pagination pagination, string keyword)
         {
-            //var expression = ExtLinq.True<UserInfoEntity>();
-            //expression = expression.And(t => t.Enable == "Y");
-            //expression = expression.And(t => t.IsAdmin == "N");
-            //if (!string.IsNullOrEmpty(keyword))
-            //{
-            //    expression = expression.And(t => t.Name.Contains(keyword));
-            //    expression = expression.Or(t => t.UserTelephone.Contains(keyword));
-            //}
-            Expression<Func<UserInfoEntity, bool>> expression = b => (b.Enable == "Y" && b.IsAdmin == "N" && string.IsNullOrEmpty(keyword)) || (b.Enable == "Y" && b.IsAdmin == "N" &&
-            !string.IsNullOrEmpty(keyword) && b.Name.Contains(keyword));
+            var expression = ExtLinq.True<UserInfoEntity>();
+            if (string.IsNullOrEmpty(keyword))
+            {
+                expression = b => (b.Enable == "Y" && b.IsAdmin == "N");
+            }
+            else
+            {
+                pagination.page = 1;
+                expression = b => b.Enable == "Y" && b.IsAdmin == "N" && b.Name.Contains(keyword);
+            }
+            //return userRepository.FindList(expression, pagination).ToList();
+            //Expression<Func<UserInfoEntity, bool>> expression = b => (b.Enable == "Y" && b.IsAdmin == "N" && string.IsNullOrEmpty(keyword)) || (b.Enable == "Y" && b.IsAdmin == "N" &&
+            //!string.IsNullOrEmpty(keyword) && b.Name.Contains(keyword));
             return userRepository.FindList(expression, pagination).ToList();
         }
 

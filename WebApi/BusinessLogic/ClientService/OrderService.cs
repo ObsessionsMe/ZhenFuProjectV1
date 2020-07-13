@@ -123,6 +123,7 @@ namespace BusinessLogic.ClientService
                 orderEntity.PayCount = payCount;
                 orderEntity.UsePorintsType = order.UsePorintsType;
                 orderEntity.AddressId = order.AddressId;
+                orderEntity.OrderRemark = order.OrderRemark;
                 orderEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 i = orderRepository.Insert(orderEntity);
                 if (i < 1)

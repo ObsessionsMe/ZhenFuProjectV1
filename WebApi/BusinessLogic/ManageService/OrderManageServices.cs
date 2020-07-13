@@ -25,9 +25,11 @@ namespace BusinessLogic.ManageService
             var expression = ExtLinq.True<OrderListEntity>();
             if (!string.IsNullOrEmpty(keyword))
             {
+                pagination.page = 1;
                 expression = b => b.GoodsName.Contains(keyword);
             }
             return orderRepository.GetUse_OrderList(pagination, expression);
         }
+
     }
 }

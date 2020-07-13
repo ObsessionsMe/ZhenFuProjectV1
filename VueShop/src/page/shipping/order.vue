@@ -52,6 +52,11 @@
           v-if="!isProduct"
           :disabled="isReffer"
         /> -->
+        <van-field
+          v-model="orderRemark"
+          label="备注"
+          placeholder="此处输入备注信息"
+        />
         <van-cell>
           <van-checkbox
             v-model="isSure"
@@ -139,7 +144,8 @@ export default {
       //referrerTelephone_r: "",
       //referrerTelephone: "",
       referrer: "",
-      isReffer: false
+      isReffer: false,
+      orderRemark:""
     };
   },
   methods: {
@@ -172,7 +178,8 @@ export default {
         PayCount: this.goodsTotal,
         UsePorintsType: parseInt(this.payMethod),
         GoodsUnitPrice: this.GoodsUnitPrice,
-        goodsFreight: this.goodsFreight
+        goodsFreight: this.goodsFreight,
+        OrderRemark: this.orderRemark
         //exterd2: this.referrerTelephone
       };
       if (!this.isSure) {
@@ -231,7 +238,6 @@ export default {
         this.goodsTotal_r = parseInt(this.goodsTotal) * 100;
         this.BuyGoodsNums = this.$store.state.orderInfo.goodsNum;
         this.GoodsUnitPrice = response.data.goodsData.unitPrice;
-
         if (response.data.goodsData.isProduct == "N") {
           this.isProduct = false;
           this.ruleName = "商城兑换须知";

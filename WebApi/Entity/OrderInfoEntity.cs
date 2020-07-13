@@ -74,6 +74,8 @@ namespace Entity
         //订单运费
          public int GoodsFreight { get; set; }
 
+       //下单备注 
+        public string OrderRemark { get; set; }
         /// <summary>
         /// 下单时间
         /// </summary>

@@ -74,6 +74,7 @@
           <el-table-column prop="usePorintsType" label="积分类型" sortable width="150">
             <!-- <template slot-scope="scope">{{common.getTypeName(3,scope.row.usePorintsType)}}</template> -->
           </el-table-column>
+          <el-table-column prop="orderRemark" label="备注" sortable width="120"></el-table-column>
           <el-table-column prop="receiveUser" label="收货人姓名" sortable width="150"></el-table-column>
           <el-table-column prop="receiveTelephone" label="收货人电话" sortable width="150"></el-table-column>
           <el-table-column prop="receiveProvinceName" label="收货省份" sortable width="100"></el-table-column>

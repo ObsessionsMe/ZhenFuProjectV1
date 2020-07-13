@@ -41,6 +41,8 @@ namespace ViewEntity
 
         public string orderStatus { get; set; }
 
+        public string OrderRemark { get; set; }
+
         /// <summary>
         /// 用户状态
         /// </summary>
