@@ -23,9 +23,11 @@ namespace WebUI.Controllers.Manage
     public class CashManageController : Controller
     {
         private readonly ICashRepository cashRepository;
-        public CashManageController(ICashRepository _cashRepository)
+        private IHostingEnvironment hostEnvironment;
+        public CashManageController(ICashRepository _cashRepository, IHostingEnvironment _hostingEnvironment)
         {
             cashRepository = _cashRepository;
+            hostEnvironment = _hostingEnvironment;
         }
         [Route("GetCashList")]
         public ActionResult GetCashList(PaginationParam param)
@@ -52,6 +54,40 @@ namespace WebUI.Controllers.Manage
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "审批失败", data = null });
             }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = null });
+        }
+
+
+        /// <summary>
+        /// 导出订单列表
+        /// </summary>
+        /// <returns></returns>
+        [Route("ExportCashExcel")]
+        public ActionResult ExportCashExcel(PaginationParam param)
+        {
+            CashManageServices service = new CashManageServices(cashRepository);
+            var pagination = param.pagination;
+            string keyword = param.keyword;
+            var orderList = service.GetCashList(pagination, keyword);
+            Dictionary<string, string> cellheader = new Dictionary<string, string> {
+                { "Name", "会员姓名" },
+                { "userTelephone", "手机号" },
+                { "GoodsName", "产品名称" },
+                { "Type", "兑现类别" },
+                { "Status", "兑现状态" },
+                { "BankTypeName", "银行卡名称" },
+                { "Account", "银行账号" },
+                { "BankUserName", "开户人" },
+                { "ProductPorints", "个人积分余额" },
+                { "TreamPorints", "团队积分余额" },
+                { "ProvinceName", "开户行所在地" },
+                { "Deduct", "兑现积分" },
+                { "ActualDeduct", "转账金额(已扣除费率)" },
+                { "DeductRate", "可兑现比例" },
+                { "Date", "兑现提交时间" },
+                { "Addtime", "会员注册时间" },
+            };
+            string urlPath = ExcelHelper.EntityListToExcel(cellheader, orderList, "兑现列表", hostEnvironment);
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = urlPath });
         }
     }
 }

@@ -2,7 +2,7 @@
   <div class="container">
     <el-form :inline="true" class="demo-form-inline" style="text-align:left">
       <el-form-item label="关键字">
-        <el-input placeholder="请输入申请人姓名"  v-model="kw"></el-input>
+        <el-input placeholder="请输入申请人姓名" v-model="kw"></el-input>
       </el-form-item>
       <!-- <el-form-item label="关键字">
         <el-input placeholder="请输入申请人姓名或手机号"></el-input>
@@ -20,7 +20,7 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchCashApplyList">查询</el-button>
         <!-- <el-button type="primary" icon="el-icon-edit" @click="editUserGroup">编辑</el-button>
-        <el-button type="primary" icon="el-icon-delete" @click="deleteUserGroup">删除</el-button>-->       
+        <el-button type="primary" icon="el-icon-delete" @click="deleteUserGroup">删除</el-button>-->
         <el-button type="primary" icon="el-icon-search" @click="exportApplyExcel">导出excel</el-button>
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="cashApply">兑现审批</el-button>
       </el-form-item>
@@ -29,51 +29,41 @@
       <h5>兑现申请管理</h5>
       <br />
       <el-row>
-        <el-table
-          :data="tableData"
-          tooltip-effect="dark"
-          style="width: 100%"
-          highlight-current-row
-          height="650"
-          @selection-change="handleSelectionChange"
-        >
+        <el-table :height="height" :data="tableData" tooltip-effect="dark" style="width: 100%" highlight-current-row @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" :selectable="selectable"></el-table-column>
           <el-table-column prop="name" label="会员姓名" width="100" show-overflow-tooltip></el-table-column>
           <el-table-column prop="userTelephone" label="手机号" width="150" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="goodsName" label="产品名称" width="150" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="type" label="兑现类别" width="100">
+          <!-- <el-table-column prop="goodsName" label="产品名称" width="150" show-overflow-tooltip></el-table-column> -->
+          <!-- <el-table-column prop="type" label="兑现类别" width="100">
             <template slot-scope="scope">{{common.getTypeName(4,scope.row.type)}}</template>
           </el-table-column>
           <el-table-column prop="status" label="兑现状态" sortable width="120">
             <template slot-scope="scope">{{common.getTypeName(5,scope.row.status)}}</template>
-          </el-table-column>
+          </el-table-column> -->
+          <el-table-column prop="type" label="兑现类别" width="100"></el-table-column>
+          <el-table-column prop="status" label="兑现状态" sortable width="120"></el-table-column>
           <el-table-column prop="bankTypeName" label="银行卡名称" width="180"></el-table-column>
           <el-table-column prop="account" label="银行账号" sortable width="220"></el-table-column>
           <el-table-column prop="bankUserName" label="开户人" width="150" show-overflow-tooltip></el-table-column>
           <el-table-column prop="productPorints" label="个人积分余额" width="120" show-overflow-tooltip></el-table-column>
           <el-table-column prop="treamPorints" label="团队积分余额" width="120" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="provinceName" label="开户行所在地" width="150" show-overflow-tooltip>
+          <!-- <el-table-column prop="provinceName" label="开户行所在地" width="150" show-overflow-tooltip>
              <template slot-scope="scope">{{scope.row.provinceName}}{{scope.row.cityName}}</template>
+          </el-table-column> -->
+          <el-table-column prop="provinceCityName" label="开户行所在地" width="150" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="deduct" label="兑现积分" sortable width="120"></el-table-column>
-          <el-table-column prop="deduct" label="转账金额(已扣除费率)" sortable width="200">
+          <!-- <el-table-column prop="deduct" label="转账金额(已扣除费率)" sortable width="200">
              <template slot-scope="scope">{{scope.row.deduct * (1-scope.row.poundageRate)}}</template>
+          </el-table-column> -->
+          <el-table-column prop="actualDeduct" label="转账金额(已扣除费率)" sortable width="200">
           </el-table-column>
           <el-table-column prop="deductRate" label="可兑现比例" sortable width="120"></el-table-column>
-           <el-table-column prop="date" label="会员注册时间" sortable width="200"></el-table-column>
+          <el-table-column prop="addtime" label="会员注册时间" sortable width="200"></el-table-column>
           <el-table-column prop="date" label="兑现提交时间" sortable width="200"></el-table-column>
         </el-table>
       </el-row>
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageIndex"
-        :page-sizes="[10, 15, 20, 30, 50, 100]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next"
-        :total="total"
-      ></el-pagination>
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageIndex" :page-sizes="[10, 15, 20, 30, 50, 100]" :page-size="pageSize" layout="total, sizes, prev, pager, next" :total="total"></el-pagination>
     </section>
     <el-dialog title="提示" :visible.sync="check_dialog" width="30%">
       <span style="color:red">兑现通过：表示已经对会员转账成功了</span>
@@ -119,6 +109,11 @@ export default {
     //页面初始化
     this.searchCashApplyList();
   },
+  computed: {
+    height() {
+      return window.innerHeight * 0.58;
+    }
+  },
   methods: {
     selectable(row) {
       return row.status == 0 ? true : false;
@@ -152,14 +147,14 @@ export default {
       this.searchCashApplyList();
     },
     handleSelectionChange(val) {
-      console.log("选择",val);
+      console.log("选择", val);
       this.checkIds = [];
       for (var i = 0; i < val.length; i++) {
         this.checkIds.push(val[i].id);
       }
     },
     cashApply() {
-      console.log("this.checkIds",this.checkIds);
+      console.log("this.checkIds", this.checkIds);
       if (this.checkIds.length == 0) {
         this.$message({
           type: "error",
@@ -194,8 +189,25 @@ export default {
           this.searchCashApplyList();
         });
     },
-    exportApplyExcel(){
-
+    exportApplyExcel() {
+      var pageSize_e = 100000;
+      http
+        .post(url.ExportCashExcel, {
+          pagination: {
+            rows: pageSize_e,
+            page: this.pageIndex,
+            sidx: "Id",
+            sord: "desc",
+            record: ""
+          },
+          keyword: this.kw
+        })
+        .then(res => {
+          console.log("res", res);
+          let href = this.fileUrl + res.data.data;
+          console.log("导出excel路径:", href);
+          window.open(href);
+        });
     }
   }
 };

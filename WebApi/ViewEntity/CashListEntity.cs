@@ -36,7 +36,7 @@ namespace ViewEntity
         /// <summary>
         /// 兑现类型 1:个人 2:团队
         /// </summary>
-        public int Type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// 兑现提交时间
@@ -64,6 +64,10 @@ namespace ViewEntity
 
         public string CityName { get; set; }
 
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public string ProvinceCityName { get; set; }
+
         /// <summary>
         /// 账号
         /// </summary>
@@ -74,10 +78,11 @@ namespace ViewEntity
         /// </summary>
         public int Integral { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         /// <summary>
         /// 可提现比例
         /// </summary>
-        public double DeductRate { get; set; }
+        public string DeductRate { get; set; }
 
         /// <summary>
         /// 兑现积分数
@@ -89,10 +94,14 @@ namespace ViewEntity
         /// </summary>
         public double PoundageRate { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public double ActualDeduct { get; set; }
+
+
         /// <summary>
         /// 兑现状态 1:完成 0:待兑现
         /// </summary>
-        public int Status { get; set; }
+        public string Status { get; set; }
 
         /// <summary>
         /// 会员姓名
@@ -117,5 +126,7 @@ namespace ViewEntity
         /// 操作时间
         /// </summary>
         public string OperatorDate { get; set; }
+
+        
     }
 }

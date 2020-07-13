@@ -22,6 +22,8 @@ let url = {
     SubDic:"api/Dictionary/SubDic",
     SetOutGoods:"api/OrderManage/SetOutGoods",
     ExportOrderExcel:"api/OrderManage/ExportOrderExcel",
+    ExportCashExcel:"api/CashManage/ExportCashExcel",
+    
     //logout: "api/Login/OutLogin",
     //getGridJson: "api/User/GetGridJson",
     //getPersonalFileList:"/File/GetFileList",    

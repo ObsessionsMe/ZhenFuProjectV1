@@ -136,6 +136,13 @@ const routes = [
     }
   },
   {
+    path: '/user/dailyCheck',
+    component: () => import('../page/user/dailyCheck/index'),
+    meta: {
+      title: '每日签到'
+    }
+  },
+  {
     
     path: '/user/vipEarn/teamDetail',
     component: () => import('../page/user/vipEarn/teamDetail.vue'),
