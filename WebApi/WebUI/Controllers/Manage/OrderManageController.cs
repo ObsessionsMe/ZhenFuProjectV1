@@ -42,7 +42,7 @@ namespace WebUI.Controllers.Manage
             string keyword = param.keyword;
             var data = new
             {
-                rows = service.GetOrderList(pagination, keyword),
+                rows = service.GetOrderList(pagination, keyword, param.beginDate, param.endDate),
                 total = pagination.total,
                 page = pagination.page,
                 records = pagination.records
@@ -86,7 +86,7 @@ namespace WebUI.Controllers.Manage
             OrderManageServices service = new OrderManageServices(orderRepository);
             var pagination = param.pagination;
             string keyword = param.keyword;
-            var orderList = service.GetOrderList(pagination, keyword);
+            var orderList = service.GetOrderList(pagination, keyword, param.beginDate, param.endDate);
             Dictionary<string, string> cellheader = new Dictionary<string, string> {
                 { "OrderNumber", "订单编号" },
                 { "Name", "下单人" },

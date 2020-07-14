@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Infrastructure.DBContext;
 using Infrastructure.LogConfig;
@@ -18,6 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Debug;
 using Repository.RepositoryService;
 using Repository.ServiceInterface;
 using RepositoryFactory.RepositoryService;
@@ -28,6 +31,10 @@ namespace WebUI
 {
     public class Startup
     {
+        public static readonly LoggerFactory MyLoggerFactory = new LoggerFactory(new[] {
+            new DebugLoggerProvider()
+        });
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -41,7 +48,12 @@ namespace WebUI
             services.AddControllers();
             //注册数据库连接字符串
             //services.AddDbContext<ESMDBContext>(options => options.UseMySql(Configuration.GetConnectionString("ESMConnection")));
-            services.AddDbContext<ZFDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DbConnectionString")), ServiceLifetime.Transient);
+            services.AddDbContext<ZFDBContext>(options =>
+            {
+                options.EnableSensitiveDataLogging(true);
+                options.UseSqlServer(Configuration.GetConnectionString("DbConnectionString"));
+                options.UseLoggerFactory(MyLoggerFactory);
+            }, ServiceLifetime.Transient);
             //注册HttpContextm等服务
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession();
@@ -62,7 +74,7 @@ namespace WebUI
             services.AddTransient<IUserBasePorintsRecordRepository, UserBasePorintsRecordRepository>();
             services.AddTransient<IDictionaryRepository, DictionaryRepository>();
             services.AddTransient<IAliNotifyRepository, AliNotifyRepository>();
-            services.AddTransient<IUserProductFrameworkRepository,UserProductFrameworkRepository>();
+            services.AddTransient<IUserProductFrameworkRepository, UserProductFrameworkRepository>();
             services.AddTransient<IProductCfgRepository, ProductCfgRepository>();
             services.AddTransient<IWeiXinNotifyRepository, WeiXinNotifyRepository>();
 
@@ -78,6 +90,11 @@ namespace WebUI
             {
                 option.Filters.Add<GlobleExceptionAttribute>();
             });
+
+            services.AddControllers()
+                .AddJsonOptions(configure => {
+                    configure.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
+                });
 
         }
 
@@ -115,6 +132,23 @@ namespace WebUI
             {
                 endpoints.MapControllers();
             });
+        }
+    }
+    public class DatetimeJsonConverter : JsonConverter<DateTime>
+    {
+        public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            if (reader.TokenType == JsonTokenType.String)
+            {
+                if (DateTime.TryParse(reader.GetString(), out DateTime date))
+                    return date;
+            }
+            return reader.GetDateTime();
+        }
+
+        public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.ToString("yyyy-MM-dd HH:mm:ss"));
         }
     }
 }

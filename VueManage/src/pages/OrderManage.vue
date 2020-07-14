@@ -4,6 +4,17 @@
       <el-form-item label="商品名称">
         <el-input placeholder="请输入商品名称" v-model="kw"></el-input>
       </el-form-item>
+
+      <el-form-item label="选择开始日期">
+        <el-date-picker style="width:160px;" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="beginDate" align="right" type="date" placeholder="选择开始日期">
+        </el-date-picker>
+      </el-form-item>
+
+      <el-form-item label="选择结束日期">
+        <el-date-picker style="width:160px;" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endDate" align="right" type="date" placeholder="选择结束日期">
+        </el-date-picker>
+      </el-form-item>
+
       <!-- <el-form :inline="true" class="demo-form-inline" style="text-align:left">
       <el-form-item label="订单编号">
         <el-input placeholder="请输入订单编号"></el-input>
@@ -29,7 +40,7 @@
       </el-form-item>
       </el-form>-->
       <el-form-item>
-        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchOrderList">查询</el-button>
+        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchOrderList(true)">查询</el-button>
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="exportExcel">导出Excel</el-button>
       </el-form-item>
     </el-form>
@@ -37,20 +48,10 @@
       <h5>订单管理</h5>
       <br />
       <el-row>
-        <el-table
-          :data="tableData"
-          tooltip-effect="dark"
-          style="width: 100%"
-          highlight-current-row
-          height="650"
-        >
+        <el-table :data="tableData" tooltip-effect="dark" style="width: 100%" highlight-current-row :height="height">
           <el-table-column prop="orderStatus" label="操作" sortable width="120">
             <template slot-scope="scope">
-              <el-link
-                type="primary"
-                v-if="scope.row.orderStatus=='待发货'"
-                @click="setOutGoods(scope.row.orderNumber)"
-              >设为已发货</el-link>
+              <el-link type="primary" v-if="scope.row.orderStatus=='待发货'" @click="setOutGoods(scope.row.orderNumber)">设为已发货</el-link>
             </template>
           </el-table-column>
           <el-table-column prop="orderNumber" label="订单编号" sortable width="230"></el-table-column>
@@ -85,19 +86,12 @@
           <el-table-column prop="orderStatus" label="订单状态" sortable width="100">
             <!-- <template slot-scope="scope">{{common.getTypeName(1,scope.row.orderStatus)}}</template> -->
           </el-table-column>
-          <el-table-column prop="addTime" label="下单时间" sortable width="200"></el-table-column>
+          <el-table-column prop="addTime" label="下单时间" sortable width="200">
+             <template slot-scope="scope">{{scope.row.addTime.replace('T','')}}</template> 
+          </el-table-column>
         </el-table>
       </el-row>
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageIndex"
-        :page-sizes="[10, 15, 20, 30, 50, 100]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next"
-        :total="total"
-      ></el-pagination>
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageIndex" :page-sizes="[10, 15, 20, 30, 50, 100]" :page-size="pageSize" layout="total, sizes, prev, pager, next" :total="total"></el-pagination>
     </section>
   </div>
 </template>
@@ -116,6 +110,8 @@ export default {
       pageSize: 10,
       pageIndex: 1,
       keyword: "",
+      beginDate: "",
+      endDate: "",
       defalutOrderType: 100,
       allOrderType: [
         { id: 100, name: "全部" },
@@ -137,9 +133,17 @@ export default {
     console.log("123", common);
     //console.log("aa",common.getTypeName)
   },
+  computed: {
+    height() {
+      return window.innerHeight * 0.58;
+    }
+  },
   methods: {
     //获取用订单列表
-    searchOrderList() {
+    searchOrderList(isReload) {
+      if (isReload) {
+        this.pageIndex = 1;
+      }
       http
         .post(url.GetOrderList, {
           pagination: {
@@ -149,7 +153,9 @@ export default {
             sord: "desc",
             record: ""
           },
-          keyword: this.kw
+          keyword: this.kw,
+          beginDate: this.beginDate,
+          endDate: this.endDate // beginDate: this.beginDate,
         })
         .then(res => {
           console.log("res", res);
@@ -178,7 +184,9 @@ export default {
             sord: "desc",
             record: ""
           },
-          keyword: this.kw
+          keyword: this.kw,
+          beginDate: this.beginDate,
+          endDate: this.endDate
         })
         .then(res => {
           console.log("res", res);

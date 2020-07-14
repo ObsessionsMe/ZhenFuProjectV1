@@ -7,14 +7,18 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using ViewEntity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Debug;
 
 namespace Infrastructure.DBContext
 {
     public class ZFDBContext : DbContext
     {
+      
         public ZFDBContext(DbContextOptions<ZFDBContext> options)
         : base(options)
-        { }
+        { 
+        }
         public DbSet<UserInfoEntity> UserEntity { get; set; }
         public DbSet<OrderInfoEntity> OrderInfoEntity { get; set; }
         public DbSet<GoodsEntity> GoodsEntity { get; set; }

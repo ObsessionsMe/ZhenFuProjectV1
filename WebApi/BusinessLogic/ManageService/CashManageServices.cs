@@ -29,7 +29,7 @@ namespace BusinessLogic.ManageService
             var expression = ExtLinq.True<CashListEntity>();
             if (!string.IsNullOrEmpty(keyword))
             {
-                expression = b => b.GoodsName.Contains(keyword);
+                expression = b => b.BankUserName.Contains(keyword);
             }
             return cashRepository.GetUse_CashList(pagination, expression);
         }

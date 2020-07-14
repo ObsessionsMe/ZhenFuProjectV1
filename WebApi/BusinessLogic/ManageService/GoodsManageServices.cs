@@ -9,7 +9,7 @@ using System.Text;
 
 namespace BusinessLogic.ManageService
 {
-   public class GoodsManageServices
+    public class GoodsManageServices
     {
         /// <summary>
         ///  商品模块业务逻辑

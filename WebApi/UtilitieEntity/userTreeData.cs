@@ -33,6 +33,6 @@ namespace UtilitieEntity
 
         public string label { get; set; }
 
-        public List<UserTreeData>? children { get; set; }
+        public List<UserTreeData> children { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using ViewEntity;
 
 namespace BusinessLogic.ManageService
 {
-   public class OrderManageServices
+    public class OrderManageServices
     {
         /// <summary>
         ///  商品模块业务逻辑
@@ -20,13 +20,23 @@ namespace BusinessLogic.ManageService
             orderRepository = _orderRepository;
         }
 
-        public List<OrderListEntity> GetOrderList(Pagination pagination, string keyword)
+        public List<OrderListEntity> GetOrderList(Pagination pagination, string keyword, DateTime? beginDate, DateTime? endDate)
         {
             var expression = ExtLinq.True<OrderListEntity>();
+            expression = expression.And(a => a.Enable == "Y");
             if (!string.IsNullOrEmpty(keyword))
             {
-                pagination.page = 1;
-                expression = b => b.GoodsName.Contains(keyword);
+                expression = expression.And(a => a.GoodsName.Contains(keyword));
+            }
+
+            if (beginDate.HasValue)
+            {
+                expression = expression.And(a => a.AddTime >= beginDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                expression = expression.And(a => a.AddTime <= endDate.Value);
             }
             return orderRepository.GetUse_OrderList(pagination, expression);
         }
