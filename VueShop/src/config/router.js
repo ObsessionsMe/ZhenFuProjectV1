@@ -135,13 +135,13 @@ const routes = [
       title: '会员系统'
     }
   },
-  {
-    path: '/user/dailyCheck',
-    component: () => import('../page/user/dailyCheck/index'),
-    meta: {
-      title: '每日签到'
-    }
-  },
+  // {
+  //   path: '/user/dailyCheck',
+  //   component: () => import('../page/user/dailyCheck/index'),
+  //   meta: {
+  //     title: '每日签到'
+  //   }
+  // },
   {
     
     path: '/user/vipEarn/teamDetail',

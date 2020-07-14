@@ -102,7 +102,11 @@ export default {
       ],
       common: common,
       checkIds: [],
-      check_dialog: false
+      check_dialog: false,  
+      fileUrl:
+        process.env.NODE_ENV === "development"
+          ? "https://localhost:44380"
+          : "/shop.api"
     };
   },
   created() {
