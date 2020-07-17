@@ -25,6 +25,15 @@ export function UserRegister(params) {
   })
 }
 
+export function SubmitUpdatePassword(params) {
+  return request({
+    url: '/api/login/SubmitUpdatePassword',
+    method: 'post',
+    params: {jsonString: JSON.stringify(params)}
+  })
+}
+
+
 export function GetUserPorints(params) {
   return request({
     url: '/api/user/GetUserPorints',

@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     selectable(row) {
-      return row.status == 0 ? true : false;
+      return row.status == "待转账" ? true : false;
     },
     //获取用户兑换申请列表
     searchCashApplyList() {

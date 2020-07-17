@@ -123,22 +123,43 @@ namespace WebUI.Controllers.Client
         }
 
         /// <summary>
+        ///  用户注册
+        /// </summary>
+        /// <returns></returns>
+        [Route("SubmitUpdatePassword")]
+        public ActionResult SubmitUpdatePassword(string jsonString)
+        {
+            UserInfoEntity userInfo = JsonConvert.DeserializeObject<UserInfoEntity>(jsonString);
+            UserService servers = new UserService(userRepository, sumRepository, order);
+            if (userInfo == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取数据失败", data = "" });
+            }
+            AjaxResult rtnMessage = servers.SubmitUpdatePassword(userInfo);
+            if (rtnMessage.state.ToString() == "error")
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = rtnMessage.message, data = "" });
+            }
+            return Json(rtnMessage);
+        }
+
+        /// <summary>
         ///  获取短信验证码
         /// </summary>
         /// <returns></returns>
         [Route("GetPhoneCode")]
         public ActionResult GetPhoneCode(string mobile)
         {
-            //if (string.IsNullOrEmpty(mobile))
-            //{
-            //    return Json(new AjaxResult { state = ResultType.error.ToString(), message = "手机验号不能为空", data = "" });
-            //}
-            //int NoteCode = new NoteCode().SendNote(mobile);//发送短信
-            //if (NoteCode == -1)
-            //{
-            //    return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取手机验证码失败", data = "" });
-            //}
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "" });
+            if (string.IsNullOrEmpty(mobile))
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "手机验号不能为空", data = "" });
+            }
+            int NoteCode = new NoteCode().SendNote(mobile);//发送短信
+            if (NoteCode == -1)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取手机验证码失败", data = "" });
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = NoteCode});
         }
 
         /// <summary>

@@ -98,6 +98,23 @@ namespace BusinessLogic.ClientService
             }
         }
 
+        public AjaxResult SubmitUpdatePassword(UserInfoEntity user)
+        {
+            var userEntity = userRepository.FindEntity(x => x.UserTelephone == user.UserTelephone);
+            if (userEntity != null)
+            {
+                return new AjaxResult { state = ResultType.error.ToString(), message = "你输入的手机号在系统中不存在，请使用其他手机号", data = "" };
+            }
+            userEntity = userRepository.FindEntity(x => x.UserTelephone == user.UserTelephone && x.Enable == "N");
+            if (userEntity != null)
+            {
+                return new AjaxResult { state = ResultType.error.ToString(), message = "你输入的手机号为无效账户，请使用其他手机号", data = "" };
+            }
+            userEntity.Password = DESEncrypt.Encrypt(user.Password);
+            userRepository.Update(userEntity);
+            return new AjaxResult { state = ResultType.success.ToString(), message = "注册成功！", data = userEntity };
+        }
+        
         public UserInfoEntity CheckLogin(string telephone, string password_r)
         {
             return userRepository.FindEntity(x => x.UserTelephone == telephone && x.Enable == "Y" && x.Password == password_r);

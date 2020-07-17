@@ -10,6 +10,7 @@
         <van-col span="8" style="height:30px;line-height:30px;margin-left:4%">
           <el-checkbox v-model="isSave">记住密码</el-checkbox>
         </van-col>
+         <span @click="goUpdatePassword()">忘记密码</span>
         <div style="margin: 10px;">
           <van-button
             size="large"
@@ -100,6 +101,10 @@ export default {
     localStorage.removeItem("activeName");
   },
   methods: {
+    goUpdatePassword(){
+      alert("建立");
+      this.$router.push({ path: this.redirect || "/rpassword" });
+    },
     //获取用openId
     OnGetOpenIdByCode(code) {
       if (code == null || code == "") {
