@@ -22,7 +22,7 @@
                 disabled
               >{{auth_time}}秒后重新发送验证码</van-button>
             </van-field>
-            <van-field type="number" placeholder="请输入密码" v-model="password" />
+            <van-field type="password" placeholder="请输入密码" v-model="password" />
             <van-field type="password" placeholder="请再次输入密码" v-model="password_r" />
           </van-cell-group>
           <div style="margin: 10px;">
@@ -30,7 +30,7 @@
               size="large"
               type="primary"
               style="height: 45px;line-height:45px;"
-              @click="SubmitUpdatePassword()"
+              @click="onSubmitUpdatePassword()"
               :disabled="isRegister"
             >提交</van-button>
           </div>
@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     //提交
-    submitRegister() {
+    onSubmitUpdatePassword() {
       //注册成功后直接到登录页面
       if (isNullOrEmpty(this.userTelephone)) {
         this.$toast("你的手机号不能为空");
@@ -110,7 +110,7 @@ export default {
         if (response.state == "success") {    
             this.$notify({
             title: "成功",
-            message: "注册成功！",
+            message: "修改密码成功！",
             type: "success",
             duration: "5000"
           });

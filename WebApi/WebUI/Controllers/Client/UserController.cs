@@ -129,11 +129,6 @@ namespace WebUI.Controllers.Client
             return Json(result);
         }
 
-       
-
-
-
-
         [Route("getProductEarn")]
         public ActionResult GetProductEarn(GoodsParam param)
         {

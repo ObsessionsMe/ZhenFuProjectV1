@@ -24,8 +24,8 @@ const routes = [
     }
   },
   {
-    path: '/account/password',
-    name: 'rpassword',
+    path: '/login/password',
+    name: 'password',
     component: () => import('../page/account/password'),
     meta: {
       title: '修改密码'
@@ -265,14 +265,12 @@ router.beforeEach((to, from, next) => {
   // if (title) {
   //   document.title = title;
   // }
-  if (to.path == '/login' || to.name == 'AliPay' || to.name == 'register' || to.name == "buypoints" || to.name == "rpassword") { //如果是登录页面路径，就直接next()
-    alert("进啦");
+  if (to.path == '/login' || to.name == 'AliPay' || to.name == 'register' || to.name == "buypoints" || to.name == "password") { //如果是登录页面路径，就直接next()
     next();
     return;
   } 
   else 
   { 
-    alert("deng进啦");
     //不然就跳转到登录；
     if (!router.app.$store.state.Token) {
       next('/login');
