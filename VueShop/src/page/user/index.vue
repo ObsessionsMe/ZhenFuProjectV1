@@ -86,7 +86,7 @@
             :key="item.goodsId"
             :to="{path:'/user/vipSys',query:{ id:item.goodsId,name:item.goodsName }}"
           >
-            <van-col span="6" style="width:30%; padding-top:3%; color: #38f">
+            <van-col span="6" style="width:22%; padding-top:3%; color: #38f">
               <!-- <van-icon name="after-sale" /> -->
               <div style="padding-bottom:10px;">{{item.LevelName}}{{item.LevelText}}</div>
               <div>{{item.goodsName}}</div>

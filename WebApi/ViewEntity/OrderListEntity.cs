@@ -21,6 +21,8 @@ namespace ViewEntity
 
         public int PayCount { get; set; }
 
+        public int oStatus { get; set; }
+
         public int PayMethod { get; set; }
 
         public string AddressId { get; set; }
@@ -43,6 +45,13 @@ namespace ViewEntity
 
         public string OrderRemark { get; set; }
 
+        public string GoodsId { get; set; }
+
+        //附件地址
+        public string AttachmentName { get; set; }
+
+        //订单运费
+        public int GoodsFreight { get; set; }
         /// <summary>
         /// 用户状态
         /// </summary>

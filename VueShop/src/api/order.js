@@ -39,3 +39,27 @@ export function saveWeiXinPayOrderInfo(params) {
     params: params
   })
 }
+
+export function GetUserOrderList() {
+  return request({
+    url: '/api/order/GetUserOrderList',
+    method: 'get'
+  })
+}
+
+export function GetUserOrderDetails(params) {
+  return request({
+    url: '/api/order/GetUserOrderDetails',
+    method: 'get',
+    params: {OrderNumber:params}
+  })
+}
+export function SetGoodsCompleted(params) {
+  return request({
+    url: '/api/order/SetGoodsCompleted',
+    method: 'post',
+    params: {orderNumber:params}
+  })
+}
+
+

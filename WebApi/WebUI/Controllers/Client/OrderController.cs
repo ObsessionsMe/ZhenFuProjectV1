@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,6 +13,7 @@ using BusinessLogic.ManageService;
 using Entity;
 using Infrastructure;
 using Infrastructure.LogConfig;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +21,8 @@ using Newtonsoft.Json;
 using Repository.RepositoryService;
 using Repository.ServiceInterface;
 using RepositoryFactory.ServiceInterface;
+using UtilitieEntity;
+using ViewEntity;
 using WebUI.App_Start;
 
 namespace WebUI.Controllers.Client
@@ -38,9 +42,12 @@ namespace WebUI.Controllers.Client
         private readonly IUserRepository userRepository;
         private readonly IUserBasePorintsRecordRepository basePorintRepository;
         private readonly IUserProductFrameworkRepository framkRepository;
+        private readonly IAttachMentRepository attachMentRepository;
+        private readonly IHostingEnvironment hostEnvironment;
+
         public OrderController(IGoodsRepository _goodsRepository, IReceiveAddressRepository _receiveAddressRepository, IOrderRepository _orderRepository,
             IUserPrintsSumRepository _sumRepository, IUserPorintsRecordRepository _recordRepository,
-            IUserRepository _userRepository, IUserBasePorintsRecordRepository _basePorintRepository, IUserProductFrameworkRepository _framkRepository
+            IUserRepository _userRepository, IUserBasePorintsRecordRepository _basePorintRepository, IUserProductFrameworkRepository _framkRepository, IAttachMentRepository _attachMentRepository, IHostingEnvironment _hostEnvironment
             )
         {
             goodsRepository = _goodsRepository;
@@ -51,7 +58,10 @@ namespace WebUI.Controllers.Client
             userRepository = _userRepository;
             basePorintRepository = _basePorintRepository;
             framkRepository = _framkRepository;
+            attachMentRepository = _attachMentRepository;
+            hostEnvironment = _hostEnvironment;
         }
+
         /// <summary>
         ///  准备下单-获选获取收货地址和商品详情
         /// </summary>
@@ -134,6 +144,94 @@ namespace WebUI.Controllers.Client
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = data.message, data = data });
             }
             return Json(data);
+        }
+
+        [Route("GetUserOrderList")]
+        public ActionResult GetUserOrderList()
+        {
+            if (userModel == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败，请重新登录", data = "" });
+            }
+            var OrderList = orderRepository.FindList(x => x.UserId == userModel.UserId);
+            if (OrderList.Count == 0)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "订单数据为空", data = "" });
+            }
+            List<GoodsCard> cardList = new List<GoodsCard>();
+            for (int i = 0; i < OrderList.Count; i++)
+            {
+                var obj = OrderList[i];
+                var goodsCard = new GoodsCard();
+                goodsCard.orderNumber = obj.OrderNumber;
+                goodsCard.state = obj.OrderStatus == 0 ? "代付款" : obj.OrderStatus == 1 ? "待发货" : obj.OrderStatus == 2 ? "待收货" : "已完成";
+                goodsCard.orderStatus = obj.OrderStatus;
+                goodsCard.payCount = obj.PayCount;
+
+                List<GoodsItem> goodsItem = new List<GoodsItem>();
+                string dir = Path.Combine(hostEnvironment.ContentRootPath, "Upload/GoodsImg");
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                var attach = attachMentRepository.FindEntity(x => x.MainId == obj.GoodsId);
+                string filePath = Path.Combine(dir, attach.AttachmentName);
+                var gItem = new GoodsItem();
+                gItem.imageURL = filePath;
+                var goods = goodsRepository.FindEntity(x => x.GoodsId == obj.GoodsId && x.Enable == "Y");
+                gItem.title = goods.GoodsName;
+                gItem.price = goods.UnitPrice.ToString();
+                gItem.quantity = obj.BuyGoodsNums;
+                goodsItem.Add(gItem);
+                goodsCard.products = goodsItem;
+                cardList.Add(goodsCard);
+            }
+            //【0-待付款，1-待发货，2-待收货，3-已完成】
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = cardList });
+        }
+
+        [Route("GetUserOrderDetails")]
+        public ActionResult GetUserOrderDetails(string OrderNumber)
+        {
+            if (userModel == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败，请重新登录", data = "" });
+            }
+            var result = orderRepository.GetUse_OrderListByOrderNumber(OrderNumber);
+            var attach = attachMentRepository.FindEntity(x => x.MainId == result.GoodsId);
+            string dir = Path.Combine(hostEnvironment.ContentRootPath, "Upload/GoodsImg");
+            string filePath = Path.Combine(dir, attach.AttachmentName);
+            result.AttachmentName = filePath;
+            string addtime = result.AddTime.ToString("yyyy-MM-dd HH:mm:ss");
+            result.AddressId = addtime;
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = result });
+        }
+
+        /// <summary>
+        /// 设为已收货
+        /// </summary>
+        /// <returns></returns>
+        [Route("SetGoodsCompleted")]
+        public ActionResult SetGoodsCompleted(string orderNumber)
+        {
+            var entity = orderRepository.FindEntity(x => x.OrderNumber == orderNumber);
+            var result = new AjaxResult
+            {
+                state = ResultType.error,
+                message = "操作失败",
+                data = null
+            };
+            if (entity == null)
+            {
+                return Json(result);
+            }
+            entity.OrderStatus = 3;
+            int i = orderRepository.Update(entity);
+            if (i <= 0)
+            {
+                return Json(result);
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = null });
         }
     }
 }

@@ -81,7 +81,7 @@ export default {
         return;
       }
       if (this.phoneCode_r != this.phoneCode) {
-        this.$toast("输入手机号验证码有误，请重新输入");
+        this.$toast("验证码有误，请重新输入");
         return;
       }
       if (isNullOrEmpty(this.password)) {
@@ -106,7 +106,8 @@ export default {
       };
       this.isRegister = true;
       SubmitUpdatePassword(params).then(response => {
-        //console.log("response",response);
+        console.log("response",response);
+        this.isRegister = false;
         if (response.state == "success") {    
             this.$notify({
             title: "成功",
@@ -122,7 +123,6 @@ export default {
           this.$toast(response.message);
           return;
         }
-        this.isRegister = false;
       });
     },
     //获取手机号验证码
@@ -148,9 +148,8 @@ export default {
         mobile: this.userTelephone
       };
       GetPhoneCode(params).then(response => {
-        //console.log(response);
-        if (response.data.state == "sucess") {
-          this.phoneCode_r = response.data.data;
+        if (response.state == "success") {
+          this.phoneCode_r = response.data;
         }
       });
     }

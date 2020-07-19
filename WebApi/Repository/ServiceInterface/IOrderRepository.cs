@@ -18,5 +18,7 @@ namespace RepositoryFactory.ServiceInterface
         List<OrderListEntity> GetUse_OrderList(Pagination pagination, Expression<Func<OrderListEntity, bool>> predicate);
 
         bool IsOverStp_PayMaxGoodsLeve(string userId, string goodsId);
+
+        OrderListEntity GetUse_OrderListByOrderNumber(string OrderNumber);
     }
 }

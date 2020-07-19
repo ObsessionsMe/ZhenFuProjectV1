@@ -57,7 +57,7 @@ namespace Entity
         public int PayCount { get; set; }
 
         /// <summary>
-        ///  订单状态【0-待付款，1-待发货，3-待收货，2-已完成】
+        ///  订单状态【0-待付款，1-待发货，2-待收货，3-已完成】
         /// </summary>
         public int OrderStatus { get; set; }
 

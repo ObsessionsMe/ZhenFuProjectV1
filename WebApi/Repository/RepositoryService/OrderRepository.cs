@@ -49,6 +49,12 @@ namespace RepositoryFactory.RepositoryService
             return repositorys.FindList(predicate, pagination);
         }
 
+        public OrderListEntity GetUse_OrderListByOrderNumber(string OrderNumber)
+        {
+            var repositorys = new Repository<OrderListEntity>(dbcontext);
+            return repositorys.FindEntity(x => x.OrderNumber == OrderNumber);
+        }
+
 
         public bool IsOverStp_PayMaxGoodsLeve(string userId, string goodsId)
         {
@@ -57,6 +63,12 @@ namespace RepositoryFactory.RepositoryService
             sqlParams.Params.Add("@goodsId", goodsId);
             object obj = ExecuteSql.ProcQuerytoScalar(new DatabaseFacade(dbcontext), "proc_IsOverStp_PayMaxGoodsLeve", sqlParams);
             return Convert.ToInt32(obj) == 1 ? true : false;
+        }
+
+        public OrderDetailsEntity GetUse_OrderDetailsInfo(string OrderNumber)
+        {
+            var repositorys = new Repository<OrderDetailsEntity>(dbcontext);
+            return repositorys.FindEntity(x => x.OrderNumber == OrderNumber);
         }
     }
 }
