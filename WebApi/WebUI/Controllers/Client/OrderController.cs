@@ -153,7 +153,7 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败，请重新登录", data = "" });
             }
-            var OrderList = orderRepository.FindList(x => x.UserId == userModel.UserId);
+            var OrderList = orderRepository.FindList(x => x.UserId == userModel.UserId).OrderByDescending(x => x.Addtime).ToList();
             if (OrderList.Count == 0)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "订单数据为空", data = "" });
@@ -169,15 +169,9 @@ namespace WebUI.Controllers.Client
                 goodsCard.payCount = obj.PayCount;
 
                 List<GoodsItem> goodsItem = new List<GoodsItem>();
-                string dir = Path.Combine(hostEnvironment.ContentRootPath, "Upload/GoodsImg");
-                if (!Directory.Exists(dir))
-                {
-                    Directory.CreateDirectory(dir);
-                }
                 var attach = attachMentRepository.FindEntity(x => x.MainId == obj.GoodsId);
-                string filePath = Path.Combine(dir, attach.AttachmentName);
                 var gItem = new GoodsItem();
-                gItem.imageURL = filePath;
+                gItem.imageURL = attach.AttachmentName;
                 var goods = goodsRepository.FindEntity(x => x.GoodsId == obj.GoodsId && x.Enable == "Y");
                 gItem.title = goods.GoodsName;
                 gItem.price = goods.UnitPrice.ToString();
@@ -199,9 +193,7 @@ namespace WebUI.Controllers.Client
             }
             var result = orderRepository.GetUse_OrderListByOrderNumber(OrderNumber);
             var attach = attachMentRepository.FindEntity(x => x.MainId == result.GoodsId);
-            string dir = Path.Combine(hostEnvironment.ContentRootPath, "Upload/GoodsImg");
-            string filePath = Path.Combine(dir, attach.AttachmentName);
-            result.AttachmentName = filePath;
+            result.AttachmentName = attach.AttachmentName;
             string addtime = result.AddTime.ToString("yyyy-MM-dd HH:mm:ss");
             result.AddressId = addtime;
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = result });

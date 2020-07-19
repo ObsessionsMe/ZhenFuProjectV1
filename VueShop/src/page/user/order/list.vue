@@ -22,8 +22,14 @@
                 </router-link>
               </div>
               <div slot="footer">
-                <span class="total">总价：{{item.payCount}}</span>
-                <van-button size="small" v-if="item.orderStatus==2" type="primary" @click="OnSetGoodsCompleted(item.orderNumber)">确认收货</van-button>
+                <div style="height:20px;">总价：{{item.payCount}}</div>
+
+                <van-button
+                  size="small"
+                  type="primary"
+                  v-if="item.orderStatus==2"
+                  @click="OnSetGoodsCompleted(item.orderNumber)"
+                >确认收货</van-button>
                 <van-button size="small" type="danger" v-if="item.orderStatus==0">支付</van-button>
               </div>
             </van-panel>
@@ -77,7 +83,7 @@
                 </router-link>
               </div>
               <div slot="footer">
-                <span class="total">总价：{{item.payCount}}</span>
+                <span class="total" style="height:40px">总价：{{item.payCount}}</span>
               </div>
             </van-panel>
           </van-cell-group>
@@ -104,7 +110,11 @@
               </div>
               <div slot="footer">
                 <span class="total">总价：{{item.payCount}}</span>
-                <van-button size="small" type="primary" @click="OnSetGoodsCompleted(item.orderNumber)">确认收货</van-button>
+                <van-button
+                  size="small"
+                  type="primary"
+                  @click="OnSetGoodsCompleted(item.orderNumber)"
+                >确认收货</van-button>
               </div>
             </van-panel>
           </van-cell-group>
@@ -140,7 +150,8 @@
   </div>
 </template>
 <script>
-import { GetUserOrderList,SetGoodsCompleted } from "@/api/order.js";
+import { GetUserOrderList, SetGoodsCompleted } from "@/api/order.js";
+import { getFilesUrl } from "@/config/Utilitie.js";
 export default {
   components: {},
   data() {
@@ -176,8 +187,11 @@ export default {
     onGetOrderInfo() {
       GetUserOrderList().then(res => {
         if (res.state == "success") {
-          console.log("res.data", res.data);
           this.allList = res.data;
+          for (var i = 0; i < this.allList.length; i++) {
+            var obj = this.allList[i].products;
+            this.allList[i].products[0].imageURL = getFilesUrl() + obj[0].imageURL;
+          }
           this.obligationsList = this.allList.filter(x => x.orderStatus == 0);
           this.committedList = this.allList.filter(x => x.orderStatus == 1);
           this.receivingList = this.allList.filter(x => x.orderStatus == 2);
@@ -187,8 +201,8 @@ export default {
         }
       });
     },
-    OnSetGoodsCompleted(orderNumber){
-        SetGoodsCompleted(orderNumber).then(res => {
+    OnSetGoodsCompleted(orderNumber) {
+      SetGoodsCompleted(orderNumber).then(res => {
         if (res.state == "success") {
           this.$toast("操作成功");
           this.onGetOrderInfo();
