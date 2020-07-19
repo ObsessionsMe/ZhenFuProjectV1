@@ -266,6 +266,7 @@ export default {
         .then(response => {
           console.log("response111", response);
           if (response.data.state == "success") {
+            //this.tremProductCount = response.data.payNum,
             console.log("treeData", response.data.data.treeData);
             this.treeData[0].label = response.data.data.parentName + "(推荐人)";
             this.treeData[0].children[0].label =

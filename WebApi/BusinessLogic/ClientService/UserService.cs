@@ -327,5 +327,55 @@ namespace BusinessLogic.ClientService
         {
             return userRepository.FindEntity(x => x.UserId == userId && x.Enable == "Y");
         }
+
+        public object GetMyTreambyOrderAndUse(string userId, string goodsNumber)
+        {
+            try
+            {
+                List<UserTreeData> results = new List<UserTreeData>();
+                DataTable treeTable = userRepository.GetUserTeamLevelbyOrderAndUser(userId, goodsNumber);
+                var root = treeTable.AsEnumerable().Where(x => x.Field<int>("Level") == 0).Select(x => new UserTreeData()
+                {
+                    id = x.Field<string>("UserId"),
+                    label = x.Field<string>("Name") + x.Field<int>("BuyGoodsCount") + " (" + x.Field<string>("UserTelephone") + ")",
+                    name = x.Field<string>("Name"),
+                    telephone = x.Field<string>("UserTelephone"),
+                    buyGoodsCount = x.Field<int>("BuyGoodsCount"),
+                    children = new List<UserTreeData>()
+                }).FirstOrDefault();
+                if (root != null)
+                {
+                    getNextUserInfo_New(treeTable, root);
+                    results.Add(root);
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        
+        public void getNextUserInfo_New(DataTable treeTable, UserTreeData data)
+        {
+            var result = treeTable.AsEnumerable().Where(x => x.Field<string>("ReferrerTelephone") == data.telephone).Select(x => new UserTreeData()
+            {
+                id = x.Field<string>("UserId"),
+                label =  x.Field<string>("Name") + x.Field<int>("BuyGoodsCount") +" (" + x.Field<string>("UserTelephone") + ")",
+                name = x.Field<string>("Name"),
+                telephone = x.Field<string>("UserTelephone"),
+                buyGoodsCount = x.Field<int>("BuyGoodsCount"),
+                children = new List<UserTreeData>()
+            });
+            if (result.Count() > 0)
+            {
+                foreach (var item in result)
+                {
+                    getNextUserInfo_New(treeTable, item);
+                    data.children.Add(item);
+                }
+            }
+        }
     }
 }

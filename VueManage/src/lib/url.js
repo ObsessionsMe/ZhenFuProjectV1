@@ -23,6 +23,7 @@ let url = {
     SetOutGoods:"api/OrderManage/SetOutGoods",
     ExportOrderExcel:"api/OrderManage/ExportOrderExcel",
     ExportCashExcel:"api/CashManage/ExportCashExcel",
+    EditOrderRemark:"api/OrderManage/EditOrderRemark"
     
     //logout: "api/Login/OutLogin",
     //getGridJson: "api/User/GetGridJson",

@@ -5,7 +5,7 @@
         <el-input placeholder="请输入商品名称" v-model="kw"></el-input>
       </el-form-item>
 
-      <el-form-item label="选择开始日期">
+      <!-- <el-form-item label="选择开始日期">
         <el-date-picker style="width:160px;" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="beginDate" align="right" type="date" placeholder="选择开始日期">
         </el-date-picker>
       </el-form-item>
@@ -13,7 +13,7 @@
       <el-form-item label="选择结束日期">
         <el-date-picker style="width:160px;" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endDate" align="right" type="date" placeholder="选择结束日期">
         </el-date-picker>
-      </el-form-item>
+      </el-form-item>-->
 
       <!-- <el-form :inline="true" class="demo-form-inline" style="text-align:left">
       <el-form-item label="订单编号">
@@ -40,7 +40,11 @@
       </el-form-item>
       </el-form>-->
       <el-form-item>
-        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchOrderList(true)">查询</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-circle-plus-outline"
+          @click="searchOrderList(true)"
+        >查询</el-button>
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="exportExcel">导出Excel</el-button>
       </el-form-item>
     </el-form>
@@ -48,10 +52,21 @@
       <h5>订单管理</h5>
       <br />
       <el-row>
-        <el-table :data="tableData" tooltip-effect="dark" style="width: 100%" highlight-current-row :height="height">
-          <el-table-column prop="orderStatus" label="操作" sortable width="120">
+        <el-table
+          :data="tableData"
+          tooltip-effect="dark"
+          style="width: 100%"
+          highlight-current-row
+          :height="height"
+        >
+          <el-table-column prop="orderStatus" label="操作" sortable width="150">
             <template slot-scope="scope">
-              <el-link type="primary" v-if="scope.row.orderStatus=='待发货'" @click="setOutGoods(scope.row.orderNumber)">设为已发货</el-link>
+              <el-link
+                type="primary"
+                v-if="scope.row.orderStatus=='待发货'"
+                @click="setOutGoods(scope.row.orderNumber)"
+              >设为已发货</el-link>
+              <el-link type="primary" @click="updateOrderRemark(scope.row.orderNumber)" style="padding-left:2%">修改备注</el-link>
             </template>
           </el-table-column>
           <el-table-column prop="orderNumber" label="订单编号" sortable width="230"></el-table-column>
@@ -87,11 +102,20 @@
             <!-- <template slot-scope="scope">{{common.getTypeName(1,scope.row.orderStatus)}}</template> -->
           </el-table-column>
           <el-table-column prop="addTime" label="下单时间" sortable width="200">
-             <template slot-scope="scope">{{scope.row.addTime.replace('T','')}}</template> 
+            <template slot-scope="scope">{{scope.row.addTime.replace('T','')}}</template>
           </el-table-column>
         </el-table>
       </el-row>
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageIndex" :page-sizes="[10, 15, 20, 30, 50, 100]" :page-size="pageSize" layout="total, sizes, prev, pager, next" :total="total"></el-pagination>
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pageIndex"
+        :page-sizes="[10, 15, 20, 30, 50, 100]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next"
+        :total="total"
+      ></el-pagination>
     </section>
   </div>
 </template>
@@ -153,9 +177,9 @@ export default {
             sord: "desc",
             record: ""
           },
-          keyword: this.kw,
-          beginDate: this.beginDate,
-          endDate: this.endDate // beginDate: this.beginDate,
+          keyword: this.kw
+          //beginDate: this.beginDate,
+          //endDate: this.endDate // beginDate: this.beginDate,
         })
         .then(res => {
           console.log("res", res);
@@ -228,6 +252,43 @@ export default {
             type: "info",
             message: "已取消操作"
           });
+        });
+    },
+    updateOrderRemark(orderNumber) {
+      this.$prompt("请输入订单备注信息", "订单备注信息", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          console.log(value);
+          this.onUpdateOrderRemark(orderNumber, value);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入"
+          });
+        });
+    },
+    onUpdateOrderRemark(orderNumber, orderRemark) {
+      http
+        .get(url.EditOrderRemark, {
+          orderNumber: orderNumber,
+          orderRemark: orderRemark
+        })
+        .then(res => {
+          this.searchOrderList();
+          if (res.data.state == "success") {
+            this.$message({
+              type: "success",
+              message: "修改备注成功"
+            });
+          } else {
+            this.$message({
+              type: "info",
+              message: "修改备注失败"
+            });
+          }
         });
     }
   }

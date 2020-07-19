@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic.ClientService;
@@ -188,26 +189,21 @@ namespace WebUI.Controllers.Manage
         public ActionResult GetMyTream(string userId, string goodsId)
         {
             //返回用户层级结构(包含自己总共三层)
-            //var data = userRepository.FindEntity(x => x.UserId == userModel.UserId && x.UserTelephone == userModel.UserTelephone && x.Enable == "Y");
-            var data = framekRepository.FindEntity(x => x.UserId == userId && x.GoodsId == goodsId);
+            var data = userRepository.FindEntity(x => x.UserId == userId);
             if (data == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取数据失败", data = null });
             }
             UserService servers = new UserService(userRepository, sumRepository, orderRepository);
-            var result = servers.GetMyTreamManage(userId, goodsId);
-            int userPayCount = 0;
-            var list = orderRepository.FindList(x => x.UserId == userId && x.GoodsId == goodsId);
-            for (int i = 0; i < list.Count; i++)
-            {
-                var obj = list[i];
-                userPayCount += obj.BuyGoodsNums;
-            }
+            var result = servers.GetMyTreambyOrderAndUse(userId, goodsId);
+            //DataTable treeTable = userRepository.GetUserTeamLevel(userId);
+            //int payNum = Convert.ToInt32(treeTable.Compute("sum(BuyGoodsCount)", ""));
             var results = new
             {
                 parentName = data.Referrer + data.ReferrerTelephone,
-                name = data.Name + "(" + userPayCount + "盒)",
-                treeData = result,
+                name = data.Name,
+                treeData = result
+                //payNum = payNum
             };
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = results });
         }

@@ -76,6 +76,34 @@ namespace WebUI.Controllers.Manage
             }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = null });
         }
+
+        /// <summary>
+        /// 修改订单备注信息
+        /// </summary>
+        /// <returns></returns>
+        [Route("EditOrderRemark")]
+        public ActionResult EditOrderRemark(string orderNumber, string orderRemark)
+        {
+            var entity = orderRepository.FindEntity(x => x.OrderNumber == orderNumber);
+            var result = new AjaxResult
+            {
+                state = ResultType.error,
+                message = "操作失败",
+                data = null
+            };
+            if (entity == null)
+            {
+                return Json(result);
+            }
+            entity.OrderRemark = orderRemark;
+            int i = orderRepository.Update(entity);
+            if (i <= 0)
+            {
+                return Json(result);
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = null });
+        }
+
         /// <summary>
         /// 导出订单列表
         /// </summary>

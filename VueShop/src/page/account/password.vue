@@ -136,7 +136,7 @@ export default {
         return;
       }
       this.sendAuthCode = false;
-      this.auth_time = 10;
+      this.auth_time = 60;
       var auth_timetimer = setInterval(() => {
         this.auth_time--;
         if (this.auth_time <= 0) {

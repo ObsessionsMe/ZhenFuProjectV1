@@ -51,6 +51,12 @@ namespace RepositoryFactory.RepositoryService
         {
             string sql = string.Format(" select sum(payNum) From f_get_user_team( '{0}' , '{1}' )  where Level = 1 or Level = 2 ", userId, goodsId);
            return dbcontext.Database.SqlQuery<object>(sql).FirstOrDefault();
-        } 
+        }
+
+        public DataTable GetUserTeamLevelbyOrderAndUser(string userId, string orderNumber)
+        {
+            string sql = string.Format(" select * from f_get_user_team_by_goodsId('{0}','{1}') order by Level", userId, orderNumber);
+            return ExecuteSql.SqlQuery(new DatabaseFacade(dbcontext), sql);
+        }
     }
 }
