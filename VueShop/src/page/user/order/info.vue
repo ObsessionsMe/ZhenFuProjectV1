@@ -57,6 +57,7 @@
 </template>
 <script>
 import { GetUserOrderDetails, SetGoodsCompleted } from "@/api/order.js";
+import { getFilesUrl } from "@/config/Utilitie.js";
 export default {
   data() {
     return {
@@ -108,7 +109,7 @@ export default {
           console.log("res.data", res.data);
           this.active = res.data.oStatus;
           this.OrderDetailsEntity = res.data;
-          this.products[0].imageURL = res.data.attachmentName;
+          this.products[0].imageURL = getFilesUrl() + res.data.attachmentName;
           this.products[0].title = res.data.goodsName;
           this.products[0].price = res.data.goodsUnitPrice;
           this.products[0].quantity = res.data.buyGoodsNums;
