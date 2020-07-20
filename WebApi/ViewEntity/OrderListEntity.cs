@@ -57,7 +57,7 @@ namespace ViewEntity
         /// </summary>
         public string Enable { get; set; }
 
-        public DateTime AddTime { get; set; }
+        public string AddTime { get; set; }
 
     }
 }

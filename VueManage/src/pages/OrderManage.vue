@@ -154,7 +154,6 @@ export default {
   created() {
     //页面初始化
     this.searchOrderList();
-    console.log("123", common);
     //console.log("aa",common.getTypeName)
   },
   computed: {
@@ -208,9 +207,7 @@ export default {
             sord: "desc",
             record: ""
           },
-          keyword: this.kw,
-          beginDate: this.beginDate,
-          endDate: this.endDate
+          keyword: this.kw
         })
         .then(res => {
           console.log("res", res);

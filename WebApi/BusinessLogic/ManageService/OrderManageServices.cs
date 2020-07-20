@@ -20,7 +20,7 @@ namespace BusinessLogic.ManageService
             orderRepository = _orderRepository;
         }
 
-        public List<OrderListEntity> GetOrderList(Pagination pagination, string keyword, DateTime? beginDate, DateTime? endDate)
+        public List<OrderListEntity> GetOrderList(Pagination pagination, string keyword)
         {
             var expression = ExtLinq.True<OrderListEntity>();
             expression = expression.And(a => a.Enable == "Y");
@@ -28,16 +28,15 @@ namespace BusinessLogic.ManageService
             {
                 expression = expression.And(a => a.GoodsName.Contains(keyword));
             }
+            //if (beginDate.HasValue)
+            //{
+            //    expression = expression.And(a => a.AddTime >= beginDate.Value);
+            //}
 
-            if (beginDate.HasValue)
-            {
-                expression = expression.And(a => a.AddTime >= beginDate.Value);
-            }
-
-            if (endDate.HasValue)
-            {
-                expression = expression.And(a => a.AddTime <= endDate.Value);
-            }
+            //if (endDate.HasValue)
+            //{
+            //    expression = expression.And(a => a.AddTime <= endDate.Value);
+            //}
             return orderRepository.GetUse_OrderList(pagination, expression);
         }
 

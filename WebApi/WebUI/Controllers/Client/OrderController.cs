@@ -194,8 +194,7 @@ namespace WebUI.Controllers.Client
             var result = orderRepository.GetUse_OrderListByOrderNumber(OrderNumber);
             var attach = attachMentRepository.FindEntity(x => x.MainId == result.GoodsId);
             result.AttachmentName = attach.AttachmentName;
-            string addtime = result.AddTime.ToString("yyyy-MM-dd HH:mm:ss");
-            result.AddressId = addtime;
+            result.AddressId = result.AddTime;
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = result });
         }
 
