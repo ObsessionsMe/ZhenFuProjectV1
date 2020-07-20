@@ -32,7 +32,7 @@
       <van-field label="可兑现比例" class="red" :value="(entity.deductRate*100)+'%'" disabled />
       <van-cell title="兑现福豆">
         <template #input>
-          <van-stepper id='deduct' :min="min" :max="maxDeduct()" v-model="entity.deduct" :step="100" />
+          <van-stepper id='deduct' :min="min" :max="maxDeduct()"  v-model="entity.deduct" :step="100" />
         </template>
       </van-cell>
     </el-main>
@@ -131,6 +131,7 @@ export default {
       that.isNotSubmit = true;
     };
     document.querySelector("#deduct input").onblur = function() {
+      that.entity.deduct=parseInt(that.entity.deduct/100)*100;
       that.isNotSubmit = false;
     };
   },

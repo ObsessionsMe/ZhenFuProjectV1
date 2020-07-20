@@ -6,10 +6,12 @@
       <van-cell-group>
         <van-cell clickable @click="payMethod = '1'">
           <img height="30" width="120" :src="require('@/assets/images/weixin_bg.png')" />
+          <span style="float:unset; font-size:14px; color:silver;margin-left:4%">500以上建议使用</span>
           <van-radio name="1" style="float:right" />
         </van-cell>
         <van-cell clickable @click="payMethod = '2'">
-          <img height="28" width="110" :src="require('@/assets/images/zhifubao_bg.png')" />
+          <img height="28" width="120" :src="require('@/assets/images/zhifubao_bg.png')" />
+          <span  style="float:unset; font-size:14px;color:silver;margin-left:4%">500以下建议使用</span>
           <van-radio name="2" style="float:right" />
         </van-cell>
         <van-field v-model="PayNum" label="金额" placeholder="请输入充值金额" type="number" />
