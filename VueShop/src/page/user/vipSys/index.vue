@@ -12,20 +12,20 @@
       备注:以上福豆都是经过提现或者兑现商品后计算所得
     </van-row>
     <van-tabs @change="tabChange" v-model="active">
-      <van-tab v-if="false" title="个人积分">
-        <van-cell-group>
+      <van-tab v-if="true" title="个人积分">
+        <!-- <van-cell-group>
           <van-cell icon="volume-o" :title="'近一月积分:'+productEarn.total" :value="'总积分:'+productEarn.allTotal" />
-        </van-cell-group>
+        </van-cell-group> -->
         <el-table :data="productEarn.datas" stripe style="width: 100%">
           <el-table-column align="center" prop="date" label="日期" width="180"></el-table-column>
           <el-table-column align="center" prop="value" label="积分"></el-table-column>
         </el-table>
       </van-tab>
-      <van-tab v-if="false" title="团队积分">
-        <van-cell-group>
+      <van-tab v-if="true" title="团队积分">
+        <!-- <van-cell-group>
           <van-cell icon="volume-o" :title="'我的团队总人数:'+teamEarn.AllUserCount" :value="'我的团队总持仓盒数:'+teamEarn.AllBuyGoodsCount" />
           <van-cell icon="volume-o" :title="'近一月积分:'+teamEarn.total" :value="'总积分:'+teamEarn.allTotal" />
-        </van-cell-group>
+        </van-cell-group> -->
         <el-table :data="teamEarn.datas" stripe style="width: 100%;">
           <el-table-column align="center" prop="Addtime" label="日期">
           </el-table-column>
@@ -63,6 +63,11 @@ import { GetMyTream } from "@/api/user.js";
 export default {
   data() {
     return {
+      tabs: [
+        { key: "productEarn", name: "个人积分" },
+        { key: "teamEarn", name: "团队积分" },
+        { key: "teamDetail", name: "我的团队" },
+      ],
       height: 0,
       chacheSelTabKey: "vipSysTabCurrent",
       isAgency: false,
@@ -142,7 +147,7 @@ export default {
     };
   },
   created() {
-    const that=this;
+    const that = this;
     this.height = document.body.clientHeight - 180;
     this.GoodsId = this.$route.query.id;
     this.productEarn.param.GoodsId = this.$route.query.id;
@@ -156,7 +161,7 @@ export default {
         that.getEarnData(tabIndex);
         that.active = tabIndex;
       } else {
-        that.getEarnData(2);
+        that.getEarnData(0);
       }
     });
     // this.getMyTream();
@@ -178,9 +183,13 @@ export default {
       });
     },
     getEarnData(tabIndex) {
+      console.log(tabIndex);
       //console.log(this.productEarn);
-      switch (tabIndex) {
-        case 0:
+      var tab = this.tabs[tabIndex];
+      console.log(tab);
+
+      switch (tab.key) {
+        case "productEarn":
           GetProductEarn(this.productEarn.param).then(res => {
             if (res.state == "success") {
               this.productEarn.datas = res.data.list;
@@ -189,7 +198,7 @@ export default {
             }
           });
           break;
-        case 1:
+        case "teamEarn":
           GetTeamEarn(this.teamEarn.param).then(res => {
             if (res.state == "success") {
               this.teamEarn.datas = res.data.list;
@@ -201,11 +210,12 @@ export default {
             }
           });
           break;
-        case 2:
+        case "teamDetail":
           GetTeamDetail(this.teamDetail.param).then(res => {
             var treeData;
             if (res.state == "success") {
-              this.teamDetail.buyALLGoodsCount = res.data.detail.BuyALLGoodsCount;
+              this.teamDetail.buyALLGoodsCount =
+                res.data.detail.BuyALLGoodsCount;
               treeData = res.data.tree;
               treeData[0].label = "推荐人:" + treeData[0].label;
             } else {

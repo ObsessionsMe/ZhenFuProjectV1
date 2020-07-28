@@ -1,15 +1,14 @@
 <template>
   <div>
     <headerNav :title="name" />
-    <van-row style="font-size:14px; height:40px; line-height:40px;text-align:center">
+    <!-- <van-row style="font-size:14px; height:40px; line-height:40px;text-align:center">
       <van-col span="8">团队激励积分:{{teamEarnDetail.detail.TreamPorints}}</van-col>
     </van-row>
-    <!-- <div class="van-ellipsis">这是一段最多显示一行的文字，多余的内容会被省略</div> -->
     <van-row style="font-size:12px;margin-left:5%;color:silver;height: auto;  
     word-wrap:break-word;  
     word-break:break-all; ">
       *详细计算方式请查看对应产品积分规则
-    </van-row>
+    </van-row> -->
     <van-row>
       <el-table  show-summary :data="teamEarnDetail.datas" stripe style="width: 100%">
         <el-table-column align="center" prop="Name" label="用户名"></el-table-column>
@@ -19,7 +18,7 @@
           </template>
         </el-table-column>
         <el-table-column align="center" prop="BuyGoodsCount" label="盒数"></el-table-column>
-        <el-table-column align="center" prop="Porints" label="积分"></el-table-column>
+        <!-- <el-table-column align="center" prop="Porints" label="积分"></el-table-column> -->
       </el-table>
     </van-row>
   </div>
