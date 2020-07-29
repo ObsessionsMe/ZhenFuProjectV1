@@ -87,7 +87,7 @@ namespace BusinessLogic.ClientService
                 userEntity.UserType = 1;//新用户注册默认都是经销商
                 userEntity.Enable = "Y";
                 userEntity.Addtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                userEntity.TourismPorints = 1000;
+                userEntity.TourismPorints = 0;
                 userEntity.isHold = "N";
                 userRepository.Insert(userEntity);
                 return new AjaxResult { state = ResultType.success.ToString(), message = "注册成功！", data = userEntity };

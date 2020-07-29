@@ -92,6 +92,8 @@
           </el-table-column>
           <el-table-column prop="porintsSurplus" label="福豆余额" sortable width="100"></el-table-column>
           <el-table-column prop="pecialItemPorints" label="可用福豆" sortable width="100"></el-table-column>
+          <el-table-column prop="treamPorints" label="团队福豆" sortable width="100"></el-table-column>
+          <el-table-column prop="tourismPorints" label="专项福豆" sortable width="100"></el-table-column>
           <!-- <el-table-column prop="productPorints" label="产品积分" sortable width="100"></el-table-column>
           <el-table-column prop="treamPorints" label="团队积分" sortable width="100"></el-table-column> -->
           <!-- <el-table-column prop="indirectPoints" label="是否持仓" sortable width="100"></el-table-column> -->

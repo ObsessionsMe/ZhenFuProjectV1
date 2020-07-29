@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--商品个人图-->
-    <div class="user-profile" style="height:150px;line-height:20px;">
+    <div class="user-profile" style="height:170px;line-height:20px;">
       <div class="user-profile-avatar">
         <a>
           <img
@@ -28,6 +28,14 @@
         <van-row type="flex" justify="center">
           <van-col span="6">可用福豆</van-col>
           <van-col span="6">{{userInfo.pecialItemPorints}}</van-col>
+        </van-row>
+        <van-row type="flex" justify="center">
+          <van-col span="6">团队福豆</van-col>
+          <van-col span="6">{{userInfo.treamPorints}}</van-col>
+        </van-row>
+          <van-row type="flex" justify="center">
+          <van-col span="6">专项福豆</van-col>
+          <van-col span="6">{{userInfo.tourismPorints}}</van-col>
         </van-row>
         <!-- <van-row type="flex" justify="center">
           <van-col span="6">可用积分</van-col>
@@ -138,7 +146,7 @@ export default {
       userInfo: {
         name: "",
         //productPorints: 0,
-        //treamPorints: 0,
+        treamPorints: 0,
         tourismPorints: 0,
         porintsSurplus: 0,
         userTelephone: "",
@@ -166,8 +174,8 @@ export default {
         if (response.state == "success") {
           console.log("response.data", response.data);
           this.userInfo.porintsSurplus = response.data.porintsSurplus;
-          //this.userInfo.productPorints = response.data.productPorints;
-          //this.userInfo.treamPorints = response.data.treamPorints;
+          this.userInfo.tourismPorints = response.data.tourismPorints;
+          this.userInfo.treamPorints = response.data.treamPorints;
           this.userInfo.pecialItemPorints = response.data.pecialItemPorints;
         }
         console.log("this.userInfo", this.userInfo);

@@ -44,10 +44,11 @@ namespace WebUI.Controllers.Client
         private readonly IUserProductFrameworkRepository framkRepository;
         private readonly IAttachMentRepository attachMentRepository;
         private readonly IHostingEnvironment hostEnvironment;
+        private IProductCfgRepository productCfgRepository;
 
         public OrderController(IGoodsRepository _goodsRepository, IReceiveAddressRepository _receiveAddressRepository, IOrderRepository _orderRepository,
             IUserPrintsSumRepository _sumRepository, IUserPorintsRecordRepository _recordRepository,
-            IUserRepository _userRepository, IUserBasePorintsRecordRepository _basePorintRepository, IUserProductFrameworkRepository _framkRepository, IAttachMentRepository _attachMentRepository, IHostingEnvironment _hostEnvironment
+            IUserRepository _userRepository, IUserBasePorintsRecordRepository _basePorintRepository, IUserProductFrameworkRepository _framkRepository, IAttachMentRepository _attachMentRepository, IHostingEnvironment _hostEnvironment, IProductCfgRepository _productCfgRepository
             )
         {
             goodsRepository = _goodsRepository;
@@ -60,6 +61,7 @@ namespace WebUI.Controllers.Client
             framkRepository = _framkRepository;
             attachMentRepository = _attachMentRepository;
             hostEnvironment = _hostEnvironment;
+            productCfgRepository = _productCfgRepository;
         }
 
         /// <summary>
@@ -117,7 +119,7 @@ namespace WebUI.Controllers.Client
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "订单传入的参数为空", data = "" });
             }
             OrderInfoEntity orderInfo = JsonConvert.DeserializeObject<OrderInfoEntity>(jsonString);
-            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository, userRepository, basePorintRepository, framkRepository);
+            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository, userRepository, basePorintRepository, framkRepository, productCfgRepository);
             var data = server.SubmitOrder(orderInfo, userModel.UserId);
             if (data == null)
             {
@@ -137,7 +139,7 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败，请重新登录", data = "" });
             }
-            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository, userRepository, basePorintRepository,framkRepository);
+            OrderService server = new OrderService(orderRepository, sumRepository, recordRepository, goodsRepository, userRepository, basePorintRepository,framkRepository,productCfgRepository);
             var data = server.CheckUserPayGoodsCount(payNum, goodsId, userModel.UserId);
             if (data == null)
             {

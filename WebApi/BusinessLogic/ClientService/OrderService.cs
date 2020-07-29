@@ -28,9 +28,10 @@ namespace BusinessLogic.ClientService
         private IUserRepository userRepository;
         private IUserBasePorintsRecordRepository basePorintRepository;
         private IUserProductFrameworkRepository frameWork;
+        private IProductCfgRepository productCfgRepository;
         public OrderService(IOrderRepository _orderRepository, IUserPrintsSumRepository _sumRepository,
             IUserPorintsRecordRepository _recordRepository, IGoodsRepository _goodsRepository,IUserRepository _userRepository,
-            IUserBasePorintsRecordRepository _basePorintRepository, IUserProductFrameworkRepository _frameWork)
+            IUserBasePorintsRecordRepository _basePorintRepository, IUserProductFrameworkRepository _frameWork, IProductCfgRepository _productCfgRepository)
         {
             orderRepository = _orderRepository;
             sumRepository = _sumRepository;
@@ -39,6 +40,7 @@ namespace BusinessLogic.ClientService
             userRepository = _userRepository;
             basePorintRepository = _basePorintRepository;
             frameWork = _frameWork;
+            productCfgRepository = _productCfgRepository;
         }
 
         /// <summary>
@@ -68,6 +70,29 @@ namespace BusinessLogic.ClientService
                 //        }
                 //    }
                 //}
+                //判断购买次数，最多购买三次，达到三次就不能再购买了
+                var prodCfgEntity = productCfgRepository.FindEntity(x => x.GoodsId == order.GoodsId && x.isGivePorint == "Y");
+                if (prodCfgEntity != null)
+                {
+                    int userPayCount = orderRepository.FindList(x => x.UserId == userId && x.GoodsId == order.GoodsId).Count;
+                    switch (userPayCount)
+                    {
+                        case 0:
+                            userEntity.TourismPorints = prodCfgEntity.isGiveDefalutPorint;
+                            userRepository.Update(userEntity);
+                            break;
+                        case 1:
+                            userEntity.TourismPorints = prodCfgEntity.isGiveDefalutPorint - 500;
+                            userRepository.Update(userEntity);
+                            break;
+                        case 2:
+                            userEntity.TourismPorints = prodCfgEntity.isGiveDefalutPorint - 1000;
+                            userRepository.Update(userEntity);
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 int i = 0;
                 int payCount = (order.GoodsUnitPrice) * (order.BuyGoodsNums);  //下单总价
                 //减去运费

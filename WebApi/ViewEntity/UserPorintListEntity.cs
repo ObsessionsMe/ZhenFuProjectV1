@@ -18,6 +18,8 @@ namespace ViewEntity
 
         public int ProductPorints { get; set; }
 
+        public int TourismPorints { get; set; } 
+
         /// <summary>
         /// 姓名
         /// </summary>

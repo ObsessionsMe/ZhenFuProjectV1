@@ -53,7 +53,7 @@ namespace Entity
         public int UserType { get; set; }
 
         /// <summary>
-        ///  旅游积分(默认1000)，--新用户注册时赠送
+        ///  专项积分，下单(GD20200729224953460380136)是处理
         /// </summary>
         public int TourismPorints { get; set; }
 
@@ -101,6 +101,11 @@ namespace Entity
         /// 扩展字段
         /// </summary>
         public string Exterd3 { get; set; }
+
+        /// <summary>
+        /// 团队积分
+        /// </summary>
+        public int TreamPorints { get; set; }
 
     }
 }

@@ -203,12 +203,16 @@ namespace WebUI.Controllers.Client
                 user = new UserInfoEntity();
                 user.PecialItemPorints = 0;
                 user.PorintsSurplus = 0;
+                user.TreamPorints = 0;
+                user.TourismPorints = 0;
             }
             var result = new
             {
                 pecialItemPorints = user.PecialItemPorints,
-                porintsSurplus = user.PorintsSurplus
-            };
+                porintsSurplus = user.PorintsSurplus,
+                TreamPorints = user.TreamPorints,
+                TourismPorints = user.TourismPorints
+        };
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = result });
         }
 

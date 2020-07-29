@@ -61,5 +61,10 @@ namespace Entity
         ///  
         /// </summary>
         public string IsWorkingDays { get; set; }
+
+
+        public string isGivePorint { get; set; }
+
+        public int isGiveDefalutPorint { get; set; }
     }
 }
