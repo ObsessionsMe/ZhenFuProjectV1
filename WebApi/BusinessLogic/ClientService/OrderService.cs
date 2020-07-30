@@ -72,25 +72,30 @@ namespace BusinessLogic.ClientService
                 //}
                 //判断购买次数，最多购买三次，达到三次就不能再购买了
                 var prodCfgEntity = productCfgRepository.FindEntity(x => x.GoodsId == order.GoodsId && x.isGivePorint == "Y");
+                int num = 0;
                 if (prodCfgEntity != null)
                 {
                     int userPayCount = orderRepository.FindList(x => x.UserId == userId && x.GoodsId == order.GoodsId).Count;
-                    switch (userPayCount)
+                    if (userEntity.TreamPorints == 0)
                     {
-                        case 0:
-                            userEntity.TourismPorints = prodCfgEntity.isGiveDefalutPorint;
+                        //没有团队福豆，最多复投3次
+                        if (userPayCount < 3)
+                        {
+                            num = 500 * userPayCount;
+                            userEntity.TourismPorints += (prodCfgEntity.isGiveDefalutPorint - num) * order.BuyGoodsNums;
                             userRepository.Update(userEntity);
-                            break;
-                        case 1:
-                            userEntity.TourismPorints = prodCfgEntity.isGiveDefalutPorint - 500;
+                        }
+                    }
+                    else
+                    {
+                        //有团队福豆，可以无限赠送，直到最后减完
+                        num = 500 * userPayCount;
+                        if (prodCfgEntity.isGiveDefalutPorint - num >= 0)
+                        {
+                            int total = (prodCfgEntity.isGiveDefalutPorint - num) * order.BuyGoodsNums;
+                            userEntity.TourismPorints += total;
                             userRepository.Update(userEntity);
-                            break;
-                        case 2:
-                            userEntity.TourismPorints = prodCfgEntity.isGiveDefalutPorint - 1000;
-                            userRepository.Update(userEntity);
-                            break;
-                        default:
-                            break;
+                        }
                     }
                 }
                 int i = 0;

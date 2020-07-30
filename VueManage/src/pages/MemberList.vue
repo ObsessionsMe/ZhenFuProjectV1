@@ -94,6 +94,7 @@
           <el-table-column prop="pecialItemPorints" label="可用福豆" sortable width="100"></el-table-column>
           <el-table-column prop="treamPorints" label="团队福豆" sortable width="100"></el-table-column>
           <el-table-column prop="tourismPorints" label="专项福豆" sortable width="100"></el-table-column>
+          <el-table-column prop="fieldsPorints" label="福豆田" sortable width="100"></el-table-column>
           <!-- <el-table-column prop="productPorints" label="产品积分" sortable width="100"></el-table-column>
           <el-table-column prop="treamPorints" label="团队积分" sortable width="100"></el-table-column> -->
           <!-- <el-table-column prop="indirectPoints" label="是否持仓" sortable width="100"></el-table-column> -->
@@ -133,6 +134,18 @@
             </el-form-item>
             <el-form-item label="福豆余额">
               <el-input v-model="userEntity.porintsSurplus" type="number"></el-input>
+            </el-form-item>
+            <el-form-item label="可用福豆">
+              <el-input v-model="userEntity.pecialItemPorints" type="number"></el-input>
+            </el-form-item>
+            <el-form-item label="专项福豆">
+              <el-input v-model="userEntity.tourismPorints" type="number"></el-input>
+            </el-form-item>
+            <el-form-item label="团队福豆">
+              <el-input v-model="userEntity.treamPorints" type="number"></el-input>
+            </el-form-item>
+             <el-form-item label="福豆田">
+              <el-input v-model="userEntity.fieldsPorints" type="number"></el-input>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -413,7 +426,7 @@ export default {
       if (parseInt(this.userEntity.porintsSurplus) < 0) {
         this.$message({
           type: "error",
-          message: "积分余额不能小于0"
+          message: "福豆余额不能小于0"
         });
         return;
       }

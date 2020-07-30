@@ -1,14 +1,10 @@
 <template>
   <div>
     <!--商品个人图-->
-    <div class="user-profile" style="height:170px;line-height:20px;">
+    <div class="user-profile" style="height:200px;line-height:20px;">
       <div class="user-profile-avatar">
         <a>
-          <img
-            :src="userImg"
-            style="width:50px;height:50px;vertical-align:bottom"
-            alt="用户头像"
-          />
+          <img :src="userImg" style="width:50px;height:50px;vertical-align:bottom" alt="用户头像" />
           <span
             class="m-nick"
             style="font-size:14px;left:10px"
@@ -20,7 +16,7 @@
         <!-- <van-row type="flex" justify="center">
           <van-col span="6">旅游积分</van-col>
           <van-col span="6">{{userInfo.tourismPorints}}</van-col>
-        </van-row> -->
+        </van-row>-->
         <van-row type="flex" justify="center">
           <van-col span="6">福豆余额(充值)</van-col>
           <van-col span="6">{{userInfo.porintsSurplus}}</van-col>
@@ -33,14 +29,19 @@
           <van-col span="6">团队福豆</van-col>
           <van-col span="6">{{userInfo.treamPorints}}</van-col>
         </van-row>
-          <van-row type="flex" justify="center">
+        <van-row type="flex" justify="center">
           <van-col span="6">专项福豆</van-col>
           <van-col span="6">{{userInfo.tourismPorints}}</van-col>
+        </van-row>
+
+        <van-row type="flex" justify="center">
+          <van-col span="6">福豆田</van-col>
+          <van-col span="6">{{userInfo.fieldsPorints}}</van-col>
         </van-row>
         <!-- <van-row type="flex" justify="center">
           <van-col span="6">可用积分</van-col>
           <van-col span="6">{{userInfo.pecialItemPorints}}</van-col>
-        </van-row> -->
+        </van-row>-->
         <!-- <van-row type="flex" justify="center">
           <van-col span="6">个人积分</van-col>
           <van-col span="6">{{userInfo.productPorints}}</van-col>
@@ -48,7 +49,7 @@
         <van-row type="flex" justify="center">
           <van-col span="6">团队积分</van-col>
           <van-col span="6">{{userInfo.treamPorints}}</van-col>
-        </van-row> -->
+        </van-row>-->
       </div>
     </div>
 
@@ -105,9 +106,9 @@
     </van-cell-group>
 
     <van-cell-group>
-      <van-cell title="我的团队" is-link to="/user/myteam"/>
+      <van-cell title="我的团队" is-link to="/user/myteam" />
     </van-cell-group>
-     <!--
+    <!--
     <van-cell-group>
       <van-cell title="收支明细(现金/积分)" is-link to="/user/coupon"/>
     </van-cell-group>-->
@@ -118,18 +119,24 @@
       <van-cell title="我的团队" is-link to="/user/myteam" />
     </van-cell-group>-->
     <van-cell-group>
-      <van-cell title="福豆兑现" is-link :to="{path:'/user/cash',query:{type:2,name:'福豆兑现'}}" />
+      <van-cell title="福豆兑现" is-link :to="{path:'/user/cash',query:{type:1,name:'福豆兑现'}}" />
+    </van-cell-group>
+    <van-cell-group>
+      <van-cell title="团队福豆兑现" is-link :to="{path:'/user/cash',query:{type:2,name:'团队福豆兑现'}}" />
+    </van-cell-group>
+    <van-cell-group>
+      <van-cell title="福豆田兑现" is-link :to="{path:'/user/cash',query:{type:3,name:'福豆田兑现'}}" />
     </van-cell-group>
     <!-- <van-cell-group>
       <van-cell title="团队积分兑现" is-link :to="{path:'/user/cash',query:{type:2,name:'团队积分兑现'}}" />
-    </van-cell-group> -->
+    </van-cell-group>-->
     <van-cell-group>
       <van-cell title="收货地址" is-link to="/user/address" />
     </van-cell-group>
     <!-- <van-cell-group>
       <van-cell title="修改密码" is-link to="/login/password" />
     </van-cell-group>-->
-    <van-cell-group  style="margin-bottom:15%">
+    <van-cell-group style="margin-bottom:15%">
       <van-cell title="退出登录" is-link to="/login" />
     </van-cell-group>
     <navigate />
@@ -150,10 +157,11 @@ export default {
         tourismPorints: 0,
         porintsSurplus: 0,
         userTelephone: "",
-        pecialItemPorints: 0
+        pecialItemPorints: 0,
+        fieldsPorints: 0
       },
       vipSys: [],
-      userImg:require("@/assets/images/userImg.jpg")
+      userImg: require("@/assets/images/userImg.jpg")
     };
   },
   created() {
@@ -177,6 +185,7 @@ export default {
           this.userInfo.tourismPorints = response.data.tourismPorints;
           this.userInfo.treamPorints = response.data.treamPorints;
           this.userInfo.pecialItemPorints = response.data.pecialItemPorints;
+          this.userInfo.fieldsPorints = response.data.fieldsPorints;
         }
         console.log("this.userInfo", this.userInfo);
       });
@@ -189,11 +198,11 @@ export default {
           for (var i = 0; i < shopDataLists.length; i++) {
             if (shopDataLists[i].enable == "Y") {
               var item = {
-                goodsId:shopDataLists[i].goodsId,
-                goodsName:shopDataLists[i].goodsName,
-                LevelText:shopDataLists[i].goodsLevelText,
-                LevelName:shopDataLists[i].goodsLevelName,
-              }
+                goodsId: shopDataLists[i].goodsId,
+                goodsName: shopDataLists[i].goodsName,
+                LevelText: shopDataLists[i].goodsLevelText,
+                LevelName: shopDataLists[i].goodsLevelName
+              };
               this.vipSys.push(item);
             }
           }

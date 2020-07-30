@@ -53,17 +53,17 @@ namespace Entity
         public int UserType { get; set; }
 
         /// <summary>
-        ///  专项积分，下单(GD20200729224953460380136)是处理
+        ///  专项福豆
         /// </summary>
         public int TourismPorints { get; set; }
 
         /// <summary>
-        ///  福豆
+        ///  福豆余额
         /// </summary>
         public int PorintsSurplus { get; set; }
 
         /// <summary>
-        ///  专项积分
+        ///  可用福豆
         /// </summary>
         public int PecialItemPorints { get; set; }
 
@@ -103,9 +103,15 @@ namespace Entity
         public string Exterd3 { get; set; }
 
         /// <summary>
-        /// 团队积分
+        /// 团队福豆
         /// </summary>
         public int TreamPorints { get; set; }
+
+
+        /// <summary>
+        /// 福豆田 
+        /// </summary>
+        public int FieldsPorints { get; set; }
 
     }
 }

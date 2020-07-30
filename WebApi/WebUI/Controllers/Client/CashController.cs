@@ -23,9 +23,9 @@ namespace WebUI.Controllers.Client
     {
         public CashService cashService;
 
-        public CashController(ICashRepository _CashRepository, IUserPrintsSumRepository _userPrintsSumRepository, IUserPorintsRecordRepository _userRecordRepository, IUserRepository _userRepository)
+        public CashController(ICashRepository _CashRepository, IUserPrintsSumRepository _userPrintsSumRepository, IUserPorintsRecordRepository _userRecordRepository, IUserRepository _userRepository,IProductCfgRepository _productCfgRepository, IOrderRepository _orderRepository)
         {
-            cashService = new CashService(_CashRepository, _userPrintsSumRepository, _userRecordRepository, _userRepository);
+            cashService = new CashService(_CashRepository, _userPrintsSumRepository, _userRecordRepository, _userRepository, _productCfgRepository, _orderRepository);
         }
 
         [Route("getCashDetail")]
@@ -99,12 +99,12 @@ namespace WebUI.Controllers.Client
             try
             {
                 var currHour = DateTime.Now.Hour;
-                if (!(currHour >= BeginHour && currHour < EndHour))
-                {
-                    flag = false;
-                    result.state = ResultType.error.ToString();
-                    result.message = $"提现时间为{BeginHour}:00-{EndHour}:00!";
-                }
+                //if (!(currHour >= BeginHour && currHour < EndHour))
+                //{
+                //    flag = false;
+                //    result.state = ResultType.error.ToString();
+                //    result.message = $"提现时间为{BeginHour}:00-{EndHour}:00!";
+                //}
 
                 if (flag)
                 {

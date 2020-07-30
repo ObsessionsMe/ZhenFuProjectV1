@@ -66,5 +66,7 @@ namespace Entity
         public string isGivePorint { get; set; }
 
         public int isGiveDefalutPorint { get; set; }
+
+        public string AlgorithmVersion { get; set; }
     }
 }

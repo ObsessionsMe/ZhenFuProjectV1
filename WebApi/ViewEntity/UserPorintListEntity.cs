@@ -18,7 +18,9 @@ namespace ViewEntity
 
         public int ProductPorints { get; set; }
 
-        public int TourismPorints { get; set; } 
+        public int TourismPorints { get; set; }
+
+        public int FieldsPorints { get; set; }
 
         /// <summary>
         /// 姓名

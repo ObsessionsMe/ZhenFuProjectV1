@@ -29,7 +29,7 @@ namespace Entity
         public string GoodsName { get; set; }
 
         /// <summary>
-        /// 兑现类型 1:个人 2:团队
+        /// 兑现类型 1:个人 2:团队 3:福豆田提现
         /// </summary>
         public int Type { get; set; }
 

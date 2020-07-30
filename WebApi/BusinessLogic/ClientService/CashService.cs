@@ -20,12 +20,16 @@ namespace BusinessLogic.ClientService
         private IUserPrintsSumRepository userPrintsSumRepository;
         private IUserPorintsRecordRepository userPorintsRecordRepository;
         private IUserRepository userRepository;
-        public CashService(ICashRepository _CashRepository, IUserPrintsSumRepository _userPrintsSumRepository, IUserPorintsRecordRepository _userPorintsRecordRepository, IUserRepository _userRepository)
+        private IProductCfgRepository productCfgRepository;
+        private IOrderRepository orderRepository;
+        public CashService(ICashRepository _CashRepository, IUserPrintsSumRepository _userPrintsSumRepository, IUserPorintsRecordRepository _userPorintsRecordRepository, IUserRepository _userRepository, IProductCfgRepository _productCfgRepository, IOrderRepository _orderRepository)
         {
             CashRepository = _CashRepository;
             userPrintsSumRepository = _userPrintsSumRepository;
             userPorintsRecordRepository = _userPorintsRecordRepository;
             userRepository = _userRepository;
+            productCfgRepository = _productCfgRepository;
+            orderRepository = _orderRepository;
         }
 
         public AjaxResult InsertCashInfo(CashInfoEntity entity)
@@ -36,14 +40,36 @@ namespace BusinessLogic.ClientService
             var userEntity=userRepository.FindEntity(f => f.UserId == entity.UserId);
             if (entity.Type == 1)
             {
-
-            }
-            else
-            {
+                //个人福豆
                 userEntity.PecialItemPorints -= entity.Deduct;
             }
+            else if (entity.Type == 2)
+            {
+                //团队福豆
+                userEntity.TreamPorints -= entity.Deduct;
+                //当日不得提现超过4500*盒数
+                var  list = productCfgRepository.FindList(x => x.AlgorithmVersion == "v2.0.0");
+                if (list.Count > 0)
+                {
+                    int total = 0;
+                    foreach (var item in list)
+                    {
+                        total += orderRepository.FindList(x => x.GoodsId == item.GoodsId && x.UserId == entity.UserId).Sum(key => key.BuyGoodsNums) * 4500;
+                    }
+                    if (entity.Deduct > total)
+                    {
+                        result.state = ResultType.error.ToString();
+                        result.message = "团队福豆提现超出限额！";
+                        return result;
+                    }
+                }
+            }
+            else if (entity.Type == 3)
+            {
+                //福豆田清0
+                userEntity.FieldsPorints = 0;
+            }
             userRepository.Update(userEntity);
-
             //var sumEntity = userPrintsSumRepository.FindEntity(f => f.GoodsId == entity.GoodsId && f.UserId == entity.UserId);
             //if (entity.Type == 1)
             //{

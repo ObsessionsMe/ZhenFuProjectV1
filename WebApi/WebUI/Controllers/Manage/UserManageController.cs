@@ -168,16 +168,20 @@ namespace WebUI.Controllers.Manage
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "该用户在系统中不存在", data = null });
             }
-            entity = userRepository.FindEntity(x => x.UserTelephone == users.ReferrerTelephone);
-            if (entity == null)
+            var  entity_r = userRepository.FindEntity(x => x.UserTelephone == users.ReferrerTelephone);
+            if (entity_r == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "你输入的推荐人手机号在系统中不存在", data = null });
             }
             //可以改姓名，推荐人手机号，福豆
             var user = userRepository.FindEntity(x => x.UserId == users.UserId);
-            user.Referrer = entity.Name;
-            user.ReferrerTelephone = entity.UserTelephone;
-            user.PorintsSurplus = entity.PorintsSurplus;
+            user.Referrer = entity_r.Name;
+            user.ReferrerTelephone = entity_r.UserTelephone;
+            user.PorintsSurplus = users.PorintsSurplus;
+            user.TourismPorints = users.PorintsSurplus;
+            user.TreamPorints = users.TreamPorints;
+            user.PecialItemPorints = users.PecialItemPorints;
+            user.FieldsPorints = users.FieldsPorints;
             int i = userRepository.Update(user);
             if (i < 1)
             {

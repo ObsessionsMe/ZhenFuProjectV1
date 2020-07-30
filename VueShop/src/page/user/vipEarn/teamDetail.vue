@@ -18,7 +18,7 @@
           </template>
         </el-table-column>
         <el-table-column align="center" prop="BuyGoodsCount" label="盒数"></el-table-column>
-        <!-- <el-table-column align="center" prop="Porints" label="积分"></el-table-column> -->
+        <el-table-column align="center" prop="Porints" label="积分"></el-table-column>
       </el-table>
     </van-row>
   </div>

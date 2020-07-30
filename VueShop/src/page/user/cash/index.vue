@@ -37,8 +37,9 @@
       </van-cell>
     </el-main>
     <el-footer>
-      <el-button :disabled="isNotSubmit" v-if="IsDisabled" style="width:100%;" type="success" @click="onSubmit" round>提交</el-button>
-      <el-button v-if="!IsDisabled" style="width:100%;" type="info" disabled round>提现时间为{{beginHour}}:00-{{endHour}}:00</el-button>
+      <el-button style="width:100%;" type="success" @click="onSubmit" round>提交</el-button>
+      <!-- <el-button :disabled="isNotSubmit" v-if="IsDisabled" style="width:100%;" type="success" @click="onSubmit" round>提交</el-button> -->
+      <!-- <el-button v-if="!IsDisabled" style="width:100%;" type="info" disabled round>提现时间为{{beginHour}}:00-{{endHour}}:00</el-button> -->
       <!-- <el-button style="width:100%;" type="success" @click="onSubmit" round>提交</el-button> -->
     </el-footer>
   </div>
@@ -228,7 +229,7 @@ export default {
         return;
       }
 
-      if (this.entity.Type == 2) {
+      if (this.entity.Type > 0) {
         Dialog.confirm({
           title: "温馨提示",
           message:
