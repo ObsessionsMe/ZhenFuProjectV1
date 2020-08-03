@@ -115,6 +115,9 @@
     <van-cell-group>
       <van-cell title="福豆充值" is-link to="/user/buypoints" />
     </van-cell-group>
+     <van-cell-group>
+      <van-cell title="兑现记录" is-link to="/user/cashlist" />
+    </van-cell-group>
     <!-- <van-cell-group>
       <van-cell title="我的团队" is-link to="/user/myteam" />
     </van-cell-group>-->

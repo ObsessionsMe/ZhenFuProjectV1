@@ -48,6 +48,29 @@ namespace WebUI.Controllers.Client
 
         }
 
+
+
+        [Route("getCashList")]
+        public ActionResult GetCashList(int? type)
+        {
+            var result = new AjaxResult();
+            try
+            {
+                //获取用户的兑现列表
+                result.data = cashService.GetCashList(userModel.UserId, type).OrderByDescending(o=>o.Date);
+                result.state = ResultType.success.ToString();
+            }
+            catch (Exception ex)
+            {
+                result.message = "提交失败!";
+                result.state = ResultType.success.ToString();
+                LogHelper.Log.Error(ex);
+            }
+            return Json(result);
+
+        }
+
+
         /// <summary>
         ///  提交兑现
         /// </summary>
@@ -104,6 +127,16 @@ namespace WebUI.Controllers.Client
                     flag = false;
                     result.state = ResultType.error.ToString();
                     result.message = $"提现时间为{BeginHour}:00-{EndHour}:00!";
+                }
+
+                if (flag)
+                {
+                    if (entity.Deduct > (((entity.Integral * entity.DeductRate)/100)*100))
+                    {
+                        flag = false;
+                        result.state = ResultType.error.ToString();
+                        result.message = $"不能超过可提现最大比例";
+                    }
                 }
 
                 //if (flag)

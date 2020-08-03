@@ -15,6 +15,14 @@ export function getCashDetail(type,goodsId) {
   })
 }
 
+export function getCashList(type) {
+  return request({
+    url: '/api/cash/getCashList?type='+type,
+    method: 'get'
+  })
+}
+
+
 export function recentCash() {
   return request({
     url: '/api/cash/RecentCash',

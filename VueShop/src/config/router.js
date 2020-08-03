@@ -160,6 +160,14 @@ const routes = [
   }
   ,
   {
+    path: '/user/cashlist',
+    component: () => import('../page/user/cash/list'),
+    meta: {
+      title: '兑现系统'
+    }
+  }
+  ,
+  {
     path: '/user/order',
     component: () => import('../page/user/order/list'),
     meta: {

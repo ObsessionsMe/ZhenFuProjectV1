@@ -34,6 +34,17 @@ namespace RepositoryFactory.RepositoryService
             return ExecuteSql.ProcQuery(new DatabaseFacade(dbcontext), "p_get_cash_detail", sqlParams).Tables[0];
         }
 
+        public List<CashInfoEntity> GetCashList(string userId, int? type)
+        {
+            var repositorys = new Repository<CashInfoEntity>(dbcontext);
+            var where = ExtLinq.True<CashInfoEntity>().And(a=>a.UserId==userId);
+            if (type.HasValue)
+            {
+                where = where.And(a => a.Type == type.Value);
+            }
+            return repositorys.FindList(where);
+        }
+
         public List<CashListEntity> GetUse_CashList(Pagination pagination, Expression<Func<CashListEntity, bool>> predicate)
         {
             var repositorys = new Repository<CashListEntity>(dbcontext);

@@ -101,6 +101,11 @@ namespace BusinessLogic.ClientService
             return CashRepository.FindList(f => f.UserId == UserId)?.OrderByDescending(o => o.Id).FirstOrDefault();
         }
 
+        public List<CashInfoEntity> GetCashList(string userId, int? type)
+        {
+            return CashRepository.GetCashList(userId, type);
+        }
+
         public DataTable GetCashDetail(string userId, int type, string GoodsId)
         {
             return CashRepository.GetCashDetail(userId, type, GoodsId);
