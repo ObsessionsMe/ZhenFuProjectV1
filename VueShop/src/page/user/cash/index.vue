@@ -2,29 +2,55 @@
   <div>
     <headerNav :title="name" />
     <el-main>
-
       <!-- <van-field readonly clickable name="picker" v-model="entity.GoodsName" label="产品" placeholder="请选择" @click="showGoodsPicker = true" />
       <van-popup v-model="showGoodsPicker" position="bottom">
         <van-picker value-key="goodsName" show-toolbar :columns="productList" @confirm="onGoodsConfirm" @cancel="showGoodsPicker = false" />
      
-      </van-popup> -->
+      </van-popup>-->
 
       <!-- <van-field  readonly clickable name="picker" v-model="entity.payTypeName" label="兑现方式" placeholder="请选择" @click="showPayPicker = true" />
       <van-popup v-model="showPayPicker" position="bottom">
         <van-picker value-key="name" show-toolbar :columns="pays" @confirm="onPayConfirm" @cancel="showPayPicker = false" />
-      </van-popup> -->
+      </van-popup>-->
       <template v-if="entity.payTypeName=='银行卡'">
-        <van-field readonly clickable name="picker" v-model="entity.bankTypeName" label="所属银行" placeholder="请选择" @click="showBankPicker = true" />
+        <van-field
+          readonly
+          clickable
+          name="picker"
+          v-model="entity.bankTypeName"
+          label="所属银行"
+          placeholder="请选择"
+          @click="showBankPicker = true"
+        />
 
         <van-field label="开户人姓名" placeholder="请输入开户人姓名" v-model="entity.bankUserName" />
 
-        <van-field readonly clickable name="picker" :value="entity.provinceName+entity.cityName" label="开户地" placeholder="请选择" @click="showAreaPicker = true" />
+        <van-field
+          readonly
+          clickable
+          name="picker"
+          :value="entity.provinceName+entity.cityName"
+          label="开户地"
+          placeholder="请选择"
+          @click="showAreaPicker = true"
+        />
         <van-popup v-model="showAreaPicker" position="bottom">
-          <van-area :area-list="areaList" :columns-num="2" @confirm="onAreaConfirm" @cancel="showAreaPicker = false" />
+          <van-area
+            :area-list="areaList"
+            :columns-num="2"
+            @confirm="onAreaConfirm"
+            @cancel="showAreaPicker = false"
+          />
         </van-popup>
 
         <van-popup v-model="showBankPicker" position="bottom">
-          <van-picker value-key="name" show-toolbar :columns="banks" @confirm="onBankConfirm" @cancel="showBankPicker = false" />
+          <van-picker
+            value-key="name"
+            show-toolbar
+            :columns="banks"
+            @confirm="onBankConfirm"
+            @cancel="showBankPicker = false"
+          />
         </van-popup>
       </template>
       <van-field :placeholder="'请输入'+entity.payTypeName+'账号'" v-model="entity.account" label="账号" />
@@ -32,14 +58,19 @@
       <van-field label="可兑现比例" class="red" :value="(entity.deductRate*100)+'%'" disabled />
       <van-cell title="兑现福豆">
         <template #input>
-          <van-stepper id='deduct' :min="min" :max="maxDeduct()"  v-model="entity.deduct" :step="100" />
+          <van-stepper
+            id="deduct"
+            :min="min"
+            :max="maxDeduct()"
+            v-model="entity.deduct"
+            :step="100"
+          />
         </template>
       </van-cell>
     </el-main>
     <el-footer>
-      <el-button style="width:100%;" type="success" @click="onSubmit" round>提交</el-button>
-      <!-- <el-button :disabled="isNotSubmit" v-if="IsDisabled" style="width:100%;" type="success" @click="onSubmit" round>提交</el-button> -->
-      <!-- <el-button v-if="!IsDisabled" style="width:100%;" type="info" disabled round>提现时间为{{beginHour}}:00-{{endHour}}:00</el-button> -->
+      <el-button :disabled="isNotSubmit" v-if="IsDisabled" style="width:100%;" type="success" @click="onSubmit" round>提交</el-button>
+      <el-button v-if="!IsDisabled" style="width:100%;" type="info" disabled round>提现时间为{{beginHour}}:00-{{endHour}}:00</el-button>
       <!-- <el-button style="width:100%;" type="success" @click="onSubmit" round>提交</el-button> -->
     </el-footer>
   </div>
@@ -132,14 +163,14 @@ export default {
       that.isNotSubmit = true;
     };
     document.querySelector("#deduct input").onblur = function() {
-      that.entity.deduct=parseInt(that.entity.deduct/100)*100;
+      that.entity.deduct = parseInt(that.entity.deduct / 100) * 100;
       that.isNotSubmit = false;
     };
   },
   methods: {
     maxDeduct() {
       return (
-        parseInt(this.entity.integral * this.entity.deductRate / 100) * 100
+        parseInt((this.entity.integral * this.entity.deductRate) / 100) * 100
       );
     },
     SetDisabled() {

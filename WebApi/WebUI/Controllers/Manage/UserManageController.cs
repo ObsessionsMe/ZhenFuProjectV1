@@ -175,6 +175,7 @@ namespace WebUI.Controllers.Manage
             }
             //可以改姓名，推荐人手机号，福豆
             var user = userRepository.FindEntity(x => x.UserId == users.UserId);
+            user.Name = users.Name;
             user.Referrer = entity_r.Name;
             user.ReferrerTelephone = entity_r.UserTelephone;
             user.PorintsSurplus = users.PorintsSurplus;

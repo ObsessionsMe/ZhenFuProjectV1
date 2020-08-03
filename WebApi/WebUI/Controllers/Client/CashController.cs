@@ -99,22 +99,22 @@ namespace WebUI.Controllers.Client
             try
             {
                 var currHour = DateTime.Now.Hour;
-                //if (!(currHour >= BeginHour && currHour < EndHour))
-                //{
-                //    flag = false;
-                //    result.state = ResultType.error.ToString();
-                //    result.message = $"提现时间为{BeginHour}:00-{EndHour}:00!";
-                //}
-
-                if (flag)
+                if (!(currHour >= BeginHour && currHour < EndHour))
                 {
-                    if (entity.BankUserName != userModel.Name)
-                    {
-                        flag = false;
-                        result.state = ResultType.error.ToString();
-                        result.message = "开户人姓名与当前账号用户姓名不一致!";
-                    }
+                    flag = false;
+                    result.state = ResultType.error.ToString();
+                    result.message = $"提现时间为{BeginHour}:00-{EndHour}:00!";
                 }
+
+                //if (flag)
+                //{
+                //    if (entity.BankUserName != userModel.Name)
+                //    {
+                //        flag = false;
+                //        result.state = ResultType.error.ToString();
+                //        result.message = "开户人姓名与当前账号用户姓名不一致!";
+                //    }
+                //}
 
                 if (flag)
                 {
