@@ -50,6 +50,8 @@
           <!-- <el-table-column prop="provinceName" label="开户行所在地" width="150" show-overflow-tooltip>
              <template slot-scope="scope">{{scope.row.provinceName}}{{scope.row.cityName}}</template>
           </el-table-column> -->
+          <el-table-column prop="provinceName" label="省份" width="100" show-overflow-tooltip> </el-table-column>
+          <el-table-column prop="cityName" label="城市" width="100" show-overflow-tooltip> </el-table-column>
           <el-table-column prop="provinceCityName" label="开户行所在地" width="150" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="deduct" label="兑现积分" sortable width="120"></el-table-column>
