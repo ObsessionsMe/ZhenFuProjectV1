@@ -13,44 +13,17 @@
         <van-picker value-key="name" show-toolbar :columns="pays" @confirm="onPayConfirm" @cancel="showPayPicker = false" />
       </van-popup>-->
       <template v-if="entity.payTypeName=='银行卡'">
-        <van-field
-          readonly
-          clickable
-          name="picker"
-          v-model="entity.bankTypeName"
-          label="所属银行"
-          placeholder="请选择"
-          @click="showBankPicker = true"
-        />
+        <van-field readonly clickable name="picker" v-model="entity.bankTypeName" label="所属银行" placeholder="请选择" @click="showBankPicker = true" />
 
         <van-field label="开户人姓名" placeholder="请输入开户人姓名" v-model="entity.bankUserName" />
 
-        <van-field
-          readonly
-          clickable
-          name="picker"
-          :value="entity.provinceName+entity.cityName"
-          label="开户地"
-          placeholder="请选择"
-          @click="showAreaPicker = true"
-        />
+        <van-field readonly clickable name="picker" :value="entity.provinceName+entity.cityName" label="开户地" placeholder="请选择" @click="showAreaPicker = true" />
         <van-popup v-model="showAreaPicker" position="bottom">
-          <van-area
-            :area-list="areaList"
-            :columns-num="2"
-            @confirm="onAreaConfirm"
-            @cancel="showAreaPicker = false"
-          />
+          <van-area :area-list="areaList" :columns-num="2" @confirm="onAreaConfirm" @cancel="showAreaPicker = false" />
         </van-popup>
 
         <van-popup v-model="showBankPicker" position="bottom">
-          <van-picker
-            value-key="name"
-            show-toolbar
-            :columns="banks"
-            @confirm="onBankConfirm"
-            @cancel="showBankPicker = false"
-          />
+          <van-picker value-key="name" show-toolbar :columns="banks" @confirm="onBankConfirm" @cancel="showBankPicker = false" />
         </van-popup>
       </template>
       <van-field :placeholder="'请输入'+entity.payTypeName+'账号'" v-model="entity.account" label="账号" />
@@ -58,13 +31,7 @@
       <van-field label="可兑现比例" class="red" :value="(entity.deductRate*100)+'%'" disabled />
       <van-cell title="兑现福豆">
         <template #input>
-          <van-stepper
-            id="deduct"
-            :min="min"
-            :max="maxDeduct()"
-            v-model="entity.deduct"
-            :step="100"
-          />
+          <van-stepper id="deduct" :min="min" :max="maxDeduct()" v-model="entity.deduct" :step="100" />
         </template>
       </van-cell>
     </el-main>
@@ -170,7 +137,7 @@ export default {
   methods: {
     maxDeduct() {
       return (
-        parseInt((this.entity.integral * this.entity.deductRate) / 100) * 100
+        parseInt(this.entity.integral * this.entity.deductRate / 100) * 100
       );
     },
     SetDisabled() {
@@ -239,6 +206,19 @@ export default {
       this.entity.cityName = city.name;
       this.showAreaPicker = false;
     },
+    Submit() {
+      var that = this;
+      that.isNotSubmit = true;
+      submitCash(this.entity).then(res => {
+        if (res.state == "success") {
+          Toast.success(res.message);
+          this.$router.push({ path: "/user/index" });
+        } else {
+          Toast.success(res.message);
+        }
+        that.isNotSubmit = false;
+      });
+    },
     onSubmit() {
       if (this.entity.bankTypeName.length < 1) {
         Toast.fail("所属银行不能为空!");
@@ -271,26 +251,11 @@ export default {
             "，请确认是否要进行兑现？"
         })
           .then(() => {
-            console.log(this.entity);
-            submitCash(this.entity).then(res => {
-              if (res.state == "success") {
-                Toast.success(res.message);
-                this.$router.push({ path: "/user/index" });
-              } else {
-                Toast.fail(res.message);
-              }
-            });
+            this.Submit();
           })
           .catch(() => {});
       } else {
-        submitCash(this.entity).then(res => {
-          if (res.state == "success") {
-            Toast.success(res.message);
-            this.$router.push({ path: "/user/index" });
-          } else {
-            Toast.success(res.message);
-          }
-        });
+        this.Submit();
       }
     }
   }
