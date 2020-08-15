@@ -168,7 +168,7 @@ namespace WebUI.Controllers.Manage
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "该用户在系统中不存在", data = null });
             }
-            var  entity_r = userRepository.FindEntity(x => x.UserTelephone == users.ReferrerTelephone);
+            var entity_r = userRepository.FindEntity(x => x.UserTelephone == users.ReferrerTelephone && x.Enable == "Y");
             if (entity_r == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "你输入的推荐人手机号在系统中不存在", data = null });
@@ -179,7 +179,7 @@ namespace WebUI.Controllers.Manage
             user.Referrer = entity_r.Name;
             user.ReferrerTelephone = entity_r.UserTelephone;
             user.PorintsSurplus = users.PorintsSurplus;
-            user.TourismPorints = users.PorintsSurplus;
+            user.TourismPorints = users.TourismPorints;
             user.TreamPorints = users.TreamPorints;
             user.PecialItemPorints = users.PecialItemPorints;
             user.FieldsPorints = users.FieldsPorints;

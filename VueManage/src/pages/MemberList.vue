@@ -430,6 +430,21 @@ export default {
         });
         return;
       }
+      if(this.userEntity.porintsSurplus == ""){
+        this.userEntity.porintsSurplus = 0;
+      }
+      if(this.userEntity.pecialItemPorints == ""){
+        this.userEntity.pecialItemPorints = 0;
+      }
+      if(this.userEntity.tourismPorints == ""){
+        this.userEntity.tourismPorints = 0;
+      }
+      if(this.userEntity.treamPorints == ""){
+        this.userEntity.treamPorints = 0;
+      }
+      if(this.userEntity.fieldsPorints == ""){
+        this.userEntity.fieldsPorints = 0;
+      }
       http
         .post(url.editUser, { jsonString: JSON.stringify(this.userEntity) })
         .then(res => {
