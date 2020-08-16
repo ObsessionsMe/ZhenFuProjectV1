@@ -129,6 +129,7 @@ namespace WebUI.Controllers.Manage
                 { "ReceiveProvinceName", "收货省" },
                 { "ReceiveCityName", "收货市" },
                 { "ReceiveAreaName", "收货区" },
+                { "DetailsAddress", "详细地址" },
                 { "orderStatus", "状态" },
                 { "AddTime", "下单时间" }
             };

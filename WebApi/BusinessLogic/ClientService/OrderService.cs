@@ -70,35 +70,6 @@ namespace BusinessLogic.ClientService
                 //        }
                 //    }
                 //}
-                //判断购买次数，最多购买三次，达到三次就不能再购买了
-                var prodCfgEntity = productCfgRepository.FindEntity(x => x.GoodsId == order.GoodsId && x.isGivePorint == "Y");
-                if (prodCfgEntity != null)
-                {
-                    userEntity.TourismPorints += prodCfgEntity.isGiveDefalutPorint* order.BuyGoodsNums;
-                    userRepository.Update(userEntity);
-                    //int userPayCount = orderRepository.FindList(x => x.UserId == userId && x.GoodsId == order.GoodsId).Count;
-                    //if (userEntity.TreamPorints == 0)
-                    //{
-                    //    //没有团队福豆，最多复投3次
-                    //    if (userPayCount < 3)
-                    //    {
-                    //        num = 500 * userPayCount;
-                    //        userEntity.TourismPorints += (prodCfgEntity.isGiveDefalutPorint - num) * order.BuyGoodsNums;
-                    //        userRepository.Update(userEntity);
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    //有团队福豆，可以无限赠送，直到最后减完
-                    //    num = 500 * userPayCount;
-                    //    if (prodCfgEntity.isGiveDefalutPorint - num >= 0)
-                    //    {
-                    //        int total = (prodCfgEntity.isGiveDefalutPorint - num) * order.BuyGoodsNums;
-                    //        userEntity.TourismPorints += total;
-                    //        userRepository.Update(userEntity);
-                    //    }
-                    //}
-                }
                 int i = 0;
                 int payCount = (order.GoodsUnitPrice) * (order.BuyGoodsNums);  //下单总价
                 //减去运费
@@ -119,6 +90,13 @@ namespace BusinessLogic.ClientService
                         return new AjaxResult { state = ResultType.error.ToString(), message = "你的福豆余额不足，请先充值", data = "" };
                     }
                     userEntity.PorintsSurplus = (userEntity.PorintsSurplus) - (payCount);
+
+                    //赠送专项积分
+                    var prodCfgEntity = productCfgRepository.FindEntity(x => x.GoodsId == order.GoodsId && x.isGivePorint == "Y");
+                    if (prodCfgEntity != null)
+                    {
+                        userEntity.TourismPorints += prodCfgEntity.isGiveDefalutPorint * order.BuyGoodsNums;
+                    }
                 }
                 if (order.UsePorintsType == 3)
                 {
