@@ -22,8 +22,8 @@
 
 <script>
 import areaList from "../../../data/area";
-import { SaveAddress, DelAddress } from "../../../api/user.js";
-import { SubmitAddress, GetAddressById } from "../../../api/address.js";
+import { SaveAddress} from "../../../api/user.js";
+import { SubmitAddress, GetAddressById,DelAddress } from "../../../api/address.js";
 
 import { AddressEdit } from "vant";
 export default {
@@ -35,7 +35,9 @@ export default {
       areaList,
       showDelete: false,
       info: {},
-      infos:[]
+      infos:[],
+      AddressId:null,
+      Id:0
     };
   },
 
@@ -56,38 +58,46 @@ export default {
       receiveEntity.ReceiveAreaName = data.county;
       receiveEntity.ReceiveAreaCode = data.areaCode;
       receiveEntity.isDefalut = data.isDefault == true ? "Y" : "N";
+      receiveEntity.AddressId = this.AddressId;
+      receiveEntity.Id = parseInt(this.Id);
       console.log("receiveEntity", receiveEntity);
       SubmitAddress(receiveEntity).then(response => {
         this.$toast('收货地址保存成功');
         this.$router.go(-1);
       });
     },
-    onDelete(data) {
+    onDelete() {
       // eslint-disable-next-line no-unused-vars
-      // DelAddress(data).then(response=>{
-      //   this.$toast('删除成功');
-      //   this.$router.go(-1);
-      // })
+      var id = this.$route.query.id;
+      DelAddress(id).then(response=>{
+        if (response.state == "success") {
+          this.$toast('删除成功');
+          this.$router.go(-1);
+        }
+      })
     }
   },
-  created: function() {
+  mounted(){
     var id = this.$route.query.id;
     if (id > 0) {
+      this.Id = id;
       this.showDelete = true;
       GetAddressById(id).then(response => {
         //console.log(response);
         if (response.state == "success") {
+          var info={};
           var receiveEntity = response.data;
-          console.log(receiveEntity);
-          this.info.name= receiveEntity.receiveUser;
-          this.info.addressDetail= receiveEntity.retailsAddress; 
-          this.info.tel=  receiveEntity.receiveTelephone;
-          this.info.province= receiveEntity.receiveProvinceName;
-          this.info.city = receiveEntity.receiveCityName; 
-          this.info.county= receiveEntity.receiveAreaName;
-          this.info.areaCode = receiveEntity.receiveAreaCode;
-          this.info.isDefalut = receiveEntity.isDefalut == "Y" ? true : false;
-          console.log(this.info);
+          this.AddressId = receiveEntity.addressId;
+          console.log("receiveEntity",receiveEntity);
+          info.name = receiveEntity.receiveUser;
+          info.addressDetail= receiveEntity.detailsAddress; 
+          info.tel =  receiveEntity.receiveTelephone;
+          info.province = receiveEntity.receiveProvinceName;
+          info.city = receiveEntity.receiveCityName; 
+          info.county= receiveEntity.receiveAreaName;
+          info.areaCode = receiveEntity.receiveAreaCode;
+          info.isDefault = receiveEntity.isDefalut == "Y" ? true : false;
+          this.info = info;
         }
       });
     }

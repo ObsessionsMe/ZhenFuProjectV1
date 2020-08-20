@@ -212,5 +212,17 @@ namespace WebUI.Controllers.Manage
             };
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = results });
         }
+        [Route("GetUserPwd")]
+        public ActionResult GetUserPwd(string phone)
+        {
+            //返回用户层级结构(包含自己总共三层)
+            var data = userRepository.FindEntity(x => x.UserTelephone == phone);
+            if (data == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "手机号不存在", data = null });
+            }
+           string pwd =  DESEncrypt.Decrypt(data.Password);
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = pwd });
+        }
     }
 }

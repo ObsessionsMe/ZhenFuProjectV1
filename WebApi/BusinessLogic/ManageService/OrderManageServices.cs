@@ -26,7 +26,7 @@ namespace BusinessLogic.ManageService
             expression = expression.And(a => a.Enable == "Y");
             if (!string.IsNullOrEmpty(keyword))
             {
-                expression = expression.And(a => a.GoodsName.Contains(keyword));
+                expression = expression.And(a => a.GoodsName.Contains(keyword) || a.Name.Contains(keyword));
             }
             //if (beginDate.HasValue)
             //{

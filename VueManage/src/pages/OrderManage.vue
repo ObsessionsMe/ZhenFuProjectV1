@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <el-form :inline="true" class="demo-form-inline" style="text-align:left">
-      <el-form-item label="商品名称">
-        <el-input placeholder="请输入商品名称" v-model="kw"></el-input>
+      <el-form-item label="订单搜索">
+        <el-input placeholder="请输入商品名称或下单人姓名" v-model="kw"></el-input>
       </el-form-item>
 
       <!-- <el-form-item label="选择开始日期">
@@ -67,6 +67,7 @@
                 @click="setOutGoods(scope.row.orderNumber)"
               >设为已发货</el-link>
               <el-link type="primary" @click="updateOrderRemark(scope.row.orderNumber)" style="padding-left:2%">修改备注</el-link>
+              <el-link type="primary" @click="updateOrderAddress(scope.row.name,scope.row.orderNumber)" style="padding-left:2%">修改收货地址</el-link>
             </template>
           </el-table-column>
           <el-table-column prop="orderNumber" label="订单编号" sortable width="230"></el-table-column>
@@ -284,6 +285,43 @@ export default {
             this.$message({
               type: "info",
               message: "修改备注失败"
+            });
+          }
+        });
+    },
+    updateOrderAddress(name,orderNumber) {
+      this.$prompt("请输入收货地址信息", name+"收货地址信息", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          console.log(value);
+          this.onupdateOrderAddress(orderNumber, value);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入"
+          });
+        });
+    },
+    onupdateOrderAddress(orderNumber, orderAddress) {
+      http
+        .get(url.EditOrderAddress, {
+          orderNumber: orderNumber,
+          orderAddress: orderAddress
+        })
+        .then(res => {
+          this.searchOrderList();
+          if (res.data.state == "success") {
+            this.$message({
+              type: "success",
+              message: "修改收货地址成功"
+            });
+          } else {
+            this.$message({
+              type: "info",
+              message: "修改收货地址失败"
             });
           }
         });

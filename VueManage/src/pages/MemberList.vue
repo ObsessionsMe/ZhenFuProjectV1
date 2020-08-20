@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <el-form :inline="true" class="demo-form-inline" style="text-align:left">
-       <el-form-item label="会员姓名">
-        <el-input placeholder="请输入会员姓名" v-model="kw"></el-input>
+       <el-form-item label="会员搜索">
+        <el-input placeholder="请输入会员姓名或手机号" v-model="kw"></el-input>
       </el-form-item>
       <!-- <el-form-item label="关键字">
         <el-input placeholder="请输入会员姓名或手机号" v-model="kw"></el-input>
@@ -35,19 +35,8 @@
           highlight-current-row
           height="650"
         >
-          <el-table-column prop="userId" label="操作" sortable width="350">
+          <el-table-column prop="userId" label="操作" sortable width="150">
             <template slot-scope="scope">
-              <el-link
-                type="primary"
-                v-if="scope.row.isAdmin=='N'"
-                @click="payPorints(scope.row.userId,1)"
-              >充值福豆余额</el-link>
-              <el-link
-                type="primary"
-                v-if="scope.row.isAdmin=='N'"
-                @click="payPorints(scope.row.userId,2)"
-                style="margin-left:2%"
-              >充值可用福豆</el-link>
               <el-link
                 type="warning"
                 v-if="scope.row.isAdmin=='N'"
@@ -87,6 +76,7 @@
           <el-table-column prop="userTelephone" label="会员手机号" width="200"></el-table-column>
           <el-table-column prop="referrer" label="推荐人姓名" sortable width="120"></el-table-column>
           <el-table-column prop="referrerTelephone" label="推荐人手机号" sortable width="200"></el-table-column>
+           <el-table-column prop="addtime" label="注册时间" sortable width="200"></el-table-column>
           <el-table-column prop="userType" label="会员类型" sortable width="170">
             <template slot-scope="scope">{{getUserType(scope.row.userType)}}</template>
           </el-table-column>
@@ -101,7 +91,6 @@
           <el-table-column prop="enable" label="是否有效" sortable width="100">
             <template slot-scope="scope">{{scope.row.enable=="Y"?"有效":"无效"}}</template>
           </el-table-column>
-          <el-table-column prop="addtime" label="注册时间" sortable width="200"></el-table-column>
         </el-table>
       </el-row>
       <el-pagination
@@ -341,60 +330,6 @@ export default {
       console.log(userType);
       var arr = this.allMemberType.find(x => x.id == userType);
       return arr.name;
-    },
-    payPorints(userId, type) {
-      if (userId == null || userId == "") {
-        return;
-      }
-      var title = "";
-      var content = "";
-      if (type == 1) {
-        title = "请输入要充值的积分余额数";
-        content = "充值积分余额";
-      } else if (type == "2") {
-        title = "请输入要充值的专项积分数";
-        content = "充值专项积分";
-      }
-      console.log(title);
-      //弹框显示充值金额
-      this.$prompt(title, content, {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        inputPattern: /^(\+?[1-9][0-9]*)$/,
-        inputErrorMessage: "请输入正整数,且必须大于0"
-      })
-        .then(({ value }) => {
-          this.payPorintsOn(userId, value, type);
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "取消输入"
-          });
-        });
-      console.log(userId);
-    },
-    payPorintsOn(userId, value, type) {
-      http
-        .get(url.ManagePayPorints, {
-          payNum: value,
-          UserId: userId,
-          type: type
-        })
-        .then(res => {
-          this.searchUser();
-          if (res.data.state == "success") {
-            this.$message({
-              type: "success",
-              message: "充值成功"
-            });
-          } else {
-            this.$message({
-              type: "info",
-              message: "充值失败"
-            });
-          }
-        });
     },
     cannel() {
       this.isShowDialog = false;

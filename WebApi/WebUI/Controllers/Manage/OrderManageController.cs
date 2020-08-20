@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Repository.RepositoryService;
 using RepositoryFactory.ServiceInterface;
 using WebUI.Tool;
 
@@ -24,11 +25,13 @@ namespace WebUI.Controllers.Manage
     {
         private readonly IOrderRepository orderRepository;
         private IHostingEnvironment hostEnvironment;
-        public OrderManageController(IOrderRepository _orderRepository, IHostingEnvironment _hostEnvironment)
+        private IReceiveAddressRepository receiveAddress;
+        public OrderManageController(IOrderRepository _orderRepository, IHostingEnvironment _hostEnvironment, IReceiveAddressRepository _receiveAddress)
         {
             orderRepository = _orderRepository;
             hostEnvironment = _hostEnvironment;
-        }
+            receiveAddress = _receiveAddress;
+    }
         // GET: api/OrderManage/GetOrderList
         /// <summary>
         ///  获取所有商品信息
@@ -97,6 +100,34 @@ namespace WebUI.Controllers.Manage
             }
             entity.OrderRemark = orderRemark;
             int i = orderRepository.Update(entity);
+            if (i <= 0)
+            {
+                return Json(result);
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = null });
+        }
+
+        /// <summary>
+        /// 修改订单收货地址
+        /// </summary>
+        /// <returns></returns>
+        [Route("EditOrderAddress")]
+        public ActionResult EditOrderAddress(string orderNumber, string orderAddress)
+        {
+            var entity = orderRepository.FindEntity(x => x.OrderNumber == orderNumber);
+            var result = new AjaxResult
+            {
+                state = ResultType.error,
+                message = "操作失败",
+                data = null
+            };
+            if (entity == null)
+            {
+                return Json(result);
+            }
+            var rec = receiveAddress.FindEntity(x => x.AddressId == entity.AddressId);
+            rec.DetailsAddress = orderAddress;
+            int i  = receiveAddress.Update(rec);
             if (i <= 0)
             {
                 return Json(result);

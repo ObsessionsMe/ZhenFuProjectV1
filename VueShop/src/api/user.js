@@ -138,14 +138,6 @@ export function SaveAddress(data){
     params: { data }
   })
 }
-export function DelAddress(data){
-  return request({
-    url: '/User/DelAddress',
-    method: 'post',
-    params: { data }
-  })
-}
-
 
 export function GetCoupon(data){
   return request({

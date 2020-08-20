@@ -44,7 +44,7 @@ namespace BusinessLogic.ManageService
             else
             {
                 pagination.page = 1;
-                expression = b => b.Enable == "Y" && b.IsAdmin == "N" && b.Name.Contains(keyword);
+                expression = b => b.Enable == "Y" && b.IsAdmin == "N" && (b.Name.Contains(keyword) || b.UserTelephone.Contains(keyword));
             }
             //return userRepository.FindList(expression, pagination).ToList();
             //Expression<Func<UserInfoEntity, bool>> expression = b => (b.Enable == "Y" && b.IsAdmin == "N" && string.IsNullOrEmpty(keyword)) || (b.Enable == "Y" && b.IsAdmin == "N" &&

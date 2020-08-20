@@ -13,6 +13,7 @@
       v-model="chosenAddressId"
       :class="isSelect?'':'hideselect'"
       :list="list"
+      show-delete
       @add="onAdd"
       @edit="onEdit"
       @select="onSelect"
@@ -48,7 +49,7 @@ export default {
       }
       this.$emit("selectAddress", item);
       this.$router.go(-1);
-    }
+    },
   },
   created: function() {
     //   receiveEntity.ReceiveUser = data.name;

@@ -144,6 +144,7 @@ namespace BusinessLogic.ClientService
                 if (sumEntity == null)
                 {
                     var sumporintsEntity = new UserPrintsSumEntity();
+
                     sumporintsEntity.UserId = userEntity.UserId;
                     sumporintsEntity.GoodsId = order.GoodsId;
                     sumporintsEntity.ProductPorints = 0;

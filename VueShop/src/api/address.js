@@ -7,6 +7,15 @@ export function GetUserAllAddress() {
   })
 }
 
+export function DelAddress(Id) {
+  return request({
+    url: '/api/ReceiveAddress/DelAddress',
+    method: 'get',
+    params: { Id:Id }
+  })
+}
+
+
 export function SubmitAddress(data) {
   return request({
     url: '/api/ReceiveAddress/SubmitAddress',
@@ -14,6 +23,8 @@ export function SubmitAddress(data) {
     data:data
   })
 }
+
+
 
 export function GetAddressById(Id) {
   return request({

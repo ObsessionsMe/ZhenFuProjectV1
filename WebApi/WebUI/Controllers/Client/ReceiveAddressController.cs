@@ -69,7 +69,7 @@ namespace WebUI.Controllers.Client
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "获取数据失败", data = null });
             }
-            if (receiveEntity.Id == 0 || receiveEntity.AddressId == null)
+            if (receiveEntity.AddressId == null)
             {
                 //如果设为默认收货地址,则修改其他收货地址的状态为N
                 if (receiveEntity.isDefalut == "Y")
@@ -82,12 +82,34 @@ namespace WebUI.Controllers.Client
                         receiveRepository.Update(obj);
                     }
                 }
+                else
+                {
+                    receiveEntity.isDefalut = "Y";
+                }
                 receiveEntity.AddressId = "Ad" + Common.GuId();
                 receiveRepository.Insert(receiveEntity);
             }
             else
             {
-                receiveRepository.Update(receiveEntity);
+                var receiveEntitys = receiveRepository.FindList(x => x.UserId == receiveEntity.UserId);
+                if (receiveEntitys.Count > 1)
+                {
+                    foreach (var item in receiveEntitys)
+                    {
+                        item.isDefalut = "N";
+                        receiveRepository.Update(item);
+                    }
+                }
+                var entity = receiveRepository.FindEntity(x => x.Id == receiveEntity.Id);
+                entity.ReceiveUser = receiveEntity.ReceiveUser;
+                entity.ReceiveTelephone = receiveEntity.ReceiveTelephone;
+                entity.DetailsAddress = receiveEntity.DetailsAddress;
+                entity.ReceiveProvinceName = receiveEntity.ReceiveProvinceName;
+                entity.ReceiveCityName = receiveEntity.ReceiveCityName;
+                entity.ReceiveAreaName = receiveEntity.ReceiveAreaName;
+                entity.ReceiveAreaCode = receiveEntity.ReceiveAreaCode;
+                entity.isDefalut = receiveEntity.isDefalut;
+                receiveRepository.Update(entity);
             }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "" });
         }
@@ -107,11 +129,12 @@ namespace WebUI.Controllers.Client
         /// 用户删除收货地址
         /// </summary>
         /// <returns></returns>
-        [Route("RemoveAddress")]
-        public ActionResult RemoveAddress()
+        [Route("DelAddress")]
+        public ActionResult DelAddress(int Id)
         {
+            var receiveEntity = receiveRepository.FindEntity(x => x.Id == Id);
+            receiveRepository.Delete(receiveEntity);
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "" });
         }
-
     }
 }
