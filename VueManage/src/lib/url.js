@@ -24,7 +24,9 @@ let url = {
     ExportOrderExcel:"api/OrderManage/ExportOrderExcel",
     ExportCashExcel:"api/CashManage/ExportCashExcel",
     EditOrderRemark:"api/OrderManage/EditOrderRemark",
-    EditOrderAddress:"api/OrderManage/EditOrderAddress"
+    EditOrderAddress:"api/OrderManage/EditOrderAddress",
+    EditUserPassd:"api/UserManage/EditUserPassd"
+    
     //logout: "api/Login/OutLogin",
     //getGridJson: "api/User/GetGridJson",
     //getPersonalFileList:"/File/GetFileList",    

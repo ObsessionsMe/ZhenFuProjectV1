@@ -35,7 +35,7 @@
           highlight-current-row
           height="650"
         >
-          <el-table-column prop="userId" label="操作" sortable width="150">
+          <el-table-column prop="userId" label="操作" sortable width="200">
             <template slot-scope="scope">
               <el-link
                 type="warning"
@@ -43,6 +43,12 @@
                 @click="editUser(scope.row)"
                 style="margin-left:2%"
               >修改</el-link>
+              <el-link
+                type="warning"
+                v-if="scope.row.isAdmin=='N'"
+                @click="editUserPassd(scope.row.userId)"
+                style="margin-left:2%"
+              >修改密码</el-link>
               <el-link
                 type="success"
                 v-if="scope.row.isAdmin=='N'"
@@ -184,6 +190,7 @@
 <script>
 //此处引入
 import { http, url } from "@/lib";
+
 //我的存储
 export default {
   data() {
@@ -398,6 +405,65 @@ export default {
           }
         });
     },
+    editUserPassd(userId) {
+      this.$prompt("请输入用户的新密码", "新密码信息", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          this.oneditUserPassd(userId, value);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入"
+          });
+        });
+    },
+    oneditUserPassd(userId, newPassword) {
+      if (!this.CheckPassWord(newPassword)) {
+        this.$message({
+            type: "error",
+            message: "密码必须为字母加数字且长度不小于6位"
+          });
+          return;
+      }
+      http
+        .get(url.EditUserPassd, {
+          userId: userId,
+          newPassword: newPassword
+        })
+        .then(res => {
+          this.searchUser();
+          if (res.data.state == "success") {
+            this.$message({
+              type: "success",
+              message: "修改用户密码成功"
+            });
+          } else {
+            this.$message({
+              type: "info",
+              message: "修改用户密码失败"
+            });
+          }
+        });
+    },
+    CheckPassWord(password) {//密码必须为字母加数字且长度不小于6位
+        var str = password;
+        if (str == null || str.length <6) {
+            return false;
+        }
+        var reg1 = new RegExp(/^[0-9A-Za-z]+$/);
+        if (!reg1.test(str)) {
+            return false;
+        }
+        var reg = new RegExp(/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/);
+        if (reg.test(str)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
   }
 };
 </script>

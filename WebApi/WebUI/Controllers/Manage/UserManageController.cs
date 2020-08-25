@@ -224,5 +224,21 @@ namespace WebUI.Controllers.Manage
            string pwd =  DESEncrypt.Decrypt(data.Password);
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = pwd });
         }
+        [Route("EditUserPassd")]
+        public ActionResult EditUserPassd(string userId, string newPassword)
+        {
+            var data = userRepository.FindEntity(x => x.UserId == userId);
+            if (data == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "手机号不存在", data = null });
+            }
+            data.Password = DESEncrypt.Encrypt(newPassword);
+            int i = userRepository.Update(data);
+            if (i < 1)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "修改数据失败", data = null });
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = null });
+        }        
     }
 }
