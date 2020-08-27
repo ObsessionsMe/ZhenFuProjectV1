@@ -135,7 +135,7 @@ export default {
         }
       ],
       goodsId: "",
-      AddressId: "123001",
+      AddressId: "",
       GoodsUnitPrice: 0,
       BuyGoodsNums: 0,
       PayCount: 0,
@@ -243,6 +243,7 @@ export default {
           this.ruleName = "商城兑换须知";
         }
         var addresses = response.data.receiveAddressData;
+        this.AddressId = response.data.receiveAddressData.addressId;
         console.log("addresses", addresses);
         if (addresses == null) {
           this.type = "0";
