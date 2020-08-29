@@ -46,6 +46,9 @@ export default {
             case 1:
                 value='已完成'
                 break;
+            case 2:
+                value='已驳回'
+                break;
             default:
                 break;
         }
