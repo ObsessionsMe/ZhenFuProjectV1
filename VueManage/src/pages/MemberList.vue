@@ -35,7 +35,7 @@
           highlight-current-row
           height="650"
         >
-          <el-table-column prop="userId" label="操作" sortable width="200">
+          <el-table-column prop="userId" label="操作" sortable width="270">
             <template slot-scope="scope">
               <el-link
                 type="warning"
@@ -46,9 +46,16 @@
               <el-link
                 type="warning"
                 v-if="scope.row.isAdmin=='N'"
+                @click="checkUserPwd(scope.row.userTelephone)"
+                style="margin-left:2%"
+              >查看密码</el-link>
+              <el-link
+                type="warning"
+                v-if="scope.row.isAdmin=='N'"
                 @click="editUserPassd(scope.row.userId)"
                 style="margin-left:2%"
               >修改密码</el-link>
+
               <el-link
                 type="success"
                 v-if="scope.row.isAdmin=='N'"
@@ -444,6 +451,22 @@ export default {
             this.$message({
               type: "info",
               message: "修改用户密码失败"
+            });
+          }
+        });
+    },
+    checkUserPwd(phone){
+      http
+        .get(url.GetUserPwd, {
+          phone: phone,
+        })
+        .then(res => {
+          if (res.data.state == "success") {
+              this.$alert("手机号:"+ phone +"   密码："+res.data.data, '会员密码', {
+              confirmButtonText: '确定',
+              callback: action => {
+                console.log(action);
+              }
             });
           }
         });
