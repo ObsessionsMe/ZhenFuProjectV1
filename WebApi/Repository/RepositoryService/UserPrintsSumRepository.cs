@@ -90,5 +90,14 @@ namespace Repository.RepositoryService
 
             return (bool)ExecuteSql.SqlQueryScalar(new DatabaseFacade(dbcontext), "select dbo.f_is_agency(@userId,@goodsId)", sqlParams.GetSqlParameters());
         }
+
+        public DataSet GetTeamOrderList(GoodsParam goodsParam)
+        {
+            var sqlParams = new SqlParams();
+            sqlParams.Params.Add("@userId", goodsParam.UserId);
+            sqlParams.Params.Add("@goodsId", goodsParam.GoodsId);
+
+            return ExecuteSql.ProcQuery(new DatabaseFacade(dbcontext), "p_get_team_order_list", sqlParams);
+        }
     }
 }

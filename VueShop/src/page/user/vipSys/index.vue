@@ -48,6 +48,15 @@
           <el-tree default-expand-all :data="teamDetail.treeData" :props="teamDetail.defaultProps" icon-class="el-icon-s-custom" highlight-current></el-tree>
         </div>
       </van-tab>
+      <van-tab title="团队订单">
+        <el-table :data="teamOrder.datas" stripe style="width: 100%">
+          <el-table-column align="center" prop="id" label="序号"  width="50"></el-table-column>
+          <el-table-column align="center" prop="name" label="用户名" ></el-table-column>
+          <el-table-column align="center" prop="integral" label="积分" width="50"> ></el-table-column>
+          <el-table-column align="center" prop="nums" label="盒数" width="50"> ></el-table-column>
+          <el-table-column align="center" prop="date" label="购买日期" width="160"  ></el-table-column>
+        </el-table>
+      </van-tab>
     </van-tabs>
   </div>
 </template>
@@ -57,7 +66,8 @@ import {
   GetProductEarn,
   GetTeamEarn,
   getPorintSurplus,
-  GetTeamDetail
+  GetTeamDetail,
+  GetTeamOrderList
 } from "@/api/user.js";
 import { GetMyTream } from "@/api/user.js";
 export default {
@@ -67,6 +77,7 @@ export default {
         { key: "productEarn", name: "个人积分" },
         { key: "teamEarn", name: "团队积分" },
         { key: "teamDetail", name: "我的团队" },
+        { key: "teamOrder", name: "订单情况" }
       ],
       height: 0,
       chacheSelTabKey: "vipSysTabCurrent",
@@ -125,7 +136,7 @@ export default {
           children: "children",
           label: "label"
         }
-      }
+      },
       //我的团队
       // treeData: [
       //   {
@@ -144,6 +155,9 @@ export default {
       //   children: "children",
       //   label: "label"
       // }
+      teamOrder:{
+          datas:[]
+        },
     };
   },
   created() {
@@ -230,6 +244,13 @@ export default {
             }
 
             this.teamDetail.treeData = treeData;
+          });
+          break;
+        case "teamOrder":
+          GetTeamOrderList({GoodsId:this.GoodsId}).then(res => {
+            if (res.state == "success") {
+              this.teamOrder.datas = res.data.list;
+            }
           });
           break;
       }

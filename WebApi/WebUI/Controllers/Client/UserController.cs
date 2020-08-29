@@ -102,6 +102,34 @@ namespace WebUI.Controllers.Client
             return Json(result);
         }
 
+        [Route("getTeamOrderList")]
+        public ActionResult GetTeamOrderList(GoodsParam param)
+        {
+            var result = new AjaxResult<dynamic>();
+            try
+            {
+                param.UserId = userModel.UserId;
+                //获取团队的产品订单详情
+                var ds = sumRepository.GetTeamOrderList(param);
+                var list = ds.Tables[0].ToDynamicList();
+                var total = ds.Tables[1].ToDynamics().First();
+                result.data = new
+                {
+                    list = list,
+                    total = total
+                };
+                result.state = ResultType.success.ToString();
+            }
+            catch (Exception ex)
+            {
+                result.message = "获取团队订单详情失败!";
+                result.state = ResultType.success.ToString();
+                LogHelper.Log.Error(ex);
+            }
+            return Json(result);
+        }
+        
+
         [Route("getTeamEarn")]
         public ActionResult GetTeamEarn(GoodsParam param)
         {

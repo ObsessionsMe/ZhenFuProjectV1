@@ -74,6 +74,15 @@ export function GetTeamEarn(data) {
   })
 }
 
+export function GetTeamOrderList(data) {
+  return request({
+    url: '/api/user/getTeamOrderList',
+    method: 'post',
+    data:data
+  })
+}
+
+
 export function GetTeamDetail(data) {
   return request({
     url: '/api/user/getTeamDetail',
@@ -89,6 +98,9 @@ export function GetTeamEarnDetail(data) {
     data:data
   })
 }
+
+
+
 
 export function LoginOut() {
   return request({
