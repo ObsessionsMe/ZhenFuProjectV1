@@ -30,9 +30,9 @@
       <br />
       <el-row>
         <el-table :height="height" :data="tableData" tooltip-effect="dark" style="width: 100%" highlight-current-row @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="55" :selectable="selectable"></el-table-column>
-          <el-table-column prop="name" label="会员姓名" width="100" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="userTelephone" label="手机号" width="150" show-overflow-tooltip></el-table-column>
+          <el-table-column type="selection" width="55" :selectable="selectable"  fixed></el-table-column>
+          <el-table-column prop="name" label="会员姓名" width="100" show-overflow-tooltip  fixed></el-table-column>
+          <el-table-column prop="userTelephone" label="手机号" width="150" show-overflow-tooltip  fixed></el-table-column>
           <!-- <el-table-column prop="goodsName" label="产品名称" width="150" show-overflow-tooltip></el-table-column> -->
           <!-- <el-table-column prop="type" label="兑现类别" width="100">
             <template slot-scope="scope">{{common.getTypeName(4,scope.row.type)}}</template>
@@ -40,7 +40,7 @@
           <el-table-column prop="status" label="兑现状态" sortable width="120">
             <template slot-scope="scope">{{common.getTypeName(5,scope.row.status)}}</template>
           </el-table-column> -->
-          <el-table-column prop="type" label="兑现类别" width="100"></el-table-column>
+          <el-table-column prop="type" label="兑现类别" width="100"  fixed></el-table-column>
           <el-table-column prop="status" label="兑现状态" sortable width="120"></el-table-column>
           <el-table-column prop="bankTypeName" label="银行卡名称" width="180"></el-table-column>
           <el-table-column prop="account" label="银行账号" sortable width="220"></el-table-column>

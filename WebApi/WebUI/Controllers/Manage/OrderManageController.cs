@@ -148,7 +148,8 @@ namespace WebUI.Controllers.Manage
             var orderList = service.GetOrderList(pagination, keyword);
             Dictionary<string, string> cellheader = new Dictionary<string, string> {
                 { "OrderNumber", "订单编号" },
-                { "Name", "下单人" },
+                { "Name", "会员姓名" },
+                { "UserTelephone", "手机号" },
                 { "GoodsName", "商品名称" },
                 { "GoodsUnitPrice", "商品单价" },
                 { "BuyGoodsNums", "数量" },

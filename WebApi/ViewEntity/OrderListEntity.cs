@@ -13,6 +13,9 @@ namespace ViewEntity
         public string OrderNumber { get; set; }
 
         public string Name { get; set; }
+
+        public string UserTelephone { get; set; }
+        
         public string GoodsName { get; set; }
         
         public int GoodsUnitPrice { get; set; }

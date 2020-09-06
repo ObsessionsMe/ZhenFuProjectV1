@@ -47,6 +47,14 @@ export function GetUserOrderList() {
   })
 }
 
+export function CheckUserExpire() {
+  return request({
+    url: '/api/order/CheckUserExpire',
+    method: 'get'
+  })
+}
+
+
 export function GetUserOrderDetails(params) {
   return request({
     url: '/api/order/GetUserOrderDetails',

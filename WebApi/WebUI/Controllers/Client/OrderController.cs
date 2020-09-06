@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Graph;
 using Newtonsoft.Json;
 using Repository.RepositoryService;
 using Repository.ServiceInterface;
@@ -225,6 +226,30 @@ namespace WebUI.Controllers.Client
                 return Json(result);
             }
             return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = null });
+        }
+
+
+        /// <summary>
+        /// 校验用户持仓天数是否已经到期(提前两天提醒)
+        /// </summary>
+        /// <returns></returns>
+        [Route("CheckUserExpire")]
+        public ActionResult CheckUserExpire()
+        {
+            if (userModel == null)
+            {
+                return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败", data = "" });
+            }
+            OrderInfoEntity order = orderRepository.FindList(x => x.UserId == userModel.UserId).OrderByDescending(o => o.Addtime).FirstOrDefault();
+            string lastBuyTime = order.Addtime.Split(' ')[0];
+            var cfg = productCfgRepository.FindEntity(x => x.GoodsId == order.GoodsId);
+            DateTime dateTime = DateTime.ParseExact(lastBuyTime, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentCulture);
+            dateTime = dateTime.AddDays(Convert.ToDouble(cfg.EarningsDays));
+            if (dateTime < DateTime.Now)
+            {
+                return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "false" });
+            }
+            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = "true" });
         }
     }
 }

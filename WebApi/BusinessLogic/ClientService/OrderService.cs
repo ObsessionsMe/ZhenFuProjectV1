@@ -57,7 +57,15 @@ namespace BusinessLogic.ClientService
                 {
                     return new AjaxResult { state = ResultType.error.ToString(), message = "你账号无效，请使用其他账号登录", data = "" };
                 }
-                //校验当前用户的推荐人都买了哪一级的产品，如果买了E，他就可以买ABCDE产品，如果买了B，就可以买AB产品
+                if (order.BuyGoodsNums > 3)
+                {
+                    return new AjaxResult { state = ResultType.error.ToString(), message = "下单失败！你当前购买的产品数量不能超过3盒", data = "" };
+                }
+                int userPatTotal = orderRepository.FindList(x => x.GoodsId == order.GoodsId && x.UserId == userId).Sum(s => s.BuyGoodsNums);
+                if (userPatTotal >= 3)
+                {
+                    return new AjaxResult { state = ResultType.error.ToString(), message = "下单失败！你当前购买的产品数量已经达到或超过了3盒", data = "" };
+                }
                 //var goodsEntity = goodsRepository.FindEntity(x => x.GoodsId  == order.GoodsId&& x.Enable == "Y");
                 //if (goodsEntity.isProduct == "Y")
                 //{

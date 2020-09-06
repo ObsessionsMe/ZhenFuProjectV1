@@ -35,7 +35,7 @@
           highlight-current-row
           height="650"
         >
-          <el-table-column prop="userId" label="操作" sortable width="270">
+          <el-table-column prop="userId" label="操作" sortable width="270"  fixed>
             <template slot-scope="scope">
               <el-link
                 type="warning"
@@ -85,10 +85,10 @@
               >修改</el-button>-->
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="会员姓名" width="120" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="userTelephone" label="会员手机号" width="200"></el-table-column>
+          <el-table-column prop="name" label="会员姓名" width="90" show-overflow-tooltip  fixed></el-table-column>
+          <el-table-column prop="userTelephone" label="会员手机号" width="120"  fixed></el-table-column>
           <el-table-column prop="referrer" label="推荐人姓名" sortable width="120"></el-table-column>
-          <el-table-column prop="referrerTelephone" label="推荐人手机号" sortable width="200"></el-table-column>
+          <el-table-column prop="referrerTelephone" label="推荐人手机号" sortable width="130"></el-table-column>
            <el-table-column prop="addtime" label="注册时间" sortable width="200"></el-table-column>
           <el-table-column prop="userType" label="会员类型" sortable width="170">
             <template slot-scope="scope">{{getUserType(scope.row.userType)}}</template>

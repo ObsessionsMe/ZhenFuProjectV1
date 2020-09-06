@@ -72,7 +72,6 @@
       <el-menu-item index="31">
         <span slot="title">永恒瞬间</span>
       </el-menu-item>
-
     </el-menu>
     <div class="content" :style="'width:'+(fullWidth-25)+'px;height:'+fullHeight+'px'">
       <div v-if="this.activeKey==0" class="category-div">
@@ -86,7 +85,7 @@
       </div>
       <!-- <div v-if="this.activeKey==4" class="category-div">
         <img v-for="img in cpjs2ImageList" :key="img" v-lazy="img" />
-      </div> -->
+      </div>-->
       <div v-if="this.activeKey==3" class="category-div">
         <img v-for="img in cfskImageList" :key="img" v-lazy="img" />
       </div>
@@ -110,7 +109,6 @@
         <img v-for="img in cpjs15ImageList" :key="img" v-lazy="img" />
       </div>
 
-
       <div v-if="this.activeKey==22" class="category-div">
         <img v-for="img in scs1ImageList" :key="img" v-lazy="img" />
       </div>
@@ -122,8 +120,6 @@
       <div v-if="this.activeKey==31" class="category-div">
         <img v-for="img in compyImageList" :key="img" v-lazy="img" />
       </div>
-
-
     </div>
     <navigate />
   </div>
@@ -131,6 +127,7 @@
 
 <script>
 //import { GetMyTream } from "../../api/user.js";
+import { CheckUserExpire } from "../../api/order.js";
 export default {
   name: "userindex",
   data() {
@@ -145,13 +142,13 @@ export default {
         require("@/assets/images/scs_zf004.png"),
         require("@/assets/images/scs_zf005.png"),
         require("@/assets/images/scs_zf006.png"),
-        require("@/assets/images/scs_zf007.png")
+        require("@/assets/images/scs_zf007.png"),
       ],
       scs2ImageList: [
         require("@/assets/images/scs001.png"),
         require("@/assets/images/scs002.png"),
         require("@/assets/images/scs003.png"),
-        require("@/assets/images/scs004.png")
+        require("@/assets/images/scs004.png"),
       ],
       yfzImageList: [
         require("@/assets/images/yfz001.png"),
@@ -159,7 +156,7 @@ export default {
         require("@/assets/images/yfz003.png"),
         require("@/assets/images/yfz004.png"),
         require("@/assets/images/yfz005.png"),
-        require("@/assets/images/yfz006.png")
+        require("@/assets/images/yfz006.png"),
       ],
       cpjsImageList: [
         require("@/assets/images/cpjs001.png"),
@@ -169,7 +166,7 @@ export default {
         require("@/assets/images/cpjs005.png"),
         require("@/assets/images/cpjs006.png"),
         require("@/assets/images/cpjs007.png"),
-        require("@/assets/images/cpjs008.png")
+        require("@/assets/images/cpjs008.png"),
       ],
       // cpjs2ImageList: [require("@/assets/images/gxbMain001.jpg")],
       cpjs11ImageList: [require("@/assets/images/图片4.png")],
@@ -178,21 +175,20 @@ export default {
       cpjs14ImageList: [require("@/assets/images/图片2.png")],
       cpjs15ImageList: [require("@/assets/images/图片8.png")],
       travelImageList: [],
-      cfskImageList: [
-       
-      ],
-      compyImageList:[
+      cfskImageList: [],
+      compyImageList: [
         require("@/assets/images/tream001.png"),
         require("@/assets/images/tream002.png"),
         require("@/assets/images/tream003.png"),
         require("@/assets/images/tream004.png"),
         require("@/assets/images/tream005.png"),
-        require("@/assets/images/tream006.png")
-      ]
+        require("@/assets/images/tream006.png"),
+      ],
     };
   },
   created() {
     localStorage.removeItem("localStorage");
+    this.checkUserPay();
   },
   methods: {
     //onSearch() {
@@ -213,7 +209,18 @@ export default {
       console.log("选择", keyPath);
       this.activeKey = key;
     },
-  }
+    checkUserPay() {
+      CheckUserExpire().then((response) => {
+        console.log(response);
+        if (response.state == "success") {
+          if (response.data == "false") {
+            var message = "温馨提示：恭喜您2倍出局，请及时复购，以免影响您的团队福豆收益！";
+            this.$toast(message);
+          }
+        }
+      });
+    },
+  },
 };
 </script>
 <style>

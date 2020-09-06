@@ -59,7 +59,7 @@
           highlight-current-row
           :height="height"
         >
-          <el-table-column prop="orderStatus" label="操作" sortable width="150">
+          <el-table-column prop="orderStatus" label="操作" sortable width="150" fixed>
             <template slot-scope="scope">
               <el-link
                 type="primary"
@@ -70,8 +70,9 @@
               <el-link type="primary" @click="updateOrderAddress(scope.row.name,scope.row.orderNumber)" style="padding-left:2%">修改收货地址</el-link>
             </template>
           </el-table-column>
-          <el-table-column prop="orderNumber" label="订单编号" sortable width="230"></el-table-column>
-          <el-table-column prop="name" label="下单人" sortable width="100"></el-table-column>
+          <!-- <el-table-column prop="orderNumber" label="订单编号" sortable width="230"  fixed></el-table-column> -->
+          <el-table-column prop="name" label="会员姓名" sortable width="100"  fixed></el-table-column>
+          <el-table-column prop="userTelephone" label="手机号" sortable width="100"  fixed></el-table-column>
           <el-table-column prop="goodsName" label="商品名称" width="150">
             <!-- <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
