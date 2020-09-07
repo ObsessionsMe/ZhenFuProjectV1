@@ -37,7 +37,7 @@ namespace WebUI.Controllers.Manage
             string keyword = param.keyword;
             var data = new
             {
-                rows = service.GetCashList(pagination, keyword),
+                rows = service.GetCashList(pagination, keyword, param.beginDate, param.endDate),
                 total = pagination.total,
                 page = pagination.page,
                 records = pagination.records
@@ -67,7 +67,7 @@ namespace WebUI.Controllers.Manage
             CashManageServices service = new CashManageServices(cashRepository);
             var pagination = param.pagination;
             string keyword = param.keyword;
-            var orderList = service.GetCashList(pagination, keyword);
+            var orderList = service.GetCashList(pagination, keyword, param.beginDate, param.endDate);
             Dictionary<string, string> cellheader = new Dictionary<string, string> {
                 { "Name", "会员姓名" },
                 { "userTelephone", "手机号" },

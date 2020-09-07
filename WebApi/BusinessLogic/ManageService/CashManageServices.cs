@@ -19,7 +19,7 @@ namespace BusinessLogic.ManageService
         {
             cashRepository = _cashRepository;
         }
-        public List<CashListEntity> GetCashList(Pagination pagination, string keyword)
+        public List<CashListEntity> GetCashList(Pagination pagination, string keyword,DateTime? begindate,DateTime? enddate)
         {
             //var expression = ExtLinq.True<CashListEntity>();
             //if (!string.IsNullOrEmpty(keyword))
@@ -30,6 +30,10 @@ namespace BusinessLogic.ManageService
             if (!string.IsNullOrEmpty(keyword))
             {
                 expression = b => b.BankUserName.Contains(keyword);
+            }
+            if (begindate.HasValue&&enddate.HasValue)
+            {
+                expression = b =>Convert.ToDateTime(b.Date) > begindate && Convert.ToDateTime(b.Date) < enddate;
             }
             return cashRepository.GetUse_CashList(pagination, expression);
         }

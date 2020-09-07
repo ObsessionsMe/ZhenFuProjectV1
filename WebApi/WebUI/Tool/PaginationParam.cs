@@ -10,9 +10,7 @@ namespace WebUI.Tool
     {
         public Pagination pagination { get; set; }
         public string keyword { set; get; }
-
-        //public DateTime? beginDate { get; set; }
-
-        //public DateTime? endDate { get; set; }
+        public DateTime? beginDate { get; set; }
+        public DateTime? endDate { get; set; }
     }
 }

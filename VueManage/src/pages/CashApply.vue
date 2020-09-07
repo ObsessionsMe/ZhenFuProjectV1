@@ -21,6 +21,8 @@
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="searchCashApplyList">查询</el-button>
         <!-- <el-button type="primary" icon="el-icon-edit" @click="editUserGroup">编辑</el-button>
         <el-button type="primary" icon="el-icon-delete" @click="deleteUserGroup">删除</el-button>-->
+        <el-date-picker v-model="dateRange" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+        </el-date-picker>
         <el-button type="primary" icon="el-icon-search" @click="exportApplyExcel">导出excel</el-button>
         <el-button type="primary" icon="el-icon-circle-plus-outline" @click="cashApply">兑现审批</el-button>
       </el-form-item>
@@ -92,6 +94,7 @@ export default {
     return {
       kw: "",
       tableData: [],
+      dateRange: [],
       total: 0,
       pageSize: 10,
       pageIndex: 1,
@@ -102,9 +105,14 @@ export default {
         { id: 0, name: "待兑现" },
         { id: 1, name: "已兑现" }
       ],
+      where: {
+        keyword: "",
+        datebegin: "",
+        dateend: ""
+      },
       common: common,
       checkIds: [],
-      check_dialog: false,  
+      check_dialog: false,
       fileUrl:
         process.env.NODE_ENV === "development"
           ? "https://localhost:44380"
@@ -126,22 +134,23 @@ export default {
     },
     //获取用户兑换申请列表
     searchCashApplyList() {
-      http
-        .post(url.GetCashList, {
-          pagination: {
-            rows: this.pageSize,
-            page: this.pageIndex,
-            sidx: "Id",
-            sord: "desc",
-            record: ""
-          },
-          keyword: this.kw
-        })
-        .then(res => {
-          console.log("res", res);
-          this.tableData = res.data.data.rows;
-          this.total = res.data.data.records;
-        });
+      this.where.keyword = this.keyword;
+      if (this.dateRange.length == 2) {
+        this.where.datebegin = this.dateRange[0];
+        this.where.dateend = this.dateRange[1];
+      }
+      this.where.pagination = {
+        rows: this.pageSize,
+        page: this.pageIndex,
+        sidx: "Id",
+        sord: "desc",
+        record: ""
+      };
+      http.post(url.GetCashList, this.where).then(res => {
+        console.log("res", res);
+        this.tableData = res.data.data.rows;
+        this.total = res.data.data.records;
+      });
     },
     handleSizeChange(currentsize) {
       this.pageSize = currentsize;

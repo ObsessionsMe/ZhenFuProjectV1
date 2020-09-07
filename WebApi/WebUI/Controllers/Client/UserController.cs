@@ -69,7 +69,7 @@ namespace WebUI.Controllers.Client
         }
 
         [Route("getTeamDetail")]
-        public ActionResult GetTeamDetail(GoodsParam param)
+        public string GetTeamDetail(GoodsParam param)
         {
             UserService servers = new UserService(userRepository, sumRepository, order);
             var result = new AjaxResult<dynamic>();
@@ -78,13 +78,13 @@ namespace WebUI.Controllers.Client
                 param.UserId = userModel.UserId;
                 //获取团队的详情
                 var ds = sumRepository.GetTeamDetail(param);
-                var treeTable= ds.Tables[1];
+                var treeTable = ds.Tables[1];
                 var root = treeTable.AsEnumerable().Where(x => x.Field<int>("Level") == -1).Select(x => new UserTreeData(x)).FirstOrDefault();
-                root.label = root.name + "(" + root.telephone.Substring(root.telephone.Length - 5, 4) + "):"+root.buyGoodsCount;
+                root.label = root.name + "(" + root.telephone.Substring(root.telephone.Length - 5, 4) + "):" + root.buyGoodsCount;
                 servers.FillTreeData(treeTable, root);
                 var tree = new List<UserTreeData>();
                 tree.Add(root);
-                
+
                 var detail = ds.Tables[0].ToDynamics().First();
                 result.data = new
                 {
@@ -99,7 +99,8 @@ namespace WebUI.Controllers.Client
                 result.state = ResultType.success.ToString();
                 LogHelper.Log.Error(ex);
             }
-            return Json(result);
+            var jsonStr = JsonConvert.SerializeObject(result);
+            return jsonStr;
         }
 
         [Route("getTeamOrderList")]
@@ -128,7 +129,7 @@ namespace WebUI.Controllers.Client
             }
             return Json(result);
         }
-        
+
 
         [Route("getTeamEarn")]
         public ActionResult GetTeamEarn(GoodsParam param)
@@ -187,7 +188,7 @@ namespace WebUI.Controllers.Client
 
 
         [Route("GetMyTream")]
-        public ActionResult GetMyTream()
+        public dynamic GetMyTream()
         {
             if (userModel == null)
             {
@@ -210,7 +211,9 @@ namespace WebUI.Controllers.Client
                 treeData = result,
                 payNum = payNum
             };
-            return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = results });
+            string jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = results });
+            //return Json(new AjaxResult { state = ResultType.success.ToString(), message = "获取数据成功", data = results });
+            return jsonStr;
         }
 
         /// <summary>
@@ -250,7 +253,7 @@ namespace WebUI.Controllers.Client
         public ActionResult GetPorintSurplus(GoodsParam param)
         {
             param.UserId = userModel.UserId;
-            var result= new VipProductDetailModel(); 
+            var result = new VipProductDetailModel();
             if (userModel == null)
             {
                 return Json(new AjaxResult { state = ResultType.error.ToString(), message = "Token校验失败", data = "" });
@@ -265,7 +268,7 @@ namespace WebUI.Controllers.Client
             }
             else
             {
-                result.ProductPorints=entity.ProductPorints;
+                result.ProductPorints = entity.ProductPorints;
                 result.TreamPorints = entity.TreamPorints;
                 result.HoldingDays = entity.HoldingDays;
                 result.IsAgency = sumRepository.IsAgency(param);
