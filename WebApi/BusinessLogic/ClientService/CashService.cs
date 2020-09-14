@@ -35,7 +35,6 @@ namespace BusinessLogic.ClientService
         public AjaxResult InsertCashInfo(CashInfoEntity entity)
         {
             AjaxResult result = new AjaxResult();
-            CashRepository.Insert(entity);
             //积分扣除
             var userEntity=userRepository.FindEntity(f => f.UserId == entity.UserId);
             if (entity.Type == 1)
@@ -70,6 +69,7 @@ namespace BusinessLogic.ClientService
                 userEntity.FieldsPorints = 0;
             }
             userRepository.Update(userEntity);
+            CashRepository.Insert(entity);
             //var sumEntity = userPrintsSumRepository.FindEntity(f => f.GoodsId == entity.GoodsId && f.UserId == entity.UserId);
             //if (entity.Type == 1)
             //{
